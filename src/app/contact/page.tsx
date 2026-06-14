@@ -176,7 +176,7 @@ export default function ContactPage() {
     setSubmit(false);
   };
 
-  const inputBase = (name: string): React.CSSProperties => ({
+  const inputBase = (name: keyof Fields): React.CSSProperties => ({
     width: '100%',
     background: focused === name ? 'rgba(184,149,106,0.03)' : 'transparent',
     border: `1px solid ${
