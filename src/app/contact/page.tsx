@@ -16,7 +16,7 @@ const MAX_CHARS = 600;
 
 /* ─── types ─────────────────────────────────────────────────────────── */
 type Fields = { name: string; email: string; subject: string; message: string };
-type Errs   = Partial<Record<keyof Fields, string>>;
+type Errs   = { [key: string]: string };
 
 /* ─── helpers ───────────────────────────────────────────────────────── */
 function validate(f: Fields): Errs {
