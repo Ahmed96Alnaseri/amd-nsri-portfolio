@@ -167,7 +167,7 @@ export default function HeroThreePanel() {
         scene.add(panelGroup);
 
         // Animate
-        function animate() {
+        const animate = () => {
           animId = requestAnimationFrame(animate);
           panelGroup.rotation.x += 0.0003;
           panelGroup.rotation.y += 0.0005;
