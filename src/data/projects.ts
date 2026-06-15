@@ -37,7 +37,7 @@ const projects: Project[] = [
     tags: ['Facade', 'Parametric', 'Panelization', 'Rhino'],
     overlayKeywords: ['SHOP DRAWINGS', 'RATIONALIZATION', 'SUBSTRUCTURE', 'CNC READY'],
     image: '/project-hysel-01.png',
-    caseStudyLink: '/works/001',
+    caseStudyLink: '/architecture/001',
   },
   {
     num: '002',
@@ -50,7 +50,7 @@ const projects: Project[] = [
     tags: ['Unfolding', 'Aluminum', 'Structure', 'Assembly'],
     overlayKeywords: ['UNFOLDING', 'TOLERANCE STUDY', 'JOINT DETAIL', 'MATERIAL SPEC'],
     image: '',
-    caseStudyLink: '/works/002',
+    caseStudyLink: '/architecture/002',
   },
   {
     num: '003',
@@ -63,7 +63,7 @@ const projects: Project[] = [
     tags: ['Grasshopper', 'Automation', 'Plugin', 'Workflow'],
     overlayKeywords: ['DEFINITION', 'SEAM LOGIC', 'AUTO NUMBERING', 'EXPORT READY'],
     image: '',
-    caseStudyLink: '/works/003',
+    caseStudyLink: '/architecture/003',
   },
   {
     num: '004',
@@ -76,7 +76,7 @@ const projects: Project[] = [
     tags: ['High-Rise', 'Visualization', 'Concept', 'Urban'],
     overlayKeywords: ['12 VARIATIONS', 'SHADOW STUDY', 'DEPTH 200–600mm', 'MATERIAL OPTIONS'],
     image: '',
-    caseStudyLink: '/works/004',
+    caseStudyLink: '/architecture/004',
   },
   {
     num: '005',
@@ -89,7 +89,7 @@ const projects: Project[] = [
     tags: ['Laser Cut', 'Interior', 'Steel', 'Pattern'],
     overlayKeywords: ['3mm STEEL', 'PRESS-FIT', 'LASER PATH', 'PATTERN DENSITY'],
     image: '',
-    caseStudyLink: '/works/005',
+    caseStudyLink: '/architecture/005',
   },
   {
     num: '006',
@@ -102,7 +102,7 @@ const projects: Project[] = [
     tags: ['Stair', 'DXF Export', 'Unique Panels', 'Steel'],
     overlayKeywords: ['UNIQUE PANELS', 'DXF EXPORT', 'BEND RADIUS', 'WELD SPEC'],
     image: '',
-    caseStudyLink: '/works/006',
+    caseStudyLink: '/architecture/006',
   },
 ];
 

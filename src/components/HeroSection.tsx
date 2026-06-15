@@ -59,11 +59,11 @@ export default function HeroSection() {
               with fabrication reality.
             </p>
             <div className="hero2-ctas">
-              <a href="/works" className="btn-primary" aria-label="Explore the AMD NSRI ecosystem">
+              <a href="/architecture" className="btn-primary" aria-label="Explore the AMD NSRI ecosystem">
                 <span>Explore the Ecosystem</span>
                 <span style={{ fontSize: '14px', opacity: 0.7, fontFamily: 'var(--font-body)', fontWeight: 300 }}>→</span>
               </a>
-              <a href="/works" className="btn-ghost" aria-label="View selected works">
+              <a href="/architecture" className="btn-ghost" aria-label="View selected works">
                 <span>View Selected Works</span>
               </a>
             </div>

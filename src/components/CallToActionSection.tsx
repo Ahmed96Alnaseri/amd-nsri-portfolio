@@ -79,7 +79,7 @@ export default function CallToActionSection() {
             <a href="mailto:ahmed@amdnsri.com" className="cta-btn-primary">
               Start a Collaboration →
             </a>
-            <Link href="/works" className="cta-btn-ghost">
+            <Link href="/architecture" className="cta-btn-ghost">
               Explore Works
             </Link>
           </div>

@@ -2,13 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+
+const slugify = (title: string) => title.toLowerCase().replace(/\s+/g, '-');
 
 /* ─── types & data ──────────────────────────────────────────────────── */
 type ProjectImage = { src: string; subtitle: string };
 
+type Category = 'Residential' | 'Commercial' | 'Competition' | 'Mixed Use';
+
 type Project = {
   title: string;
-  category: 'Architecture' | 'Facade' | 'Fabrication' | 'Design';
+  category: Category;
   year: string;
   location: string;
   images?: ProjectImage[];
@@ -17,7 +22,7 @@ type Project = {
 const PROJECTS: Project[] = [
   {
     title: 'Hasyl Canopy',
-    category: 'Architecture',
+    category: 'Commercial',
     year: '2024',
     location: 'Turkmenistan',
     images: [
@@ -27,16 +32,13 @@ const PROJECTS: Project[] = [
       { src: '/kolon.png',              subtitle: 'Parametric Column Detail' },
     ],
   },
-  { title: 'Aziz Gold Smith Facade',      category: 'Facade',       year: '2023', location: 'Istanbul' },
-  { title: 'Sustainable Cities Monument', category: 'Architecture', year: '2022', location: 'Competition' },
-  { title: 'Panel Nesting System',        category: 'Fabrication',  year: '2024', location: 'Istanbul' },
 ];
 
-const FILTERS = ['All', 'Architecture', 'Facade', 'Fabrication', 'Design'] as const;
+const FILTERS = ['All', 'Residential', 'Commercial', 'Competition', 'Mixed Use'] as const;
 type Filter = (typeof FILTERS)[number];
 
 /* ─── card ──────────────────────────────────────────────────────────── */
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({ project, index, slug }: { project: Project; index: number; slug: string }) {
   const [current, setCurrent] = useState(0);
   const [fading, setFading] = useState(false);
   const [lightbox, setLightbox] = useState(false);
@@ -67,20 +69,21 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <>
-      <article className="wcard">
-        <div className="wcard-media">
+      <Link href={`/architecture/${slug}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+      <article className="acard">
+        <div className="acard-media">
 
           {/* Index — top left */}
-          <span className="wcard-index">{String(index + 1).padStart(2, '0')}</span>
+          <span className="acard-index">{String(index + 1).padStart(2, '0')}</span>
 
           {/* Category tag — top right */}
-          <span className="wcard-cat-tag">{project.category}</span>
+          <span className="acard-cat-tag">{project.category}</span>
 
           {hasImages ? (
             <>
               {/* Image */}
               <div
-                className="wcard-img-wrap"
+                className="acard-img-wrap"
                 style={{ opacity: fading ? 0 : 1, transition: 'opacity 180ms ease' }}
               >
                 <Image
@@ -95,8 +98,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
               {/* Zoom button — visible on hover */}
               <button
-                className="wcard-zoom"
-                onClick={() => setLightbox(true)}
+                className="acard-zoom"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLightbox(true); }}
                 aria-label="View fullscreen"
               >
                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -106,63 +109,65 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               </button>
 
               {/* Always-visible name — no background, floats on image */}
-              <span className="wcard-name">{project.title}</span>
+              <span className="acard-name">{project.title}</span>
 
               {/* Frosted glass overlay — slides up from bottom on hover */}
-              <div className="wcard-overlay">
+              <div className="acard-overlay">
                 {images.length > 1 && (
-                  <div className="wcard-dots">
+                  <div className="acard-dots">
                     {images.map((_, i) => (
                       <button
                         key={i}
-                        className={`wcard-dot${i === current ? ' is-active' : ''}`}
-                        onClick={() => setCurrent(i)}
+                        className={`acard-dot${i === current ? ' is-active' : ''}`}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setCurrent(i); }}
                         aria-label={`Image ${i + 1}`}
                       />
                     ))}
                   </div>
                 )}
-                <h2 className="wcard-overlay-title">{project.title}</h2>
-                <p className="wcard-overlay-sub">{img.subtitle}</p>
-                <p className="wcard-overlay-meta">{project.year}&thinsp;·&thinsp;{project.location}</p>
+                <h2 className="acard-overlay-title">{project.title}</h2>
+                <p className="acard-overlay-sub">{img.subtitle}</p>
+                <p className="acard-overlay-meta">{project.year}&thinsp;·&thinsp;{project.location}</p>
               </div>
 
               {/* Arrows */}
               {images.length > 1 && (
                 <>
-                  <button className="wcard-arrow wcard-arrow-l" onClick={() => go(-1)} aria-label="Previous image">‹</button>
-                  <button className="wcard-arrow wcard-arrow-r" onClick={() => go(1)} aria-label="Next image">›</button>
+                  <button className="acard-arrow acard-arrow-l" onClick={(e) => { e.preventDefault(); e.stopPropagation(); go(-1); }} aria-label="Previous image">‹</button>
+                  <button className="acard-arrow acard-arrow-r" onClick={(e) => { e.preventDefault(); e.stopPropagation(); go(1); }} aria-label="Next image">›</button>
                 </>
               )}
             </>
           ) : (
             <>
-              <span className="wcard-tick wcard-tick-tl" />
-              <span className="wcard-tick wcard-tick-br" />
-              <span className="wcard-no-preview">No preview</span>
-              <div className="wcard-overlay">
-                <h2 className="wcard-overlay-title">{project.title}</h2>
-                <p className="wcard-overlay-meta">{project.year}&thinsp;·&thinsp;{project.location}</p>
+              <span className="acard-tick acard-tick-tl" />
+              <span className="acard-tick acard-tick-br" />
+              <span className="acard-no-preview">No preview</span>
+              <span className="acard-name">{project.title}</span>
+              <div className="acard-overlay">
+                <h2 className="acard-overlay-title">{project.title}</h2>
+                <p className="acard-overlay-meta">{project.year}&thinsp;·&thinsp;{project.location}</p>
               </div>
             </>
           )}
         </div>
       </article>
+      </Link>
 
       {/* Lightbox */}
       {lightbox && hasImages && (
-        <div className="wcard-lightbox" onClick={() => setLightbox(false)}>
-          <button className="wcard-lightbox-close" onClick={() => setLightbox(false)} aria-label="Close">✕</button>
+        <div className="acard-lightbox" onClick={() => setLightbox(false)}>
+          <button className="acard-lightbox-close" onClick={() => setLightbox(false)} aria-label="Close">✕</button>
 
           {images.length > 1 && (
             <button
-              className="wcard-lightbox-arrow wcard-lightbox-arrow-l"
+              className="acard-lightbox-arrow acard-lightbox-arrow-l"
               onClick={e => { e.stopPropagation(); go(-1); }}
               aria-label="Previous image"
             >‹</button>
           )}
 
-          <div className="wcard-lightbox-img" onClick={e => e.stopPropagation()}>
+          <div className="acard-lightbox-img" onClick={e => e.stopPropagation()}>
             <Image
               src={img.src}
               alt={project.title}
@@ -175,7 +180,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
           {images.length > 1 && (
             <button
-              className="wcard-lightbox-arrow wcard-lightbox-arrow-r"
+              className="acard-lightbox-arrow acard-lightbox-arrow-r"
               onClick={e => { e.stopPropagation(); go(1); }}
               aria-label="Next image"
             >›</button>
@@ -187,7 +192,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 }
 
 /* ─── page ──────────────────────────────────────────────────────────── */
-export default function WorksPage() {
+export default function ArchitecturePage() {
   const [active, setActive] = useState<Filter>('All');
 
   const visible =
@@ -197,7 +202,7 @@ export default function WorksPage() {
     <>
       <style>{`
         /* ── Page wrapper ─────────────────────────────────────────── */
-        .wpage-wrap {
+        .apage-wrap {
           background: var(--color-bg);
           color: var(--color-text-primary);
           font-family: var(--font-body);
@@ -209,8 +214,8 @@ export default function WorksPage() {
           overflow: hidden;
         }
 
-        /* ── Header ───────────────────────────────────────────────── */
-        .wpage-eyebrow {
+        /* ── Editorial header ─────────────────────────────────────── */
+        .apage-eyebrow {
           display: flex;
           align-items: center;
           gap: 12px;
@@ -219,9 +224,9 @@ export default function WorksPage() {
           letter-spacing: 0.22em;
           text-transform: uppercase;
           color: var(--color-accent);
-          margin-bottom: 24px;
+          margin-bottom: 28px;
         }
-        .wpage-eyebrow::before {
+        .apage-eyebrow::before {
           content: '';
           display: block;
           width: 28px;
@@ -229,33 +234,27 @@ export default function WorksPage() {
           background: var(--color-accent);
           opacity: 0.7;
         }
-        .wpage-head {
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          gap: 24px;
-          flex-wrap: wrap;
-          margin-bottom: 56px;
-        }
-        .wpage-title {
+        .apage-title {
           font-family: var(--font-title);
-          font-size: clamp(56px, 9vw, 132px);
+          font-size: clamp(48px, 8vw, 116px);
           letter-spacing: -0.03em;
-          line-height: 0.95;
+          line-height: 0.98;
           color: var(--color-text-primary);
-          margin: 0;
+          margin: 0 0 28px;
+          max-width: 14ch;
         }
-        .wpage-count {
+        .apage-desc {
           font-family: var(--font-body);
-          font-size: 11px;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: var(--color-text-meta);
-          padding-bottom: 12px;
+          font-size: clamp(14px, 1.4vw, 17px);
+          font-weight: 300;
+          letter-spacing: 0.02em;
+          line-height: 1.7;
+          color: var(--color-text-secondary);
+          max-width: 56ch;
+          margin: 0 0 clamp(40px, 6vh, 64px);
         }
-
         /* ── Filter bar ───────────────────────────────────────────── */
-        .wpage-filters {
+        .apage-filters {
           display: flex;
           align-items: center;
           gap: clamp(20px, 3vw, 44px);
@@ -263,9 +262,9 @@ export default function WorksPage() {
           border-top: 1px solid var(--color-line);
           border-bottom: 1px solid var(--color-line);
           padding: 22px 0;
-          margin-bottom: 56px;
+          margin-bottom: clamp(48px, 7vh, 80px);
         }
-        .wpage-filter {
+        .apage-filter {
           background: none;
           border: none;
           cursor: pointer;
@@ -277,18 +276,29 @@ export default function WorksPage() {
           padding: 0;
           transition: color 350ms ease;
         }
-        .wpage-filter:hover { color: rgba(255,255,255,0.75); }
-        .wpage-filter.is-active { color: var(--color-accent); }
-        .wpage-filter .wpage-filter-n {
+        .apage-filter:hover { color: rgba(255,255,255,0.75); }
+        .apage-filter.is-active { color: var(--color-accent); }
+        .apage-filter .apage-filter-n {
           font-size: 9px;
           color: var(--color-text-meta);
           margin-left: 7px;
           letter-spacing: 0.1em;
         }
-        .wpage-filter.is-active .wpage-filter-n { color: var(--color-accent-dim); }
+        .apage-filter.is-active .apage-filter-n { color: var(--color-accent-dim); }
+
+        /* ── Empty state ─────────────────────────────────────────── */
+        .apage-empty {
+          grid-column: 1 / -1;
+          padding: 80px 0;
+          text-align: center;
+          font-family: var(--font-body);
+          font-size: 13px;
+          letter-spacing: 0.08em;
+          color: var(--color-text-meta);
+        }
 
         /* ── Grid ─────────────────────────────────────────────────── */
-        .wpage-grid {
+        .apage-grid {
           flex: 1;
           display: grid;
           grid-template-columns: repeat(2, 1fr);
@@ -297,7 +307,7 @@ export default function WorksPage() {
         }
 
         /* ── Card ─────────────────────────────────────────────────── */
-        .wcard {
+        .acard {
           display: block;
           position: relative;
           border: 1px solid transparent;
@@ -305,12 +315,11 @@ export default function WorksPage() {
           cursor: pointer;
         }
         @media (hover: hover) and (pointer: fine) {
-          .wcard:hover { border-color: var(--color-accent); }
-          .wcard:hover .wcard-tick { opacity: 0.6; }
+          .acard:hover { border-color: var(--color-accent); }
+          .acard:hover .acard-tick { opacity: 0.6; }
         }
 
-        /* Media container — fixed height */
-        .wcard-media {
+        .acard-media {
           position: relative;
           width: 100%;
           height: 620px;
@@ -324,14 +333,12 @@ export default function WorksPage() {
           justify-content: center;
         }
 
-        /* Image fill */
-        .wcard-img-wrap {
+        .acard-img-wrap {
           position: absolute;
           inset: 0;
         }
 
-        /* Index number */
-        .wcard-index {
+        .acard-index {
           position: absolute;
           top: 14px;
           left: 16px;
@@ -342,8 +349,7 @@ export default function WorksPage() {
           z-index: 4;
         }
 
-        /* Category tag */
-        .wcard-cat-tag {
+        .acard-cat-tag {
           position: absolute;
           top: 14px;
           right: 16px;
@@ -360,8 +366,7 @@ export default function WorksPage() {
           -webkit-backdrop-filter: blur(6px);
         }
 
-        /* Registration ticks (placeholder only) */
-        .wcard-tick {
+        .acard-tick {
           position: absolute;
           width: 12px;
           height: 12px;
@@ -370,11 +375,10 @@ export default function WorksPage() {
           transition: opacity 400ms ease;
           z-index: 4;
         }
-        .wcard-tick-tl { top: 40px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
-        .wcard-tick-br { bottom: 100px; left: 12px; border-bottom-width: 1px; border-left-width: 1px; }
+        .acard-tick-tl { top: 40px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
+        .acard-tick-br { bottom: 100px; left: 12px; border-bottom-width: 1px; border-left-width: 1px; }
 
-        /* Placeholder label */
-        .wcard-no-preview {
+        .acard-no-preview {
           font-family: var(--font-body);
           font-size: 10px;
           letter-spacing: 0.2em;
@@ -384,7 +388,7 @@ export default function WorksPage() {
         }
 
         /* ── Always-visible floating name ────────────────────────── */
-        .wcard-name {
+        .acard-name {
           position: absolute;
           bottom: 20px;
           left: 20px;
@@ -403,11 +407,10 @@ export default function WorksPage() {
           text-overflow: ellipsis;
           transition: opacity 200ms ease;
         }
-        /* hide floating name when frosted overlay is up */
-        .wcard:hover .wcard-name { opacity: 0; }
+        .acard:hover .acard-name { opacity: 0; }
 
         /* ── Frosted glass overlay — compact, slides up on hover ──── */
-        .wcard-overlay {
+        .acard-overlay {
           position: absolute;
           bottom: 16px;
           left: 16px;
@@ -424,8 +427,8 @@ export default function WorksPage() {
           transform: translateY(calc(100% + 20px));
           transition: transform 300ms ease-out;
         }
-        .wcard:hover .wcard-overlay { transform: translateY(0); }
-        .wcard-overlay-title {
+        .acard:hover .acard-overlay { transform: translateY(0); }
+        .acard-overlay-title {
           font-family: var(--font-title);
           font-size: 22px;
           font-weight: 500;
@@ -437,7 +440,7 @@ export default function WorksPage() {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        .wcard-overlay-sub {
+        .acard-overlay-sub {
           font-family: var(--font-body);
           font-size: 13px;
           letter-spacing: 0.03em;
@@ -447,7 +450,7 @@ export default function WorksPage() {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        .wcard-overlay-meta {
+        .acard-overlay-meta {
           font-family: var(--font-body);
           font-size: 13px;
           letter-spacing: 0.08em;
@@ -457,13 +460,12 @@ export default function WorksPage() {
         }
 
         /* ── Dots ────────────────────────────────────────────────── */
-        .wcard-dots {
+        .acard-dots {
           display: flex;
-          justify-content: center;
           gap: 6px;
           margin-bottom: 10px;
         }
-        .wcard-dot {
+        .acard-dot {
           width: 5px;
           height: 5px;
           border-radius: 50%;
@@ -473,13 +475,13 @@ export default function WorksPage() {
           padding: 0;
           transition: background 300ms ease, transform 300ms ease;
         }
-        .wcard-dot.is-active {
+        .acard-dot.is-active {
           background: #ffffff;
           transform: scale(1.3);
         }
 
         /* ── Arrow buttons — copper ──────────────────────────────── */
-        .wcard-arrow {
+        .acard-arrow {
           position: absolute;
           top: 50%;
           transform: translateY(calc(-50% - 44px));
@@ -501,12 +503,12 @@ export default function WorksPage() {
           transition: background 300ms ease;
           padding: 0 0 1px;
         }
-        .wcard-arrow:hover { background: rgba(184,149,106,0.22); }
-        .wcard-arrow-l { left: 12px; }
-        .wcard-arrow-r { right: 12px; }
+        .acard-arrow:hover { background: rgba(184,149,106,0.22); }
+        .acard-arrow-l { left: 12px; }
+        .acard-arrow-r { right: 12px; }
 
         /* ── Zoom button — visible on hover ──────────────────────── */
-        .wcard-zoom {
+        .acard-zoom {
           position: absolute;
           top: 48px;
           right: 16px;
@@ -524,11 +526,11 @@ export default function WorksPage() {
           opacity: 0;
           transition: opacity 300ms ease, background 300ms ease;
         }
-        .wcard:hover .wcard-zoom { opacity: 1; }
-        .wcard-zoom:hover { background: rgba(184,149,106,0.24); }
+        .acard:hover .acard-zoom { opacity: 1; }
+        .acard-zoom:hover { background: rgba(184,149,106,0.24); }
 
         /* ── Lightbox ────────────────────────────────────────────── */
-        .wcard-lightbox {
+        .acard-lightbox {
           position: fixed;
           inset: 0;
           background: rgba(0, 0, 0, 0.95);
@@ -539,13 +541,13 @@ export default function WorksPage() {
           cursor: zoom-out;
           overflow: hidden;
         }
-        .wcard-lightbox-img {
+        .acard-lightbox-img {
           cursor: default;
           display: flex;
           align-items: center;
           justify-content: center;
         }
-        .wcard-lightbox-close {
+        .acard-lightbox-close {
           position: fixed;
           top: 24px;
           right: 28px;
@@ -564,8 +566,8 @@ export default function WorksPage() {
           transition: background 300ms ease;
           font-family: var(--font-body);
         }
-        .wcard-lightbox-close:hover { background: rgba(184,149,106,0.15); }
-        .wcard-lightbox-arrow {
+        .acard-lightbox-close:hover { background: rgba(184,149,106,0.15); }
+        .acard-lightbox-arrow {
           position: fixed;
           top: 50%;
           transform: translateY(-50%);
@@ -585,23 +587,12 @@ export default function WorksPage() {
           transition: background 300ms ease;
           padding: 0 0 1px;
         }
-        .wcard-lightbox-arrow:hover { background: rgba(184,149,106,0.22); }
-        .wcard-lightbox-arrow-l { left: 32px; }
-        .wcard-lightbox-arrow-r { right: 32px; }
-
-        /* ── Empty state ─────────────────────────────────────────── */
-        .wpage-empty {
-          grid-column: 1 / -1;
-          padding: 80px 0;
-          text-align: center;
-          font-family: var(--font-body);
-          font-size: 13px;
-          letter-spacing: 0.08em;
-          color: var(--color-text-meta);
-        }
+        .acard-lightbox-arrow:hover { background: rgba(184,149,106,0.22); }
+        .acard-lightbox-arrow-l { left: 32px; }
+        .acard-lightbox-arrow-r { right: 32px; }
 
         /* ── Bottom strip ────────────────────────────────────────── */
-        .wpage-strip {
+        .apage-strip {
           display: flex;
           align-items: stretch;
           border-top: 1px solid var(--color-line);
@@ -612,44 +603,41 @@ export default function WorksPage() {
           text-transform: uppercase;
           color: var(--color-text-meta);
         }
-        .wpage-strip > span {
+        .apage-strip > span {
           display: flex;
           align-items: center;
           padding: 14px clamp(14px, 2.5vw, 36px);
           border-right: 1px solid var(--color-line);
           white-space: nowrap;
         }
-        .wpage-strip > span:first-child { padding-left: 0; }
-        .wpage-strip > span:last-child { border-right: none; }
-        .wpage-strip .wpage-strip-fill { flex: 1; border-right: none; }
+        .apage-strip > span:first-child { padding-left: 0; }
+        .apage-strip > span:last-child { border-right: none; }
+        .apage-strip .apage-strip-fill { flex: 1; border-right: none; }
 
         /* ── Responsive ──────────────────────────────────────────── */
         @media (max-width: 767px) {
-          .wpage-grid { grid-template-columns: 1fr; }
-          .wpage-head { margin-bottom: 40px; }
-          .wpage-filters { gap: 18px 24px; margin-bottom: 40px; }
-          .wcard-media { height: 440px; }
-          .wpage-strip { flex-wrap: wrap; gap: 0 18px; }
-          .wpage-strip > span { border-right: none !important; padding: 10px 0 0 !important; }
+          .apage-grid { grid-template-columns: 1fr; }
+          .acard-media { height: 440px; }
+          .apage-filters { gap: 18px 24px; }
+          .apage-strip { flex-wrap: wrap; gap: 0 18px; }
+          .apage-strip > span { border-right: none !important; padding: 10px 0 0 !important; }
         }
       `}</style>
 
-      <div className="wpage-wrap">
+      <div className="apage-wrap">
 
         {/* Top rule */}
         <div style={{ height: '1px', background: 'var(--color-border)', marginBottom: 'clamp(40px, 6vh, 72px)' }} />
 
-        {/* Header */}
-        <p className="wpage-eyebrow">Selected works</p>
-        <div className="wpage-head">
-          <h1 className="wpage-title">Works</h1>
-          <span className="wpage-count">
-            {String(visible.length).padStart(2, '0')} {visible.length === 1 ? 'project' : 'projects'}
-          </span>
-        </div>
+        {/* Editorial header */}
+        <p className="apage-eyebrow">Architecture</p>
+        <h1 className="apage-title">Space. Structure. Skin.</h1>
+        <p className="apage-desc">
+          From concept to construction document — architecture as a complete act.
+        </p>
 
         {/* Filter bar */}
-        <div className="wpage-filters" role="tablist" aria-label="Filter projects by category">
+        <div className="apage-filters" role="tablist" aria-label="Filter projects by category">
           {FILTERS.map(f => {
             const n = f === 'All' ? PROJECTS.length : PROJECTS.filter(p => p.category === f).length;
             return (
@@ -657,31 +645,31 @@ export default function WorksPage() {
                 key={f}
                 role="tab"
                 aria-selected={active === f}
-                className={`wpage-filter${active === f ? ' is-active' : ''}`}
+                className={`apage-filter${active === f ? ' is-active' : ''}`}
                 onClick={() => setActive(f)}
               >
                 {f}
-                <span className="wpage-filter-n">{String(n).padStart(2, '0')}</span>
+                <span className="apage-filter-n">{String(n).padStart(2, '0')}</span>
               </button>
             );
           })}
         </div>
 
         {/* Grid */}
-        <div className="wpage-grid">
+        <div className="apage-grid">
           {visible.length === 0 ? (
-            <p className="wpage-empty">No projects in this category yet.</p>
+            <p className="apage-empty">No projects in this category yet.</p>
           ) : (
-            visible.map((p, i) => <ProjectCard key={p.title} project={p} index={i} />)
+            visible.map((p, i) => <ProjectCard key={p.title} project={p} index={i} slug={slugify(p.title)} />)
           )}
         </div>
 
         {/* Bottom strip */}
-        <div className="wpage-strip" aria-hidden="true">
+        <div className="apage-strip" aria-hidden="true">
           <span>AMD NSRI</span>
-          <span>Works</span>
+          <span>Architecture</span>
           <span>Est. 2026</span>
-          <span className="wpage-strip-fill" />
+          <span className="apage-strip-fill" />
         </div>
 
       </div>

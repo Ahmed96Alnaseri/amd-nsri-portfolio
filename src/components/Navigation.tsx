@@ -6,8 +6,8 @@ import Link from 'next/link';
 const NAV_LINKS = [
   { href: '/architecture', label: 'Architecture' },
   { href: '/design',       label: 'Design' },
+  { href: '/tools',        label: 'Tools' },
   { href: '/fabrication',  label: 'Fabrication' },
-  { href: '/works',        label: 'Works' },
   { href: '/shop',         label: 'Shop' },
   { href: '/contact',      label: 'Contact' },
 ];
@@ -15,8 +15,8 @@ const NAV_LINKS = [
 const MOBILE_LINKS = [
   { num: '01', href: '/architecture', label: 'Architecture',  desc: 'Spatial concepts and visualization' },
   { num: '02', href: '/design',       label: 'Design',        desc: 'Experimental design and objects' },
-  { num: '03', href: '/fabrication',  label: 'Fabrication',   desc: 'Production and fabrication logic' },
-  { num: '04', href: '/works',        label: 'Works',         desc: 'All projects' },
+  { num: '03', href: '/tools',        label: 'Tools',         desc: 'Parametric tools and definitions' },
+  { num: '04', href: '/fabrication',  label: 'Fabrication',   desc: 'Production and fabrication logic' },
   { num: '05', href: '/shop',         label: 'Shop',          desc: 'Products and resources' },
   { num: '06', href: '/contact',      label: 'Contact',       desc: 'Collaboration inquiries' },
 ];
