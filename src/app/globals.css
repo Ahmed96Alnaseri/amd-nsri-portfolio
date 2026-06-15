@@ -50,6 +50,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 mark {
@@ -59,8 +61,6 @@ mark {
 
 html {
   scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -2113,7 +2113,7 @@ nav, footer, figcaption {
   grid-template-columns: 1fr 1fr;
   gap: clamp(48px, 10vw, 140px);
   align-items: start;
-  padding-bottom: var(--spacing-section);
+  padding-bottom: clamp(48px, 6vh, 80px);
 }
 
 /* LEFT column */
@@ -2661,7 +2661,7 @@ nav, footer, figcaption {
    Intro v5 — "Fabrication Scan" (clean stage)
    ───────────────────────────────────────────────────────────── */
 .intro5 {
-  height: 240vh;
+  height: 160vh;
   position: relative;
 }
 .intro5-sticky {
@@ -2710,6 +2710,8 @@ nav, footer, figcaption {
 .intro5-stage {
   position: relative;
   line-height: 1;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .intro5-word {
   font-family: var(--font-title);
@@ -2729,6 +2731,8 @@ nav, footer, figcaption {
   inset: 0;
   clip-path: inset(100% 0 0 0);
   will-change: clip-path;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .intro5-word-solid {
   color: var(--color-text-primary);

@@ -21,10 +21,16 @@ export default function IntroSection() {
 
     const isMobile = window.innerWidth <= 1023;
     // Mobile: faster lerp + earlier scan window (section is 140vh so 40vh of scroll room)
-    const LERP       = isMobile ? 0.28 : 0.09;
-    const SCAN_START = isMobile ? 0.12 : 0.30;
-    const SCAN_RANGE = isMobile ? 0.62 : 0.42;
-    const SUB_START  = isMobile ? 0.72 : 0.82;
+    const LERP       = isMobile ? 0.30 : 0.12;
+    const SCAN_START = isMobile ? 0.05 : 0.10;
+    const SCAN_RANGE = isMobile ? 0.68 : 0.65;
+    const SUB_START  = isMobile ? 0.78 : 0.82;
+
+    // Cached previous values — write only on change.
+    let prevPct = -1;
+    let prevStatus = '';
+    let prevDone = false;
+    let prevScanHidden = false;
 
     const apply = (p: number) => {
       const fill = clamp01((p - SCAN_START) / SCAN_RANGE);
@@ -36,40 +42,59 @@ export default function IntroSection() {
         solidRef.current.style.clipPath = `inset(${insetTop.toFixed(2)}% 0 0 0)`;
       }
       if (scanRef.current) {
+        // top: % keeps the scanline's reference frame identical to the
+        // wordmark's clip-path so the two finish in lockstep.
         scanRef.current.style.top = `${insetTop.toFixed(2)}%`;
-        scanRef.current.style.opacity = done ? '0' : '1';
+        if (done !== prevScanHidden) {
+          scanRef.current.style.opacity = done ? '0' : '1';
+          prevScanHidden = done;
+        }
       }
-      if (pctRef.current) {
-        pctRef.current.textContent = `${Math.round(eased * 100).toString().padStart(3, '0')}%`;
+
+      const pct = Math.round(eased * 100);
+      if (pct !== prevPct && pctRef.current) {
+        pctRef.current.textContent = `${pct.toString().padStart(3, '0')}%`;
+        prevPct = pct;
       }
-      if (statusRef.current) {
-        statusRef.current.textContent =
-          p < SCAN_START ? 'Standby' : done ? 'Complete' : 'Fabricating';
+
+      const status = p < SCAN_START ? 'Standby' : done ? 'Complete' : 'Fabricating';
+      if (status !== prevStatus && statusRef.current) {
+        statusRef.current.textContent = status;
+        prevStatus = status;
       }
-      stageRef.current?.classList.toggle('is-done', done);
+
+      if (done !== prevDone && stageRef.current) {
+        stageRef.current.classList.toggle('is-done', done);
+        prevDone = done;
+      }
 
       const sub = clamp01((p - SUB_START) / (1 - SUB_START));
       if (subRef.current) {
         subRef.current.style.opacity = sub.toFixed(3);
-        subRef.current.style.transform = `translateY(${((1 - sub) * 28).toFixed(1)}px)`;
+        subRef.current.style.transform = `translate3d(0, ${((1 - sub) * 28).toFixed(1)}px, 0)`;
       }
     };
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) { apply(1); return; }
 
+    let cancelled = false;
     const loop = () => {
-      rafRef.current = requestAnimationFrame(loop);
+      if (cancelled) return;
       const vh = window.innerHeight;
       const rect = section.getBoundingClientRect();
       const scrollH = section.offsetHeight - vh;
       const target = clamp01(-rect.top / scrollH);
       cur.current += (target - cur.current) * LERP;
       apply(cur.current);
+      rafRef.current = requestAnimationFrame(loop);
     };
 
     rafRef.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafRef.current);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (

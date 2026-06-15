@@ -105,26 +105,9 @@ export default function CallToActionSection() {
           <div className="cta-info-block">
             <p className="cta-info-label">Location</p>
             <p className="cta-info-value">Istanbul, Turkey</p>
-            <p className="cta-info-sub">41.0082° N, 28.9784° E</p>
           </div>
 
           <div className="cta-divider" />
-
-          <div className="cta-info-block">
-            <p className="cta-info-label">Availability</p>
-            <div className="cta-avail-row">
-              <span className="cta-avail-dot" aria-hidden="true" />
-              <p className="cta-info-value">Currently open</p>
-            </div>
-            <p className="cta-info-sub">New projects &amp; collaborations</p>
-          </div>
-
-          <div className="cta-divider" />
-
-          <div className="cta-info-block">
-            <p className="cta-info-label">Response time</p>
-            <p className="cta-info-value">1–2 business days</p>
-          </div>
 
           <Link href="/contact" className="cta-contact-link">
             Open contact form →
@@ -138,7 +121,7 @@ export default function CallToActionSection() {
         <span>AMD NSRI</span>
         <span>Collaboration</span>
         <span>Est. 2026</span>
-        <span className="cta-bottom-fill">Sheet 06 / 06</span>
+        <span className="cta-bottom-fill" />
       </div>
 
     </section>
