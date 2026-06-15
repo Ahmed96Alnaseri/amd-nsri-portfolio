@@ -1,63 +1,202 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
-/* ─── data ─────────────────────────────────────────────────────────── */
+/* ─── types & data ──────────────────────────────────────────────────── */
+type ProjectImage = { src: string; subtitle: string };
+
 type Project = {
   title: string;
   category: 'Architecture' | 'Facade' | 'Fabrication' | 'Design';
   year: string;
   location: string;
+  images?: ProjectImage[];
 };
 
 const PROJECTS: Project[] = [
-  { title: 'Hospital Facade Perforation System', category: 'Facade',       year: '2023', location: 'Istanbul' },
-  { title: 'Aziz Gold Smith Facade',             category: 'Facade',       year: '2023', location: 'Istanbul' },
-  { title: 'Sustainable Cities Monument',        category: 'Architecture', year: '2022', location: 'Competition' },
-  { title: 'Panel Nesting System',               category: 'Fabrication',  year: '2024', location: 'Istanbul' },
+  {
+    title: 'Hasyl Canopy',
+    category: 'Architecture',
+    year: '2024',
+    location: 'Turkmenistan',
+    images: [
+      { src: '/project-hysel-01.png',   subtitle: 'Exterior View' },
+      { src: '/ceiling türkmen.png',    subtitle: 'Ceiling Pattern Detail' },
+      { src: '/kolon4.png',             subtitle: 'Column Technical Drawing' },
+      { src: '/kolon.png',              subtitle: 'Parametric Column Detail' },
+    ],
+  },
+  { title: 'Aziz Gold Smith Facade',      category: 'Facade',       year: '2023', location: 'Istanbul' },
+  { title: 'Sustainable Cities Monument', category: 'Architecture', year: '2022', location: 'Competition' },
+  { title: 'Panel Nesting System',        category: 'Fabrication',  year: '2024', location: 'Istanbul' },
 ];
 
 const FILTERS = ['All', 'Architecture', 'Facade', 'Fabrication', 'Design'] as const;
 type Filter = (typeof FILTERS)[number];
 
-/* ─── card ─────────────────────────────────────────────────────────── */
+/* ─── card ──────────────────────────────────────────────────────────── */
 function ProjectCard({ project, index }: { project: Project; index: number }) {
-  return (
-    <article className="wcard">
-      {/* Image placeholder — 4:3 */}
-      <div className="wcard-media" aria-hidden="true">
-        <span className="wcard-tick wcard-tick-tl" />
-        <span className="wcard-tick wcard-tick-br" />
-        <span className="wcard-index">{String(index + 1).padStart(2, '0')}</span>
-        <span className="wcard-media-label">No preview</span>
-      </div>
+  const [current, setCurrent] = useState(0);
+  const [fading, setFading] = useState(false);
+  const [lightbox, setLightbox] = useState(false);
 
-      {/* Meta */}
-      <div className="wcard-body">
-        <div className="wcard-row">
-          <h2 className="wcard-title">{project.title}</h2>
-          <span className="wcard-cat">{project.category}</span>
+  const images = project.images ?? [];
+  const hasImages = images.length > 0;
+  const img = images[current];
+
+  useEffect(() => {
+    if (!lightbox) return;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(false); };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [lightbox]);
+
+  const go = (dir: 1 | -1) => {
+    if (images.length <= 1) return;
+    setFading(true);
+    setTimeout(() => {
+      setCurrent(c => (c + dir + images.length) % images.length);
+      setFading(false);
+    }, 180);
+  };
+
+  return (
+    <>
+      <article className="wcard">
+        <div className="wcard-media">
+
+          {/* Index — top left */}
+          <span className="wcard-index">{String(index + 1).padStart(2, '0')}</span>
+
+          {/* Category tag — top right */}
+          <span className="wcard-cat-tag">{project.category}</span>
+
+          {hasImages ? (
+            <>
+              {/* Image */}
+              <div
+                className="wcard-img-wrap"
+                style={{ opacity: fading ? 0 : 1, transition: 'opacity 180ms ease' }}
+              >
+                <Image
+                  src={img.src}
+                  alt={project.title}
+                  fill
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  sizes="(max-width: 767px) 100vw, 50vw"
+                  priority={index === 0}
+                />
+              </div>
+
+              {/* Zoom button — visible on hover */}
+              <button
+                className="wcard-zoom"
+                onClick={() => setLightbox(true)}
+                aria-label="View fullscreen"
+              >
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <circle cx="5.5" cy="5.5" r="4" />
+                  <line x1="8.5" y1="8.5" x2="12" y2="12" />
+                </svg>
+              </button>
+
+              {/* Always-visible name — no background, floats on image */}
+              <span className="wcard-name">{project.title}</span>
+
+              {/* Frosted glass overlay — slides up from bottom on hover */}
+              <div className="wcard-overlay">
+                {images.length > 1 && (
+                  <div className="wcard-dots">
+                    {images.map((_, i) => (
+                      <button
+                        key={i}
+                        className={`wcard-dot${i === current ? ' is-active' : ''}`}
+                        onClick={() => setCurrent(i)}
+                        aria-label={`Image ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+                <h2 className="wcard-overlay-title">{project.title}</h2>
+                <p className="wcard-overlay-sub">{img.subtitle}</p>
+                <p className="wcard-overlay-meta">{project.year}&thinsp;·&thinsp;{project.location}</p>
+              </div>
+
+              {/* Arrows */}
+              {images.length > 1 && (
+                <>
+                  <button className="wcard-arrow wcard-arrow-l" onClick={() => go(-1)} aria-label="Previous image">‹</button>
+                  <button className="wcard-arrow wcard-arrow-r" onClick={() => go(1)} aria-label="Next image">›</button>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <span className="wcard-tick wcard-tick-tl" />
+              <span className="wcard-tick wcard-tick-br" />
+              <span className="wcard-no-preview">No preview</span>
+              <div className="wcard-overlay">
+                <h2 className="wcard-overlay-title">{project.title}</h2>
+                <p className="wcard-overlay-meta">{project.year}&thinsp;·&thinsp;{project.location}</p>
+              </div>
+            </>
+          )}
         </div>
-        <div className="wcard-foot">
-          <span>{project.year}</span>
-          <span className="wcard-dot">·</span>
-          <span>{project.location}</span>
+      </article>
+
+      {/* Lightbox */}
+      {lightbox && hasImages && (
+        <div className="wcard-lightbox" onClick={() => setLightbox(false)}>
+          <button className="wcard-lightbox-close" onClick={() => setLightbox(false)} aria-label="Close">✕</button>
+
+          {images.length > 1 && (
+            <button
+              className="wcard-lightbox-arrow wcard-lightbox-arrow-l"
+              onClick={e => { e.stopPropagation(); go(-1); }}
+              aria-label="Previous image"
+            >‹</button>
+          )}
+
+          <div className="wcard-lightbox-img" onClick={e => e.stopPropagation()}>
+            <Image
+              src={img.src}
+              alt={project.title}
+              width={1600}
+              height={1200}
+              style={{ maxHeight: '90vh', maxWidth: '90vw', width: 'auto', height: 'auto', objectFit: 'contain' }}
+              priority
+            />
+          </div>
+
+          {images.length > 1 && (
+            <button
+              className="wcard-lightbox-arrow wcard-lightbox-arrow-r"
+              onClick={e => { e.stopPropagation(); go(1); }}
+              aria-label="Next image"
+            >›</button>
+          )}
         </div>
-      </div>
-    </article>
+      )}
+    </>
   );
 }
 
-/* ─── page ─────────────────────────────────────────────────────────── */
+/* ─── page ──────────────────────────────────────────────────────────── */
 export default function WorksPage() {
   const [active, setActive] = useState<Filter>('All');
 
   const visible =
-    active === 'All' ? PROJECTS : PROJECTS.filter((p) => p.category === active);
+    active === 'All' ? PROJECTS : PROJECTS.filter(p => p.category === active);
 
   return (
     <>
       <style>{`
+        /* ── Page wrapper ─────────────────────────────────────────── */
         .wpage-wrap {
           background: var(--color-bg);
           color: var(--color-text-primary);
@@ -70,7 +209,7 @@ export default function WorksPage() {
           overflow: hidden;
         }
 
-        /* Header */
+        /* ── Header ───────────────────────────────────────────────── */
         .wpage-eyebrow {
           display: flex;
           align-items: center;
@@ -115,7 +254,7 @@ export default function WorksPage() {
           padding-bottom: 12px;
         }
 
-        /* Filter bar */
+        /* ── Filter bar ───────────────────────────────────────────── */
         .wpage-filters {
           display: flex;
           align-items: center;
@@ -137,7 +276,6 @@ export default function WorksPage() {
           color: rgba(255,255,255,0.4);
           padding: 0;
           transition: color 350ms ease;
-          position: relative;
         }
         .wpage-filter:hover { color: rgba(255,255,255,0.75); }
         .wpage-filter.is-active { color: var(--color-accent); }
@@ -149,51 +287,50 @@ export default function WorksPage() {
         }
         .wpage-filter.is-active .wpage-filter-n { color: var(--color-accent-dim); }
 
-        /* Grid */
+        /* ── Grid ─────────────────────────────────────────────────── */
         .wpage-grid {
           flex: 1;
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: clamp(32px, 4vw, 64px);
+          gap: clamp(24px, 3vw, 48px);
           align-content: start;
         }
 
-        /* Card */
+        /* ── Card ─────────────────────────────────────────────────── */
         .wcard {
           display: block;
+          position: relative;
           border: 1px solid transparent;
-          transition: transform 400ms cubic-bezier(0.16,1,0.3,1), border-color 400ms ease;
+          transition: border-color 400ms ease;
           cursor: pointer;
         }
         @media (hover: hover) and (pointer: fine) {
-          .wcard:hover {
-            transform: scale(1.012);
-            border-color: var(--color-accent);
-          }
-          .wcard:hover .wcard-media-label { color: var(--color-accent); }
-          .wcard:hover .wcard-tick { opacity: 0.7; }
+          .wcard:hover { border-color: var(--color-accent); }
+          .wcard:hover .wcard-tick { opacity: 0.6; }
         }
+
+        /* Media container — fixed height */
         .wcard-media {
           position: relative;
-          aspect-ratio: 4 / 3;
           width: 100%;
+          height: 620px;
           background:
             repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 22px),
             var(--color-surface);
           border: 1px solid var(--color-border);
+          overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
-          overflow: hidden;
         }
-        .wcard-media-label {
-          font-family: var(--font-body);
-          font-size: 10px;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: var(--color-text-meta);
-          transition: color 400ms ease;
+
+        /* Image fill */
+        .wcard-img-wrap {
+          position: absolute;
+          inset: 0;
         }
+
+        /* Index number */
         .wcard-index {
           position: absolute;
           top: 14px;
@@ -201,58 +338,258 @@ export default function WorksPage() {
           font-family: var(--font-body);
           font-size: 11px;
           letter-spacing: 0.14em;
-          color: var(--color-text-meta);
+          color: rgba(255,255,255,0.5);
+          z-index: 4;
         }
+
+        /* Category tag */
+        .wcard-cat-tag {
+          position: absolute;
+          top: 14px;
+          right: 16px;
+          font-family: var(--font-body);
+          font-size: 9px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: var(--color-accent);
+          border: 1px solid var(--color-accent-dim);
+          padding: 4px 9px;
+          z-index: 4;
+          background: rgba(13,13,11,0.55);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+        }
+
+        /* Registration ticks (placeholder only) */
         .wcard-tick {
           position: absolute;
           width: 12px;
           height: 12px;
           border: 0 solid var(--color-accent);
-          opacity: 0.3;
+          opacity: 0.25;
           transition: opacity 400ms ease;
+          z-index: 4;
         }
-        .wcard-tick-tl { top: 10px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
-        .wcard-tick-br { bottom: 10px; left: 12px; border-bottom-width: 1px; border-left-width: 1px; }
+        .wcard-tick-tl { top: 40px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
+        .wcard-tick-br { bottom: 100px; left: 12px; border-bottom-width: 1px; border-left-width: 1px; }
 
-        .wcard-body { padding: 20px 4px 4px; }
-        .wcard-row {
-          display: flex;
-          align-items: baseline;
-          justify-content: space-between;
-          gap: 16px;
-          margin-bottom: 12px;
-        }
-        .wcard-title {
-          font-family: var(--font-title);
-          font-size: clamp(20px, 1.9vw, 28px);
-          letter-spacing: -0.01em;
-          line-height: 1.2;
-          color: var(--color-text-primary);
-          margin: 0;
-        }
-        .wcard-cat {
-          flex-shrink: 0;
+        /* Placeholder label */
+        .wcard-no-preview {
           font-family: var(--font-body);
           font-size: 10px;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: var(--color-accent);
-          border: 1px solid var(--color-accent-dim);
-          padding: 5px 10px;
-          white-space: nowrap;
+          color: var(--color-text-meta);
+          z-index: 1;
         }
-        .wcard-foot {
+
+        /* ── Always-visible floating name ────────────────────────── */
+        .wcard-name {
+          position: absolute;
+          bottom: 20px;
+          left: 20px;
+          right: 20px;
+          font-family: var(--font-title);
+          font-size: 22px;
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          line-height: 1.15;
+          color: #ffffff;
+          text-shadow: 0 1px 6px rgba(0,0,0,0.75), 0 3px 20px rgba(0,0,0,0.55);
+          z-index: 2;
+          pointer-events: none;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          transition: opacity 200ms ease;
+        }
+        /* hide floating name when frosted overlay is up */
+        .wcard:hover .wcard-name { opacity: 0; }
+
+        /* ── Frosted glass overlay — compact, slides up on hover ──── */
+        .wcard-overlay {
+          position: absolute;
+          bottom: 16px;
+          left: 16px;
+          display: inline-block;
+          width: fit-content;
+          min-width: 220px;
+          max-width: 85%;
+          background: rgba(0, 0, 0, 0.50);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          padding: 12px 28px 12px 16px;
+          border-radius: 8px;
+          z-index: 3;
+          transform: translateY(calc(100% + 20px));
+          transition: transform 300ms ease-out;
+        }
+        .wcard:hover .wcard-overlay { transform: translateY(0); }
+        .wcard-overlay-title {
+          font-family: var(--font-title);
+          font-size: 22px;
+          font-weight: 500;
+          letter-spacing: -0.02em;
+          line-height: 1.15;
+          color: #ffffff;
+          margin: 0 0 5px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .wcard-overlay-sub {
+          font-family: var(--font-body);
+          font-size: 13px;
+          letter-spacing: 0.03em;
+          color: rgba(255,255,255,0.80);
+          margin: 0 0 5px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .wcard-overlay-meta {
+          font-family: var(--font-body);
+          font-size: 13px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.58);
+          margin: 0;
+        }
+
+        /* ── Dots ────────────────────────────────────────────────── */
+        .wcard-dots {
+          display: flex;
+          justify-content: center;
+          gap: 6px;
+          margin-bottom: 10px;
+        }
+        .wcard-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.28);
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          transition: background 300ms ease, transform 300ms ease;
+        }
+        .wcard-dot.is-active {
+          background: #ffffff;
+          transform: scale(1.3);
+        }
+
+        /* ── Arrow buttons — copper ──────────────────────────────── */
+        .wcard-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(calc(-50% - 44px));
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          background: rgba(184,149,106,0.12);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          border: 1px solid rgba(184,149,106,0.50);
+          color: #b8956a;
+          font-size: 20px;
+          line-height: 1;
           display: flex;
           align-items: center;
-          gap: 10px;
-          font-family: var(--font-body);
-          font-size: 12px;
-          letter-spacing: 0.08em;
-          color: var(--color-text-meta);
+          justify-content: center;
+          cursor: pointer;
+          z-index: 4;
+          transition: background 300ms ease;
+          padding: 0 0 1px;
         }
-        .wcard-dot { opacity: 0.6; }
+        .wcard-arrow:hover { background: rgba(184,149,106,0.22); }
+        .wcard-arrow-l { left: 12px; }
+        .wcard-arrow-r { right: 12px; }
 
-        /* Empty state */
+        /* ── Zoom button — visible on hover ──────────────────────── */
+        .wcard-zoom {
+          position: absolute;
+          top: 48px;
+          right: 16px;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background: rgba(184,149,106,0.12);
+          border: 1px solid rgba(184,149,106,0.50);
+          color: #b8956a;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 4;
+          opacity: 0;
+          transition: opacity 300ms ease, background 300ms ease;
+        }
+        .wcard:hover .wcard-zoom { opacity: 1; }
+        .wcard-zoom:hover { background: rgba(184,149,106,0.24); }
+
+        /* ── Lightbox ────────────────────────────────────────────── */
+        .wcard-lightbox {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.95);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: zoom-out;
+          overflow: hidden;
+        }
+        .wcard-lightbox-img {
+          cursor: default;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .wcard-lightbox-close {
+          position: fixed;
+          top: 24px;
+          right: 28px;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: transparent;
+          border: 1px solid rgba(184,149,106,0.45);
+          color: #b8956a;
+          font-size: 16px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10000;
+          transition: background 300ms ease;
+          font-family: var(--font-body);
+        }
+        .wcard-lightbox-close:hover { background: rgba(184,149,106,0.15); }
+        .wcard-lightbox-arrow {
+          position: fixed;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: rgba(184,149,106,0.12);
+          border: 1px solid rgba(184,149,106,0.50);
+          color: #b8956a;
+          font-size: 24px;
+          line-height: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 10000;
+          transition: background 300ms ease;
+          padding: 0 0 1px;
+        }
+        .wcard-lightbox-arrow:hover { background: rgba(184,149,106,0.22); }
+        .wcard-lightbox-arrow-l { left: 32px; }
+        .wcard-lightbox-arrow-r { right: 32px; }
+
+        /* ── Empty state ─────────────────────────────────────────── */
         .wpage-empty {
           grid-column: 1 / -1;
           padding: 80px 0;
@@ -263,7 +600,7 @@ export default function WorksPage() {
           color: var(--color-text-meta);
         }
 
-        /* Bottom strip */
+        /* ── Bottom strip ────────────────────────────────────────── */
         .wpage-strip {
           display: flex;
           align-items: stretch;
@@ -286,11 +623,12 @@ export default function WorksPage() {
         .wpage-strip > span:last-child { border-right: none; }
         .wpage-strip .wpage-strip-fill { flex: 1; border-right: none; }
 
-        /* Responsive */
+        /* ── Responsive ──────────────────────────────────────────── */
         @media (max-width: 767px) {
           .wpage-grid { grid-template-columns: 1fr; }
           .wpage-head { margin-bottom: 40px; }
           .wpage-filters { gap: 18px 24px; margin-bottom: 40px; }
+          .wcard-media { height: 440px; }
           .wpage-strip { flex-wrap: wrap; gap: 0 18px; }
           .wpage-strip > span { border-right: none !important; padding: 10px 0 0 !important; }
         }
@@ -298,7 +636,7 @@ export default function WorksPage() {
 
       <div className="wpage-wrap">
 
-        {/* Top rule (sheet edge) */}
+        {/* Top rule */}
         <div style={{ height: '1px', background: 'var(--color-border)', marginBottom: 'clamp(40px, 6vh, 72px)' }} />
 
         {/* Header */}
@@ -312,9 +650,8 @@ export default function WorksPage() {
 
         {/* Filter bar */}
         <div className="wpage-filters" role="tablist" aria-label="Filter projects by category">
-          {FILTERS.map((f) => {
-            const n =
-              f === 'All' ? PROJECTS.length : PROJECTS.filter((p) => p.category === f).length;
+          {FILTERS.map(f => {
+            const n = f === 'All' ? PROJECTS.length : PROJECTS.filter(p => p.category === f).length;
             return (
               <button
                 key={f}
@@ -339,7 +676,7 @@ export default function WorksPage() {
           )}
         </div>
 
-        {/* Bottom title-block strip */}
+        {/* Bottom strip */}
         <div className="wpage-strip" aria-hidden="true">
           <span>AMD NSRI</span>
           <span>Works</span>

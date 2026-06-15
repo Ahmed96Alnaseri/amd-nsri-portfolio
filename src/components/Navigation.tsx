@@ -83,12 +83,12 @@ export default function Navigation() {
             className="hidden-mobile"
           >
             <Link
-              href="/about"
+              href="/"
               className="nav-link"
               role="listitem"
-              aria-label="About AMD NSRI"
+              aria-label="AMD NSRI homepage"
             >
-              AMD NSRI
+              <span style={{ color: '#b8956a' }}>AMD NSRI</span>
             </Link>
             {NAV_LINKS.map((link) => (
               <Link
