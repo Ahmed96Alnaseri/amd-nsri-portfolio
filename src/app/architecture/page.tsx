@@ -4,32 +4,39 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const slugify = (title: string) => title.toLowerCase().replace(/\s+/g, '-');
+const slugify = (t: string) => t.toLowerCase().replace(/\s+/g, '-');
 
-/* ─── types & data ──────────────────────────────────────────────────── */
 type ProjectImage = { src: string; subtitle: string };
-
 type Category = 'Residential' | 'Commercial' | 'Competition' | 'Mixed Use';
 
 type Project = {
   title: string;
   category: Category;
+  type: string;
   year: string;
   location: string;
-  images?: ProjectImage[];
+  architect: string;
+  area: string;
+  images: ProjectImage[];
 };
 
 const PROJECTS: Project[] = [
   {
     title: 'Hasyl Canopy',
     category: 'Commercial',
+    type: 'Parametric Canopy',
     year: '2024',
     location: 'Turkmenistan',
+    architect: 'Ahmed Alnaseri',
+    area: '—',
     images: [
-      { src: '/project-hysel-01.png',   subtitle: 'Exterior View' },
-      { src: '/ceiling türkmen.png',    subtitle: 'Ceiling Pattern Detail' },
-      { src: '/kolon4.png',             subtitle: 'Column Technical Drawing' },
-      { src: '/kolon.png',              subtitle: 'Parametric Column Detail' },
+      { src: '/project-hysel-01.png',      subtitle: 'Exterior View' },
+      { src: '/ceiling türkmen.png',        subtitle: 'Ceiling Pattern Detail' },
+      { src: '/kolon4.png',                 subtitle: 'Column Drawing' },
+      { src: '/kolon.png',                  subtitle: 'Column Detail' },
+      { src: '/Canopy_V3_3 - Photo.jpg',   subtitle: 'Canopy View 3' },
+      { src: '/Canopy_V3_4 - Photo.jpg',   subtitle: 'Canopy View 4' },
+      { src: '/Canopy_V3_6.jpg',           subtitle: 'Canopy View 6' },
     ],
   },
 ];
@@ -37,153 +44,196 @@ const PROJECTS: Project[] = [
 const FILTERS = ['All', 'Residential', 'Commercial', 'Competition', 'Mixed Use'] as const;
 type Filter = (typeof FILTERS)[number];
 
-/* ─── card ──────────────────────────────────────────────────────────── */
+/* ── icons ─────────────────────────────────────────────────────────── */
+const IcoArchitect = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
+    <circle cx="7" cy="4.5" r="2" /><path d="M2 13c0-2.76 2.24-5 5-5s5 2.24 5 5" />
+  </svg>
+);
+const IcoArea = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
+    <rect x="1.5" y="1.5" width="11" height="11" rx="0.5" />
+    <line x1="1.5" y1="7" x2="12.5" y2="7" /><line x1="7" y1="1.5" x2="7" y2="12.5" />
+  </svg>
+);
+const IcoYear = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
+    <rect x="1.5" y="2.5" width="11" height="10" rx="0.5" />
+    <line x1="1.5" y1="6" x2="12.5" y2="6" />
+    <line x1="4.5" y1="1" x2="4.5" y2="4" /><line x1="9.5" y1="1" x2="9.5" y2="4" />
+  </svg>
+);
+const IcoLocation = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
+    <path d="M7 1.5C4.79 1.5 3 3.29 3 5.5c0 3.25 4 7 4 7s4-3.75 4-7c0-2.21-1.79-4-4-4z" />
+    <circle cx="7" cy="5.5" r="1.3" />
+  </svg>
+);
+
+/* ── card ───────────────────────────────────────────────────────────── */
 function ProjectCard({ project, index, slug }: { project: Project; index: number; slug: string }) {
   const [current, setCurrent] = useState(0);
-  const [fading, setFading] = useState(false);
+  const [fading,  setFading]  = useState(false);
   const [lightbox, setLightbox] = useState(false);
-
-  const images = project.images ?? [];
-  const hasImages = images.length > 0;
-  const img = images[current];
 
   useEffect(() => {
     if (!lightbox) return;
     document.body.style.overflow = 'hidden';
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(false); };
     document.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', onKey);
-    };
+    return () => { document.body.style.overflow = ''; document.removeEventListener('keydown', onKey); };
   }, [lightbox]);
 
   const go = (dir: 1 | -1) => {
-    if (images.length <= 1) return;
     setFading(true);
     setTimeout(() => {
-      setCurrent(c => (c + dir + images.length) % images.length);
+      setCurrent(c => (c + dir + project.images.length) % project.images.length);
       setFading(false);
-    }, 180);
+    }, 160);
   };
+
+  const jumpTo = (i: number) => {
+    if (i === current) return;
+    setFading(true);
+    setTimeout(() => { setCurrent(i); setFading(false); }, 160);
+  };
+
+  const img = project.images[current];
 
   return (
     <>
-      <Link href={`/architecture/${slug}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-      <article className="acard">
-        <div className="acard-media">
+      <article className="ac">
 
-          {/* Index — top left */}
-          <span className="acard-index">{String(index + 1).padStart(2, '0')}</span>
+        {/* ── main image — only this is a Link ───────────────── */}
+        <Link href={`/architecture/${slug}`} className="ac-main-link">
+          <div className="ac-main">
+            {/* image */}
+            <div className="ac-img-wrap" style={{ opacity: fading ? 0 : 1, transition: 'opacity 160ms ease' }}>
+              <Image
+                src={img.src}
+                alt={project.title}
+                fill
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+                sizes="(max-width: 767px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority={index === 0}
+              />
+            </div>
 
-          {/* Category tag — top right */}
-          <span className="acard-cat-tag">{project.category}</span>
+            {/* bottom gradient overlay */}
+            <div className="ac-gradient" aria-hidden="true" />
 
-          {hasImages ? (
-            <>
-              {/* Image */}
-              <div
-                className="acard-img-wrap"
-                style={{ opacity: fading ? 0 : 1, transition: 'opacity 180ms ease' }}
-              >
-                <Image
-                  src={img.src}
-                  alt={project.title}
-                  fill
-                  style={{ objectFit: 'cover', objectPosition: 'center' }}
-                  sizes="(max-width: 767px) 100vw, 50vw"
-                  priority={index === 0}
-                />
+            {/* frosted glass pill + DISCOVER */}
+            <div className="ac-glass" aria-hidden="true">
+              <p className="ac-glass-title">{project.title}</p>
+              <p className="ac-glass-sub">{project.year} · {project.location}</p>
+              <div className="ac-discover">
+                <span className="ac-discover-text">Discover</span>
+                <div className="ac-discover-line" />
               </div>
+            </div>
 
-              {/* Zoom button — visible on hover */}
-              <button
-                className="acard-zoom"
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLightbox(true); }}
-                aria-label="View fullscreen"
-              >
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                  <circle cx="5.5" cy="5.5" r="4" />
-                  <line x1="8.5" y1="8.5" x2="12" y2="12" />
-                </svg>
-              </button>
-
-              {/* Always-visible name — no background, floats on image */}
-              <span className="acard-name">{project.title}</span>
-
-              {/* Frosted glass overlay — slides up from bottom on hover */}
-              <div className="acard-overlay">
-                {images.length > 1 && (
-                  <div className="acard-dots">
-                    {images.map((_, i) => (
-                      <button
-                        key={i}
-                        className={`acard-dot${i === current ? ' is-active' : ''}`}
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setCurrent(i); }}
-                        aria-label={`Image ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-                )}
-                <h2 className="acard-overlay-title">{project.title}</h2>
-                <p className="acard-overlay-sub">{img.subtitle}</p>
-                <p className="acard-overlay-meta">{project.year}&thinsp;·&thinsp;{project.location}</p>
-              </div>
-
-              {/* Arrows */}
-              {images.length > 1 && (
-                <>
-                  <button className="acard-arrow acard-arrow-l" onClick={(e) => { e.preventDefault(); e.stopPropagation(); go(-1); }} aria-label="Previous image">‹</button>
-                  <button className="acard-arrow acard-arrow-r" onClick={(e) => { e.preventDefault(); e.stopPropagation(); go(1); }} aria-label="Next image">›</button>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <span className="acard-tick acard-tick-tl" />
-              <span className="acard-tick acard-tick-br" />
-              <span className="acard-no-preview">No preview</span>
-              <span className="acard-name">{project.title}</span>
-              <div className="acard-overlay">
-                <h2 className="acard-overlay-title">{project.title}</h2>
-                <p className="acard-overlay-meta">{project.year}&thinsp;·&thinsp;{project.location}</p>
-              </div>
-            </>
-          )}
-        </div>
-      </article>
-      </Link>
-
-      {/* Lightbox */}
-      {lightbox && hasImages && (
-        <div className="acard-lightbox" onClick={() => setLightbox(false)}>
-          <button className="acard-lightbox-close" onClick={() => setLightbox(false)} aria-label="Close">✕</button>
-
-          {images.length > 1 && (
+            {/* zoom */}
             <button
-              className="acard-lightbox-arrow acard-lightbox-arrow-l"
-              onClick={e => { e.stopPropagation(); go(-1); }}
-              aria-label="Previous image"
-            >‹</button>
-          )}
-
-          <div className="acard-lightbox-img" onClick={e => e.stopPropagation()}>
-            <Image
-              src={img.src}
-              alt={project.title}
-              width={1600}
-              height={1200}
-              style={{ maxHeight: '90vh', maxWidth: '90vw', width: 'auto', height: 'auto', objectFit: 'contain' }}
-              priority
-            />
+              className="ac-zoom"
+              onClick={e => { e.preventDefault(); e.stopPropagation(); setLightbox(true); }}
+              aria-label="View fullscreen"
+            >
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <circle cx="4.5" cy="4.5" r="3.2" /><line x1="7" y1="7" x2="10" y2="10" />
+              </svg>
+            </button>
           </div>
+        </Link>
 
-          {images.length > 1 && (
-            <button
-              className="acard-lightbox-arrow acard-lightbox-arrow-r"
-              onClick={e => { e.stopPropagation(); go(1); }}
-              aria-label="Next image"
-            >›</button>
+        {/* ── thumbnails — skip images[0] (shown in main), start from images[1] */}
+        <div className="ac-thumbs">
+          {Array.from({ length: 4 }, (_, i) => {
+            const imgIndex   = i + 1;                              // offset by 1
+            const hasImage   = imgIndex < project.images.length;
+            const isOverflow = project.images.length > 5 && i === 3; // >5 total means >4 after skipping first
+            const imgSrc     = hasImage ? project.images[imgIndex] : null;
+            const overflowN  = project.images.length - 4;         // images shown: main(1) + 3 thumbs
+
+            if (isOverflow) {
+              return (
+                <Link
+                  key={i}
+                  href={`/architecture/${slug}`}
+                  className="ac-thumb"
+                  style={{ display: 'block', textDecoration: 'none', position: 'relative' }}
+                  aria-label={`View all ${project.images.length} images`}
+                >
+                  {imgSrc && (
+                    <Image src={imgSrc.src} alt={imgSrc.subtitle} fill style={{ objectFit: 'cover', objectPosition: 'center' }} sizes="25vw" />
+                  )}
+                  <span className="ac-thumb-n">+{overflowN}</span>
+                </Link>
+              );
+            }
+
+            return (
+              <button
+                key={i}
+                className={`ac-thumb${current === imgIndex ? ' ac-thumb--on' : ''}${!hasImage ? ' ac-thumb-empty' : ''}`}
+                onClick={() => hasImage && jumpTo(imgIndex)}
+                aria-label={imgSrc ? `View ${imgSrc.subtitle}` : undefined}
+                disabled={!hasImage}
+              >
+                {imgSrc && (
+                  <Image src={imgSrc.src} alt={imgSrc.subtitle} fill style={{ objectFit: 'cover', objectPosition: 'center' }} sizes="25vw" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* ── tags ───────────────────────────────────────────── */}
+        <p className="ac-tags">
+          {project.category} · {project.type} · {project.location}
+        </p>
+
+        {/* ── info rows ──────────────────────────────────────── */}
+        <div className="ac-info">
+          <div className="ac-row">
+            <span className="ac-ico"><IcoArchitect /></span>
+            <span className="ac-lbl">Architect</span>
+            <span className="ac-val">{project.architect}</span>
+          </div>
+          <div className="ac-sep" />
+          <div className="ac-row">
+            <span className="ac-ico"><IcoArea /></span>
+            <span className="ac-lbl">Area</span>
+            <span className="ac-val">{project.area}</span>
+          </div>
+          <div className="ac-sep" />
+          <div className="ac-row">
+            <span className="ac-ico"><IcoYear /></span>
+            <span className="ac-lbl">Year</span>
+            <span className="ac-val">{project.year}</span>
+          </div>
+          <div className="ac-sep" />
+          <div className="ac-row">
+            <span className="ac-ico"><IcoLocation /></span>
+            <span className="ac-lbl">Location</span>
+            <span className="ac-val">{project.location}</span>
+          </div>
+        </div>
+
+      </article>
+
+      {/* lightbox */}
+      {lightbox && (
+        <div className="ac-lb" onClick={() => setLightbox(false)}>
+          <button className="ac-lb-x" onClick={() => setLightbox(false)}>✕</button>
+          {project.images.length > 1 && (
+            <button className="ac-lb-arr ac-lb-arr--l" onClick={e => { e.stopPropagation(); go(-1); }}>‹</button>
+          )}
+          <div onClick={e => e.stopPropagation()}>
+            <Image src={img.src} alt={project.title} width={1600} height={1200}
+              style={{ maxHeight: '90vh', maxWidth: '90vw', width: 'auto', height: 'auto', objectFit: 'contain' }} priority />
+          </div>
+          {project.images.length > 1 && (
+            <button className="ac-lb-arr ac-lb-arr--r" onClick={e => { e.stopPropagation(); go(1); }}>›</button>
           )}
         </div>
       )}
@@ -191,453 +241,266 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
   );
 }
 
-/* ─── page ──────────────────────────────────────────────────────────── */
+/* ── page ───────────────────────────────────────────────────────────── */
 export default function ArchitecturePage() {
   const [active, setActive] = useState<Filter>('All');
-
-  const visible =
-    active === 'All' ? PROJECTS : PROJECTS.filter(p => p.category === active);
+  const visible = active === 'All' ? PROJECTS : PROJECTS.filter(p => p.category === active);
 
   return (
     <>
       <style>{`
-        /* ── Page wrapper ─────────────────────────────────────────── */
-        .apage-wrap {
+        /* ── page ──────────────────────────────────────────────── */
+        .ap {
           background: var(--color-bg);
           color: var(--color-text-primary);
           font-family: var(--font-body);
-          padding: clamp(96px, 12vh, 140px) clamp(24px, 8vw, 120px) clamp(32px, 4vh, 56px);
+          padding: clamp(96px, 12vh, 140px) 24px clamp(32px, 4vh, 56px);
           min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          position: relative;
-          overflow: hidden;
+        }
+        .ap-rule { height: 1px; background: var(--color-border); margin-bottom: clamp(40px,6vh,72px); }
+        .ap-eyebrow {
+          display: flex; align-items: center; gap: 12px;
+          font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+          color: var(--color-accent); margin-bottom: 28px;
+        }
+        .ap-eyebrow::before {
+          content: ''; display: block;
+          width: 28px; height: 1px; background: var(--color-accent); opacity: .7;
+        }
+        .ap-title {
+          font-family: var(--font-title);
+          font-size: clamp(48px,8vw,116px);
+          letter-spacing: -0.03em; line-height: .98;
+          color: var(--color-text-primary); margin: 0 0 28px; max-width: 14ch;
+        }
+        .ap-desc {
+          font-size: clamp(14px,1.4vw,17px); font-weight: 300;
+          letter-spacing: .02em; line-height: 1.7;
+          color: var(--color-text-secondary); max-width: 56ch;
+          margin: 0 0 clamp(40px,6vh,64px);
         }
 
-        /* ── Editorial header ─────────────────────────────────────── */
-        .apage-eyebrow {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          font-family: var(--font-body);
-          font-size: 11px;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: var(--color-accent);
-          margin-bottom: 28px;
-        }
-        .apage-eyebrow::before {
-          content: '';
-          display: block;
-          width: 28px;
-          height: 1px;
-          background: var(--color-accent);
-          opacity: 0.7;
-        }
-        .apage-title {
-          font-family: var(--font-title);
-          font-size: clamp(48px, 8vw, 116px);
-          letter-spacing: -0.03em;
-          line-height: 0.98;
-          color: var(--color-text-primary);
-          margin: 0 0 28px;
-          max-width: 14ch;
-        }
-        .apage-desc {
-          font-family: var(--font-body);
-          font-size: clamp(14px, 1.4vw, 17px);
-          font-weight: 300;
-          letter-spacing: 0.02em;
-          line-height: 1.7;
-          color: var(--color-text-secondary);
-          max-width: 56ch;
-          margin: 0 0 clamp(40px, 6vh, 64px);
-        }
-        /* ── Filter bar ───────────────────────────────────────────── */
-        .apage-filters {
-          display: flex;
-          align-items: center;
-          gap: clamp(20px, 3vw, 44px);
+        /* ── filters ───────────────────────────────────────────── */
+        .ap-filters {
+          display: flex; align-items: center; gap: clamp(20px,3vw,44px);
           flex-wrap: wrap;
           border-top: 1px solid var(--color-line);
           border-bottom: 1px solid var(--color-line);
-          padding: 22px 0;
-          margin-bottom: clamp(48px, 7vh, 80px);
+          padding: 22px 0; margin-bottom: clamp(48px,7vh,80px);
         }
-        .apage-filter {
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-family: var(--font-body);
-          font-size: 12px;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.4);
-          padding: 0;
-          transition: color 350ms ease;
+        .ap-f {
+          background: none; border: none; cursor: pointer;
+          font-family: var(--font-body); font-size: 12px;
+          letter-spacing: .16em; text-transform: uppercase;
+          color: rgba(255,255,255,.35); padding: 0;
+          transition: color 300ms ease;
         }
-        .apage-filter:hover { color: rgba(255,255,255,0.75); }
-        .apage-filter.is-active { color: var(--color-accent); }
-        .apage-filter .apage-filter-n {
-          font-size: 9px;
-          color: var(--color-text-meta);
-          margin-left: 7px;
-          letter-spacing: 0.1em;
-        }
-        .apage-filter.is-active .apage-filter-n { color: var(--color-accent-dim); }
+        .ap-f:hover { color: rgba(255,255,255,.7); }
+        .ap-f.on   { color: var(--color-accent); }
+        .ap-fn { font-size: 9px; color: var(--color-text-meta); margin-left: 6px; }
+        .ap-f.on .ap-fn { color: var(--color-accent-dim); }
 
-        /* ── Empty state ─────────────────────────────────────────── */
-        .apage-empty {
-          grid-column: 1 / -1;
-          padding: 80px 0;
-          text-align: center;
-          font-family: var(--font-body);
-          font-size: 13px;
-          letter-spacing: 0.08em;
-          color: var(--color-text-meta);
-        }
-
-        /* ── Grid ─────────────────────────────────────────────────── */
-        .apage-grid {
-          flex: 1;
+        /* ── grid ──────────────────────────────────────────────── */
+        .ap-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: clamp(24px, 3vw, 48px);
+          grid-template-columns: repeat(3, 1fr);
+          gap: 32px;
           align-content: start;
         }
-
-        /* ── Card ─────────────────────────────────────────────────── */
-        .acard {
-          display: block;
-          position: relative;
-          border: 1px solid transparent;
-          transition: border-color 400ms ease;
-          cursor: pointer;
-        }
-        @media (hover: hover) and (pointer: fine) {
-          .acard:hover { border-color: var(--color-accent); }
-          .acard:hover .acard-tick { opacity: 0.6; }
+        .ap-empty {
+          grid-column: 1/-1; padding: 80px 0; text-align: center;
+          font-size: 13px; letter-spacing: .08em; color: var(--color-text-meta);
         }
 
-        .acard-media {
-          position: relative;
-          width: 100%;
-          height: 620px;
-          background:
-            repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 22px),
-            var(--color-surface);
-          border: 1px solid var(--color-border);
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .acard-img-wrap {
-          position: absolute;
-          inset: 0;
-        }
-
-        .acard-index {
-          position: absolute;
-          top: 14px;
-          left: 16px;
-          font-family: var(--font-body);
-          font-size: 11px;
-          letter-spacing: 0.14em;
-          color: rgba(255,255,255,0.5);
-          z-index: 4;
-        }
-
-        .acard-cat-tag {
-          position: absolute;
-          top: 14px;
-          right: 16px;
-          font-family: var(--font-body);
-          font-size: 9px;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: var(--color-accent);
-          border: 1px solid var(--color-accent-dim);
-          padding: 4px 9px;
-          z-index: 4;
-          background: rgba(13,13,11,0.55);
-          backdrop-filter: blur(6px);
-          -webkit-backdrop-filter: blur(6px);
-        }
-
-        .acard-tick {
-          position: absolute;
-          width: 12px;
-          height: 12px;
-          border: 0 solid var(--color-accent);
-          opacity: 0.25;
-          transition: opacity 400ms ease;
-          z-index: 4;
-        }
-        .acard-tick-tl { top: 40px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
-        .acard-tick-br { bottom: 100px; left: 12px; border-bottom-width: 1px; border-left-width: 1px; }
-
-        .acard-no-preview {
-          font-family: var(--font-body);
-          font-size: 10px;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: var(--color-text-meta);
-          z-index: 1;
-        }
-
-        /* ── Always-visible floating name ────────────────────────── */
-        .acard-name {
-          position: absolute;
-          bottom: 20px;
-          left: 20px;
-          right: 20px;
-          font-family: var(--font-title);
-          font-size: 22px;
-          font-weight: 500;
-          letter-spacing: -0.02em;
-          line-height: 1.15;
-          color: #ffffff;
-          text-shadow: 0 1px 6px rgba(0,0,0,0.75), 0 3px 20px rgba(0,0,0,0.55);
-          z-index: 2;
-          pointer-events: none;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          transition: opacity 200ms ease;
-        }
-        .acard:hover .acard-name { opacity: 0; }
-
-        /* ── Frosted glass overlay — compact, slides up on hover ──── */
-        .acard-overlay {
-          position: absolute;
-          bottom: 16px;
-          left: 16px;
-          display: inline-block;
-          width: fit-content;
-          min-width: 220px;
-          max-width: 85%;
-          background: rgba(0, 0, 0, 0.50);
-          backdrop-filter: blur(6px);
-          -webkit-backdrop-filter: blur(6px);
-          padding: 12px 28px 12px 16px;
-          border-radius: 8px;
-          z-index: 3;
-          transform: translateY(calc(100% + 20px));
-          transition: transform 300ms ease-out;
-        }
-        .acard:hover .acard-overlay { transform: translateY(0); }
-        .acard-overlay-title {
-          font-family: var(--font-title);
-          font-size: 22px;
-          font-weight: 500;
-          letter-spacing: -0.02em;
-          line-height: 1.15;
-          color: #ffffff;
-          margin: 0 0 5px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .acard-overlay-sub {
-          font-family: var(--font-body);
-          font-size: 13px;
-          letter-spacing: 0.03em;
-          color: rgba(255,255,255,0.80);
-          margin: 0 0 5px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .acard-overlay-meta {
-          font-family: var(--font-body);
-          font-size: 13px;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.58);
-          margin: 0;
-        }
-
-        /* ── Dots ────────────────────────────────────────────────── */
-        .acard-dots {
-          display: flex;
-          gap: 6px;
-          margin-bottom: 10px;
-        }
-        .acard-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: rgba(255,255,255,0.28);
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          transition: background 300ms ease, transform 300ms ease;
-        }
-        .acard-dot.is-active {
-          background: #ffffff;
-          transform: scale(1.3);
-        }
-
-        /* ── Arrow buttons — copper ──────────────────────────────── */
-        .acard-arrow {
-          position: absolute;
-          top: 50%;
-          transform: translateY(calc(-50% - 44px));
-          width: 34px;
-          height: 34px;
-          border-radius: 50%;
-          background: rgba(184,149,106,0.12);
-          backdrop-filter: blur(6px);
-          -webkit-backdrop-filter: blur(6px);
-          border: 1px solid rgba(184,149,106,0.50);
-          color: #b8956a;
-          font-size: 20px;
-          line-height: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          z-index: 4;
-          transition: background 300ms ease;
-          padding: 0 0 1px;
-        }
-        .acard-arrow:hover { background: rgba(184,149,106,0.22); }
-        .acard-arrow-l { left: 12px; }
-        .acard-arrow-r { right: 12px; }
-
-        /* ── Zoom button — visible on hover ──────────────────────── */
-        .acard-zoom {
-          position: absolute;
-          top: 48px;
-          right: 16px;
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          background: rgba(184,149,106,0.12);
-          border: 1px solid rgba(184,149,106,0.50);
-          color: #b8956a;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          z-index: 4;
-          opacity: 0;
-          transition: opacity 300ms ease, background 300ms ease;
-        }
-        .acard:hover .acard-zoom { opacity: 1; }
-        .acard-zoom:hover { background: rgba(184,149,106,0.24); }
-
-        /* ── Lightbox ────────────────────────────────────────────── */
-        .acard-lightbox {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.95);
-          z-index: 9999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: zoom-out;
-          overflow: hidden;
-        }
-        .acard-lightbox-img {
-          cursor: default;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .acard-lightbox-close {
-          position: fixed;
-          top: 24px;
-          right: 28px;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
+        /* ── card ──────────────────────────────────────────────── */
+        .ac {
+          display: flex; flex-direction: column;
           background: transparent;
-          border: 1px solid rgba(184,149,106,0.45);
-          color: #b8956a;
-          font-size: 16px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 10000;
-          transition: background 300ms ease;
-          font-family: var(--font-body);
         }
-        .acard-lightbox-close:hover { background: rgba(184,149,106,0.15); }
-        .acard-lightbox-arrow {
-          position: fixed;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          background: rgba(184,149,106,0.12);
-          border: 1px solid rgba(184,149,106,0.50);
-          color: #b8956a;
-          font-size: 24px;
-          line-height: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          z-index: 10000;
-          transition: background 300ms ease;
-          padding: 0 0 1px;
-        }
-        .acard-lightbox-arrow:hover { background: rgba(184,149,106,0.22); }
-        .acard-lightbox-arrow-l { left: 32px; }
-        .acard-lightbox-arrow-r { right: 32px; }
 
-        /* ── Bottom strip ────────────────────────────────────────── */
-        .apage-strip {
-          display: flex;
-          align-items: stretch;
+        /* ── main image link wrapper ───────────────────────────── */
+        .ac-main-link { display: block; text-decoration: none; }
+
+        /* ── main image ────────────────────────────────────────── */
+        .ac-main {
+          position: relative;
+          width: 100%; height: 500px;
+          overflow: hidden;
+          background: var(--color-surface-2);
+          flex-shrink: 0;
+          cursor: pointer;
+        }
+        .ac-img-wrap { position: absolute; inset: 0; }
+
+        /* gradient overlay — fades in on hover */
+        .ac-gradient {
+          position: absolute; inset: 0; z-index: 1;
+          background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.80) 100%);
+          opacity: 0;
+          transition: opacity 500ms ease;
+        }
+        .ac-main:hover .ac-gradient { opacity: 1; }
+
+        /* frosted glass pill + DISCOVER */
+        .ac-glass {
+          position: absolute; bottom: 16px; left: 16px;
+          width: fit-content; z-index: 3;
+          padding: 12px 16px;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          background: rgba(0,0,0,.5);
+          border-radius: 8px;
+          display: flex; flex-direction: column; gap: 2px;
+          transform: translateY(12px); opacity: 0;
+          transition: opacity 350ms ease, transform 350ms cubic-bezier(.22,1,.36,1);
+          pointer-events: none;
+        }
+        .ac-main:hover .ac-glass { opacity: 1; transform: translateY(0); }
+        .ac-glass-title {
+          font-family: var(--font-title);
+          font-size: 18px; font-weight: 400;
+          letter-spacing: -.01em; color: #fff;
+          margin: 0; line-height: 1.2; white-space: nowrap;
+        }
+        .ac-glass-sub {
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: .1em; text-transform: uppercase;
+          color: rgba(255,255,255,.55); margin: 0; white-space: nowrap;
+        }
+
+        /* DISCOVER + animated copper line */
+        .ac-discover {
+          display: flex; flex-direction: column; gap: 5px;
+          width: fit-content; margin-top: 8px;
+        }
+        .ac-discover-text {
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: 0.32em; text-transform: uppercase;
+          color: rgba(255,255,255,.9); margin: 0;
+        }
+        .ac-discover-line {
+          height: 3px; width: 0;
+          background: linear-gradient(to right, #b8956a, rgba(184,149,106,.5));
+          transition: width 420ms ease-out 120ms;
+        }
+        .ac-main:hover .ac-discover-line { width: 100%; }
+
+        /* zoom */
+        .ac-zoom {
+          position: absolute; top: 10px; right: 10px;
+          width: 26px; height: 26px; z-index: 4;
+          background: rgba(0,0,0,.4);
+          border: 1px solid rgba(255,255,255,.18);
+          color: rgba(255,255,255,.85);
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer;
+          opacity: 0; transition: opacity 250ms ease;
+        }
+        .ac-main:hover .ac-zoom { opacity: 1; }
+
+        /* ── thumbnails ────────────────────────────────────────── */
+        .ac-thumbs { display: flex; gap: 15px; margin-top: 20px; }
+        .ac-thumb {
+          position: relative; flex: 1; aspect-ratio: 1 / 1;
+          overflow: hidden; cursor: pointer;
+          border: none; padding: 0;
+          background: var(--color-surface-2);
+          outline: 2px solid transparent; outline-offset: -2px;
+          transition: outline-color 200ms ease;
+        }
+        .ac-thumb--on { outline-color: var(--color-accent); }
+        .ac-thumb-empty { cursor: default; }
+        .ac-thumb-n {
+          position: absolute; inset: 0;
+          background: rgba(0,0,0,.70);
+          display: flex; align-items: center; justify-content: center;
+          font-family: var(--font-body); font-size: 25px; font-weight: 500;
+          color: #fff; z-index: 2; pointer-events: none;
+        }
+
+        /* ── tags ──────────────────────────────────────────────── */
+        .ac-tags {
+          font-family: var(--font-body); font-size: 11px;
+          letter-spacing: .12em; text-transform: uppercase;
+          color: #b8956a; margin: 0; padding: 12px 0 10px;
+        }
+
+        /* ── info rows ─────────────────────────────────────────── */
+        .ac-info { display: flex; flex-direction: column; }
+        .ac-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+        .ac-ico { display: flex; align-items: center; flex-shrink: 0; color: rgba(255,255,255,.35); }
+        .ac-lbl {
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: .1em; text-transform: uppercase;
+          color: rgba(255,255,255,.4); flex-shrink: 0; width: 64px;
+        }
+        .ac-val { font-family: var(--font-body); font-size: 11px; letter-spacing: .03em; color: rgba(255,255,255,.88); }
+        .ac-sep { height: 1px; background: rgba(255,255,255,.07); }
+
+        /* ── lightbox ──────────────────────────────────────────── */
+        .ac-lb {
+          position: fixed; inset: 0; background: rgba(0,0,0,.95);
+          z-index: 9999; display: flex; align-items: center; justify-content: center;
+          cursor: zoom-out;
+        }
+        .ac-lb-x {
+          position: fixed; top: 22px; right: 26px;
+          width: 36px; height: 36px;
+          background: transparent; border: 1px solid rgba(184,149,106,.4);
+          color: #b8956a; font-size: 14px; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          z-index: 10000; font-family: var(--font-body);
+          transition: background 250ms ease;
+        }
+        .ac-lb-x:hover { background: rgba(184,149,106,.15); }
+        .ac-lb-arr {
+          position: fixed; top: 50%; transform: translateY(-50%);
+          width: 40px; height: 40px;
+          background: rgba(184,149,106,.1); border: 1px solid rgba(184,149,106,.4);
+          color: #b8956a; font-size: 22px;
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer; z-index: 10000; padding: 0 0 1px;
+          transition: background 250ms ease;
+        }
+        .ac-lb-arr:hover { background: rgba(184,149,106,.2); }
+        .ac-lb-arr--l { left: 26px; }
+        .ac-lb-arr--r { right: 26px; }
+
+        /* ── bottom strip ──────────────────────────────────────── */
+        .ap-strip {
+          display: flex; align-items: stretch;
           border-top: 1px solid var(--color-line);
-          margin-top: clamp(56px, 8vh, 96px);
-          font-family: var(--font-body);
-          font-size: 10px;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
+          margin-top: clamp(56px,8vh,96px);
+          font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
           color: var(--color-text-meta);
         }
-        .apage-strip > span {
-          display: flex;
-          align-items: center;
-          padding: 14px clamp(14px, 2.5vw, 36px);
-          border-right: 1px solid var(--color-line);
-          white-space: nowrap;
+        .ap-strip > span {
+          display: flex; align-items: center;
+          padding: 14px clamp(14px,2.5vw,36px);
+          border-right: 1px solid var(--color-line); white-space: nowrap;
         }
-        .apage-strip > span:first-child { padding-left: 0; }
-        .apage-strip > span:last-child { border-right: none; }
-        .apage-strip .apage-strip-fill { flex: 1; border-right: none; }
+        .ap-strip > span:first-child { padding-left: 0; }
+        .ap-strip-fill { flex: 1; border-right: none !important; }
 
-        /* ── Responsive ──────────────────────────────────────────── */
+        /* ── responsive ────────────────────────────────────────── */
+        @media (max-width: 1024px) {
+          .ap-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        }
         @media (max-width: 767px) {
-          .apage-grid { grid-template-columns: 1fr; }
-          .acard-media { height: 440px; }
-          .apage-filters { gap: 18px 24px; }
-          .apage-strip { flex-wrap: wrap; gap: 0 18px; }
-          .apage-strip > span { border-right: none !important; padding: 10px 0 0 !important; }
+          .ap-grid { grid-template-columns: 1fr; gap: 16px; }
+          .ac-main { height: 260px; }
+          .ac-thumb { height: 60px; }
         }
       `}</style>
 
-      <div className="apage-wrap">
+      <div className="ap">
+        <div className="ap-rule" />
 
-        {/* Top rule */}
-        <div style={{ height: '1px', background: 'var(--color-border)', marginBottom: 'clamp(40px, 6vh, 72px)' }} />
+        <p className="ap-eyebrow">Architecture</p>
+        <h1 className="ap-title">Space. Structure. Skin.</h1>
+        <p className="ap-desc">From concept to construction document — architecture as a complete act.</p>
 
-        {/* Editorial header */}
-        <p className="apage-eyebrow">Architecture</p>
-        <h1 className="apage-title">Space. Structure. Skin.</h1>
-        <p className="apage-desc">
-          From concept to construction document — architecture as a complete act.
-        </p>
-
-        {/* Filter bar */}
-        <div className="apage-filters" role="tablist" aria-label="Filter projects by category">
+        <div className="ap-filters" role="tablist">
           {FILTERS.map(f => {
             const n = f === 'All' ? PROJECTS.length : PROJECTS.filter(p => p.category === f).length;
             return (
@@ -645,33 +508,29 @@ export default function ArchitecturePage() {
                 key={f}
                 role="tab"
                 aria-selected={active === f}
-                className={`apage-filter${active === f ? ' is-active' : ''}`}
+                className={`ap-f${active === f ? ' on' : ''}`}
                 onClick={() => setActive(f)}
               >
-                {f}
-                <span className="apage-filter-n">{String(n).padStart(2, '0')}</span>
+                {f}<span className="ap-fn">{String(n).padStart(2, '0')}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Grid */}
-        <div className="apage-grid">
-          {visible.length === 0 ? (
-            <p className="apage-empty">No projects in this category yet.</p>
-          ) : (
-            visible.map((p, i) => <ProjectCard key={p.title} project={p} index={i} slug={slugify(p.title)} />)
-          )}
+        <div className="ap-grid">
+          {visible.length === 0
+            ? <p className="ap-empty">No projects in this category yet.</p>
+            : visible.map((p, i) => (
+                <ProjectCard key={p.title} project={p} index={i} slug={slugify(p.title)} />
+              ))}
         </div>
 
-        {/* Bottom strip */}
-        <div className="apage-strip" aria-hidden="true">
+        <div className="ap-strip" aria-hidden="true">
           <span>AMD NSRI</span>
           <span>Architecture</span>
           <span>Est. 2026</span>
-          <span className="apage-strip-fill" />
+          <span className="ap-strip-fill" />
         </div>
-
       </div>
     </>
   );

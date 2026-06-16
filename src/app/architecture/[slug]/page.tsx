@@ -1,8 +1,11 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 /* ─── types & data ──────────────────────────────────────────────────── */
-type GalleryImage = { src: string; caption: string };
+type GalleryImage = { src: string; caption: string; w: number; h: number };
 
 type CaseStudy = {
   title: string;
@@ -33,16 +36,13 @@ const HASYL_CANOPY: CaseStudy = {
   status: 'Built',
   tools: 'Rhino, Grasshopper, 3ds Max',
   gallery: [
-    { src: '/project-hysel-01.png', caption: 'Exterior View' },
-    { src: '/ceiling türkmen.png', caption: 'Ceiling Pattern Detail' },
-    { src: '/kolon4.png', caption: 'Column Technical Drawing' },
-    { src: '/kolon.png', caption: 'Parametric Column Detail' },
+    { src: '/project-hysel-01.png',  caption: 'Exterior View',            w: 1920, h: 1080 },
+    { src: '/ceiling türkmen.png',   caption: 'Ceiling Pattern Detail',   w: 1200, h: 900  },
+    { src: '/kolon4.png',            caption: 'Column Technical Drawing', w: 900,  h: 1200 },
+    { src: '/kolon.png',             caption: 'Parametric Column Detail', w: 900,  h: 1200 },
   ],
 };
 
-/* Case studies keyed by slug. Numbered keys match the caseStudyLink values
-   in src/data/projects.ts (/architecture/001 …). Unknown slugs fall back to
-   the Hasyl Canopy example so this template always renders. */
 const CASE_STUDIES: Record<string, CaseStudy> = {
   'hasyl-canopy': HASYL_CANOPY,
   '001': HASYL_CANOPY,
@@ -52,17 +52,97 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const project = CASE_STUDIES[params.slug] ?? HASYL_CANOPY;
 
-  const infoItems: { label: string; value: string }[] = [
-    { label: 'Category', value: project.category },
-    { label: 'Year', value: project.year },
-    { label: 'Location', value: project.location },
-    { label: 'Client', value: project.client },
-  ];
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [scale, setScale]   = useState(1);
+  const [pan, setPan]       = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
 
-  const detailItems: { label: string; value: string }[] = [
-    { label: 'Program', value: project.program },
-    { label: 'Area', value: project.area },
-    { label: 'Status', value: project.status },
+  const lightboxRef  = useRef<HTMLDivElement>(null);
+  const dragStartRef = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
+  const didDragRef   = useRef(false);
+
+  const lightboxOpen = lightboxIndex !== null;
+  const isZoomed     = scale > 1;
+
+  useEffect(() => {
+    setScale(1);
+    setPan({ x: 0, y: 0 });
+    setDragging(false);
+    didDragRef.current = false;
+  }, [lightboxIndex]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setLightboxIndex(null); return; }
+      if (!isZoomed) {
+        if (e.key === 'ArrowRight') setLightboxIndex(i => i === null ? null : (i + 1) % project.gallery.length);
+        if (e.key === 'ArrowLeft')  setLightboxIndex(i => i === null ? null : (i - 1 + project.gallery.length) % project.gallery.length);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [lightboxOpen, isZoomed, project.gallery.length]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const el = lightboxRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const step = e.deltaY > 0 ? -0.2 : 0.2;
+      setScale(s => {
+        const next = Math.min(4, Math.max(1, s + step));
+        if (next <= 1) setPan({ x: 0, y: 0 });
+        return next;
+      });
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [lightboxOpen]);
+
+  const closeLightbox = () => setLightboxIndex(null);
+  const goNext = () => setLightboxIndex(i => i === null ? null : (i + 1) % project.gallery.length);
+  const goPrev = () => setLightboxIndex(i => i === null ? null : (i - 1 + project.gallery.length) % project.gallery.length);
+
+  const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (didDragRef.current) { didDragRef.current = false; return; }
+    closeLightbox();
+  };
+
+  const onLbMouseDown = (e: React.MouseEvent) => {
+    if (!isZoomed) return;
+    e.preventDefault();
+    setDragging(true);
+    didDragRef.current = false;
+    dragStartRef.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
+  };
+  const onLbMouseMove = (e: React.MouseEvent) => {
+    if (!dragging) return;
+    didDragRef.current = true;
+    setPan({
+      x: dragStartRef.current.panX + (e.clientX - dragStartRef.current.x),
+      y: dragStartRef.current.panY + (e.clientY - dragStartRef.current.y),
+    });
+  };
+  const onLbMouseUp = () => setDragging(false);
+  const onDblClick   = () => { setScale(1); setPan({ x: 0, y: 0 }); };
+
+  const infoItems = [
+    { label: 'Category', value: project.category },
+    { label: 'Year',     value: project.year },
+    { label: 'Location', value: project.location },
+    { label: 'Client',   value: project.client },
+  ];
+  const detailItems = [
+    { label: 'Program',    value: project.program },
+    { label: 'Area',       value: project.area },
+    { label: 'Status',     value: project.status },
     { label: 'Tools Used', value: project.tools },
   ];
 
@@ -86,6 +166,13 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           overflow: hidden;
         }
         .cs-hero-img { object-fit: cover; object-position: center; }
+        .cs-hero-top-scrim {
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 120px;
+          background: linear-gradient(180deg, rgba(0,0,0,0.70) 0%, transparent 100%);
+          z-index: 1;
+        }
         .cs-hero-scrim {
           position: absolute;
           inset: 0;
@@ -99,9 +186,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         }
         .cs-hero-inner {
           position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
+          left: 0; right: 0; bottom: 0;
           z-index: 2;
           padding: 0 clamp(24px, 8vw, 120px) clamp(32px, 5vh, 56px);
         }
@@ -119,8 +204,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         .cs-hero-eyebrow::before {
           content: '';
           display: block;
-          width: 28px;
-          height: 1px;
+          width: 28px; height: 1px;
           background: var(--color-accent);
           opacity: 0.7;
         }
@@ -216,36 +300,143 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           color: var(--color-text-primary);
         }
 
-        /* ── Gallery ─────────────────────────────────────────────── */
+        /* ── Gallery — masonry ───────────────────────────────────── */
         .cs-gallery {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: clamp(16px, 2vw, 32px);
+          columns: 3;
+          column-gap: 16px;
           padding-bottom: clamp(48px, 8vh, 96px);
         }
-        .cs-gallery-item {
+        .cs-gallery-cell {
+          break-inside: avoid;
+          margin-bottom: 16px;
           position: relative;
-          width: 100%;
-          aspect-ratio: 4 / 3;
+          cursor: zoom-in;
           overflow: hidden;
-          border: 1px solid var(--color-border);
-          background: var(--color-surface);
         }
-        .cs-gallery-img { object-fit: cover; object-position: center; }
-        .cs-gallery-caption {
+        .cs-gallery-cell img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+
+        /* Hover overlay */
+        .cs-gallery-overlay {
           position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          z-index: 2;
-          padding: 28px 16px 12px;
+          inset: 0;
+          background: linear-gradient(to bottom, transparent 0%, transparent 40%, rgba(0,0,0,0.85) 100%);
+          opacity: 0;
+          transition: opacity 500ms ease-in-out;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 16px 18px 18px;
+        }
+        .cs-gallery-cell:hover .cs-gallery-overlay {
+          opacity: 1;
+        }
+
+        /* Caption — bottom-left, fades in with overlay */
+        .cs-gallery-cap {
+          font-family: var(--font-body);
+          font-size: 14px;
+          letter-spacing: 0.08em;
+          color: rgba(255,255,255,0.85);
+          margin: 0;
+          opacity: 0;
+          transform: translateY(5px);
+          transition: opacity 400ms ease, transform 400ms ease;
+        }
+        .cs-gallery-cell:hover .cs-gallery-cap {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* ── Lightbox ────────────────────────────────────────────── */
+        .cs-lightbox {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.95);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+        .cs-lightbox-img-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          max-width: 90vw;
+          max-height: 90vh;
+          user-select: none;
+        }
+        .cs-lightbox-counter {
+          position: fixed;
+          top: 28px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-family: var(--font-body);
+          font-size: 12px;
+          letter-spacing: 0.16em;
+          color: rgba(255,255,255,0.50);
+          z-index: 10001;
+          pointer-events: none;
+          white-space: nowrap;
+        }
+        .cs-lightbox-close {
+          position: fixed;
+          top: 20px; right: 24px;
+          width: 40px; height: 40px;
+          border-radius: 50%;
+          background: transparent;
+          border: 1px solid rgba(184,149,106,0.45);
+          color: #b8956a;
+          font-size: 16px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10001;
+          transition: background 300ms ease;
+          font-family: var(--font-body);
+        }
+        .cs-lightbox-close:hover { background: rgba(184,149,106,0.15); }
+        .cs-lightbox-hint {
+          position: fixed;
+          bottom: 24px;
+          left: 50%;
+          transform: translateX(-50%);
           font-family: var(--font-body);
           font-size: 10px;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.78);
-          background: linear-gradient(180deg, transparent 0%, rgba(13,13,11,0.72) 100%);
+          letter-spacing: 0.14em;
+          color: rgba(255,255,255,0.22);
+          z-index: 10001;
+          pointer-events: none;
+          white-space: nowrap;
         }
+        .cs-lightbox-arrow {
+          position: fixed;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 44px; height: 44px;
+          border-radius: 50%;
+          background: rgba(184,149,106,0.12);
+          border: 1px solid rgba(184,149,106,0.50);
+          color: #b8956a;
+          font-size: 24px;
+          line-height: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 10001;
+          transition: background 300ms ease, opacity 300ms ease;
+          padding: 0 0 1px;
+        }
+        .cs-lightbox-arrow:hover { background: rgba(184,149,106,0.22); }
+        .cs-lightbox-arrow.is-hidden { opacity: 0; pointer-events: none; }
+        .cs-lightbox-arrow-l { left: 28px; }
+        .cs-lightbox-arrow-r { right: 28px; }
 
         /* ── Back link ───────────────────────────────────────────── */
         .cs-back-wrap {
@@ -267,10 +458,15 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         .cs-back:hover { color: var(--color-accent); gap: 16px; }
 
         /* ── Responsive ──────────────────────────────────────────── */
+        @media (max-width: 1023px) {
+          .cs-gallery { columns: 2; }
+        }
         @media (max-width: 767px) {
           .cs-hero { height: 56vh; }
           .cs-body { grid-template-columns: 1fr; }
-          .cs-gallery { grid-template-columns: 1fr; }
+          .cs-gallery { columns: 1; }
+          .cs-lightbox-arrow-l { left: 10px; }
+          .cs-lightbox-arrow-r { right: 10px; }
         }
       `}</style>
 
@@ -278,14 +474,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
         {/* 1 — Hero */}
         <div className="cs-hero">
-          <Image
-            src={project.heroImage}
-            alt={project.title}
-            fill
-            priority
-            sizes="100vw"
-            className="cs-hero-img"
-          />
+          <Image src={project.heroImage} alt={project.title} fill priority sizes="100vw" className="cs-hero-img" />
+          <div className="cs-hero-top-scrim" aria-hidden="true" />
           <div className="cs-hero-scrim" aria-hidden="true" />
           <div className="cs-hero-inner">
             <p className="cs-hero-eyebrow">{project.category}</p>
@@ -297,7 +487,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
           {/* 2 — Info bar */}
           <div className="cs-infobar">
-            {infoItems.map((item) => (
+            {infoItems.map(item => (
               <div className="cs-info-item" key={item.label}>
                 <span className="cs-info-label">{item.label}</span>
                 <span className="cs-info-value">{item.value}</span>
@@ -317,7 +507,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             <div>
               <p className="cs-body-label">Details</p>
               <div className="cs-details">
-                {detailItems.map((item) => (
+                {detailItems.map(item => (
                   <div className="cs-detail-row" key={item.label}>
                     <span className="cs-detail-label">{item.label}</span>
                     <span className="cs-detail-value">{item.value}</span>
@@ -327,18 +517,29 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             </div>
           </div>
 
-          {/* 5 — Gallery */}
+          {/* 5 — Gallery (masonry) */}
           <div className="cs-gallery">
             {project.gallery.map((img, i) => (
-              <div className="cs-gallery-item" key={`${img.src}-${i}`}>
+              <div
+                key={`${img.src}-${i}`}
+                className="cs-gallery-cell"
+                onClick={() => setLightboxIndex(i)}
+                role="button"
+                tabIndex={0}
+                aria-label={`View ${img.caption} fullscreen`}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setLightboxIndex(i); }}
+              >
                 <Image
                   src={img.src}
                   alt={img.caption}
-                  fill
-                  sizes="(max-width: 767px) 100vw, 50vw"
-                  className="cs-gallery-img"
+                  width={img.w}
+                  height={img.h}
+                  sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
-                <span className="cs-gallery-caption">{img.caption}</span>
+                <div className="cs-gallery-overlay" aria-hidden="true">
+                  <span className="cs-gallery-cap">{img.caption}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -353,6 +554,74 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
         </div>
       </div>
+
+      {/* ── Lightbox ─────────────────────────────────────────────── */}
+      {lightboxOpen && lightboxIndex !== null && (
+        <div
+          ref={lightboxRef}
+          className="cs-lightbox"
+          onClick={onBackdropClick}
+          onMouseDown={onLbMouseDown}
+          onMouseMove={onLbMouseMove}
+          onMouseUp={onLbMouseUp}
+          onMouseLeave={onLbMouseUp}
+          style={{ cursor: isZoomed ? (dragging ? 'grabbing' : 'grab') : 'default' }}
+        >
+          <span className="cs-lightbox-counter">
+            {lightboxIndex + 1} / {project.gallery.length}
+          </span>
+
+          <button
+            className="cs-lightbox-close"
+            onClick={e => { e.stopPropagation(); closeLightbox(); }}
+            aria-label="Close lightbox"
+          >✕</button>
+
+          <button
+            className={`cs-lightbox-arrow cs-lightbox-arrow-l${isZoomed ? ' is-hidden' : ''}`}
+            onClick={e => { e.stopPropagation(); goPrev(); }}
+            aria-label="Previous image"
+            tabIndex={isZoomed ? -1 : 0}
+          >‹</button>
+
+          <div
+            className="cs-lightbox-img-wrap"
+            onClick={e => e.stopPropagation()}
+            onDoubleClick={onDblClick}
+          >
+            <Image
+              src={project.gallery[lightboxIndex].src}
+              alt={project.gallery[lightboxIndex].caption}
+              width={1600}
+              height={1200}
+              priority
+              draggable={false}
+              style={{
+                maxHeight: '90vh',
+                maxWidth: '90vw',
+                width: 'auto',
+                height: 'auto',
+                objectFit: 'contain',
+                transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`,
+                transition: dragging ? 'none' : 'transform 200ms ease',
+                pointerEvents: 'none',
+                userSelect: 'none',
+              }}
+            />
+          </div>
+
+          <button
+            className={`cs-lightbox-arrow cs-lightbox-arrow-r${isZoomed ? ' is-hidden' : ''}`}
+            onClick={e => { e.stopPropagation(); goNext(); }}
+            aria-label="Next image"
+            tabIndex={isZoomed ? -1 : 0}
+          >›</button>
+
+          {isZoomed && (
+            <span className="cs-lightbox-hint">double-click to reset zoom</span>
+          )}
+        </div>
+      )}
     </>
   );
 }
