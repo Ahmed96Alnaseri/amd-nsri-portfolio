@@ -1,12 +1,11 @@
-{
+﻿{
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "dev3100",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["next", "dev", "-p", "3100"],
-      "port": 3100,
-      "autoPort": false
+      "name": "amd-nsri",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
     }
   ]
 }

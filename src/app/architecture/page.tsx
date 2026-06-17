@@ -420,7 +420,7 @@ export default function ArchitecturePage() {
 
         /* ── tags ──────────────────────────────────────────────── */
         .ac-tags {
-          font-family: var(--font-body); font-size: 11px;
+          font-family: var(--font-body); font-size: 12px;
           letter-spacing: .12em; text-transform: uppercase;
           color: #b8956a; margin: 0; padding: 12px 0 10px;
         }
@@ -430,11 +430,11 @@ export default function ArchitecturePage() {
         .ac-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
         .ac-ico { display: flex; align-items: center; flex-shrink: 0; color: rgba(255,255,255,.35); }
         .ac-lbl {
-          font-family: var(--font-body); font-size: 10px;
+          font-family: var(--font-body); font-size: 11px;
           letter-spacing: .1em; text-transform: uppercase;
           color: rgba(255,255,255,.4); flex-shrink: 0; width: 64px;
         }
-        .ac-val { font-family: var(--font-body); font-size: 11px; letter-spacing: .03em; color: rgba(255,255,255,.88); }
+        .ac-val { font-family: var(--font-body); font-size: 13px; letter-spacing: .03em; color: rgba(255,255,255,.88); }
         .ac-sep { height: 1px; background: rgba(255,255,255,.07); }
 
         /* ── lightbox ──────────────────────────────────────────── */

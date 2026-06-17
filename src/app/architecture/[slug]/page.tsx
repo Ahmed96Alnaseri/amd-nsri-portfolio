@@ -36,10 +36,13 @@ const HASYL_CANOPY: CaseStudy = {
   status: 'Built',
   tools: 'Rhino, Grasshopper, 3ds Max',
   gallery: [
-    { src: '/project-hysel-01.png',  caption: 'Exterior View',            w: 1920, h: 1080 },
-    { src: '/ceiling türkmen.png',   caption: 'Ceiling Pattern Detail',   w: 1200, h: 900  },
-    { src: '/kolon4.png',            caption: 'Column Technical Drawing', w: 900,  h: 1200 },
-    { src: '/kolon.png',             caption: 'Parametric Column Detail', w: 900,  h: 1200 },
+    { src: '/project-hysel-01.png',      caption: 'Exterior View',            w: 1920, h: 1080 },
+    { src: '/ceiling türkmen.png',       caption: 'Ceiling Pattern Detail',   w: 1200, h: 900  },
+    { src: '/kolon4.png',                caption: 'Column Technical Drawing', w: 900,  h: 1200 },
+    { src: '/kolon.png',                 caption: 'Parametric Column Detail', w: 900,  h: 1200 },
+    { src: '/Canopy_V3_3 - Photo.jpg',   caption: 'Canopy View 3',            w: 1920, h: 1080 },
+    { src: '/Canopy_V3_4 - Photo.jpg',   caption: 'Canopy View 4',            w: 1920, h: 1080 },
+    { src: '/Canopy_V3_6.jpg',           caption: 'Canopy View 6',            w: 1920, h: 1080 },
   ],
 };
 
