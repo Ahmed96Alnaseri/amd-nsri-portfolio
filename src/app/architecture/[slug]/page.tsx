@@ -13,6 +13,7 @@ type CaseStudy = {
   year: string;
   location: string;
   client: string;
+  /** Empty string renders a placeholder hero (perforation pattern) */
   heroImage: string;
   description: string;
   program: string;
@@ -20,6 +21,9 @@ type CaseStudy = {
   status: string;
   tools: string;
   gallery: GalleryImage[];
+  /** Back-link target + label; defaults to /architecture */
+  backHref?: string;
+  backLabel?: string;
 };
 
 const HASYL_CANOPY: CaseStudy = {
@@ -46,9 +50,67 @@ const HASYL_CANOPY: CaseStudy = {
   ],
 };
 
+/* ─── Design case studies (imagery pending — placeholder hero) ───────── */
+const HOSPITAL_FACADE: CaseStudy = {
+  title: 'Hospital Facade Perforation System',
+  category: 'Parametric Design',
+  year: '2024',
+  location: 'Istanbul',
+  client: 'Confidential',
+  heroImage: '',
+  description:
+    'A parametric perforation system for a hospital facade, mapping interior daylight and privacy requirements to a gradient of aperture sizes across the building skin. The pattern is generated algorithmically and rationalized into fabrication-ready panels.',
+  program: 'Perforated Facade',
+  area: '—',
+  status: 'In Development',
+  tools: 'Grasshopper + Rhino',
+  gallery: [],
+  backHref: '/design',
+  backLabel: 'Back to Design',
+};
+
+const AZIZ_FACADE: CaseStudy = {
+  title: 'Aziz Gold Smith Facade',
+  category: 'Facade Systems',
+  year: '2024',
+  location: 'Istanbul',
+  client: 'Aziz Gold Smith',
+  heroImage: '',
+  description:
+    'A facade system for the Aziz Gold Smith building, developed parametrically to balance retail visibility with a refined, ornamental street presence. Panel geometry and mullion rhythm are driven by a single controllable definition.',
+  program: 'Commercial Facade',
+  area: '—',
+  status: 'Completed',
+  tools: 'Grasshopper + Rhino',
+  gallery: [],
+  backHref: '/design',
+  backLabel: 'Back to Design',
+};
+
+const SUSTAINABLE_MONUMENT: CaseStudy = {
+  title: 'Sustainable Cities Monument',
+  category: 'Competition',
+  year: '2024',
+  location: 'International',
+  client: 'Open Competition',
+  heroImage: '',
+  description:
+    'A competition entry for a monument celebrating sustainable cities. Parametric geometry and real-time visualization in Unreal Engine 5 were used to study form, light, and public experience at urban scale.',
+  program: 'Monument',
+  area: '—',
+  status: 'Competition Entry',
+  tools: 'Grasshopper + Unreal Engine 5',
+  gallery: [],
+  backHref: '/design',
+  backLabel: 'Back to Design',
+};
+
 const CASE_STUDIES: Record<string, CaseStudy> = {
   'hasyl-canopy': HASYL_CANOPY,
   '001': HASYL_CANOPY,
+  'hospital-facade-perforation-system': HOSPITAL_FACADE,
+  'aziz-gold-smith-facade': AZIZ_FACADE,
+  'sustainable-cities-monument': SUSTAINABLE_MONUMENT,
 };
 
 /* ─── page ──────────────────────────────────────────────────────────── */
@@ -169,6 +231,19 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           overflow: hidden;
         }
         .cs-hero-img { object-fit: cover; object-position: center; }
+        .cs-hero-perf {
+          position: absolute; inset: 0;
+          background-color: var(--color-surface-2);
+          background-image: radial-gradient(rgba(184,149,106,0.13) 1.6px, transparent 1.8px);
+          background-size: 26px 26px; background-position: center;
+        }
+        .cs-hero-ph-badge {
+          position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+          z-index: 2;
+          font-family: var(--font-body); font-size: 11px;
+          letter-spacing: .26em; text-transform: uppercase;
+          color: var(--color-text-meta);
+        }
         .cs-hero-top-scrim {
           position: absolute;
           top: 0; left: 0; right: 0;
@@ -321,6 +396,22 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           height: auto;
           display: block;
         }
+
+        /* Gallery pending (no imagery yet) */
+        .cs-gallery-pending {
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          gap: 14px;
+          min-height: 260px;
+          margin-bottom: clamp(48px, 8vh, 96px);
+          border: 1px solid var(--color-border);
+          background-color: var(--color-surface);
+          background-image: radial-gradient(rgba(184,149,106,0.10) 1.4px, transparent 1.6px);
+          background-size: 22px 22px; background-position: center;
+          font-family: var(--font-body); font-size: 11px;
+          letter-spacing: .22em; text-transform: uppercase;
+          color: var(--color-text-meta);
+        }
+        .cs-gallery-pending-mark { font-size: 22px; color: var(--color-accent-dim); line-height: 1; }
 
         /* Hover overlay */
         .cs-gallery-overlay {
@@ -476,8 +567,15 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       <div className="cs-wrap">
 
         {/* 1 — Hero */}
-        <div className="cs-hero">
-          <Image src={project.heroImage} alt={project.title} fill priority sizes="100vw" className="cs-hero-img" />
+        <div className={`cs-hero${project.heroImage ? '' : ' cs-hero--ph'}`}>
+          {project.heroImage ? (
+            <Image src={project.heroImage} alt={project.title} fill priority sizes="100vw" className="cs-hero-img" />
+          ) : (
+            <>
+              <div className="cs-hero-perf" aria-hidden="true" />
+              <span className="cs-hero-ph-badge" aria-hidden="true">Imagery Pending</span>
+            </>
+          )}
           <div className="cs-hero-top-scrim" aria-hidden="true" />
           <div className="cs-hero-scrim" aria-hidden="true" />
           <div className="cs-hero-inner">
@@ -521,6 +619,12 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           </div>
 
           {/* 5 — Gallery (masonry) */}
+          {project.gallery.length === 0 ? (
+            <div className="cs-gallery-pending" aria-hidden="true">
+              <span className="cs-gallery-pending-mark">＋</span>
+              <span>Visual documentation in progress</span>
+            </div>
+          ) : (
           <div className="cs-gallery">
             {project.gallery.map((img, i) => (
               <div
@@ -546,12 +650,13 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               </div>
             ))}
           </div>
+          )}
 
           {/* 6 — Back link */}
           <div className="cs-back-wrap">
-            <Link href="/architecture" className="cs-back">
+            <Link href={project.backHref ?? '/architecture'} className="cs-back">
               <span aria-hidden="true">←</span>
-              <span>Back to Architecture</span>
+              <span>{project.backLabel ?? 'Back to Architecture'}</span>
             </Link>
           </div>
 

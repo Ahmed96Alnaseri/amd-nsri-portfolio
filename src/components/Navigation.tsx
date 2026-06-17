@@ -1,30 +1,27 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/LanguageContext';
+import { LANGS } from '@/lib/translations';
 
-const NAV_LINKS = [
-  { href: '/architecture', label: 'Architecture' },
-  { href: '/design',       label: 'Design' },
-  { href: '/tools',        label: 'Tools' },
-  { href: '/fabrication',  label: 'Fabrication' },
-  { href: '/shop',         label: 'Shop' },
-  { href: '/contact',      label: 'Contact' },
-];
+const NAV_HREFS = [
+  { href: '/architecture', key: 'architecture', descKey: 'archDesc'   },
+  { href: '/design',       key: 'design',       descKey: 'designDesc' },
+  { href: '/tools',        key: 'tools',        descKey: 'toolsDesc'  },
+  { href: '/fabrication',  key: 'fabrication',  descKey: 'fabDesc'    },
+  { href: '/shop',         key: 'shop',         descKey: 'shopDesc'   },
+  { href: '/contact',      key: 'contact',      descKey: 'contactDesc'},
+] as const;
 
-const MOBILE_LINKS = [
-  { num: '01', href: '/architecture', label: 'Architecture',  desc: 'Spatial concepts and visualization' },
-  { num: '02', href: '/design',       label: 'Design',        desc: 'Experimental design and objects' },
-  { num: '03', href: '/tools',        label: 'Tools',         desc: 'Parametric tools and definitions' },
-  { num: '04', href: '/fabrication',  label: 'Fabrication',   desc: 'Production and fabrication logic' },
-  { num: '05', href: '/shop',         label: 'Shop',          desc: 'Products and resources' },
-  { num: '06', href: '/contact',      label: 'Contact',       desc: 'Collaboration inquiries' },
-];
+const MOBILE_NUMS = ['01', '02', '03', '04', '05', '06'] as const;
 
 export default function Navigation() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const { lang, setLang, t } = useLanguage();
+  const [scrolled,  setScrolled]  = useState(false);
+  const [menuOpen,  setMenuOpen]  = useState(false);
+  const [langOpen,  setLangOpen]  = useState(false);
+  const langTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -32,24 +29,32 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scroll when menu is open
   useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  // Close on Escape
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMenuOpen(false);
+      if (e.key === 'Escape') { setMenuOpen(false); setLangOpen(false); }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
+
+  useEffect(() => () => { if (langTimer.current) clearTimeout(langTimer.current); }, []);
+
+  const openLang  = () => {
+    if (langTimer.current) { clearTimeout(langTimer.current); langTimer.current = null; }
+    setLangOpen(true);
+  };
+  const closeLang = () => {
+    if (langTimer.current) clearTimeout(langTimer.current);
+    langTimer.current = setTimeout(() => setLangOpen(false), 100);
+  };
+  const onLangWrapBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) setLangOpen(false);
+  };
 
   return (
     <>
@@ -68,10 +73,10 @@ export default function Navigation() {
             paddingRight: 'clamp(24px, 6vw, 120px)',
           }}
         >
-          {/* Spacer — pushes all links to the right */}
+          {/* Spacer */}
           <div style={{ flex: 1 }} />
 
-          {/* All links — wordmark first, then nav items */}
+          {/* Desktop links */}
           <div
             role="list"
             style={{
@@ -82,132 +87,126 @@ export default function Navigation() {
             }}
             className="hidden-mobile"
           >
-            <Link
-              href="/"
-              className="nav-link"
-              role="listitem"
-              aria-label="AMD NSRI homepage"
-            >
-              <span style={{ color: '#b8956a' }}>AMD NSRI</span>
+            <Link href="/" className="nav-link" role="listitem" aria-label="AMD NSRI homepage">
+              <span style={{ color: '#b8956a' }}>{t.wordmark}</span>
             </Link>
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="nav-link"
-                role="listitem"
-              >
-                {link.label}
+
+            {NAV_HREFS.map((item) => (
+              <Link key={item.href} href={item.href} className="nav-link" role="listitem">
+                {t[item.key]}
               </Link>
             ))}
+
+            {/* Language switcher */}
+            <div
+              className="nav-lang-wrap"
+              onMouseEnter={openLang}
+              onMouseLeave={closeLang}
+              onFocus={openLang}
+              onBlur={onLangWrapBlur}
+              onKeyDown={(e) => { if (e.key === 'Escape') setLangOpen(false); }}
+              role="listitem"
+            >
+              <button
+                type="button"
+                className="nav-lang-trigger nav-link"
+                onClick={openLang}
+                aria-haspopup="true"
+                aria-expanded={langOpen}
+                aria-controls="nav-lang-pop"
+                aria-label="Switch language"
+              >
+                {lang}
+              </button>
+
+              {langOpen && (
+                <div
+                  id="nav-lang-pop"
+                  className="nav-lang-pop"
+                  role="group"
+                  aria-label="Select language"
+                >
+                  {LANGS.map((l, i) => (
+                    <button
+                      key={l}
+                      type="button"
+                      className={`nav-lang-card${l === lang ? ' is-active' : ''}`}
+                      style={{ animationDelay: `${i * 60}ms` }}
+                      onClick={() => { setLang(l); setLangOpen(false); }}
+                      aria-pressed={l === lang}
+                    >
+                      {l}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Hamburger — mobile only */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={menuOpen ? t.closeMenu : t.openMenu}
             aria-expanded={menuOpen}
             style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '5px',
-              alignItems: 'flex-end',
+              background: 'none', border: 'none', cursor: 'pointer', padding: '8px',
+              display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-end',
             }}
             className="show-mobile"
           >
-            <span
-              style={{
-                display: 'block',
-                width: menuOpen ? '20px' : '24px',
-                height: '1px',
-                backgroundColor: 'var(--color-text-secondary)',
-                transition: 'width 400ms ease, transform 400ms ease, opacity 400ms ease',
-                transform: menuOpen ? 'translateY(6px) rotate(45deg)' : 'none',
-              }}
-            />
-            <span
-              style={{
-                display: 'block',
-                width: '16px',
-                height: '1px',
-                backgroundColor: 'var(--color-text-secondary)',
-                transition: 'opacity 300ms ease',
-                opacity: menuOpen ? 0 : 1,
-              }}
-            />
-            <span
-              style={{
-                display: 'block',
-                width: menuOpen ? '20px' : '20px',
-                height: '1px',
-                backgroundColor: 'var(--color-text-secondary)',
-                transition: 'width 400ms ease, transform 400ms ease',
-                transform: menuOpen ? 'translateY(-6px) rotate(-45deg)' : 'none',
-              }}
-            />
+            <span style={{
+              display: 'block', width: menuOpen ? '20px' : '24px', height: '1px',
+              backgroundColor: 'var(--color-text-secondary)',
+              transition: 'width 400ms ease, transform 400ms ease, opacity 400ms ease',
+              transform: menuOpen ? 'translateY(6px) rotate(45deg)' : 'none',
+            }} />
+            <span style={{
+              display: 'block', width: '16px', height: '1px',
+              backgroundColor: 'var(--color-text-secondary)',
+              transition: 'opacity 300ms ease', opacity: menuOpen ? 0 : 1,
+            }} />
+            <span style={{
+              display: 'block', width: '20px', height: '1px',
+              backgroundColor: 'var(--color-text-secondary)',
+              transition: 'width 400ms ease, transform 400ms ease',
+              transform: menuOpen ? 'translateY(-6px) rotate(-45deg)' : 'none',
+            }} />
           </button>
         </div>
 
         {/* 1px rule separator */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 'clamp(24px, 6vw, 120px)',
-            right: 'clamp(24px, 6vw, 120px)',
-            height: '1px',
-            backgroundColor: 'var(--color-line)',
-            opacity: scrolled ? 0 : 0,
-          }}
-        />
+        <div style={{
+          position: 'absolute', bottom: 0,
+          left: 'clamp(24px, 6vw, 120px)', right: 'clamp(24px, 6vw, 120px)',
+          height: '1px', backgroundColor: 'var(--color-line)', opacity: 0,
+        }} />
       </nav>
 
       {/* Mobile Full-Screen Overlay */}
       <div
-        ref={menuRef}
         className={`mobile-nav-overlay ${menuOpen ? 'open' : ''}`}
         aria-hidden={!menuOpen}
         aria-label="Mobile navigation"
         role="dialog"
       >
         {/* Close row */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '72px',
-            flexShrink: 0,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '12px',
-              fontWeight: '500',
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              color: 'var(--color-text-primary)',
-            }}
-          >
-            AMD NSRI
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          height: '72px', flexShrink: 0,
+        }}>
+          <span style={{
+            fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: '500',
+            letterSpacing: '0.16em', textTransform: 'uppercase',
+            color: 'var(--color-text-primary)',
+          }}>
+            {t.menuLabel}
           </span>
           <button
             onClick={() => setMenuOpen(false)}
-            aria-label="Close navigation"
+            aria-label={t.closeMenu}
             style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '5px',
-              alignItems: 'flex-end',
+              background: 'none', border: 'none', cursor: 'pointer', padding: '8px',
+              display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-end',
             }}
           >
             <span style={{ display: 'block', width: '20px', height: '1px', backgroundColor: 'var(--color-text-secondary)', transform: 'translateY(3px) rotate(45deg)' }} />
@@ -215,28 +214,39 @@ export default function Navigation() {
           </button>
         </div>
 
-        {/* Thin line under close row */}
         <div style={{ height: '1px', backgroundColor: 'var(--color-border)', marginBottom: '8px' }} />
 
-        {/* Nav Items */}
+        {/* Nav items */}
         <nav aria-label="Mobile navigation links">
-          {MOBILE_LINKS.map((link) => (
-            <div key={link.href} className="mobile-nav-item">
-              <span className="mobile-nav-num">{link.num}</span>
-              <Link
-                href={link.href}
-                className="mobile-nav-label"
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
+          {NAV_HREFS.map((item, i) => (
+            <div key={item.href} className="mobile-nav-item">
+              <span className="mobile-nav-num">{MOBILE_NUMS[i]}</span>
+              <Link href={item.href} className="mobile-nav-label" onClick={() => setMenuOpen(false)}>
+                {t[item.key]}
               </Link>
-              <span className="mobile-nav-desc">{link.desc}</span>
+              <span className="mobile-nav-desc">{t[item.descKey]}</span>
             </div>
           ))}
         </nav>
+
+        {/* Mobile language switcher */}
+        <div className="mobile-lang-row">
+          {LANGS.map((l, i) => (
+            <span key={l} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {i > 0 && <span className="mobile-lang-sep" aria-hidden="true">·</span>}
+              <button
+                type="button"
+                className={`mobile-lang-btn${l === lang ? ' is-active' : ''}`}
+                onClick={() => { setLang(l); setMenuOpen(false); }}
+                aria-pressed={l === lang}
+              >
+                {l}
+              </button>
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* Responsive style block */}
       <style jsx global>{`
         @media (min-width: 1024px) {
           .hidden-mobile { display: flex !important; }
@@ -245,6 +255,112 @@ export default function Navigation() {
         @media (max-width: 1023px) {
           .hidden-mobile { display: none !important; }
           .show-mobile   { display: flex !important; }
+        }
+
+        /* ── lang switcher (desktop) ── */
+        .nav-lang-wrap {
+          position: relative;
+          display: inline-flex;
+        }
+        .nav-lang-trigger {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          color: rgba(255, 255, 255, 0.5);
+          font-family: var(--font-body);
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          transition: color 250ms ease;
+        }
+        .nav-lang-trigger:hover {
+          color: #b8956a;
+        }
+        .nav-lang-pop {
+          position: absolute;
+          top: calc(100% + 12px);
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 200;
+          min-width: 72px;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .nav-lang-card {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px 20px;
+          background: rgba(255, 255, 255, 0.08);
+          -webkit-backdrop-filter: blur(20px) saturate(180%);
+          backdrop-filter: blur(20px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 2px;
+          cursor: pointer;
+          font-family: var(--font-body);
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.6);
+          animation: navLangDrop 250ms ease-out both;
+          transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+          white-space: nowrap;
+        }
+        .nav-lang-card:hover,
+        .nav-lang-card:focus-visible {
+          border-color: #b8956a;
+          background: rgba(255, 255, 255, 0.12);
+          outline: none;
+          color: #ffffff;
+        }
+        .nav-lang-card.is-active {
+          color: #b8956a;
+          cursor: default;
+          border-color: rgba(184, 149, 106, 0.3);
+        }
+        @keyframes navLangDrop {
+          from { opacity: 0; transform: translateY(-10px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .nav-lang-card { animation: none; opacity: 1; }
+        }
+
+        /* ── lang switcher (mobile) ── */
+        .mobile-lang-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 32px 0 16px;
+          border-top: 1px solid var(--color-border);
+          margin-top: 24px;
+        }
+        .mobile-lang-sep {
+          font-family: var(--font-body);
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.2);
+          user-select: none;
+        }
+        .mobile-lang-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-family: var(--font-body);
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.35);
+          padding: 0;
+          transition: color 200ms ease;
+        }
+        .mobile-lang-btn:hover {
+          color: rgba(255, 255, 255, 0.65);
+        }
+        .mobile-lang-btn.is-active {
+          color: #b8956a;
+          cursor: default;
         }
       `}</style>
     </>

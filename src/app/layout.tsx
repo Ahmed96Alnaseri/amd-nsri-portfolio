@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Navigation from '@/components/Navigation';
+import { LanguageProvider } from '@/lib/LanguageContext';
 
 export const metadata: Metadata = {
   title: 'AMD NSRI — Architecture, Design, Fabrication',
@@ -28,10 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navigation />
-        <main id="main-content">
-          {children}
-        </main>
+        <LanguageProvider>
+          <Navigation />
+          <main id="main-content">
+            {children}
+          </main>
+        </LanguageProvider>
       </body>
     </html>
   );

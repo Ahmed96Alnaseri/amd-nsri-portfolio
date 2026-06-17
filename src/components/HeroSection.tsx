@@ -38,7 +38,6 @@ export default function HeroSection() {
       <div ref={contentRef} className="hero2-inner reveal-stagger">
         {/* Top meta row */}
         <div className="hero2-toprow">
-          <span className="hero2-eyebrow">Design — Architecture — Fabrication</span>
           <span className="hero2-sheetno" aria-hidden="true">Sheet 01 / 06</span>
         </div>
 
@@ -63,7 +62,7 @@ export default function HeroSection() {
                 <span>Explore the Ecosystem</span>
                 <span style={{ fontSize: '14px', opacity: 0.7, fontFamily: 'var(--font-body)', fontWeight: 300 }}>→</span>
               </a>
-              <a href="/architecture" className="btn-ghost" aria-label="View selected works">
+              <a href="#featured-works" className="btn-ghost" aria-label="View selected works">
                 <span>View Selected Works</span>
               </a>
             </div>

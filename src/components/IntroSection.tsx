@@ -107,10 +107,6 @@ export default function IntroSection() {
         <span className="intro5-tick intro5-tick-bl" aria-hidden="true" />
         <span className="intro5-tick intro5-tick-br" aria-hidden="true" />
 
-        {/* corner meta */}
-        <span className="intro5-meta intro5-meta-tl" aria-hidden="true">File — AMD-NSRI / 00</span>
-        <span className="intro5-meta intro5-meta-tr" aria-hidden="true">Fabrication preview</span>
-
         {/* wordmark: outline base + solid fill rising with scroll */}
         <div ref={stageRef} className="intro5-stage">
           <h2 className="intro5-word intro5-word-outline" aria-hidden="true">AMD&nbsp;NSRI</h2>

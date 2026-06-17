@@ -1,10 +1,20 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+
+const WORKS = [
+  { name: 'Architecture', desc: 'Space · Structure · Skin',  href: '/architecture' },
+  { name: 'Design',       desc: 'Think · Model · Resolve',   href: '/design' },
+  { name: 'Fabrication',  desc: 'Cut · Fold · Assemble',     href: '/fabrication' },
+  { name: 'Tools',        desc: 'Build · Automate · Deploy', href: '/tools' },
+] as const;
 
 export default function CallToActionSection() {
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const [worksOpen, setWorksOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,6 +31,22 @@ export default function CallToActionSection() {
     revealRefs.current.filter(Boolean).forEach((el) => observer.observe(el!));
     return () => observer.disconnect();
   }, []);
+
+  // Clear any pending close timer on unmount
+  useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
+
+  const openPopover = () => {
+    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; }
+    setWorksOpen(true);
+  };
+  const closePopover = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setWorksOpen(false), 100);
+  };
+  // Close immediately when focus leaves the whole wrapper (keyboard users)
+  const onWrapBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) setWorksOpen(false);
+  };
 
   const setRef = (i: number) => (el: HTMLElement | null) => {
     revealRefs.current[i] = el;
@@ -79,9 +105,48 @@ export default function CallToActionSection() {
             <a href="mailto:ahmed@amdnsri.com" className="cta-btn-primary">
               Start a Collaboration →
             </a>
-            <Link href="/architecture" className="cta-btn-ghost">
-              Explore Works
-            </Link>
+
+            {/* Explore Works — hover/focus popover */}
+            <div
+              className="cta-works-wrap"
+              onMouseEnter={openPopover}
+              onMouseLeave={closePopover}
+              onFocus={openPopover}
+              onBlur={onWrapBlur}
+              onKeyDown={(e) => { if (e.key === 'Escape') setWorksOpen(false); }}
+            >
+              <button
+                type="button"
+                className="cta-btn-ghost cta-works-trigger"
+                onClick={openPopover}
+                aria-haspopup="true"
+                aria-expanded={worksOpen}
+                aria-controls="cta-works-pop"
+              >
+                Explore Works
+              </button>
+
+              {worksOpen && (
+                <div
+                  id="cta-works-pop"
+                  className="cta-works-pop"
+                  role="group"
+                  aria-label="Explore works"
+                >
+                  {WORKS.map((w, i) => (
+                    <Link
+                      key={w.href}
+                      href={w.href}
+                      className="cta-works-card"
+                      style={{ animationDelay: `${i * 60}ms` }}
+                      onClick={() => setWorksOpen(false)}
+                    >
+                      <span className="cta-works-card-name">{w.name}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
         </div>
@@ -123,6 +188,68 @@ export default function CallToActionSection() {
         <span>Est. 2026</span>
         <span className="cta-bottom-fill" />
       </div>
+
+      <style>{`
+        .cta-works-wrap {
+          position: relative;
+          display: inline-flex;
+        }
+
+        .cta-works-pop {
+          position: absolute;
+          bottom: calc(100% + 10px);
+          left: 0;
+          z-index: 100;
+          width: 100%;
+          display: flex;
+          flex-direction: column-reverse;
+        }
+
+        .cta-works-card {
+          box-sizing: border-box;
+          width: 100%;
+          margin-bottom: 2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 14px 20px;
+          background: rgba(255, 255, 255, 0.08);
+          -webkit-backdrop-filter: blur(20px) saturate(180%);
+          backdrop-filter: blur(20px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 2px;
+          cursor: pointer;
+          text-decoration: none;
+          animation: ctaWorksRise 250ms ease-out both;
+          transition: border-color 200ms ease, background 200ms ease;
+        }
+        .cta-works-card:hover,
+        .cta-works-card:focus-visible {
+          border-color: #b8956a;
+          background: rgba(255, 255, 255, 0.12);
+          outline: none;
+        }
+        @keyframes ctaWorksRise {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .cta-works-card-name {
+          font-family: var(--font-title);
+          font-size: 15px;
+          line-height: 1.1;
+          letter-spacing: -0.01em;
+          color: #ffffff;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cta-works-card { animation: none; opacity: 1; transition: none; }
+        }
+
+        @media (max-width: 1023px) {
+          .cta-works-wrap { width: 100%; }
+          .cta-works-trigger { width: 100%; justify-content: center; }
+        }
+      `}</style>
 
     </section>
   );

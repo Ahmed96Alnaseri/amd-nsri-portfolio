@@ -24,7 +24,7 @@ export default function FeaturedWorksSection() {
   }, []);
 
   return (
-    <section className="works-section" aria-labelledby="works-heading">
+    <section id="featured-works" className="works-section" aria-labelledby="works-heading">
 
       <span className="works-bg-number" aria-hidden="true">04</span>
 
