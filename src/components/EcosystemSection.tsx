@@ -1,56 +1,53 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const CARDS = [
   {
     num: '01',
-    title: 'AMD Architecture',
-    category: 'Space / Atmosphere',
-    description:
-      'Buildings, urban concepts, spatial visualization, and architectural storytelling. From programmatic diagrams to rendered atmospheric studies.',
-    tags: ['Buildings', 'Urban', 'Visuals', 'Space'],
+    titleKey: 'eco.card1Title',
+    categoryKey: 'eco.card1Category',
+    descKey: 'eco.card1Desc',
+    tagKeys: ['eco.card1Tag1', 'eco.card1Tag2', 'eco.card1Tag3', 'eco.card1Tag4'],
     link: '/architecture',
   },
   {
     num: '02',
-    title: 'AMD Design',
-    category: 'Objects / Experiments',
-    description:
-      'Facade studies, parametric objects, furniture concepts, and experimental fabrication-aware design.',
-    tags: ['Patterns', 'Objects', 'Material', 'Studies'],
+    titleKey: 'eco.card2Title',
+    categoryKey: 'eco.card2Category',
+    descKey: 'eco.card2Desc',
+    tagKeys: ['eco.card2Tag1', 'eco.card2Tag2', 'eco.card2Tag3', 'eco.card2Tag4'],
     link: '/design',
   },
   {
     num: '03',
-    title: 'AMD Tools',
-    category: 'Computation / Automation',
-    description:
-      'Digital systems for Grasshopper, Rhino, facade rationalization, panelization, unfolding, and AI-assisted workflows.',
-    tags: ['Grasshopper', 'Rhino', 'Panelization', 'AI'],
+    titleKey: 'eco.card3Title',
+    categoryKey: 'eco.card3Category',
+    descKey: 'eco.card3Desc',
+    tagKeys: ['eco.card3Tag1', 'eco.card3Tag2', 'eco.card3Tag3', 'eco.card3Tag4'],
     link: '/tools',
   },
   {
     num: '04',
-    title: 'AMD Fabrication',
-    category: 'Production / Reality',
-    description:
-      'Shop drawings, production-ready geometry, substructure logic, panel division, unfolding, and assembly intelligence.',
-    tags: ['Shop Drawings', 'Unfolding', 'Substructure'],
+    titleKey: 'eco.card4Title',
+    categoryKey: 'eco.card4Category',
+    descKey: 'eco.card4Desc',
+    tagKeys: ['eco.card4Tag1', 'eco.card4Tag2', 'eco.card4Tag3'],
     link: '/fabrication',
   },
   {
     num: '05',
-    title: 'AMD Shop',
-    category: 'Products / Objects',
-    description:
-      'Curated objects, limited fabrication runs, and design products that come directly from the studio\'s research and production process.',
-    tags: ['Products', 'Limited', 'Studio'],
+    titleKey: 'eco.card5Title',
+    categoryKey: 'eco.card5Category',
+    descKey: 'eco.card5Desc',
+    tagKeys: ['eco.card5Tag1', 'eco.card5Tag2', 'eco.card5Tag3'],
     link: '/shop',
   },
 ];
 
 export default function EcosystemSection() {
+  const { t } = useLanguage();
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
@@ -83,7 +80,7 @@ export default function EcosystemSection() {
       <span className="eco-bg-number" aria-hidden="true">03</span>
 
       <div className="eco-top-rule" aria-hidden="true">
-        <span className="eco-section-label">03 — Ecosystem</span>
+        <span className="eco-section-label">{t('eco.label')}</span>
         <div className="eco-rule-line" />
       </div>
 
@@ -94,7 +91,7 @@ export default function EcosystemSection() {
           className="eco-heading reveal-item"
           style={{ '--delay': '0ms' } as React.CSSProperties}
         >
-          AMD NSRI Directions.
+          {t('eco.heading')}
         </h2>
       </div>
 
@@ -108,7 +105,7 @@ export default function EcosystemSection() {
             className="eco-card reveal-item"
             style={{ '--delay': `${(i + 1) * 80}ms` } as React.CSSProperties}
             role="listitem"
-            aria-label={`${card.title} — ${card.category}`}
+            aria-label={`${t(card.titleKey)} — ${t(card.categoryKey)}`}
           >
             {/* Accent line — draws on hover */}
             <div className="eco-card-accent-line" aria-hidden="true" />
@@ -125,26 +122,26 @@ export default function EcosystemSection() {
 
             {/* Top row */}
             <div className="eco-card-top">
-              <span className="eco-card-category">{card.category}</span>
+              <span className="eco-card-category">{t(card.categoryKey)}</span>
               <span className="eco-card-num">{card.num}</span>
             </div>
 
             {/* Title */}
-            <h3 className="eco-card-title">{card.title}</h3>
+            <h3 className="eco-card-title">{t(card.titleKey)}</h3>
 
             {/* Description */}
-            <p className="eco-card-desc">{card.description}</p>
+            <p className="eco-card-desc">{t(card.descKey)}</p>
 
             {/* Tags */}
             <div className="eco-card-tags">
-              {card.tags.map((tag) => (
-                <span key={tag} className="eco-card-tag">{tag}</span>
+              {card.tagKeys.map((tagKey) => (
+                <span key={tagKey} className="eco-card-tag">{t(tagKey)}</span>
               ))}
             </div>
 
             {/* Enter row — reveals on hover */}
             <div className="eco-card-enter" aria-hidden="true">
-              <span>Enter</span>
+              <span>{t('eco.enter')}</span>
               <span className="eco-card-enter-arrow">→</span>
             </div>
           </a>

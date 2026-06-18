@@ -88,12 +88,12 @@ export default function Navigation() {
             className="hidden-mobile"
           >
             <Link href="/" className="nav-link" role="listitem" aria-label="AMD NSRI homepage">
-              <span style={{ color: '#b8956a' }}>{t.wordmark}</span>
+              <span style={{ color: '#b8956a' }}>{t('nav.wordmark')}</span>
             </Link>
 
             {NAV_HREFS.map((item) => (
               <Link key={item.href} href={item.href} className="nav-link" role="listitem">
-                {t[item.key]}
+                {t(`nav.${item.key}`)}
               </Link>
             ))}
 
@@ -146,7 +146,7 @@ export default function Navigation() {
           {/* Hamburger — mobile only */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? t.closeMenu : t.openMenu}
+            aria-label={menuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
             aria-expanded={menuOpen}
             style={{
               background: 'none', border: 'none', cursor: 'pointer', padding: '8px',
@@ -199,11 +199,11 @@ export default function Navigation() {
             letterSpacing: '0.16em', textTransform: 'uppercase',
             color: 'var(--color-text-primary)',
           }}>
-            {t.menuLabel}
+            {t('nav.menuLabel')}
           </span>
           <button
             onClick={() => setMenuOpen(false)}
-            aria-label={t.closeMenu}
+            aria-label={t('nav.closeMenu')}
             style={{
               background: 'none', border: 'none', cursor: 'pointer', padding: '8px',
               display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-end',
@@ -222,9 +222,9 @@ export default function Navigation() {
             <div key={item.href} className="mobile-nav-item">
               <span className="mobile-nav-num">{MOBILE_NUMS[i]}</span>
               <Link href={item.href} className="mobile-nav-label" onClick={() => setMenuOpen(false)}>
-                {t[item.key]}
+                {t(`nav.${item.key}`)}
               </Link>
-              <span className="mobile-nav-desc">{t[item.descKey]}</span>
+              <span className="mobile-nav-desc">{t(`nav.${item.descKey}`)}</span>
             </div>
           ))}
         </nav>

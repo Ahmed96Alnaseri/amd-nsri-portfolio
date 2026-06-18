@@ -2,16 +2,18 @@
 
 import { useEffect, useRef } from 'react';
 import HeroPanelImage from '@/components/HeroPanelImage';
+import { useLanguage } from '@/lib/LanguageContext';
 
-const JOURNEY = [
-  'From concept to geometry.',
-  'From geometry to systems.',
-  'From systems to tools.',
-  'From tools to fabrication.',
-  'From fabrication to built reality.',
+const JOURNEY_KEYS = [
+  'hero.journey1',
+  'hero.journey2',
+  'hero.journey3',
+  'hero.journey4',
+  'hero.journey5',
 ];
 
 export default function HeroSection() {
+  const { t } = useLanguage();
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function HeroSection() {
       <div ref={contentRef} className="hero2-inner reveal-stagger">
         {/* Top meta row */}
         <div className="hero2-toprow">
-          <span className="hero2-sheetno" aria-hidden="true">Sheet 01 / 06</span>
+          <span className="hero2-sheetno" aria-hidden="true">{t('hero.sheetNo')}</span>
         </div>
 
         {/* Monumental staircase title */}
@@ -54,27 +56,26 @@ export default function HeroSection() {
         <div className="hero2-band">
           <div>
             <p className="hero2-tagline">
-              A design-driven ecosystem connecting architectural imagination
-              with fabrication reality.
+              {t('hero.tagline')}
             </p>
             <div className="hero2-ctas">
               <a href="/architecture" className="btn-primary" aria-label="Explore the AMD NSRI ecosystem">
-                <span>Explore the Ecosystem</span>
+                <span>{t('hero.exploreEcosystem')}</span>
                 <span style={{ fontSize: '14px', opacity: 0.7, fontFamily: 'var(--font-body)', fontWeight: 300 }}>→</span>
               </a>
               <a href="#featured-works" className="btn-ghost" aria-label="View selected works">
-                <span>View Selected Works</span>
+                <span>{t('hero.viewSelectedWorks')}</span>
               </a>
             </div>
           </div>
 
           <ul className="hero2-journey" role="list">
-            {JOURNEY.map((line, i) => (
-              <li key={line}>
+            {JOURNEY_KEYS.map((key, i) => (
+              <li key={key}>
                 <span className="hero2-idx" aria-hidden="true">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                {line}
+                {t(key)}
               </li>
             ))}
           </ul>
@@ -83,10 +84,10 @@ export default function HeroSection() {
 
       {/* Bottom title-block strip */}
       <div className="hero2-titleblock">
-        <span>Istanbul, Turkey</span>
+        <span>{t('common.istanbul')}</span>
         <span>41.0082° N, 28.9784° E</span>
-        <span>est. 2026</span>
-        <span className="hero2-tb-fill" aria-hidden="true">01 — Hero</span>
+        <span>{t('hero.tbEst')}</span>
+        <span className="hero2-tb-fill" aria-hidden="true">{t('hero.tbSheet')}</span>
       </div>
     </section>
   );

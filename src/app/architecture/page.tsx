@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const slugify = (t: string) => t.toLowerCase().replace(/\s+/g, '-');
 
@@ -72,6 +73,7 @@ const IcoLocation = () => (
 
 /* ── card ───────────────────────────────────────────────────────────── */
 function ProjectCard({ project, index, slug }: { project: Project; index: number; slug: string }) {
+  const { t, tv } = useLanguage();
   const [current, setCurrent] = useState(0);
   const [fading,  setFading]  = useState(false);
   const [lightbox, setLightbox] = useState(false);
@@ -125,9 +127,9 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
             {/* frosted glass pill + DISCOVER */}
             <div className="ac-glass" aria-hidden="true">
               <p className="ac-glass-title">{project.title}</p>
-              <p className="ac-glass-sub">{project.year} · {project.location}</p>
+              <p className="ac-glass-sub">{project.year} · {tv(project.location)}</p>
               <div className="ac-discover">
-                <span className="ac-discover-text">Discover</span>
+                <span className="ac-discover-text">{t('common.discover')}</span>
                 <div className="ac-discover-line" />
               </div>
             </div>
@@ -189,33 +191,33 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
 
         {/* ── tags ───────────────────────────────────────────── */}
         <p className="ac-tags">
-          {project.category} · {project.type} · {project.location}
+          {tv(project.category)} · {tv(project.type)} · {tv(project.location)}
         </p>
 
         {/* ── info rows ──────────────────────────────────────── */}
         <div className="ac-info">
           <div className="ac-row">
             <span className="ac-ico"><IcoArchitect /></span>
-            <span className="ac-lbl">Architect</span>
-            <span className="ac-val">{project.architect}</span>
+            <span className="ac-lbl">{t('common.architect')}</span>
+            <span className="ac-val">{tv(project.architect)}</span>
           </div>
           <div className="ac-sep" />
           <div className="ac-row">
             <span className="ac-ico"><IcoArea /></span>
-            <span className="ac-lbl">Area</span>
+            <span className="ac-lbl">{t('common.area')}</span>
             <span className="ac-val">{project.area}</span>
           </div>
           <div className="ac-sep" />
           <div className="ac-row">
             <span className="ac-ico"><IcoYear /></span>
-            <span className="ac-lbl">Year</span>
+            <span className="ac-lbl">{t('common.year')}</span>
             <span className="ac-val">{project.year}</span>
           </div>
           <div className="ac-sep" />
           <div className="ac-row">
             <span className="ac-ico"><IcoLocation /></span>
-            <span className="ac-lbl">Location</span>
-            <span className="ac-val">{project.location}</span>
+            <span className="ac-lbl">{t('common.location')}</span>
+            <span className="ac-val">{tv(project.location)}</span>
           </div>
         </div>
 
@@ -243,6 +245,7 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
 
 /* ── page ───────────────────────────────────────────────────────────── */
 export default function ArchitecturePage() {
+  const { t, tv } = useLanguage();
   const [active, setActive] = useState<Filter>('All');
   const visible = active === 'All' ? PROJECTS : PROJECTS.filter(p => p.category === active);
 
@@ -496,9 +499,9 @@ export default function ArchitecturePage() {
       <div className="ap">
         <div className="ap-rule" />
 
-        <p className="ap-eyebrow">Architecture</p>
-        <h1 className="ap-title">Space. Structure. Skin.</h1>
-        <p className="ap-desc">From concept to construction document — architecture as a complete act.</p>
+        <p className="ap-eyebrow">{t('arch.eyebrow')}</p>
+        <h1 className="ap-title">{t('arch.title')}</h1>
+        <p className="ap-desc">{t('arch.desc')}</p>
 
         <div className="ap-filters" role="tablist">
           {FILTERS.map(f => {
@@ -511,7 +514,7 @@ export default function ArchitecturePage() {
                 className={`ap-f${active === f ? ' on' : ''}`}
                 onClick={() => setActive(f)}
               >
-                {f}<span className="ap-fn">{String(n).padStart(2, '0')}</span>
+                {tv(f)}<span className="ap-fn">{String(n).padStart(2, '0')}</span>
               </button>
             );
           })}
@@ -519,7 +522,7 @@ export default function ArchitecturePage() {
 
         <div className="ap-grid">
           {visible.length === 0
-            ? <p className="ap-empty">No projects in this category yet.</p>
+            ? <p className="ap-empty">{t('common.noProjects')}</p>
             : visible.map((p, i) => (
                 <ProjectCard key={p.title} project={p} index={i} slug={slugify(p.title)} />
               ))}
@@ -527,8 +530,8 @@ export default function ArchitecturePage() {
 
         <div className="ap-strip" aria-hidden="true">
           <span>AMD NSRI</span>
-          <span>Architecture</span>
-          <span>Est. 2026</span>
+          <span>{t('arch.eyebrow')}</span>
+          <span>{t('common.est2026')}</span>
           <span className="ap-strip-fill" />
         </div>
       </div>

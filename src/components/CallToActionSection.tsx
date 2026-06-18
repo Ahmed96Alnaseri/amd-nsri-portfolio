@@ -2,15 +2,17 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const WORKS = [
-  { name: 'Architecture', desc: 'Space · Structure · Skin',  href: '/architecture' },
-  { name: 'Design',       desc: 'Think · Model · Resolve',   href: '/design' },
-  { name: 'Fabrication',  desc: 'Cut · Fold · Assemble',     href: '/fabrication' },
-  { name: 'Tools',        desc: 'Build · Automate · Deploy', href: '/tools' },
+  { nameKey: 'nav.architecture', href: '/architecture' },
+  { nameKey: 'nav.design',       href: '/design' },
+  { nameKey: 'nav.fabrication',  href: '/fabrication' },
+  { nameKey: 'nav.tools',        href: '/tools' },
 ] as const;
 
 export default function CallToActionSection() {
+  const { t } = useLanguage();
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
 
   const [worksOpen, setWorksOpen] = useState(false);
@@ -52,6 +54,13 @@ export default function CallToActionSection() {
     revealRefs.current[i] = el;
   };
 
+  // Headline: a normal multiline part + an emphasized multiline part. Line
+  // breaks (\n) are chosen per language so each line stacks like the original.
+  const renderLines = (text: string) =>
+    text.split('\n').map((line, i) => (
+      <span key={i}>{i > 0 && <br />}{line}</span>
+    ));
+
   return (
     <section className="cta-section">
 
@@ -67,9 +76,9 @@ export default function CallToActionSection() {
 
       {/* Top rule */}
       <div className="cta-top-rule" aria-hidden="false">
-        <span className="cta-section-label">06 — Collaborate</span>
+        <span className="cta-section-label">{t('cta.label')}</span>
         <div className="cta-rule-line" />
-        <span className="cta-header-tag">Commission inquiry</span>
+        <span className="cta-header-tag">{t('cta.tag')}</span>
       </div>
 
       {/* Main grid */}
@@ -83,7 +92,7 @@ export default function CallToActionSection() {
             className="cta-eyebrow reveal-item"
             style={{ '--delay': '0ms' } as React.CSSProperties}
           >
-            Work together
+            {t('cta.eyebrow')}
           </p>
 
           <h2
@@ -91,10 +100,8 @@ export default function CallToActionSection() {
             className="cta-headline reveal-item"
             style={{ '--delay': '80ms' } as React.CSSProperties}
           >
-            From the first<br />
-            sketch to the<br />
-            last bolt —<br />
-            <em>every step is<br />a decision.</em>
+            {renderLines(t('cta.headline'))}<br />
+            <em>{renderLines(t('cta.headlineEm'))}</em>
           </h2>
 
           <div
@@ -103,7 +110,7 @@ export default function CallToActionSection() {
             style={{ '--delay': '200ms' } as React.CSSProperties}
           >
             <a href="mailto:ahmed@amdnsri.com" className="cta-btn-primary">
-              Start a Collaboration →
+              {t('cta.primaryBtn')} →
             </a>
 
             {/* Explore Works — hover/focus popover */}
@@ -123,7 +130,7 @@ export default function CallToActionSection() {
                 aria-expanded={worksOpen}
                 aria-controls="cta-works-pop"
               >
-                Explore Works
+                {t('cta.exploreWorks')}
               </button>
 
               {worksOpen && (
@@ -141,7 +148,7 @@ export default function CallToActionSection() {
                       style={{ animationDelay: `${i * 60}ms` }}
                       onClick={() => setWorksOpen(false)}
                     >
-                      <span className="cta-works-card-name">{w.name}</span>
+                      <span className="cta-works-card-name">{t(w.nameKey)}</span>
                     </Link>
                   ))}
                 </div>
@@ -159,7 +166,7 @@ export default function CallToActionSection() {
         >
 
           <div className="cta-info-block">
-            <p className="cta-info-label">Direct contact</p>
+            <p className="cta-info-label">{t('cta.directContact')}</p>
             <a href="mailto:ahmed@amdnsri.com" className="cta-info-email">
               ahmed@amdnsri.com
             </a>
@@ -168,14 +175,14 @@ export default function CallToActionSection() {
           <div className="cta-divider" />
 
           <div className="cta-info-block">
-            <p className="cta-info-label">Location</p>
-            <p className="cta-info-value">Istanbul, Turkey</p>
+            <p className="cta-info-label">{t('common.location')}</p>
+            <p className="cta-info-value">{t('common.istanbul')}</p>
           </div>
 
           <div className="cta-divider" />
 
           <Link href="/contact" className="cta-contact-link">
-            Open contact form →
+            {t('cta.openContactForm')} →
           </Link>
 
         </div>
@@ -184,8 +191,8 @@ export default function CallToActionSection() {
       {/* Bottom title-block strip */}
       <div className="cta-bottom" aria-hidden="true">
         <span>AMD NSRI</span>
-        <span>Collaboration</span>
-        <span>Est. 2026</span>
+        <span>{t('cta.collaboration')}</span>
+        <span>{t('common.est2026')}</span>
         <span className="cta-bottom-fill" />
       </div>
 

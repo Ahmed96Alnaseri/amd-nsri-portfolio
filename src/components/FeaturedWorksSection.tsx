@@ -3,8 +3,10 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import projects from '@/data/projects';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function FeaturedWorksSection() {
+  const { t, tv } = useLanguage();
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
@@ -30,14 +32,14 @@ export default function FeaturedWorksSection() {
 
       {/* Header rule */}
       <div className="works-top-rule" aria-hidden="true">
-        <span className="works-section-label">04 — Featured Works</span>
+        <span className="works-section-label">{t('works.label')}</span>
         <div className="works-rule-line" />
       </div>
 
       {/* Heading */}
       <div className="works-header">
         <h2 id="works-heading" className="works-heading">
-          Selected Works.
+          {t('works.heading')}
         </h2>
       </div>
 
@@ -95,7 +97,7 @@ export default function FeaturedWorksSection() {
                 <div className="work-overlay-corner work-overlay-corner--br" />
                 <div className="work-overlay-keywords">
                   {project.overlayKeywords.map((kw) => (
-                    <span key={kw} className="work-overlay-kw">{kw}</span>
+                    <span key={kw} className="work-overlay-kw">{tv(kw)}</span>
                   ))}
                 </div>
               </div>
@@ -106,12 +108,12 @@ export default function FeaturedWorksSection() {
               {/* Top row */}
               <div className="work-card-top">
                 <span className="work-card-num">{project.num}</span>
-                <span className="work-card-status">{project.status}</span>
+                <span className="work-card-status">{tv(project.status)}</span>
               </div>
 
               {/* Category + year */}
               <div className="work-card-meta">
-                <span className="work-card-category">{project.category}</span>
+                <span className="work-card-category">{tv(project.category)}</span>
                 <span className="work-card-year">{project.year}</span>
               </div>
 
@@ -119,18 +121,18 @@ export default function FeaturedWorksSection() {
               <h3 className="work-card-title">{project.title}</h3>
 
               {/* Concept */}
-              <p className="work-card-concept">{project.concept}</p>
+              <p className="work-card-concept">{tv(project.concept)}</p>
 
               {/* Tags */}
               <div className="work-card-tags">
                 {project.tags.map((tag) => (
-                  <span key={tag} className="work-card-tag">{tag}</span>
+                  <span key={tag} className="work-card-tag">{tv(tag)}</span>
                 ))}
               </div>
 
               {/* CTA */}
               <a href={project.caseStudyLink} className="work-card-cta" aria-label={`View case study for ${project.title}`}>
-                <span>View Case Study</span>
+                <span>{t('common.viewCaseStudy')}</span>
                 <span className="work-card-cta-arrow">→</span>
               </a>
             </div>
@@ -141,7 +143,7 @@ export default function FeaturedWorksSection() {
       {/* Bottom rule */}
       <div className="works-bottom-rule" aria-hidden="true">
         <div className="works-rule-line" />
-        <a href="/architecture" className="works-view-all">View all works →</a>
+        <a href="/architecture" className="works-view-all">{t('common.viewAllWorks')} →</a>
       </div>
 
     </section>

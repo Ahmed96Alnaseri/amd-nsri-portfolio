@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 export default function IntroSection() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const solidRef = useRef<HTMLDivElement>(null);
@@ -57,7 +59,7 @@ export default function IntroSection() {
         prevPct = pct;
       }
 
-      const status = p < SCAN_START ? 'Standby' : done ? 'Complete' : 'Fabricating';
+      const status = p < SCAN_START ? t('intro.standby') : done ? t('intro.complete') : t('intro.fabricating');
       if (status !== prevStatus && statusRef.current) {
         statusRef.current.textContent = status;
         prevStatus = status;
@@ -95,7 +97,7 @@ export default function IntroSection() {
       cancelled = true;
       cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [t]);
 
   return (
     <div ref={sectionRef} className="intro5" aria-label="AMD NSRI introduction">
@@ -120,13 +122,13 @@ export default function IntroSection() {
 
         {/* status readout — fixed below the wordmark, never overlaps */}
         <div className="intro5-readout" aria-hidden="true">
-          <span ref={statusRef} className="intro5-status">Standby</span>
+          <span ref={statusRef} className="intro5-status">{t('intro.standby')}</span>
           <span className="intro5-readout-sep">—</span>
           <span ref={pctRef} className="intro5-pct">000%</span>
         </div>
 
         <p ref={subRef} className="intro5-subtitle">
-          Architecture · Design · Fabrication
+          {t('intro.subtitle')}
         </p>
 
         <div className="intro5-scroll-hint" aria-hidden="true">

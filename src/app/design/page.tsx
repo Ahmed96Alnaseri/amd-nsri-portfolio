@@ -3,6 +3,7 @@
 import { useState, useEffect, useId } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/LanguageContext';
 import designProjects, {
   type DesignProject,
   type DesignCategory,
@@ -39,30 +40,31 @@ const IcoStatus = () => (
 
 /* ── shared info rows ───────────────────────────────────────────────── */
 function InfoRows({ project }: { project: DesignProject }) {
+  const { t, tv } = useLanguage();
   return (
     <div className="dc-info">
       <div className="dc-row">
         <span className="dc-ico"><IcoType /></span>
-        <span className="dc-lbl">Type</span>
-        <span className="dc-val">{project.type}</span>
+        <span className="dc-lbl">{t('common.type')}</span>
+        <span className="dc-val">{tv(project.type)}</span>
       </div>
       <div className="dc-sep" />
       <div className="dc-row">
         <span className="dc-ico"><IcoSoftware /></span>
-        <span className="dc-lbl">Software</span>
-        <span className="dc-val">{project.software}</span>
+        <span className="dc-lbl">{t('common.software')}</span>
+        <span className="dc-val">{tv(project.software)}</span>
       </div>
       <div className="dc-sep" />
       <div className="dc-row">
         <span className="dc-ico"><IcoYear /></span>
-        <span className="dc-lbl">Year</span>
+        <span className="dc-lbl">{t('common.year')}</span>
         <span className="dc-val">{project.year}</span>
       </div>
       <div className="dc-sep" />
       <div className="dc-row">
         <span className="dc-ico"><IcoStatus /></span>
-        <span className="dc-lbl">Status</span>
-        <span className="dc-val">{project.status}</span>
+        <span className="dc-lbl">{t('common.status')}</span>
+        <span className="dc-val">{tv(project.status)}</span>
       </div>
     </div>
   );
@@ -70,6 +72,7 @@ function InfoRows({ project }: { project: DesignProject }) {
 
 /* ── placeholder card (no imagery yet) — linkable when detailHref set ─── */
 function PlaceholderCard({ project }: { project: DesignProject }) {
+  const { t, tv } = useLanguage();
   const id = useId().replace(/:/g, '');
   const linkable = Boolean(project.detailHref);
 
@@ -80,10 +83,10 @@ function PlaceholderCard({ project }: { project: DesignProject }) {
       <div className="dc-ph-label">
         <span className="dc-ph-mark" aria-hidden="true">＋</span>
         <span className="dc-ph-title">{project.title}</span>
-        <span className="dc-ph-status">Imagery Pending</span>
+        <span className="dc-ph-status">{t('common.imageryPending')}</span>
         {linkable && (
           <span className="dc-ph-discover" aria-hidden="true">
-            <span className="dc-ph-discover-text">Discover</span>
+            <span className="dc-ph-discover-text">{t('common.discover')}</span>
             <span className="dc-ph-discover-line" />
           </span>
         )}
@@ -107,7 +110,7 @@ function PlaceholderCard({ project }: { project: DesignProject }) {
         ))}
       </div>
 
-      <p className="dc-tags">{project.category} · {project.type} · {project.software}</p>
+      <p className="dc-tags">{tv(project.category)} · {tv(project.type)} · {tv(project.software)}</p>
       <InfoRows project={project} />
     </article>
   );
@@ -115,6 +118,7 @@ function PlaceholderCard({ project }: { project: DesignProject }) {
 
 /* ── real card (with imagery) — used once design projects gain images ── */
 function ProjectCard({ project, index }: { project: DesignProject; index: number }) {
+  const { t, tv } = useLanguage();
   const [current, setCurrent]   = useState(0);
   const [fading, setFading]     = useState(false);
   const [lightbox, setLightbox] = useState(false);
@@ -166,10 +170,10 @@ function ProjectCard({ project, index }: { project: DesignProject; index: number
       <div className="dc-gradient" aria-hidden="true" />
       <div className="dc-glass" aria-hidden="true">
         <p className="dc-glass-title">{project.title}</p>
-        <p className="dc-glass-sub">{project.type} · {project.year}</p>
+        <p className="dc-glass-sub">{tv(project.type)} · {project.year}</p>
         {project.detailHref && (
           <div className="dc-discover">
-            <span className="dc-discover-text">Discover</span>
+            <span className="dc-discover-text">{t('common.discover')}</span>
             <div className="dc-discover-line" />
           </div>
         )}
@@ -221,7 +225,7 @@ function ProjectCard({ project, index }: { project: DesignProject; index: number
           </div>
         )}
 
-        <p className="dc-tags">{project.category} · {project.type} · {project.software}</p>
+        <p className="dc-tags">{tv(project.category)} · {tv(project.type)} · {tv(project.software)}</p>
         <InfoRows project={project} />
       </article>
 
@@ -247,6 +251,7 @@ function ProjectCard({ project, index }: { project: DesignProject; index: number
 
 /* ── page ───────────────────────────────────────────────────────────── */
 export default function DesignPage() {
+  const { t, tv } = useLanguage();
   const [active, setActive] = useState<Filter>('All');
   const visible = active === 'All'
     ? designProjects
@@ -558,10 +563,10 @@ export default function DesignPage() {
       <div className="dp">
         <div className="dp-rule" />
 
-        <p className="dp-eyebrow">Design</p>
-        <h1 className="dp-title">Think. Model. Resolve.</h1>
+        <p className="dp-eyebrow">{t('design.eyebrow')}</p>
+        <h1 className="dp-title">{t('design.title')}</h1>
         <p className="dp-desc">
-          Computational and parametric design — facade systems, generative geometry, and the tools that turn an idea into a resolvable model.
+          {t('design.desc')}
         </p>
 
         <div className="dp-filters" role="group" aria-label="Filter projects by category">
@@ -576,7 +581,7 @@ export default function DesignPage() {
                 className={`dp-f${active === f ? ' on' : ''}`}
                 onClick={() => setActive(f)}
               >
-                {f}<span className="dp-fn">{String(n).padStart(2, '0')}</span>
+                {tv(f)}<span className="dp-fn">{String(n).padStart(2, '0')}</span>
               </button>
             );
           })}
@@ -584,7 +589,7 @@ export default function DesignPage() {
 
         <div className="dp-grid">
           {visible.length === 0
-            ? <p className="dp-empty">No projects in this category yet.</p>
+            ? <p className="dp-empty">{t('common.noProjects')}</p>
             : visible.map((p, i) =>
                 p.images.length === 0
                   ? <PlaceholderCard key={p.title} project={p} />
@@ -594,8 +599,8 @@ export default function DesignPage() {
 
         <div className="dp-strip" aria-hidden="true">
           <span>AMD NSRI</span>
-          <span>Design</span>
-          <span>Est. 2026</span>
+          <span>{t('design.eyebrow')}</span>
+          <span>{t('common.est2026')}</span>
           <span className="dp-strip-fill" />
         </div>
       </div>

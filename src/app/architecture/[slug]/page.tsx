@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/LanguageContext';
 
 /* ─── types & data ──────────────────────────────────────────────────── */
 type GalleryImage = { src: string; caption: string; w: number; h: number };
@@ -115,6 +116,7 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
 
 /* ─── page ──────────────────────────────────────────────────────────── */
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
+  const { t, tv } = useLanguage();
   const project = CASE_STUDIES[params.slug] ?? HASYL_CANOPY;
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -199,16 +201,16 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   const onDblClick   = () => { setScale(1); setPan({ x: 0, y: 0 }); };
 
   const infoItems = [
-    { label: 'Category', value: project.category },
-    { label: 'Year',     value: project.year },
-    { label: 'Location', value: project.location },
-    { label: 'Client',   value: project.client },
+    { label: t('common.category'), value: tv(project.category) },
+    { label: t('common.year'),     value: project.year },
+    { label: t('common.location'), value: tv(project.location) },
+    { label: t('common.client'),   value: tv(project.client) },
   ];
   const detailItems = [
-    { label: 'Program',    value: project.program },
-    { label: 'Area',       value: project.area },
-    { label: 'Status',     value: project.status },
-    { label: 'Tools Used', value: project.tools },
+    { label: t('common.program'),   value: tv(project.program) },
+    { label: t('common.area'),      value: project.area },
+    { label: t('common.status'),    value: tv(project.status) },
+    { label: t('common.toolsUsed'), value: tv(project.tools) },
   ];
 
   return (
@@ -573,13 +575,13 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           ) : (
             <>
               <div className="cs-hero-perf" aria-hidden="true" />
-              <span className="cs-hero-ph-badge" aria-hidden="true">Imagery Pending</span>
+              <span className="cs-hero-ph-badge" aria-hidden="true">{t('common.imageryPending')}</span>
             </>
           )}
           <div className="cs-hero-top-scrim" aria-hidden="true" />
           <div className="cs-hero-scrim" aria-hidden="true" />
           <div className="cs-hero-inner">
-            <p className="cs-hero-eyebrow">{project.category}</p>
+            <p className="cs-hero-eyebrow">{tv(project.category)}</p>
             <h1 className="cs-hero-title">{project.title}</h1>
           </div>
         </div>
@@ -602,11 +604,11 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           {/* 4 — Two-column section */}
           <div className="cs-body">
             <div>
-              <p className="cs-body-label">Overview</p>
-              <p className="cs-description">{project.description}</p>
+              <p className="cs-body-label">{t('cs.overview')}</p>
+              <p className="cs-description">{tv(project.description)}</p>
             </div>
             <div>
-              <p className="cs-body-label">Details</p>
+              <p className="cs-body-label">{t('cs.details')}</p>
               <div className="cs-details">
                 {detailItems.map(item => (
                   <div className="cs-detail-row" key={item.label}>
@@ -622,7 +624,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           {project.gallery.length === 0 ? (
             <div className="cs-gallery-pending" aria-hidden="true">
               <span className="cs-gallery-pending-mark">＋</span>
-              <span>Visual documentation in progress</span>
+              <span>{t('cs.galleryPending')}</span>
             </div>
           ) : (
           <div className="cs-gallery">
@@ -645,7 +647,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
                 <div className="cs-gallery-overlay" aria-hidden="true">
-                  <span className="cs-gallery-cap">{img.caption}</span>
+                  <span className="cs-gallery-cap">{tv(img.caption)}</span>
                 </div>
               </div>
             ))}
@@ -656,7 +658,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           <div className="cs-back-wrap">
             <Link href={project.backHref ?? '/architecture'} className="cs-back">
               <span aria-hidden="true">←</span>
-              <span>{project.backLabel ?? 'Back to Architecture'}</span>
+              <span>{tv(project.backLabel ?? 'Back to Architecture')}</span>
             </Link>
           </div>
 

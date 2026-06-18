@@ -3,6 +3,7 @@
 import { useState, useEffect, useId } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/LanguageContext';
 import fabricationProjects, {
   type FabricationProject,
   type FabricationCategory,
@@ -39,30 +40,31 @@ const IcoLocation = () => (
 
 /* ── shared info rows ───────────────────────────────────────────────── */
 function InfoRows({ project }: { project: FabricationProject }) {
+  const { t, tv } = useLanguage();
   return (
     <div className="fc-info">
       <div className="fc-row">
         <span className="fc-ico"><IcoType /></span>
-        <span className="fc-lbl">Type</span>
-        <span className="fc-val">{project.type}</span>
+        <span className="fc-lbl">{t('common.type')}</span>
+        <span className="fc-val">{tv(project.type)}</span>
       </div>
       <div className="fc-sep" />
       <div className="fc-row">
         <span className="fc-ico"><IcoMaterial /></span>
-        <span className="fc-lbl">Material</span>
-        <span className="fc-val">{project.material}</span>
+        <span className="fc-lbl">{t('common.material')}</span>
+        <span className="fc-val">{tv(project.material)}</span>
       </div>
       <div className="fc-sep" />
       <div className="fc-row">
         <span className="fc-ico"><IcoYear /></span>
-        <span className="fc-lbl">Year</span>
+        <span className="fc-lbl">{t('common.year')}</span>
         <span className="fc-val">{project.year}</span>
       </div>
       <div className="fc-sep" />
       <div className="fc-row">
         <span className="fc-ico"><IcoLocation /></span>
-        <span className="fc-lbl">Location</span>
-        <span className="fc-val">{project.location}</span>
+        <span className="fc-lbl">{t('common.location')}</span>
+        <span className="fc-val">{tv(project.location)}</span>
       </div>
     </div>
   );
@@ -70,6 +72,7 @@ function InfoRows({ project }: { project: FabricationProject }) {
 
 /* ── placeholder card (no imagery yet) ──────────────────────────────── */
 function PlaceholderCard({ project }: { project: FabricationProject }) {
+  const { t, tv } = useLanguage();
   const id = useId().replace(/:/g, '');
   return (
     <article className="fc">
@@ -78,7 +81,7 @@ function PlaceholderCard({ project }: { project: FabricationProject }) {
         <div className="fc-ph-label">
           <span className="fc-ph-mark" aria-hidden="true">＋</span>
           <span className="fc-ph-title">{project.title}</span>
-          <span className="fc-ph-status">Imagery Pending</span>
+          <span className="fc-ph-status">{t('common.imageryPending')}</span>
         </div>
         <span className="fc-ph-corner fc-ph-corner--tl" aria-hidden="true" />
         <span className="fc-ph-corner fc-ph-corner--br" aria-hidden="true" />
@@ -92,7 +95,7 @@ function PlaceholderCard({ project }: { project: FabricationProject }) {
         ))}
       </div>
 
-      <p className="fc-tags">{project.category} · {project.type} · {project.material}</p>
+      <p className="fc-tags">{tv(project.category)} · {tv(project.type)} · {tv(project.material)}</p>
       <InfoRows project={project} />
     </article>
   );
@@ -100,6 +103,7 @@ function PlaceholderCard({ project }: { project: FabricationProject }) {
 
 /* ── real card (with imagery) ───────────────────────────────────────── */
 function ProjectCard({ project, index }: { project: FabricationProject; index: number }) {
+  const { t, tv } = useLanguage();
   const [current, setCurrent]   = useState(0);
   const [fading, setFading]     = useState(false);
   const [lightbox, setLightbox] = useState(false);
@@ -155,10 +159,10 @@ function ProjectCard({ project, index }: { project: FabricationProject; index: n
 
       <div className="fc-glass" aria-hidden="true">
         <p className="fc-glass-title">{project.title}</p>
-        <p className="fc-glass-sub">{project.type} · {project.year}</p>
+        <p className="fc-glass-sub">{tv(project.type)} · {project.year}</p>
         {project.detailHref && (
           <div className="fc-discover">
-            <span className="fc-discover-text">Discover</span>
+            <span className="fc-discover-text">{t('common.discover')}</span>
             <div className="fc-discover-line" />
           </div>
         )}
@@ -217,7 +221,7 @@ function ProjectCard({ project, index }: { project: FabricationProject; index: n
           </div>
         )}
 
-        <p className="fc-tags">{project.category} · {project.type} · {project.material}</p>
+        <p className="fc-tags">{tv(project.category)} · {tv(project.type)} · {tv(project.material)}</p>
         <InfoRows project={project} />
       </article>
 
@@ -250,6 +254,7 @@ function ProjectCard({ project, index }: { project: FabricationProject; index: n
 
 /* ── page ───────────────────────────────────────────────────────────── */
 export default function FabricationPage() {
+  const { t, tv } = useLanguage();
   const [active, setActive] = useState<Filter>('All');
   const visible = active === 'All'
     ? fabricationProjects
@@ -543,10 +548,10 @@ export default function FabricationPage() {
       <div className="fp">
         <div className="fp-rule" />
 
-        <p className="fp-eyebrow">Fabrication</p>
-        <h1 className="fp-title">Cut. Fold. Assemble.</h1>
+        <p className="fp-eyebrow">{t('fab.eyebrow')}</p>
+        <h1 className="fp-title">{t('fab.title')}</h1>
         <p className="fp-desc">
-          Where geometry becomes buildable — shop drawings, panelization, and production logic carried from file to fabricated object.
+          {t('fab.desc')}
         </p>
 
         <div className="fp-filters" role="group" aria-label="Filter projects by category">
@@ -561,7 +566,7 @@ export default function FabricationPage() {
                 className={`fp-f${active === f ? ' on' : ''}`}
                 onClick={() => setActive(f)}
               >
-                {f}<span className="fp-fn">{String(n).padStart(2, '0')}</span>
+                {tv(f)}<span className="fp-fn">{String(n).padStart(2, '0')}</span>
               </button>
             );
           })}
@@ -569,7 +574,7 @@ export default function FabricationPage() {
 
         <div className="fp-grid">
           {visible.length === 0
-            ? <p className="fp-empty">No projects in this category yet.</p>
+            ? <p className="fp-empty">{t('common.noProjects')}</p>
             : visible.map((p, i) =>
                 p.images.length === 0
                   ? <PlaceholderCard key={p.title} project={p} />
@@ -579,8 +584,8 @@ export default function FabricationPage() {
 
         <div className="fp-strip" aria-hidden="true">
           <span>AMD NSRI</span>
-          <span>Fabrication</span>
-          <span>Est. 2026</span>
+          <span>{t('fab.eyebrow')}</span>
+          <span>{t('common.est2026')}</span>
           <span className="fp-strip-fill" />
         </div>
       </div>

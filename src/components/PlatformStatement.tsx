@@ -1,22 +1,24 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '@/lib/LanguageContext';
 
-const SPECS = [
-  ['Domain', 'Architecture + Fabrication'],
-  ['Origin', 'Istanbul, Turkey — est. 2026'],
-  ['Approach', 'Computational + Parametric'],
-  ['Output', 'Design → Production'],
-  ['Scale', 'Object / Facade / Building'],
+const SPEC_KEYS = [
+  ['platform.specDomainL',   'platform.specDomainV'],
+  ['platform.specOriginL',   'platform.specOriginV'],
+  ['platform.specApproachL', 'platform.specApproachV'],
+  ['platform.specOutputL',   'platform.specOutputV'],
+  ['platform.specScaleL',    'platform.specScaleV'],
 ] as const;
 
 const AMD = [
-  ['A', '01', 'Ahmed — author, architect, signature of intent.'],
-  ['M', '02', 'Method — geometry, system, computation, fabrication.'],
-  ['D', '03', 'Destination — the path from idea to built form.'],
+  ['A', '01', 'platform.amdA'],
+  ['M', '02', 'platform.amdM'],
+  ['D', '03', 'platform.amdD'],
 ] as const;
 
 export default function PlatformStatement() {
+  const { t } = useLanguage();
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
@@ -57,9 +59,9 @@ export default function PlatformStatement() {
 
       {/* header rule */}
       <div className="ps2-header" aria-hidden="true">
-        <span className="ps2-header-label">02 — Platform Statement</span>
+        <span className="ps2-header-label">{t('platform.label')}</span>
         <div className="ps2-header-rule" />
-        <span className="ps2-header-tag">Section cut A—A</span>
+        <span className="ps2-header-tag">{t('platform.tag')}</span>
       </div>
 
       <div className="ps2-grid">
@@ -70,7 +72,7 @@ export default function PlatformStatement() {
             className="ps2-eyebrow reveal-item"
             style={{ '--delay': '0ms' } as React.CSSProperties}
           >
-            What AMD NSRI is
+            {t('platform.eyebrow')}
           </p>
 
           <h2
@@ -79,10 +81,10 @@ export default function PlatformStatement() {
             className="ps2-heading reveal-item"
             style={{ '--delay': '80ms' } as React.CSSProperties}
           >
-            <span className="ps2-heading-line">Architecture is not</span>
-            <span className="ps2-heading-line">a single discipline.</span>
+            <span className="ps2-heading-line">{t('platform.headingLine1')}</span>
+            <span className="ps2-heading-line">{t('platform.headingLine2')}</span>
             <span className="ps2-heading-line ps2-heading-em">
-              It is a <em>system</em><span className="ps2-period">.</span>
+              {t('platform.headingPre')}<em>{t('platform.headingSystem')}</em><span className="ps2-period">.</span>
             </span>
           </h2>
 
@@ -92,15 +94,10 @@ export default function PlatformStatement() {
             style={{ '--delay': '160ms' } as React.CSSProperties}
           >
             <p className="ps2-body">
-              AMD NSRI is a design-driven platform that bridges the gap
-              between architectural imagination and fabrication reality.
-              Every idea we generate moves through a deliberate sequence —
-              concept, geometry, system, tool, fabrication, built reality.
+              {t('platform.body1')}
             </p>
             <p className="ps2-body">
-              Nothing is decorative. Every element has a production logic
-              behind it. Every surface, joint, and detail is resolved
-              before it reaches the workshop floor.
+              {t('platform.body2')}
             </p>
           </div>
         </div>
@@ -113,19 +110,19 @@ export default function PlatformStatement() {
           aria-label="Platform specification"
         >
           <div className="ps2-spec-head">
-            <span>Specification</span>
+            <span>{t('platform.specTitle')}</span>
             <span className="ps2-spec-no">AMD-NSRI / 00</span>
           </div>
           <dl className="ps2-spec-list">
-            {SPECS.map(([label, value]) => (
-              <div className="ps2-spec-row" key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
+            {SPEC_KEYS.map(([labelKey, valueKey]) => (
+              <div className="ps2-spec-row" key={labelKey}>
+                <dt>{t(labelKey)}</dt>
+                <dd>{t(valueKey)}</dd>
               </div>
             ))}
           </dl>
           <div className="ps2-spec-foot" aria-hidden="true">
-            <span className="ps2-spec-stamp">Verified for production</span>
+            <span className="ps2-spec-stamp">{t('platform.specVerified')}</span>
           </div>
         </aside>
       </div>
@@ -137,8 +134,8 @@ export default function PlatformStatement() {
         style={{ '--delay': '0ms' } as React.CSSProperties}
       >
         <div className="ps2-plate-label" aria-hidden="true">
-          <span>Plate 01</span>
-          <span>Meaning of AMD</span>
+          <span>{t('platform.plate1')}</span>
+          <span>{t('platform.plate2')}</span>
         </div>
 
         <div className="ps2-plate-grid">
@@ -161,7 +158,7 @@ export default function PlatformStatement() {
               className="ps2-amad"
               lang="ar"
               role="img"
-              aria-label="أَمَد — goal, duration, the path toward a destination"
+              aria-label={t('platform.amadAria')}
             >
               أَمَد
             </span>
@@ -170,21 +167,17 @@ export default function PlatformStatement() {
           {/* two readings */}
           <div className="ps2-readings">
             <div className="ps2-reading">
-              <span className="ps2-reading-idx">Reading I — Personal</span>
+              <span className="ps2-reading-idx">{t('platform.reading1Label')}</span>
               <p>
-                The first reading is a signature: <em>Ahmed</em> — the
-                founder&rsquo;s design language carried across every module
-                of the platform.
+                {t('platform.reading1Pre')}<em>{t('platform.reading1Em')}</em>{t('platform.reading1Post')}
               </p>
             </div>
             <div className="ps2-reading">
-              <span className="ps2-reading-idx">Reading II — Etymology</span>
+              <span className="ps2-reading-idx">{t('platform.reading2Label')}</span>
               <p>
-                The second is older. In Arabic,{' '}
-                <span lang="ar" className="ps2-arabic-inline">أَمَد</span>{' '}
-                describes a goal, a duration, a distance — a path travelled
-                toward an endpoint. It names the space between intention
-                and arrival.
+                {t('platform.reading2Pre')}
+                <span lang="ar" className="ps2-arabic-inline">أَمَد</span>
+                {t('platform.reading2Post')}
               </p>
             </div>
           </div>
@@ -192,13 +185,13 @@ export default function PlatformStatement() {
 
         {/* A · M · D breakdown */}
         <div className="ps2-amd-grid">
-          {AMD.map(([letter, num, desc]) => (
+          {AMD.map(([letter, num, descKey]) => (
             <div className="ps2-amd-col" key={letter}>
               <div className="ps2-amd-letterrow" aria-hidden="true">
                 <span className="ps2-amd-letter">{letter}</span>
                 <span className="ps2-amd-num">/ {num}</span>
               </div>
-              <p className="ps2-amd-desc">{desc}</p>
+              <p className="ps2-amd-desc">{t(descKey)}</p>
             </div>
           ))}
         </div>
@@ -208,7 +201,7 @@ export default function PlatformStatement() {
       <div className="ps2-bottom" aria-hidden="true">
         <div className="ps2-header-rule" />
         <span className="ps2-bottom-label">
-          Connecting imagination with fabrication reality.
+          {t('platform.bottomLabel')}
         </span>
       </div>
     </section>

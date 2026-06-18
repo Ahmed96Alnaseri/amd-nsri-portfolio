@@ -2,14 +2,17 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/LanguageContext';
 
 /* ─── data ─────────────────────────────────────────────────────────── */
+// `value` is the canonical (English) value stored in form state so validation
+// and any future submission stay language-independent; `labelKey` is displayed.
 const SUBJECTS = [
-  'Architectural Project',
-  'Facade Design & Cladding',
-  'Fabrication & Shop Drawings',
-  'Collaboration',
-  'Other',
+  { value: 'Architectural Project',        labelKey: 'contact.subjArchitectural' },
+  { value: 'Facade Design & Cladding',     labelKey: 'contact.subjFacade' },
+  { value: 'Fabrication & Shop Drawings',  labelKey: 'contact.subjFabrication' },
+  { value: 'Collaboration',                labelKey: 'contact.subjCollaboration' },
+  { value: 'Other',                        labelKey: 'contact.subjOther' },
 ] as const;
 
 const MAX_CHARS = 600;
@@ -19,13 +22,14 @@ type Fields = { name: string; email: string; subject: string; message: string };
 type Errs   = { [key: string]: string };
 
 /* ─── helpers ───────────────────────────────────────────────────────── */
+// Returns translation keys (resolved at render) rather than literal text.
 function validate(f: Fields): Errs {
   const e: Errs = {};
-  if (!f.name.trim())    e.name    = 'Required';
-  if (!f.email.trim())   e.email   = 'Required';
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) e.email = 'Invalid address';
-  if (!f.subject)        e.subject = 'Select a subject';
-  if (!f.message.trim()) e.message = 'Required';
+  if (!f.name.trim())    e.name    = 'contact.errRequired';
+  if (!f.email.trim())   e.email   = 'contact.errRequired';
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) e.email = 'contact.errInvalidEmail';
+  if (!f.subject)        e.subject = 'contact.subjectPlaceholder';
+  if (!f.message.trim()) e.message = 'contact.errRequired';
   return e;
 }
 
@@ -59,6 +63,7 @@ function Label({ text, error }: { text: string; error?: string }) {
 }
 
 function SuccessState() {
+  const { t } = useLanguage();
   return (
     <div style={{ paddingTop: '48px' }}>
       {/* Circle checkmark */}
@@ -100,7 +105,7 @@ function SuccessState() {
         marginBottom: '20px',
       }}>
         <span style={{ display: 'block', width: '28px', height: '1px', background: 'var(--color-accent)', opacity: 0.7 }} />
-        Transmitted
+        {t('contact.succEyebrow')}
       </p>
 
       <h2 style={{
@@ -111,7 +116,7 @@ function SuccessState() {
         color: 'var(--color-text-primary)',
         marginBottom: '20px',
       }}>
-        Message received.
+        {t('contact.succHeading')}
       </h2>
 
       <p style={{
@@ -123,8 +128,7 @@ function SuccessState() {
         maxWidth: '380px',
         marginBottom: '40px',
       }}>
-        Thank you for reaching out. I&apos;ll review your message and
-        respond within 1–2 business days.
+        {t('contact.succBody')}
       </p>
 
       <div style={{ width: '32px', height: '1px', background: 'var(--color-border)', marginBottom: '32px' }} />
@@ -144,7 +148,7 @@ function SuccessState() {
         onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text-primary)')}
         onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-meta)')}
       >
-        <span>←</span> Return to AMD NSRI
+        <span>←</span> {t('contact.succBack')}
       </Link>
     </div>
   );
@@ -152,6 +156,7 @@ function SuccessState() {
 
 /* ─── page ───────────────────────────────────────────────────────────── */
 export default function ContactPage() {
+  const { t } = useLanguage();
   const [form, setForm]         = useState<Fields>({ name: '', email: '', subject: '', message: '' });
   const [focused, setFocused]   = useState<string | null>(null);
   const [errors, setErrors]     = useState<Errs>({});
@@ -305,8 +310,9 @@ export default function ContactPage() {
               color: 'var(--color-text-primary)',
               margin: '0 0 48px 0',
             }}>
-              Start a<br />
-              conversation.
+              {t('contact.title').split('\n').map((line, i) => (
+                <span key={i}>{i > 0 && <br />}{line}</span>
+              ))}
             </h1>
 
             <div style={{ height: '1px', background: 'var(--color-border)', marginBottom: '32px' }} />
@@ -320,7 +326,7 @@ export default function ContactPage() {
                 textTransform: 'uppercase',
                 color: 'var(--color-text-meta)',
                 marginBottom: '10px',
-              }}>Email</p>
+              }}>{t('contact.emailLabel')}</p>
               <a
                 href="mailto:ahmedhaitham114@gmail.com"
                 className="cpage-email-link"
@@ -350,13 +356,13 @@ export default function ContactPage() {
                 textTransform: 'uppercase',
                 color: 'var(--color-text-meta)',
                 marginBottom: '10px',
-              }}>Location</p>
+              }}>{t('contact.locationLabel')}</p>
               <p style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: '14px',
                 letterSpacing: '0.04em',
                 color: 'rgba(232,228,220,0.78)',
-              }}>Istanbul, Turkey</p>
+              }}>{t('common.istanbul')}</p>
             </div>
 
           </div>
@@ -368,11 +374,11 @@ export default function ContactPage() {
 
                 {/* Name */}
                 <div style={{ marginBottom: '24px' }}>
-                  <Label text="Name" error={errors.name} />
+                  <Label text={t('contact.nameLabel')} error={errors.name ? t(errors.name) : undefined} />
                   <input
                     className="cpage-input"
                     type="text"
-                    placeholder="Your full name"
+                    placeholder={t('contact.namePlaceholder')}
                     value={form.name}
                     onChange={update('name')}
                     onFocus={() => setFocused('name')}
@@ -384,7 +390,7 @@ export default function ContactPage() {
 
                 {/* Email */}
                 <div style={{ marginBottom: '24px' }}>
-                  <Label text="Email" error={errors.email} />
+                  <Label text={t('contact.emailLabel')} error={errors.email ? t(errors.email) : undefined} />
                   <input
                     className="cpage-input"
                     type="email"
@@ -400,7 +406,7 @@ export default function ContactPage() {
 
                 {/* Subject */}
                 <div style={{ marginBottom: '24px' }}>
-                  <Label text="Subject" error={errors.subject} />
+                  <Label text={t('contact.subjectLabel')} error={errors.subject ? t(errors.subject) : undefined} />
                   <div style={{ position: 'relative' }}>
                     <select
                       className="cpage-input cpage-select"
@@ -410,8 +416,8 @@ export default function ContactPage() {
                       onBlur={() => setFocused(null)}
                       style={{ ...inputBase('subject'), cursor: 'pointer', paddingRight: '44px' }}
                     >
-                      <option value="">Select a subject</option>
-                      {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                      <option value="">{t('contact.subjectPlaceholder')}</option>
+                      {SUBJECTS.map(s => <option key={s.value} value={s.value}>{t(s.labelKey)}</option>)}
                     </select>
                     <span aria-hidden="true" style={{
                       position: 'absolute',
@@ -428,11 +434,11 @@ export default function ContactPage() {
 
                 {/* Message */}
                 <div style={{ marginBottom: '32px' }}>
-                  <Label text="Message" error={errors.message} />
+                  <Label text={t('contact.messageLabel')} error={errors.message ? t(errors.message) : undefined} />
                   <div style={{ position: 'relative' }}>
                     <textarea
                       className="cpage-input cpage-textarea"
-                      placeholder="Tell me about your project, brief, or idea..."
+                      placeholder={t('contact.messagePlaceholder')}
                       value={form.message}
                       onChange={update('message')}
                       onFocus={() => setFocused('message')}
@@ -496,10 +502,10 @@ export default function ContactPage() {
                         display: 'inline-block',
                         animation: 'ctaSpin 700ms linear infinite',
                       }} />
-                      Sending
+                      {t('contact.sending')}
                     </>
                   ) : (
-                    'Send Message →'
+                    `${t('contact.send')} →`
                   )}
                 </button>
 
@@ -512,7 +518,7 @@ export default function ContactPage() {
                   marginTop: '22px',
                   lineHeight: 1.7,
                 }}>
-                  Or write directly to{' '}
+                  {t('contact.orWrite')}{' '}
                   <a href="mailto:ahmedhaitham114@gmail.com" className="cpage-email-link" style={{
                     color: 'rgba(232,228,220,0.85)',
                     textDecoration: 'none',
@@ -539,7 +545,7 @@ export default function ContactPage() {
           position: 'relative',
           zIndex: 1,
         }}>
-          {['AMD NSRI', 'Contact', 'Est. 2026'].map((label, i) => (
+          {['AMD NSRI', t('contact.strip'), t('common.est2026')].map((label, i) => (
             <span key={i} style={{
               display: 'flex',
               alignItems: 'center',
