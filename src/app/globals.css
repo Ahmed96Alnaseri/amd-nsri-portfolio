@@ -44,6 +44,42 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Theme: Grey
+   ───────────────────────────────────────────────────────────── */
+html[data-theme="grey"] {
+  --color-bg:             #e8e6e0;
+  --color-surface:        #dddbd4;
+  --color-surface-2:      #d0cec8;
+  --color-border:         #c0bdb6;
+  --color-text-primary:   #1a1a18;
+  --color-text-secondary: #5a5854;
+  --color-text-meta:      #8a8880;
+  --color-accent:         #8a6a3a;
+  --color-accent-dim:     #6a5030;
+  --color-line:           #c8c6be;
+  --background:           #e8e6e0;
+  --foreground:           #1a1a18;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Theme: White
+   ───────────────────────────────────────────────────────────── */
+html[data-theme="white"] {
+  --color-bg:             #ffffff;
+  --color-surface:        #f5f5f3;
+  --color-surface-2:      #ebebea;
+  --color-border:         #d4d4d0;
+  --color-text-primary:   #0d0d0b;
+  --color-text-secondary: #5a5854;
+  --color-text-meta:      #8a8880;
+  --color-accent:         #8a6a3a;
+  --color-accent-dim:     #6a5030;
+  --color-line:           #d8d8d4;
+  --background:           #ffffff;
+  --foreground:           #0d0d0b;
+}
+
+/* ─────────────────────────────────────────────────────────────
    Base Reset
    ───────────────────────────────────────────────────────────── */
 *, *::before, *::after {
@@ -140,6 +176,12 @@ nav, footer, figcaption {
   border-color: var(--color-border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+html[data-theme="grey"] .nav-root.scrolled {
+  background-color: rgba(232, 230, 224, 0.94);
+}
+html[data-theme="white"] .nav-root.scrolled {
+  background-color: rgba(255, 255, 255, 0.94);
 }
 
 .nav-link {

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navigation from '@/components/Navigation';
 import { LanguageProvider } from '@/lib/LanguageContext';
+import { ThemeProvider } from '@/lib/ThemeContext';
 
 export const metadata: Metadata = {
   title: 'AMD NSRI — Architecture, Design, Fabrication',
@@ -27,14 +28,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <body>
-        <LanguageProvider>
-          <Navigation />
-          <main id="main-content">
-            {children}
-          </main>
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <Navigation />
+            <main id="main-content">
+              {children}
+            </main>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
