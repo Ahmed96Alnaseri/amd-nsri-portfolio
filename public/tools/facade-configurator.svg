@@ -1,0 +1,13 @@
+<svg viewBox="0 0 720 540" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <pattern id="fc" width="84" height="84" patternUnits="userSpaceOnUse">
+      <rect x="6" y="6" width="72" height="72" stroke="#b8956a" stroke-width="1.1"/>
+    </pattern>
+  </defs>
+  <g stroke="#b8956a">
+    <g opacity="0.22"><rect x="110" y="170" width="336" height="252" fill="url(#fc)"/><rect x="110" y="170" width="336" height="252" stroke-width="1.4"/></g>
+    <g opacity="0.4" transform="translate(46,-34)"><rect x="110" y="170" width="336" height="252" fill="url(#fc)"/><rect x="110" y="170" width="336" height="252" stroke-width="1.4"/></g>
+    <g opacity="0.62" transform="translate(92,-68)"><rect x="110" y="170" width="336" height="252" fill="url(#fc)"/><rect x="110" y="170" width="336" height="252" stroke-width="1.4"/></g>
+  </g>
+  <rect x="244" y="170" width="72" height="72" transform="translate(92,-68)" fill="#b8956a" opacity="0.16"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg viewBox="0 0 720 540" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <g stroke="#b8956a" stroke-width="1.1" opacity="0.45">
+    <rect x="60" y="70" width="600" height="400"/>
+    <line x1="60" y1="130" x2="660" y2="130"/>
+    <line x1="60" y1="187" x2="660" y2="187"/>
+    <line x1="60" y1="244" x2="660" y2="244"/>
+    <line x1="60" y1="301" x2="660" y2="301"/>
+    <line x1="60" y1="358" x2="660" y2="358"/>
+    <line x1="60" y1="415" x2="660" y2="415"/>
+    <line x1="430" y1="70" x2="430" y2="470"/>
+  </g>
+  <g fill="#b8956a" opacity="0.32">
+    <rect x="455" y="151" width="150" height="14"/>
+    <rect x="455" y="208" width="118" height="14"/>
+    <rect x="455" y="265" width="166" height="14"/>
+    <rect x="455" y="322" width="96"  height="14"/>
+    <rect x="455" y="379" width="138" height="14"/>
+  </g>
+  <text x="84" y="112" font-family="monospace" font-size="38" fill="#b8956a" opacity="0.55">₺</text>
+  <rect x="60" y="415" width="600" height="55" fill="#b8956a" opacity="0.1"/>
+</svg>
