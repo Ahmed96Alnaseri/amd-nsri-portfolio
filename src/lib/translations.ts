@@ -14,15 +14,19 @@ export const translations = {
   EN: {
     nav: {
       wordmark:     'AMD NSRI',
+      identity:     'Identity',
       architecture: 'Architecture',
       design:       'Design',
       tools:        'Tools',
+      journal:      'Journal',
       fabrication:  'Fabrication',
       shop:         'Shop',
       contact:      'Contact',
+      identityDesc: 'Platform identity and founder',
       archDesc:     'Spatial concepts and visualization',
       designDesc:   'Experimental design and objects',
       toolsDesc:    'Parametric tools and definitions',
+      journalDesc:  'Articles and process notes',
       fabDesc:      'Production and fabrication logic',
       shopDesc:     'Products and resources',
       contactDesc:  'Collaboration inquiries',
@@ -231,6 +235,23 @@ export const translations = {
       toolsBanner:    'Looking for full tools and plugins?',
       visitTools:     'Visit Tools',
     },
+    journal: {
+      eyebrow:   'Journal',
+      title:     'Think. Write. Share.',
+      desc:      'Field notes from the space between design and fabrication — process, computation, and the thinking behind the tools.',
+      featured:  'Featured',
+      minRead:   'min read',
+      back:      'Back to Journal',
+      related:   'Related Articles',
+    },
+    stats: {
+      eyebrow:     'Presence',
+      projects:    'Projects',
+      countries:   'Countries',
+      tools:       'Tools Built',
+      disciplines: 'Disciplines',
+      mapAria:     'World map marking AMD NSRI project locations — Istanbul, Turkmenistan, and Iraq',
+    },
     contact: {
       title:             'Start a\nconversation.',
       emailLabel:        'Email',
@@ -267,15 +288,19 @@ export const translations = {
   TR: {
     nav: {
       wordmark:     'AMD NSRI',
+      identity:     'Kimlik',
       architecture: 'Mimarlık',
       design:       'Tasarım',
       tools:        'Araçlar',
+      journal:      'Günlük',
       fabrication:  'Fabrikasyon',
       shop:         'Mağaza',
       contact:      'İletişim',
+      identityDesc: 'Platform kimliği ve kurucu',
       archDesc:     'Mekansal kavramlar ve görselleştirme',
       designDesc:   'Deneysel tasarım ve objeler',
       toolsDesc:    'Parametrik araçlar ve tanımlar',
+      journalDesc:  'Yazılar ve süreç notları',
       fabDesc:      'Üretim ve imalat mantığı',
       shopDesc:     'Ürünler ve kaynaklar',
       contactDesc:  'İş birliği talepleri',
@@ -484,6 +509,23 @@ export const translations = {
       toolsBanner:    'Tam araçlar ve eklentiler mi arıyorsunuz?',
       visitTools:     'Araçlara Git',
     },
+    journal: {
+      eyebrow:   'Günlük',
+      title:     'Düşün. Yaz. Paylaş.',
+      desc:      'Tasarım ile fabrikasyon arasındaki alandan saha notları — süreç, hesaplama ve araçların ardındaki düşünce.',
+      featured:  'Öne Çıkan',
+      minRead:   'dk okuma',
+      back:      'Günlüğe Dön',
+      related:   'İlgili Yazılar',
+    },
+    stats: {
+      eyebrow:     'Mevcudiyet',
+      projects:    'Projeler',
+      countries:   'Ülkeler',
+      tools:       'Geliştirilen Araçlar',
+      disciplines: 'Disiplinler',
+      mapAria:     'AMD NSRI proje konumlarını işaretleyen dünya haritası — İstanbul, Türkmenistan ve Irak',
+    },
     contact: {
       title:             'Bir sohbet\nbaşlatın.',
       emailLabel:        'E-posta',
@@ -520,15 +562,19 @@ export const translations = {
   AR: {
     nav: {
       wordmark:     'AMD NSRI',
+      identity:     'الهوية',
       architecture: 'العمارة',
       design:       'التصميم',
       tools:        'الأدوات',
+      journal:      'المدونة',
       fabrication:  'التصنيع',
       shop:         'المتجر',
       contact:      'اتصل',
+      identityDesc: 'هوية المنصة والمؤسس',
       archDesc:     'المفاهيم المكانية والتصور',
       designDesc:   'التصميم التجريبي والأشياء',
       toolsDesc:    'الأدوات والتعريفات الباراميترية',
+      journalDesc:  'مقالات وملاحظات العملية',
       fabDesc:      'منطق الإنتاج والتصنيع',
       shopDesc:     'المنتجات والموارد',
       contactDesc:  'استفسارات التعاون',
@@ -736,6 +782,23 @@ export const translations = {
       fFree:          'مجاني',
       toolsBanner:    'تبحث عن أدوات وإضافات كاملة؟',
       visitTools:     'زيارة الأدوات',
+    },
+    journal: {
+      eyebrow:   'المدونة',
+      title:     'فكّر. اكتب. شارك.',
+      desc:      'ملاحظات ميدانية من المساحة بين التصميم والتصنيع — العملية والحوسبة والتفكير وراء الأدوات.',
+      featured:  'مميّز',
+      minRead:   'دقيقة قراءة',
+      back:      'العودة إلى المدونة',
+      related:   'مقالات ذات صلة',
+    },
+    stats: {
+      eyebrow:     'الحضور',
+      projects:    'مشاريع',
+      countries:   'دول',
+      tools:       'أدوات مطوّرة',
+      disciplines: 'تخصصات',
+      mapAria:     'خريطة عالمية تحدّد مواقع مشاريع AMD NSRI — إسطنبول وتركمانستان والعراق',
     },
     contact: {
       title:             'ابدأ\nمحادثة.',
@@ -959,6 +1022,35 @@ const VALUES: Record<Lang, ValueMap> = {
     'Project brief required': 'Proje brifi gerekli',
     'Windows 10 or later': 'Windows 10 veya üzeri',
     'License key (provided)': 'Lisans anahtarı (sağlanır)',
+    // journal — categories
+    'Process': 'Süreç',
+    'Reflection': 'Düşünce',
+    // journal — titles
+    'Why Facades Fail Between Render and Fabrication':
+      'Cepheler Render ile Fabrikasyon Arasında Neden Başarısız Olur',
+    'Panel Type Reduction: How One Algorithm Saved 40% on Fabrication Cost':
+      'Panel Tipi Azaltma: Bir Algoritma Fabrikasyon Maliyetinde Nasıl %40 Tasarruf Sağladı',
+    'K-Factor and Bend Allowance: What Every Architect Should Know':
+      'K-Faktörü ve Büküm Payı: Her Mimarın Bilmesi Gerekenler',
+    'Building the Sheet Metal Unfolder in GHPython':
+      'Sac Metal Açıcıyı GHPython ile Geliştirmek',
+    'From Hasyl Canopy to Production: A Parametric Fabrication Case Study':
+      'Hasyl Kanopisinden Üretime: Parametrik Bir Fabrikasyon Vaka İncelemesi',
+    'Why I Started AMD NSRI':
+      'AMD NSRI\'yi Neden Kurdum',
+    // journal — excerpts
+    'The gap between what architects draw and what fabricators build is where most facade projects lose quality, budget, and time.':
+      'Mimarların çizdiği ile fabrikatörlerin ürettiği arasındaki boşluk, çoğu cephe projesinin kalite, bütçe ve zaman kaybettiği yerdir.',
+    'A single panel-grouping algorithm collapsed hundreds of "unique" panels into a handful of types — and took the fabrication bill down with them.':
+      'Tek bir panel gruplama algoritması, yüzlerce "benzersiz" paneli birkaç tipe indirdi — ve fabrikasyon faturasını da beraberinde düşürdü.',
+    "Bend allowance isn't a fabrication footnote. It decides whether your folded geometry closes — or fails on the brake.":
+      'Büküm payı bir fabrikasyon dipnotu değildir. Katlanmış geometrinizin kapanıp kapanmayacağına — ya da abkantta başarısız olup olmayacağına — karar verir.',
+    'Building a sheet-metal unfolder from scratch in GHPython — geometry, k-factor, and DXF export, one decision at a time.':
+      'Sıfırdan GHPython ile bir sac metal açıcı geliştirmek — geometri, k-faktörü ve DXF dışa aktarımı, her seferinde tek bir kararla.',
+    'Following the Hasyl Canopy from parametric model to fabricated reality — every decision that made it buildable.':
+      'Hasyl Kanopisini parametrik modelden üretilmiş gerçekliğe izlemek — onu inşa edilebilir kılan her karar.',
+    'Why I left the comfort of pure architecture to build the bridge between design and fabrication.':
+      'Tasarım ile fabrikasyon arasındaki köprüyü kurmak için saf mimarlığın konforunu neden bıraktım.',
     // types / programs
     'Parametric Canopy': 'Parametrik Kanopi',
     'Perforated Facade': 'Delikli Cephe',
@@ -1252,6 +1344,35 @@ const VALUES: Record<Lang, ValueMap> = {
     'Project brief required': 'يتطلّب ملخّص مشروع',
     'Windows 10 or later': 'Windows 10 أو أحدث',
     'License key (provided)': 'مفتاح ترخيص (يُوفَّر)',
+    // journal — categories
+    'Process': 'العملية',
+    'Reflection': 'تأمّل',
+    // journal — titles
+    'Why Facades Fail Between Render and Fabrication':
+      'لماذا تفشل الواجهات بين العرض والتصنيع',
+    'Panel Type Reduction: How One Algorithm Saved 40% on Fabrication Cost':
+      'تقليل أنواع الألواح: كيف وفّرت خوارزمية واحدة 40٪ من تكلفة التصنيع',
+    'K-Factor and Bend Allowance: What Every Architect Should Know':
+      'معامل K وبدل الثني: ما يجب أن يعرفه كل معماري',
+    'Building the Sheet Metal Unfolder in GHPython':
+      'بناء فارد الصفائح المعدنية في GHPython',
+    'From Hasyl Canopy to Production: A Parametric Fabrication Case Study':
+      'من مظلّة Hasyl إلى الإنتاج: دراسة حالة تصنيع بارامتري',
+    'Why I Started AMD NSRI':
+      'لماذا أسّستُ AMD NSRI',
+    // journal — excerpts
+    'The gap between what architects draw and what fabricators build is where most facade projects lose quality, budget, and time.':
+      'الفجوة بين ما يرسمه المعماريون وما يبنيه المصنّعون هي حيث تفقد معظم مشاريع الواجهات الجودة والميزانية والوقت.',
+    'A single panel-grouping algorithm collapsed hundreds of "unique" panels into a handful of types — and took the fabrication bill down with them.':
+      'خوارزمية واحدة لتجميع الألواح اختزلت مئات الألواح «الفريدة» إلى حفنة من الأنواع — وخفّضت معها فاتورة التصنيع.',
+    "Bend allowance isn't a fabrication footnote. It decides whether your folded geometry closes — or fails on the brake.":
+      'بدل الثني ليس هامشاً تصنيعياً. إنه يقرّر ما إذا كانت هندستك المطوية ستُغلق — أم ستفشل على المكبس.',
+    'Building a sheet-metal unfolder from scratch in GHPython — geometry, k-factor, and DXF export, one decision at a time.':
+      'بناء فارد صفائح معدنية من الصفر في GHPython — الهندسة ومعامل K وتصدير DXF، قراراً تلو الآخر.',
+    'Following the Hasyl Canopy from parametric model to fabricated reality — every decision that made it buildable.':
+      'متابعة مظلّة Hasyl من النموذج البارامتري إلى الواقع المُصنَّع — كل قرار جعلها قابلة للبناء.',
+    'Why I left the comfort of pure architecture to build the bridge between design and fabrication.':
+      'لماذا تركتُ راحة العمارة الخالصة لأبني الجسر بين التصميم والتصنيع.',
     // types / programs
     'Parametric Canopy': 'مظلّة بارامترية',
     'Perforated Facade': 'واجهة مثقّبة',

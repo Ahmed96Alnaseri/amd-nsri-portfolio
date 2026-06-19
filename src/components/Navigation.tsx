@@ -13,15 +13,17 @@ const THEME_OPTIONS: { id: Theme; label: string; color: string; border: string }
 ];
 
 const NAV_HREFS = [
+  { href: '/identity',     key: 'identity',     descKey: 'identityDesc'},
   { href: '/architecture', key: 'architecture', descKey: 'archDesc'   },
   { href: '/design',       key: 'design',       descKey: 'designDesc' },
   { href: '/tools',        key: 'tools',        descKey: 'toolsDesc'  },
+  { href: '/journal',      key: 'journal',      descKey: 'journalDesc'},
   { href: '/fabrication',  key: 'fabrication',  descKey: 'fabDesc'    },
   { href: '/shop',         key: 'shop',         descKey: 'shopDesc'   },
   { href: '/contact',      key: 'contact',      descKey: 'contactDesc'},
 ] as const;
 
-const MOBILE_NUMS = ['01', '02', '03', '04', '05', '06'] as const;
+const MOBILE_NUMS = ['01', '02', '03', '04', '05', '06', '07', '08'] as const;
 
 export default function Navigation() {
   const { lang, setLang, t } = useLanguage();
