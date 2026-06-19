@@ -6,9 +6,9 @@ import { productsBySlug, type PurchaseMode } from '@/data/shop-products';
 
 /* purchase mode → CTA translation key */
 const CTA_KEY: Record<PurchaseMode, string> = {
-  'buy': 'shop.purchase',
-  'free': 'shop.getIt',
-  'contact': 'shop.contact',
+  'download':    'shop.get',
+  'coming-soon': 'shop.notifyMe',
+  'free':        'shop.getIt',
 };
 
 export default function ShopProductPage({ params }: { params: { slug: string } }) {
@@ -28,9 +28,8 @@ export default function ShopProductPage({ params }: { params: { slug: string } }
   }
 
   const isFree = product.mode === 'free';
-  // No checkout backend yet — every flow (buy / free / contact) routes through /contact.
   const ctaHref = '/contact';
-  const fullName = `${tv(product.name)}${product.variant ? ` (${product.variant})` : ''}`;
+  const fullName = tv(product.name);
 
   const related = product.related
     .map(slug => productsBySlug[slug])
@@ -111,9 +110,7 @@ export default function ShopProductPage({ params }: { params: { slug: string } }
             {related.map(r => (
               <Link key={r.slug} href={`/shop/${r.slug}`} className="sd-rel">
                 <span className="sd-rel-cat">{tv(r.category)}</span>
-                <span className="sd-rel-name">
-                  {tv(r.name)}{r.variant ? ` (${r.variant})` : ''}
-                </span>
+                <span className="sd-rel-name">{tv(r.name)}</span>
                 <span className="sd-rel-foot">
                   <span className="sd-rel-price">{tv(r.price)}</span>
                   <span className="sd-rel-arrow" aria-hidden="true">→</span>

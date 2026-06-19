@@ -1,25 +1,25 @@
-export type ShopCategory = 'Plugin' | 'Digital Tool' | 'Software' | 'Template';
+export type ShopCategory = 'Script' | '3D Asset' | '3D Printing';
 
-/** Drives the purchase/contact button + the "Free" filter. */
-export type PurchaseMode = 'buy' | 'free' | 'contact';
+/** Drives the purchase / notify button behaviour. */
+export type PurchaseMode = 'download' | 'coming-soon' | 'free';
 
 export interface ShopProduct {
   /** URL slug — /shop/[slug] */
   slug: string;
   /** Display name — DM Serif Display (translated via tv()) */
   name: string;
-  /** Optional variant suffix shown as "(Web)" / "(Grasshopper)" — not translated */
-  variant?: string;
-  /** One-line description (cards) — translated via tv() */
+  /** One-line description shown on the card — translated via tv() */
   description: string;
-  /** Fuller description (detail hero) — translated via tv() */
+  /** Fuller description for the detail hero — translated via tv() */
   detail: string;
   /** Category badge */
   category: ShopCategory;
-  /** Price string — "₺2,500", "Free", "Contact for pricing" (translated via tv()) */
+  /** Price string — "₺800", "Coming Soon" — translated via tv() */
   price: string;
-  /** Purchase flow — buy / free / contact */
+  /** Purchase flow */
   mode: PurchaseMode;
+  /** "Digital Download" | "Physical" — shown below price */
+  deliveryType: 'Digital Download' | 'Physical';
   /** "What's included" list — each translated via tv() */
   included: string[];
   /** Requirements list — each translated via tv() */
@@ -31,185 +31,157 @@ export interface ShopProduct {
 }
 
 /** Filter chips shown above the grid (in order). */
-export const SHOP_FILTERS = ['All', 'Plugins', 'Digital Tools', 'Software', 'Free'] as const;
+export const SHOP_FILTERS = ['All', 'Scripts', '3D Assets', '3D Printing', 'Free'] as const;
 export type ShopFilter = (typeof SHOP_FILTERS)[number];
 
 /** Does a product belong under the given filter chip? */
 export function matchesFilter(p: ShopProduct, filter: ShopFilter): boolean {
   switch (filter) {
-    case 'All':           return true;
-    case 'Plugins':       return p.category === 'Plugin';
-    case 'Digital Tools': return p.category === 'Digital Tool';
-    case 'Software':      return p.category === 'Software';
-    case 'Free':          return p.mode === 'free';
+    case 'All':         return true;
+    case 'Scripts':     return p.category === 'Script';
+    case '3D Assets':   return p.category === '3D Asset';
+    case '3D Printing': return p.category === '3D Printing';
+    case 'Free':        return p.mode === 'free';
   }
 }
 
 const products: ShopProduct[] = [
+  /* ── Scripts ──────────────────────────────────────────────── */
   {
-    slug: 'sheet-metal-unfolder',
-    name: 'Sheet Metal Unfolder',
-    description: 'Grasshopper definition for flat pattern generation',
+    slug: 'sheet-metal-unfolder-script',
+    name: 'Sheet Metal Unfolder Script',
+    description: 'GHPython unfolding script, ready to embed in your definition',
     detail:
-      'A production-tested Grasshopper definition that unfolds complex sheet metal geometry into accurate flat cutting patterns. Configurable k-factor and bend radius keep every fold true to the model, with DXF-ready output for laser and press brake.',
-    category: 'Plugin',
+      'A standalone GHPython unfolding script for Grasshopper. Drop it into any definition and it immediately flattens complex sheet metal geometry into accurate flat cutting patterns — configurable k-factor, bend radius, and DXF-ready output.',
+    category: 'Script',
+    price: '₺800',
+    mode: 'download',
+    deliveryType: 'Digital Download',
+    included: [
+      'GHPython script (.py)',
+      'Grasshopper example file (.gh)',
+      'PDF integration notes',
+    ],
+    requirements: ['Rhino 7 or later', 'Grasshopper'],
+    related: ['panel-optimizer-script', 'perforation-generator-script'],
+    image: null,
+  },
+  {
+    slug: 'panel-optimizer-script',
+    name: 'Panel Optimizer Script',
+    description: 'Standalone GHPython script for panel type reduction',
+    detail:
+      'Groups facade panels by configurable area tolerance to minimize unique fabrication types. Paste the script into your Grasshopper definition and get an instant rationalization report — fewer mould types, lower cost, shorter lead time.',
+    category: 'Script',
+    price: '₺600',
+    mode: 'download',
+    deliveryType: 'Digital Download',
+    included: [
+      'GHPython script (.py)',
+      'Grasshopper example file (.gh)',
+      'Panel schedule template (.xlsx)',
+    ],
+    requirements: ['Rhino 7 or later', 'Grasshopper'],
+    related: ['sheet-metal-unfolder-script', 'perforation-generator-script'],
+    image: null,
+  },
+  {
+    slug: 'perforation-generator-script',
+    name: 'Perforation Generator Script',
+    description: 'Parametric perforation script with open-area output',
+    detail:
+      'Parametric perforation layout generator in a single GHPython script. Drive pitch, diameter, and open-area ratio; the script outputs a rationalized layout and computes the total open-area percentage per panel — CNC and laser ready.',
+    category: 'Script',
+    price: '₺700',
+    mode: 'download',
+    deliveryType: 'Digital Download',
+    included: [
+      'GHPython script (.py)',
+      'Grasshopper example file (.gh)',
+      'Open-area calculation notes',
+    ],
+    requirements: ['Rhino 7 or later', 'Grasshopper'],
+    related: ['sheet-metal-unfolder-script', 'panel-optimizer-script'],
+    image: null,
+  },
+
+  /* ── 3D Assets ─────────────────────────────────────────────── */
+  {
+    slug: 'facade-panel-detail-library',
+    name: 'Facade Panel Detail Library',
+    description: '30 aluminum panel connection details, Rhino 3dm format',
+    detail:
+      'A curated library of 30 aluminum facade panel connection details modelled in Rhino. Covers bracket types, sub-structure interfaces, horizontal and vertical joints, and weathering conditions — production-grade geometry, fully annotated.',
+    category: '3D Asset',
+    price: '₺1,200',
+    mode: 'download',
+    deliveryType: 'Digital Download',
+    included: [
+      '30 Rhino 3dm detail files',
+      'Layer-organized by connection type',
+      'PDF reference sheet',
+    ],
+    requirements: ['Rhino 6 or later'],
+    related: ['parametric-canopy-gh-file'],
+    image: null,
+  },
+  {
+    slug: 'parametric-canopy-gh-file',
+    name: 'Parametric Canopy Grasshopper File',
+    description: 'Full GH definition from the Hasyl Canopy project',
+    detail:
+      'The complete, annotated Grasshopper definition behind the Hasyl Canopy project. Includes surface rationalization, panel subdivision, substructure geometry, and perforation logic — a live case study file, not a stripped demo.',
+    category: '3D Asset',
     price: '₺2,500',
-    mode: 'buy',
+    mode: 'download',
+    deliveryType: 'Digital Download',
     included: [
-      'Commented Grasshopper definition (.gh)',
-      'Step-by-step PDF documentation',
-      'Example Rhino files',
-      'Sample DXF output',
-      'Email support',
-      'Free minor updates',
+      'Annotated Grasshopper definition (.gh)',
+      'Base Rhino model (.3dm)',
+      'Project notes PDF',
     ],
     requirements: ['Rhino 7 or later', 'Grasshopper'],
-    related: ['surface-punch-mapper', 'material-quantity-estimator-grasshopper'],
+    related: ['facade-panel-detail-library', 'sheet-metal-unfolder-script'],
+    image: null,
+  },
+
+  /* ── 3D Printing ───────────────────────────────────────────── */
+  {
+    slug: 'panel-sculpture-no1',
+    name: 'AMD NSRI Panel Sculpture No.1',
+    description: '3D printed aluminum-finish facade panel sculpture, 15cm',
+    detail:
+      'A physical object derived from AMD NSRI facade studies — a 15cm panel sculpture printed in high-detail resin with an aluminum-finish surface treatment. Limited production run, studio-signed.',
+    category: '3D Printing',
+    price: '—',
+    mode: 'coming-soon',
+    deliveryType: 'Physical',
+    included: [
+      'Studio-signed sculpture',
+      'Numbered certificate',
+      'Protective packaging',
+    ],
+    requirements: [],
+    related: ['amd-nsri-lattice-pendant'],
     image: null,
   },
   {
-    slug: 'perforation-pattern-engine',
-    name: 'Perforation Pattern Engine',
-    description: 'Parametric perforation layout generator for Rhino',
+    slug: 'amd-nsri-lattice-pendant',
+    name: 'AMD NSRI Lattice Pendant',
+    description: 'Generative lattice structure, resin printed',
     detail:
-      'A parametric perforation layout generator for Rhino and Grasshopper. Drive pitch, diameter, and open-area ratio across any panel field and export rationalized, fabrication-ready layouts for CNC punching and laser cutting.',
-    category: 'Plugin',
-    price: '₺1,800',
-    mode: 'buy',
+      'A wearable object generated from AMD NSRI lattice studies — a pendant in high-detail clear resin with internal structural geometry derived from parametric models. Limited production run.',
+    category: '3D Printing',
+    price: '—',
+    mode: 'coming-soon',
+    deliveryType: 'Physical',
     included: [
-      'Commented Grasshopper definition (.gh)',
-      'Step-by-step PDF documentation',
-      'Example Rhino files',
-      'Email support',
-      'Free minor updates',
+      'Pendant with cord',
+      'Studio-signed card',
+      'Protective packaging',
     ],
-    requirements: ['Rhino 7 or later', 'Grasshopper'],
-    related: ['surface-punch-mapper', 'sheet-metal-unfolder'],
-    image: null,
-  },
-  {
-    slug: 'panel-type-optimizer',
-    name: 'Panel Type Optimizer',
-    description: 'Facade panel grouping and tolerance analysis tool',
-    detail:
-      'A facade rationalization tool that groups similar panels by configurable area tolerance, cutting the number of unique fabrication types — and with it, cost and lead time — without compromising the design surface.',
-    category: 'Plugin',
-    price: '₺2,200',
-    mode: 'buy',
-    included: [
-      'Commented Grasshopper definition (.gh)',
-      'Step-by-step PDF documentation',
-      'Example Rhino files',
-      'Panel schedule template',
-      'Email support',
-      'Free minor updates',
-    ],
-    requirements: ['Rhino 7 or later', 'Grasshopper'],
-    related: ['perforation-pattern-engine', 'material-quantity-estimator-grasshopper'],
-    image: null,
-  },
-  {
-    slug: 'surface-punch-mapper',
-    name: 'Surface Punch Mapper',
-    description: 'Image-to-punch projection for 3D surfaces',
-    detail:
-      'Projects image-based punch patterns onto 3D surface geometry straight from your Rhino model. Pixel brightness maps to hole placement, enabling gradient and pictorial effects across complex facade panels — output ready for CNC.',
-    category: 'Plugin',
-    price: '₺1,500',
-    mode: 'buy',
-    included: [
-      'Commented Grasshopper definition (.gh)',
-      'Step-by-step PDF documentation',
-      'Example Rhino files',
-      'Sample image maps',
-      'Email support',
-      'Free minor updates',
-    ],
-    requirements: ['Rhino 7 or later', 'Grasshopper'],
-    related: ['perforation-pattern-engine', 'sheet-metal-unfolder'],
-    image: null,
-  },
-  {
-    slug: 'material-quantity-estimator-web',
-    name: 'Material Quantity Estimator',
-    variant: 'Web',
-    description: 'Rough material takeoff — aluminum, powder coat, profiles',
-    detail:
-      'A free, browser-based takeoff tool for fast, rough material estimates. Enter basic project inputs and get instant figures for aluminum sheets, powder-coat area, and profile lengths — no installation, no account.',
-    category: 'Digital Tool',
-    price: 'Free',
-    mode: 'free',
-    included: [
-      'Instant browser access',
-      'Aluminum sheet estimate',
-      'Powder-coat area estimate',
-      'Profile length estimate',
-      'No installation required',
-    ],
-    requirements: ['Modern web browser', 'No installation required'],
-    related: ['material-quantity-estimator-grasshopper', 'facade-configurator'],
-    image: null,
-  },
-  {
-    slug: 'material-quantity-estimator-grasshopper',
-    name: 'Material Quantity Estimator',
-    variant: 'Grasshopper',
-    description: 'Precise material quantities from Rhino drawings',
-    detail:
-      'The precision counterpart to the web estimator. This Grasshopper definition reads your Rhino model geometry directly to produce exact material quantities — aluminum sheet counts, powder-coat area, and profile lengths — ready for procurement.',
-    category: 'Plugin',
-    price: '₺3,000',
-    mode: 'buy',
-    included: [
-      'Commented Grasshopper definition (.gh)',
-      'Step-by-step PDF documentation',
-      'Example Rhino files',
-      'Quantity schedule template',
-      'Email support',
-      'Free minor updates',
-    ],
-    requirements: ['Rhino 7 or later', 'Grasshopper'],
-    related: ['material-quantity-estimator-web', 'panel-type-optimizer'],
-    image: null,
-  },
-  {
-    slug: 'facade-configurator',
-    name: 'Facade Configurator',
-    description: 'Interactive web-based facade panel configurator',
-    detail:
-      'An interactive, web-based configurator that lets clients assemble a facade in real time — swapping panels, depth, and material in a live preview and exporting a specification ready for quoting. Deployed and branded for your studio.',
-    category: 'Digital Tool',
-    price: 'Contact for pricing',
-    mode: 'contact',
-    included: [
-      'Custom-branded web deployment',
-      'Real-time 3D configurator',
-      'Specification export',
-      'Setup and onboarding',
-      'Priority support',
-    ],
-    requirements: ['Modern web browser', 'Project brief required'],
-    related: ['material-quantity-estimator-web', 'pinact'],
-    image: null,
-  },
-  {
-    slug: 'pinact',
-    name: 'Pinact',
-    description: 'Location intelligence and site analysis software',
-    detail:
-      'Standalone location-intelligence software for site analysis and positioning. Pinact aggregates spatial data to help architects and developers evaluate sites, read their surroundings, and communicate location potential.',
-    category: 'Software',
-    price: 'Contact for pricing',
-    mode: 'contact',
-    included: [
-      'Standalone desktop application',
-      'Site analysis toolkit',
-      'Location reporting export',
-      'Setup and onboarding',
-      'Priority support',
-    ],
-    requirements: ['Windows 10 or later', 'License key (provided)'],
-    related: ['facade-configurator', 'material-quantity-estimator-web'],
+    requirements: [],
+    related: ['panel-sculpture-no1'],
     image: null,
   },
 ];
