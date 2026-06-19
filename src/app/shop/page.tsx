@@ -121,7 +121,7 @@ function ProductCard({ product, index }: { product: ShopProduct; index: number }
 
 /* ── Page ──────────────────────────────────────────────────────────────── */
 export default function ShopPage() {
-  const { t, tv } = useLanguage();
+  const { t } = useLanguage();
   const [active, setActive] = useState<ShopFilter>('All');
 
   const visible = products.filter(p => matchesFilter(p, active));
