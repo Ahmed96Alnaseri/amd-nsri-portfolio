@@ -206,6 +206,24 @@ export const translations = {
       platform:    'Platform',
       price:       'Price',
     },
+    shop: {
+      eyebrow:       'Shop',
+      title:         'Own. Deploy. Build.',
+      desc:          'Tools, plugins, and software from the AMD NSRI studio — production-tested and ready to deploy in your own workflow.',
+      whatIncluded:  "What's included",
+      requirements:  'Requirements',
+      related:       'Related Tools',
+      getIt:         'Get It',
+      purchase:      'Purchase',
+      contact:       'Contact',
+      back:          'Back to Shop',
+      price:         'Price',
+      category:      'Category',
+      fPlugins:      'Plugins',
+      fDigitalTools: 'Digital Tools',
+      fSoftware:     'Software',
+      fFree:         'Free',
+    },
     contact: {
       title:             'Start a\nconversation.',
       emailLabel:        'Email',
@@ -433,6 +451,24 @@ export const translations = {
       back:        'Araçlara Dön',
       platform:    'Platform',
       price:       'Fiyat',
+    },
+    shop: {
+      eyebrow:       'Mağaza',
+      title:         'Sahip Ol. Kur. İnşa Et.',
+      desc:          'AMD NSRI stüdyosundan araçlar, eklentiler ve yazılımlar — üretimde test edilmiş ve kendi iş akışınıza dahil etmeye hazır.',
+      whatIncluded:  'Neler dahil',
+      requirements:  'Gereksinimler',
+      related:       'İlgili Araçlar',
+      getIt:         'Edin',
+      purchase:      'Satın Al',
+      contact:       'İletişim',
+      back:          'Mağazaya Dön',
+      price:         'Fiyat',
+      category:      'Kategori',
+      fPlugins:      'Eklentiler',
+      fDigitalTools: 'Dijital Araçlar',
+      fSoftware:     'Yazılım',
+      fFree:         'Ücretsiz',
     },
     contact: {
       title:             'Bir sohbet\nbaşlatın.',
@@ -662,6 +698,24 @@ export const translations = {
       platform:    'المنصّة',
       price:       'السعر',
     },
+    shop: {
+      eyebrow:       'المتجر',
+      title:         'امتلك. انشُر. ابنِ.',
+      desc:          'أدوات وإضافات وبرمجيات من استوديو AMD NSRI — مُختبَرة في الإنتاج وجاهزة للدمج في سير عملك الخاص.',
+      whatIncluded:  'ما المتضمَّن',
+      requirements:  'المتطلبات',
+      related:       'أدوات ذات صلة',
+      getIt:         'احصل عليه',
+      purchase:      'شراء',
+      contact:       'تواصل',
+      back:          'العودة إلى المتجر',
+      price:         'السعر',
+      category:      'الفئة',
+      fPlugins:      'إضافات',
+      fDigitalTools: 'أدوات رقمية',
+      fSoftware:     'برمجيات',
+      fFree:         'مجاني',
+    },
     contact: {
       title:             'ابدأ\nمحادثة.',
       emailLabel:        'البريد الإلكتروني',
@@ -815,6 +869,75 @@ const VALUES: Record<Lang, ValueMap> = {
       'Temel proje girişlerinden hızlı tahmini değerler için web versiyonu',
     'Grasshopper version reads model geometry for precise quantities':
       'Hassas miktarlar için Grasshopper versiyonu model geometrisini okur',
+    // shop — categories / price / product
+    'Digital Tool': 'Dijital Araç',
+    'Software': 'Yazılım',
+    'Template': 'Şablon',
+    'Free': 'Ücretsiz',
+    'Facade Configurator': 'Cephe Yapılandırıcı',
+    // shop — product descriptions
+    'Grasshopper definition for flat pattern generation':
+      'Düz desen üretimi için Grasshopper tanımı',
+    'Parametric perforation layout generator for Rhino':
+      'Rhino için parametrik delik düzeni üreteci',
+    'Facade panel grouping and tolerance analysis tool':
+      'Cephe paneli gruplama ve tolerans analizi aracı',
+    'Image-to-punch projection for 3D surfaces':
+      '3B yüzeyler için görüntüden delgiye projeksiyon',
+    'Rough material takeoff — aluminum, powder coat, profiles':
+      'Kaba malzeme metrajı — alüminyum, toz boya, profiller',
+    'Precise material quantities from Rhino drawings':
+      'Rhino çizimlerinden hassas malzeme miktarları',
+    'Interactive web-based facade panel configurator':
+      'Etkileşimli web tabanlı cephe paneli yapılandırıcı',
+    'Location intelligence and site analysis software':
+      'Konum zekası ve arsa analizi yazılımı',
+    // shop — detail paragraphs
+    'A production-tested Grasshopper definition that unfolds complex sheet metal geometry into accurate flat cutting patterns. Configurable k-factor and bend radius keep every fold true to the model, with DXF-ready output for laser and press brake.':
+      'Karmaşık sac metal geometrisini doğru düz kesim desenlerine açan, üretimde test edilmiş bir Grasshopper tanımı. Ayarlanabilir k-faktörü ve büküm yarıçapı her bükümü modele sadık tutar; lazer ve abkant için DXF hazır çıktı sunar.',
+    'A parametric perforation layout generator for Rhino and Grasshopper. Drive pitch, diameter, and open-area ratio across any panel field and export rationalized, fabrication-ready layouts for CNC punching and laser cutting.':
+      'Rhino ve Grasshopper için parametrik bir delik düzeni üreteci. Herhangi bir panel alanında aralığı, çapı ve açık alan oranını yönetin ve CNC delme ile lazer kesim için rasyonalize, fabrikasyona hazır düzenler dışa aktarın.',
+    'A facade rationalization tool that groups similar panels by configurable area tolerance, cutting the number of unique fabrication types — and with it, cost and lead time — without compromising the design surface.':
+      'Benzer panelleri ayarlanabilir alan toleransına göre gruplandıran bir cephe rasyonalizasyon aracı; tasarım yüzeyinden ödün vermeden benzersiz fabrikasyon tiplerinin sayısını — ve böylece maliyeti ve teslim süresini — azaltır.',
+    'Projects image-based punch patterns onto 3D surface geometry straight from your Rhino model. Pixel brightness maps to hole placement, enabling gradient and pictorial effects across complex facade panels — output ready for CNC.':
+      'Görüntü tabanlı delgi desenlerini doğrudan Rhino modelinizden 3B yüzey geometrisine projekte eder. Piksel parlaklığı delik yerleşimine eşlenir; karmaşık cephe panellerinde gradyan ve figüratif efektler sağlar — CNC için hazır çıktı.',
+    'A free, browser-based takeoff tool for fast, rough material estimates. Enter basic project inputs and get instant figures for aluminum sheets, powder-coat area, and profile lengths — no installation, no account.':
+      'Hızlı, kaba malzeme tahminleri için ücretsiz, tarayıcı tabanlı bir metraj aracı. Temel proje girdilerini girin ve alüminyum sac, toz boya alanı ve profil uzunlukları için anında değerler alın — kurulum yok, hesap yok.',
+    'The precision counterpart to the web estimator. This Grasshopper definition reads your Rhino model geometry directly to produce exact material quantities — aluminum sheet counts, powder-coat area, and profile lengths — ready for procurement.':
+      'Web tahmincisinin hassas karşılığı. Bu Grasshopper tanımı, Rhino model geometrinizi doğrudan okuyarak tam malzeme miktarları üretir — alüminyum sac sayıları, toz boya alanı ve profil uzunlukları — tedariğe hazır.',
+    'An interactive, web-based configurator that lets clients assemble a facade in real time — swapping panels, depth, and material in a live preview and exporting a specification ready for quoting. Deployed and branded for your studio.':
+      'Müşterilerin bir cepheyi gerçek zamanlı kurmasına olanak tanıyan etkileşimli, web tabanlı bir yapılandırıcı — panelleri, derinliği ve malzemeyi canlı önizlemede değiştirir ve teklife hazır bir şartname dışa aktarır. Stüdyonuz için kurulur ve markalanır.',
+    'Standalone location-intelligence software for site analysis and positioning. Pinact aggregates spatial data to help architects and developers evaluate sites, read their surroundings, and communicate location potential.':
+      'Arsa analizi ve konumlandırma için bağımsız konum zekası yazılımı. Pinact, mimarların ve geliştiricilerin arsaları değerlendirmesine, çevrelerini okumasına ve konum potansiyelini iletmesine yardımcı olmak için mekansal verileri bir araya getirir.',
+    // shop — what's included
+    'Commented Grasshopper definition (.gh)': 'Açıklamalı Grasshopper tanımı (.gh)',
+    'Step-by-step PDF documentation': 'Adım adım PDF dokümantasyonu',
+    'Example Rhino files': 'Örnek Rhino dosyaları',
+    'Sample DXF output': 'Örnek DXF çıktısı',
+    'Email support': 'E-posta desteği',
+    'Free minor updates': 'Ücretsiz küçük güncellemeler',
+    'Panel schedule template': 'Panel programı şablonu',
+    'Sample image maps': 'Örnek görüntü haritaları',
+    'Instant browser access': 'Anında tarayıcı erişimi',
+    'Aluminum sheet estimate': 'Alüminyum sac tahmini',
+    'Powder-coat area estimate': 'Toz boya alanı tahmini',
+    'Profile length estimate': 'Profil uzunluğu tahmini',
+    'No installation required': 'Kurulum gerektirmez',
+    'Quantity schedule template': 'Miktar programı şablonu',
+    'Custom-branded web deployment': 'Özel markalı web dağıtımı',
+    'Real-time 3D configurator': 'Gerçek zamanlı 3B yapılandırıcı',
+    'Specification export': 'Şartname dışa aktarımı',
+    'Setup and onboarding': 'Kurulum ve başlangıç desteği',
+    'Priority support': 'Öncelikli destek',
+    'Standalone desktop application': 'Bağımsız masaüstü uygulaması',
+    'Site analysis toolkit': 'Arsa analizi araç seti',
+    'Location reporting export': 'Konum raporlama dışa aktarımı',
+    // shop — requirements
+    'Rhino 7 or later': 'Rhino 7 veya üzeri',
+    'Modern web browser': 'Modern web tarayıcısı',
+    'Project brief required': 'Proje brifi gerekli',
+    'Windows 10 or later': 'Windows 10 veya üzeri',
+    'License key (provided)': 'Lisans anahtarı (sağlanır)',
     // types / programs
     'Parametric Canopy': 'Parametrik Kanopi',
     'Perforated Facade': 'Delikli Cephe',
@@ -1039,6 +1162,75 @@ const VALUES: Record<Lang, ValueMap> = {
       'الإصدار الإلكتروني للتقديرات التقريبية السريعة من المدخلات الأساسية للمشروع',
     'Grasshopper version reads model geometry for precise quantities':
       'إصدار Grasshopper يقرأ هندسة النموذج للحصول على كميات دقيقة',
+    // shop — categories / price / product
+    'Digital Tool': 'أداة رقمية',
+    'Software': 'برمجيات',
+    'Template': 'قالب',
+    'Free': 'مجاني',
+    'Facade Configurator': 'مُهيّئ الواجهات',
+    // shop — product descriptions
+    'Grasshopper definition for flat pattern generation':
+      'تعريف Grasshopper لتوليد الأنماط المسطّحة',
+    'Parametric perforation layout generator for Rhino':
+      'مولّد تخطيطات تثقيب بارامتري لـ Rhino',
+    'Facade panel grouping and tolerance analysis tool':
+      'أداة تجميع ألواح الواجهة وتحليل التفاوت',
+    'Image-to-punch projection for 3D surfaces':
+      'إسقاط من الصورة إلى التثقيب للأسطح ثلاثية الأبعاد',
+    'Rough material takeoff — aluminum, powder coat, profiles':
+      'حصر مواد تقريبي — ألمنيوم، طلاء بودري، أنظمة',
+    'Precise material quantities from Rhino drawings':
+      'كميات مواد دقيقة من رسومات Rhino',
+    'Interactive web-based facade panel configurator':
+      'مُهيّئ ألواح واجهة تفاعلي قائم على الويب',
+    'Location intelligence and site analysis software':
+      'برنامج ذكاء موقعي وتحليل المواقع',
+    // shop — detail paragraphs
+    'A production-tested Grasshopper definition that unfolds complex sheet metal geometry into accurate flat cutting patterns. Configurable k-factor and bend radius keep every fold true to the model, with DXF-ready output for laser and press brake.':
+      'تعريف Grasshopper مُختبَر في الإنتاج يفرد هندسة الصفائح المعدنية المعقّدة إلى أنماط قصّ مسطّحة دقيقة. معامل K ونصف قطر الثني القابلان للضبط يبقيان كل ثنية وفيّة للنموذج، مع إخراج جاهز بصيغة DXF لليزر والمكبس.',
+    'A parametric perforation layout generator for Rhino and Grasshopper. Drive pitch, diameter, and open-area ratio across any panel field and export rationalized, fabrication-ready layouts for CNC punching and laser cutting.':
+      'مولّد تخطيطات تثقيب بارامتري لـ Rhino وGrasshopper. تحكّم في الخطوة والقطر ونسبة المساحة المفتوحة عبر أي حقل ألواح، وصدّر تخطيطات مُرشَّدة جاهزة للتصنيع لـ CNC والقصّ بالليزر.',
+    'A facade rationalization tool that groups similar panels by configurable area tolerance, cutting the number of unique fabrication types — and with it, cost and lead time — without compromising the design surface.':
+      'أداة ترشيد واجهات تجمّع الألواح المتشابهة حسب تفاوت مساحة قابل للضبط، مقلّصةً عدد أنواع التصنيع الفريدة — ومعها التكلفة ووقت التسليم — دون المساس بسطح التصميم.',
+    'Projects image-based punch patterns onto 3D surface geometry straight from your Rhino model. Pixel brightness maps to hole placement, enabling gradient and pictorial effects across complex facade panels — output ready for CNC.':
+      'يسقط أنماط تثقيب قائمة على الصور مباشرةً من نموذج Rhino على هندسة الأسطح ثلاثية الأبعاد. يُربط سطوع البكسل بموضع الثقب، ممكّناً تأثيرات تدرّجية وتصويرية عبر ألواح الواجهة المعقّدة — إخراج جاهز لـ CNC.',
+    'A free, browser-based takeoff tool for fast, rough material estimates. Enter basic project inputs and get instant figures for aluminum sheets, powder-coat area, and profile lengths — no installation, no account.':
+      'أداة حصر مجانية تعمل في المتصفح لتقديرات مواد سريعة وتقريبية. أدخل مدخلات المشروع الأساسية واحصل على أرقام فورية لصفائح الألمنيوم ومساحة الطلاء البودري وأطوال الأنظمة — دون تثبيت ودون حساب.',
+    'The precision counterpart to the web estimator. This Grasshopper definition reads your Rhino model geometry directly to produce exact material quantities — aluminum sheet counts, powder-coat area, and profile lengths — ready for procurement.':
+      'النظير الدقيق لمقدّر الويب. يقرأ تعريف Grasshopper هذا هندسة نموذج Rhino مباشرةً لإنتاج كميات مواد دقيقة — أعداد صفائح الألمنيوم ومساحة الطلاء البودري وأطوال الأنظمة — جاهزة للتوريد.',
+    'An interactive, web-based configurator that lets clients assemble a facade in real time — swapping panels, depth, and material in a live preview and exporting a specification ready for quoting. Deployed and branded for your studio.':
+      'مُهيّئ تفاعلي قائم على الويب يتيح للعملاء تجميع واجهة في الوقت الفعلي — تبديل الألواح والعمق والمادة في معاينة حيّة وتصدير مواصفات جاهزة للتسعير. يُنشَر ويُوسَم لعلامة استوديوك.',
+    'Standalone location-intelligence software for site analysis and positioning. Pinact aggregates spatial data to help architects and developers evaluate sites, read their surroundings, and communicate location potential.':
+      'برنامج ذكاء موقعي مستقل لتحليل المواقع والتموضع. يجمع Pinact البيانات المكانية لمساعدة المعماريين والمطوّرين على تقييم المواقع وقراءة محيطها وإيصال إمكانياتها الموقعية.',
+    // shop — what's included
+    'Commented Grasshopper definition (.gh)': 'تعريف Grasshopper موثّق (.gh)',
+    'Step-by-step PDF documentation': 'توثيق PDF خطوة بخطوة',
+    'Example Rhino files': 'ملفات Rhino نموذجية',
+    'Sample DXF output': 'إخراج DXF نموذجي',
+    'Email support': 'دعم عبر البريد الإلكتروني',
+    'Free minor updates': 'تحديثات طفيفة مجانية',
+    'Panel schedule template': 'قالب جدول الألواح',
+    'Sample image maps': 'خرائط صور نموذجية',
+    'Instant browser access': 'وصول فوري عبر المتصفح',
+    'Aluminum sheet estimate': 'تقدير صفائح الألمنيوم',
+    'Powder-coat area estimate': 'تقدير مساحة الطلاء البودري',
+    'Profile length estimate': 'تقدير أطوال الأنظمة',
+    'No installation required': 'لا يتطلّب تثبيتاً',
+    'Quantity schedule template': 'قالب جدول الكميات',
+    'Custom-branded web deployment': 'نشر ويب بعلامة مخصّصة',
+    'Real-time 3D configurator': 'مُهيّئ ثلاثي الأبعاد فوري',
+    'Specification export': 'تصدير المواصفات',
+    'Setup and onboarding': 'الإعداد والتهيئة',
+    'Priority support': 'دعم بأولوية',
+    'Standalone desktop application': 'تطبيق مكتبي مستقل',
+    'Site analysis toolkit': 'مجموعة أدوات تحليل المواقع',
+    'Location reporting export': 'تصدير تقارير الموقع',
+    // shop — requirements
+    'Rhino 7 or later': 'Rhino 7 أو أحدث',
+    'Modern web browser': 'متصفح ويب حديث',
+    'Project brief required': 'يتطلّب ملخّص مشروع',
+    'Windows 10 or later': 'Windows 10 أو أحدث',
+    'License key (provided)': 'مفتاح ترخيص (يُوفَّر)',
     // types / programs
     'Parametric Canopy': 'مظلّة بارامترية',
     'Perforated Facade': 'واجهة مثقّبة',
