@@ -220,20 +220,24 @@ export default function CallToActionSection() {
           align-items: center;
           justify-content: center;
           padding: 14px 20px;
-          background: rgba(255, 255, 255, 0.08);
-          -webkit-backdrop-filter: blur(20px) saturate(180%);
-          backdrop-filter: blur(20px) saturate(180%);
-          border: 1px solid rgba(255, 255, 255, 0.15);
+          background: rgba(255, 255, 255, 0.06);
+          -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 2px;
           cursor: pointer;
           text-decoration: none;
+          color: white;
           animation: ctaWorksRise 250ms ease-out both;
-          transition: border-color 200ms ease, background 200ms ease;
+          transition: border-color 200ms ease;
+        }
+        .cta-works-card:visited {
+          background: rgba(255, 255, 255, 0.06);
+          color: white;
         }
         .cta-works-card:hover,
         .cta-works-card:focus-visible {
           border-color: #b8956a;
-          background: rgba(255, 255, 255, 0.12);
           outline: none;
         }
         @keyframes ctaWorksRise {
