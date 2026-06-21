@@ -326,13 +326,6 @@ export default function FabricationIntelligenceSection() {
 
       </div>
 
-      {/* Bottom title-block strip — drawing sheet language */}
-      <div className="fabint-bottom" aria-hidden="true">
-        <span>{t('fabint.bottom1')}</span>
-        <span>{t('fabint.bottom2')}</span>
-        <span>{t('fabint.bottom3')}</span>
-        <span className="fabint-bottom-fill">{t('fabint.bottom4')}</span>
-      </div>
     </section>
   );
 }

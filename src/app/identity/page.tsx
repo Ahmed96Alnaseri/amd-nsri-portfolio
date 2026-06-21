@@ -21,7 +21,7 @@ export default function IdentityPage() {
             — the distance to an endpoint. The path toward a destination.
           </span>
         </p>
-        <p className="id-subline">Istanbul · Est. 2024</p>
+        <p className="id-subline">Istanbul · Est. 2026</p>
       </header>
 
       {/* ── 2. STATEMENT ────────────────────────────────────────── */}
@@ -55,7 +55,7 @@ export default function IdentityPage() {
               <span className="id-mono-mark">AMD</span>
               <p className="id-body">
                 Drawn from <em>Ahmed</em> — the founder&apos;s name — and from the
-                Arabic <span dir="rtl" lang="ar">أَمَد</span> (<em>amad</em>): a goal, an
+                Arabic <span dir="rtl" lang="ar">أَمَد</span> (<em>AMD</em>): a goal, an
                 endpoint, a distance, a duration; the path travelled toward a
                 destination. The name carries both a signature and a direction.
               </p>
@@ -172,8 +172,8 @@ export default function IdentityPage() {
 
       <div className="id-strip" aria-hidden="true">
         <span>AMD NSRI</span>
-        <span>Identity</span>
-        <span>Istanbul · Est. 2024</span>
+        <span>About</span>
+        <span>Istanbul · Est. 2026</span>
         <span className="id-strip-fill" />
       </div>
 
@@ -223,6 +223,7 @@ export default function IdentityPage() {
         .id-hero-glow {
           position: absolute; inset: 0; z-index: 0; pointer-events: none;
           background:
+            linear-gradient(to right, #0d0d0b 0%, transparent 20%),
             radial-gradient(ellipse 70% 60% at 20% 20%, rgba(184,149,106,0.10) 0%, transparent 65%),
             radial-gradient(ellipse 60% 50% at 85% 40%, rgba(26,32,48,0.14) 0%, transparent 60%);
         }

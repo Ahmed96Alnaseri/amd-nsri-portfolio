@@ -1,214 +1,172 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
+import { MAP_DOTS } from '@/data/map-dots';
 
-/* ── stat definitions ────────────────────────────────────────────────── */
-const STATS: { value: number; suffix: string; labelKey: string }[] = [
-  { value: 12, suffix: '+', labelKey: 'stats.projects' },
-  { value: 4,  suffix: '',  labelKey: 'stats.countries' },
-  { value: 6,  suffix: '',  labelKey: 'stats.tools' },
-  { value: 3,  suffix: '',  labelKey: 'stats.disciplines' },
+const LOCATIONS = [
+  { country: 'Turkey',         city: 'Istanbul',  lat: 41.01, lon: 28.98, home: true },
+  { country: 'Iraq',           city: 'Baghdad',   lat: 33.31, lon: 44.36 },
+  { country: 'United Kingdom', city: 'London',    lat: 51.51, lon: -0.13 },
+  { country: 'United States',  city: 'New York',  lat: 40.71, lon: -74.00 },
+  { country: 'UAE',            city: 'Dubai',     lat: 25.20, lon: 55.27 },
+  { country: 'Qatar',          city: 'Doha',      lat: 25.29, lon: 51.53 },
+  { country: 'Germany',        city: 'Berlin',    lat: 52.52, lon: 13.40 },
 ];
 
-/* ── dotted world map (equirectangular) ──────────────────────────────────
-   Low-res land mask. Each row = a latitude band (80°N → -50°S, 5° steps).
-   Each entry = inclusive [startCol, endCol] column ranges across 60 columns
-   (-180° → 180° longitude). Markers are projected with the same function so
-   they always land on the dot field. ───────────────────────────────────── */
-const COLS = 60;
-const ROWS = 27;
-const VW = 600;
-const VH = 300;
-
-const LAND: [number, number][][] = [
-  /* 80 */ [[12, 16], [23, 26]],
-  /* 75 */ [[11, 17], [22, 27], [46, 55]],
-  /* 70 */ [[9, 18], [23, 27], [30, 58]],
-  /* 65 */ [[8, 18], [24, 26], [29, 58]],
-  /* 60 */ [[7, 18], [29, 58]],
-  /* 55 */ [[7, 19], [28, 58]],
-  /* 50 */ [[7, 19], [28, 58]],
-  /* 45 */ [[9, 20], [28, 58]],
-  /* 40 */ [[10, 19], [28, 28], [30, 58]],
-  /* 35 */ [[11, 19], [28, 58]],
-  /* 30 */ [[12, 16], [28, 57]],
-  /* 25 */ [[13, 15], [28, 40], [43, 57]],
-  /* 20 */ [[15, 16], [28, 40], [43, 55]],
-  /* 15 */ [[15, 17], [28, 41], [44, 54]],
-  /* 10 */ [[19, 21], [27, 42], [50, 54]],
-  /*  5 */ [[19, 23], [28, 42], [49, 55]],
-  /*  0 */ [[19, 24], [29, 40], [50, 55]],
-  /* -5 */ [[19, 25], [31, 40], [51, 55]],
-  /* -10 */ [[19, 26], [32, 40], [52, 55]],
-  /* -15 */ [[19, 26], [32, 40], [52, 57]],
-  /* -20 */ [[20, 26], [32, 39], [51, 57]],
-  /* -25 */ [[21, 26], [33, 38], [51, 57]],
-  /* -30 */ [[21, 25], [33, 37], [52, 56]],
-  /* -35 */ [[21, 24], [53, 55]],
-  /* -40 */ [[21, 23]],
-  /* -45 */ [[21, 23]],
-  /* -50 */ [[22, 22]],
-];
-
-const proj = (lon: number, lat: number) => ({
-  x: ((lon + 180) / 360) * VW,
-  y: ((80 - lat) / 130) * VH,
-});
-
-const MARKERS = [
-  { key: 'istanbul', lon: 29, lat: 41, delay: 0 },
-  { key: 'iraq', lon: 44, lat: 33.3, delay: 0.8 },
-  { key: 'turkmenistan', lon: 58, lat: 39, delay: 1.6 },
-];
-
-/* ── animated counter ────────────────────────────────────────────────── */
-function StatItem({
-  value,
-  suffix,
-  label,
-  run,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-  run: boolean;
-}) {
-  const [n, setN] = useState(0);
-
-  useEffect(() => {
-    if (!run) return;
-    const reduce =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) {
-      setN(value);
-      return;
-    }
-    const duration = 1800;
-    const start = performance.now();
-    let raf = 0;
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setN(Math.round(eased * value));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [run, value]);
-
-  return (
-    <div className="stat" role="img" aria-label={`${value}${suffix} ${label}`}>
-      <span className="stat-num" aria-hidden="true">
-        {n}
-        <span className="stat-suffix">{suffix}</span>
-      </span>
-      <span className="stat-label" aria-hidden="true">
-        {label}
-      </span>
-    </div>
-  );
+function proj(lon: number, lat: number) {
+  return { x: (lon + 180) * 2, y: (80 - lat) * 2 };
 }
 
-/* ── section ─────────────────────────────────────────────────────────── */
+const STAT_DEFS: { target: number; suffix: string; labelKey: string; id?: string }[] = [
+  { target: 48, suffix: '+', labelKey: 'stats.projects' },
+  { target: 12, suffix: '',  labelKey: 'stats.tools' },
+  { target: 0,  suffix: '',  labelKey: 'stats.countries', id: 'amdCountries' },
+  { target: 30, suffix: '+', labelKey: 'stats.clients' },
+];
+
 export default function StatsSection() {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [run, setRun] = useState(false);
+  const arcsRef   = useRef<SVGGElement | null>(null);
+  const nodesRef  = useRef<SVGGElement | null>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
+    const root = sectionRef.current;
+    if (!root) return;
+    const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setRun(true);
-            observer.disconnect();
-          }
+          if (entry.isIntersecting) { setVisible(true); io.disconnect(); }
         });
       },
       { threshold: 0.3 }
     );
-    observer.observe(el);
-    return () => observer.disconnect();
+    io.observe(root);
+    return () => io.disconnect();
   }, []);
 
-  const dots = useMemo(() => {
-    const out: { x: number; y: number }[] = [];
-    for (let r = 0; r < ROWS; r++) {
-      for (const [a, b] of LAND[r]) {
-        for (let c = a; c <= b; c++) {
-          out.push({
-            x: +((c / (COLS - 1)) * VW).toFixed(1),
-            y: +((r / (ROWS - 1)) * VH).toFixed(1),
-          });
-        }
-      }
+  useEffect(() => {
+    if (!visible) return;
+    const root    = sectionRef.current;
+    const arcsG   = arcsRef.current;
+    const nodesG  = nodesRef.current;
+    if (!root || !arcsG || !nodesG) return;
+
+    const SVGNS = 'http://www.w3.org/2000/svg';
+    const home  = LOCATIONS.find((l) => l.home) ?? LOCATIONS[0];
+    const hp    = proj(home.lon, home.lat);
+
+    LOCATIONS.forEach((loc) => {
+      const p = proj(loc.lon, loc.lat);
+      if (loc === home) return;
+
+      const mx = (hp.x + p.x) / 2;
+      const d  = Math.hypot(p.x - hp.x, p.y - hp.y);
+      const my = Math.min(hp.y, p.y) - 0.22 * d;
+
+      const path = document.createElementNS(SVGNS, 'path');
+      path.setAttribute('class', 'amd-map__arc');
+      path.setAttribute('d', `M${hp.x} ${hp.y} Q${mx.toFixed(1)} ${my.toFixed(1)} ${p.x} ${p.y}`);
+      arcsG.appendChild(path);
+
+      const node = document.createElementNS(SVGNS, 'circle');
+      node.setAttribute('class', 'amd-map__node');
+      node.setAttribute('cx', String(p.x));
+      node.setAttribute('cy', String(p.y));
+      node.setAttribute('r', '2.4');
+      nodesG.appendChild(node);
+    });
+
+    Array.from(arcsG.querySelectorAll<SVGElement>('.amd-map__arc')).forEach((a, i) => {
+      a.style.animationDelay = `${0.12 * i}s`;
+    });
+
+    const pulse = document.createElementNS(SVGNS, 'circle');
+    pulse.setAttribute('class', 'amd-map__pulse');
+    pulse.setAttribute('cx', String(hp.x));
+    pulse.setAttribute('cy', String(hp.y));
+    pulse.setAttribute('r', '3');
+    nodesG.appendChild(pulse);
+
+    const homeDot = document.createElementNS(SVGNS, 'circle');
+    homeDot.setAttribute('class', 'amd-map__home');
+    homeDot.setAttribute('cx', String(hp.x));
+    homeDot.setAttribute('cy', String(hp.y));
+    homeDot.setAttribute('r', '3.2');
+    nodesG.appendChild(homeDot);
+
+    const countriesEl = root.querySelector<HTMLElement>('#amdCountries');
+    if (countriesEl) countriesEl.dataset.target = String(LOCATIONS.length);
+
+    const nums   = root.querySelectorAll<HTMLElement>('.amd-stat__num');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function fmt(n: number) { return n.toLocaleString('en-US'); }
+    function withSuffix(v: number, s: string) {
+      return `${fmt(v)}${s ? `<span class="amd-stat__suffix">${s}</span>` : ''}`;
     }
-    return out;
-  }, []);
+    function setFinal(e: HTMLElement) {
+      e.innerHTML = withSuffix(parseFloat(e.dataset.target ?? '0') || 0, e.dataset.suffix ?? '');
+    }
+    function animate(e: HTMLElement) {
+      const target = parseFloat(e.dataset.target ?? '0') || 0;
+      const suffix = e.dataset.suffix ?? '';
+      const dur    = 1800;
+      let start: number | null = null;
+      function step(now: number) {
+        if (start === null) start = now;
+        const p = Math.min((now - start) / dur, 1);
+        const k = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+        e.innerHTML = withSuffix(Math.round(target * k), suffix);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    nums.forEach((e) => { if (reduce) setFinal(e); else animate(e); });
+  }, [visible]);
 
   return (
-    <section ref={sectionRef} className="stats-section" aria-labelledby="stats-heading">
-      {/* Header — PRESENCE + copper rule */}
-      <div className="stats-top-rule">
-        <span id="stats-heading" className="stats-label">
-          {t('stats.eyebrow')}
-        </span>
-        <span className="stats-rule-line" aria-hidden="true" />
-      </div>
+    <section
+      ref={sectionRef}
+      className={`amd-stats${visible ? ' is-visible' : ''}`}
+      aria-label={t('stats.mapAria')}
+    >
+      <div className="amd-stats__inner">
+        <p className="amd-stats__eyebrow">{t('stats.eyebrow')}</p>
+        <h2 className="amd-stats__title">{t('stats.title')}</h2>
+        <p className="amd-stats__sub">{t('stats.subtitle')}</p>
 
-      <div className="stats-inner">
-        {/* Left — counters */}
-        <div className="stats-grid">
-          {STATS.map((s) => (
-            <StatItem
-              key={s.labelKey}
-              value={s.value}
-              suffix={s.suffix}
-              label={t(s.labelKey)}
-              run={run}
-            />
-          ))}
-        </div>
-
-        {/* Right — dotted world map */}
-        <div className="stats-map">
-          <svg
-            viewBox={`0 0 ${VW} ${VH}`}
-            className="stats-map-svg"
-            role="img"
-            aria-label={t('stats.mapAria')}
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <g className="stats-dots">
-              {dots.map((d, i) => (
-                <circle key={i} cx={d.x} cy={d.y} r={1.5} />
+        <div className="amd-stats__map" role="img" aria-label={t('stats.mapAria')} style={{ overflow: 'hidden', maxHeight: '800px' }}>
+          <svg viewBox="-10 -10 740 292" xmlns="http://www.w3.org/2000/svg" overflow="visible" width="100%" height="800px" style={{ maxHeight: '800px' }}>
+            <g className="amd-map__land">
+              {MAP_DOTS.map(([cx, cy], i) => (
+                <circle key={i} cx={cx} cy={cy} r={1.15} />
               ))}
             </g>
-
-            {MARKERS.map((m) => {
-              const { x, y } = proj(m.lon, m.lat);
-              return (
-                <g key={m.key} style={{ ['--pulse-delay' as string]: `${m.delay}s` }}>
-                  <circle className="stats-pulse" cx={x} cy={y} r={6} />
-                  <rect
-                    className="stats-marker"
-                    x={x - 4}
-                    y={y - 4}
-                    width={8}
-                    height={8}
-                    transform={`rotate(45 ${x} ${y})`}
-                  />
-                </g>
-              );
-            })}
+            <g className="amd-map__arcs" ref={arcsRef} />
+            <g className="amd-map__nodes" ref={nodesRef} />
           </svg>
         </div>
-      </div>
 
+        <div className="amd-stats__grid">
+          {STAT_DEFS.map((s) => (
+            <div key={s.labelKey} className="amd-stat">
+              <div
+                className="amd-stat__num"
+                id={s.id}
+                data-target={s.target}
+                data-suffix={s.suffix}
+              >
+                0
+              </div>
+              <div className="amd-stat__label">{t(s.labelKey)}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

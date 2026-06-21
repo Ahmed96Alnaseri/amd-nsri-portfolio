@@ -141,8 +141,7 @@ export default function FeaturedWorksSection() {
       </div>
 
       {/* Bottom rule */}
-      <div className="works-bottom-rule" aria-hidden="true">
-        <div className="works-rule-line" />
+      <div className="works-bottom-rule">
         <a href="/architecture" className="works-view-all">{t('common.viewAllWorks')} →</a>
       </div>
 

@@ -2,32 +2,26 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/lib/LanguageContext';
 import { LANGS } from '@/lib/translations';
-import { useTheme, type Theme } from '@/lib/ThemeContext';
-
-const THEME_OPTIONS: { id: Theme; label: string; color: string; border: string }[] = [
-  { id: 'dark',  label: 'DARK',  color: '#0d0d0b', border: '1px solid rgba(255,255,255,0.22)' },
-  { id: 'grey',  label: 'GREY',  color: '#e8e6e0', border: '1px solid rgba(0,0,0,0.18)'       },
-  { id: 'white', label: 'WHITE', color: '#ffffff',  border: '1px solid rgba(0,0,0,0.22)'       },
-];
 
 const NAV_HREFS = [
-  { href: '/identity',     key: 'identity',     descKey: 'identityDesc'},
   { href: '/architecture', key: 'architecture', descKey: 'archDesc'   },
   { href: '/design',       key: 'design',       descKey: 'designDesc' },
   { href: '/tools',        key: 'tools',        descKey: 'toolsDesc'  },
-  { href: '/journal',      key: 'journal',      descKey: 'journalDesc'},
   { href: '/fabrication',  key: 'fabrication',  descKey: 'fabDesc'    },
   { href: '/shop',         key: 'shop',         descKey: 'shopDesc'   },
+  { href: '/journal',      key: 'journal',      descKey: 'journalDesc'},
   { href: '/contact',      key: 'contact',      descKey: 'contactDesc'},
+  { href: '/identity',     key: 'identity',     descKey: 'identityDesc'},
 ] as const;
 
 const MOBILE_NUMS = ['01', '02', '03', '04', '05', '06', '07', '08'] as const;
 
 export default function Navigation() {
   const { lang, setLang, t } = useLanguage();
-  const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
   const [scrolled,  setScrolled]  = useState(false);
   const [menuOpen,  setMenuOpen]  = useState(false);
   const [langOpen,  setLangOpen]  = useState(false);
@@ -102,7 +96,12 @@ export default function Navigation() {
             </Link>
 
             {NAV_HREFS.map((item) => (
-              <Link key={item.href} href={item.href} className="nav-link" role="listitem">
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link${pathname === item.href ? ' nav-link--active' : ''}`}
+                role="listitem"
+              >
                 {t(`nav.${item.key}`)}
               </Link>
             ))}
@@ -152,23 +151,6 @@ export default function Navigation() {
               )}
             </div>
 
-            {/* Theme switcher */}
-            <div className="theme-switcher" role="listitem" aria-label="Switch theme">
-              <span className="theme-divider" aria-hidden="true" />
-              {THEME_OPTIONS.map((opt) => (
-                <div key={opt.id} className="theme-dot-wrap">
-                  <button
-                    type="button"
-                    className={`theme-dot${theme === opt.id ? ' is-active' : ''}`}
-                    style={{ backgroundColor: opt.color, border: opt.border }}
-                    onClick={() => setTheme(opt.id)}
-                    aria-pressed={theme === opt.id}
-                    aria-label={`Switch to ${opt.label} theme`}
-                  />
-                  <span className="theme-dot-tooltip">{opt.label}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Hamburger — mobile only */}
@@ -249,7 +231,11 @@ export default function Navigation() {
           {NAV_HREFS.map((item, i) => (
             <div key={item.href} className="mobile-nav-item">
               <span className="mobile-nav-num">{MOBILE_NUMS[i]}</span>
-              <Link href={item.href} className="mobile-nav-label" onClick={() => setMenuOpen(false)}>
+              <Link
+                href={item.href}
+                className={`mobile-nav-label${pathname === item.href ? ' mobile-nav-label--active' : ''}`}
+                onClick={() => setMenuOpen(false)}
+              >
                 {t(`nav.${item.key}`)}
               </Link>
               <span className="mobile-nav-desc">{t(`nav.${item.descKey}`)}</span>
@@ -283,6 +269,16 @@ export default function Navigation() {
         @media (max-width: 1023px) {
           .hidden-mobile { display: none !important; }
           .show-mobile   { display: flex !important; }
+        }
+
+        /* ── active page indicator ── */
+        .nav-link--active {
+          color: #b8956a !important;
+          border-bottom: 1px solid #b8956a;
+          padding-bottom: 1px;
+        }
+        .mobile-nav-label--active {
+          color: #b8956a !important;
         }
 
         /* ── lang switcher (desktop) ── */
@@ -354,95 +350,6 @@ export default function Navigation() {
         }
         @media (prefers-reduced-motion: reduce) {
           .nav-lang-card { animation: none; opacity: 1; }
-        }
-
-        /* ── theme switcher ── */
-        .theme-switcher {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-        }
-        .theme-divider {
-          display: inline-block;
-          width: 1px;
-          height: 12px;
-          background: var(--color-border);
-          margin: 0 2px;
-          opacity: 0.6;
-        }
-        .theme-dot-wrap {
-          position: relative;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .theme-dot {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          cursor: pointer;
-          padding: 0;
-          flex-shrink: 0;
-          transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
-                      box-shadow 300ms ease;
-        }
-        .theme-dot:hover {
-          transform: scale(1.4);
-        }
-        .theme-dot.is-active {
-          box-shadow: 0 0 0 1.5px var(--color-accent);
-          transform: scale(1.2);
-        }
-        .theme-dot-tooltip {
-          position: absolute;
-          top: calc(100% + 8px);
-          left: 50%;
-          transform: translateX(-50%);
-          font-family: 'IBM Plex Mono', monospace;
-          font-size: 9px;
-          letter-spacing: 0.10em;
-          text-transform: uppercase;
-          color: var(--color-text-secondary);
-          white-space: nowrap;
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 200ms ease;
-        }
-        .theme-dot-wrap:hover .theme-dot-tooltip {
-          opacity: 1;
-        }
-
-        /* ── nav light-theme overrides ── */
-        html[data-theme="grey"] .nav-lang-trigger,
-        html[data-theme="white"] .nav-lang-trigger {
-          color: rgba(26, 26, 24, 0.5);
-        }
-        html[data-theme="grey"] .nav-lang-trigger:hover,
-        html[data-theme="white"] .nav-lang-trigger:hover {
-          color: var(--color-accent);
-        }
-        html[data-theme="grey"] .nav-lang-card,
-        html[data-theme="white"] .nav-lang-card {
-          background: rgba(0, 0, 0, 0.04);
-          border-color: rgba(0, 0, 0, 0.12);
-          color: rgba(26, 26, 24, 0.6);
-        }
-        html[data-theme="grey"] .nav-lang-card:hover,
-        html[data-theme="white"] .nav-lang-card:hover {
-          background: rgba(0, 0, 0, 0.08);
-          color: var(--color-text-primary);
-        }
-        html[data-theme="grey"] .mobile-lang-sep,
-        html[data-theme="white"] .mobile-lang-sep {
-          color: rgba(0, 0, 0, 0.2);
-        }
-        html[data-theme="grey"] .mobile-lang-btn,
-        html[data-theme="white"] .mobile-lang-btn {
-          color: rgba(26, 26, 24, 0.35);
-        }
-        html[data-theme="grey"] .mobile-lang-btn:hover,
-        html[data-theme="white"] .mobile-lang-btn:hover {
-          color: rgba(26, 26, 24, 0.65);
         }
 
         /* ── lang switcher (mobile) ── */
