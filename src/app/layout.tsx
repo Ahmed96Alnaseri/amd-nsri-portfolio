@@ -5,9 +5,13 @@ import { LanguageProvider } from '@/lib/LanguageContext';
 import { ThemeProvider } from '@/lib/ThemeContext';
 
 export const metadata: Metadata = {
-  title: 'AMD NSRI — Architecture, Design, Fabrication',
+  metadataBase: new URL('https://amd-nsri-portfolio-alpha.vercel.app'),
+  title: {
+    default: 'AMD NSRI',
+    template: '%s — AMD NSRI',
+  },
   description:
-    'A design-driven ecosystem connecting architectural imagination with fabrication reality. Architecture, computational design, facade systems, digital tools, and fabrication intelligence.',
+    'AMD NSRI — computational design, facade engineering and fabrication intelligence. Based in Istanbul.',
   keywords: [
     'architecture', 'computational design', 'facade systems',
     'parametric design', 'fabrication', 'panelization', 'Grasshopper',
@@ -16,9 +20,18 @@ export const metadata: Metadata = {
   authors: [{ name: 'Ahmed Alnaseri' }],
   openGraph: {
     title: 'AMD NSRI',
-    description: 'A design-driven ecosystem connecting architectural imagination with fabrication reality.',
+    description:
+      'AMD NSRI — computational design, facade engineering and fabrication intelligence. Based in Istanbul.',
     type: 'website',
     locale: 'en_US',
+    url: 'https://amd-nsri-portfolio-alpha.vercel.app',
+    siteName: 'AMD NSRI',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AMD NSRI',
+    description:
+      'AMD NSRI — computational design, facade engineering and fabrication intelligence. Based in Istanbul.',
   },
 };
 
