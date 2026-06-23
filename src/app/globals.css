@@ -5,9 +5,107 @@
 @tailwind utilities;
 
 /* ─────────────────────────────────────────────────────────────
+   Arabic text — read right-to-left and right-align. `direction: rtl` is
+   set on leaf TEXT elements only (p, headings, span, li, descriptions…),
+   so each reads RTL and its period lands correctly even when it embeds
+   Latin (e.g. "مسارات AMD NSRI"). It is NOT set on layout containers
+   (divs, grids, flex rows, the navbar), so flex/grid/nav/card ORDER is
+   untouched — a flex row keeps its direction from its container, only the
+   text inside each cell flips. Buttons get alignment only (no direction)
+   so their icon+label order never swaps. Scoped to [lang="ar"] on <html>.
+   ───────────────────────────────────────────────────────────── */
+[lang="ar"] p,
+[lang="ar"] h1,
+[lang="ar"] h2,
+[lang="ar"] h3,
+[lang="ar"] h4,
+[lang="ar"] h5,
+[lang="ar"] h6,
+[lang="ar"] li,
+[lang="ar"] dt,
+[lang="ar"] dd,
+[lang="ar"] label,
+[lang="ar"] input,
+[lang="ar"] textarea,
+[lang="ar"] span,
+[lang="ar"] em,
+[lang="ar"] strong,
+[lang="ar"] blockquote,
+[lang="ar"] figcaption,
+[lang="ar"] .description,
+[lang="ar"] .subtitle {
+  direction: rtl;
+  text-align: right;
+}
+/* Buttons: align text right but keep LTR box flow so flex children
+   (spinner / icon + label) are never reordered; plaintext gives RTL reading. */
+[lang="ar"] button {
+  text-align: right;
+  unicode-bidi: plaintext;
+}
+[lang="ar"] input::placeholder,
+[lang="ar"] textarea::placeholder {
+  text-align: right;
+}
+
+/* Exclusions — force visually LTR / left-aligned: navbar, mobile menu,
+   brand wordmarks, numbers & section-number labels, bottom title-block
+   strips, and Latin-only input fields (email / url / tel / number). */
+[lang="ar"] .nav-root, [lang="ar"] .nav-root *,
+[lang="ar"] .mobile-nav-overlay, [lang="ar"] .mobile-nav-overlay *,
+[lang="ar"] .hero2-title, [lang="ar"] .hero2-amd, [lang="ar"] .hero2-nsri,
+[lang="ar"] .intro5-word,
+[lang="ar"] .id-wordmark, [lang="ar"] .id-mono-mark, [lang="ar"] .id-founder-name,
+[lang="ar"] .ps2-bg-number, [lang="ar"] .eco-bg-number, [lang="ar"] .works-bg-number,
+[lang="ar"] .fabint-bg-number, [lang="ar"] .cta-ghost-num,
+[lang="ar"] .eco-card-num, [lang="ar"] .eco-card-ghostnum, [lang="ar"] .work-card-num,
+[lang="ar"] .ap-fn, [lang="ar"] .id-flow-num, [lang="ar"] .id-disc-no,
+[lang="ar"] .hero2-idx, [lang="ar"] .hero2-sheetno,
+[lang="ar"] .ps2-spec-no, [lang="ar"] .ps2-amd-num, [lang="ar"] .ps2-amd-letter,
+[lang="ar"] .fabint-kw-index,
+[lang="ar"] .amd-stat__num, [lang="ar"] .amd-stat__suffix,
+[lang="ar"] .hero2-titleblock, [lang="ar"] .hero2-titleblock *,
+[lang="ar"] .ap-strip, [lang="ar"] .ap-strip *,
+[lang="ar"] .id-strip, [lang="ar"] .id-strip *,
+[lang="ar"] .cpage-strip, [lang="ar"] .cpage-strip *,
+[lang="ar"] .cta-bottom, [lang="ar"] .cta-bottom *,
+[lang="ar"] .ps2-bottom, [lang="ar"] .ps2-bottom *,
+[lang="ar"] input[type="email"],
+[lang="ar"] input[type="url"],
+[lang="ar"] input[type="tel"],
+[lang="ar"] input[type="number"] {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: plaintext;
+}
+
+/* Arabic: mirror the asymmetric two-column CONTENT sections so the text
+   column sits on the right and the panel/visual on the left. `direction: rtl`
+   swaps grid column order without reordering the DOM. Navbar order and the
+   card grids (Architecture / Design / Shop / etc.) are deliberately excluded. */
+[lang="ar"] .ps2-grid,
+[lang="ar"] .fabint-inner,
+[lang="ar"] .cpage-grid,
+[lang="ar"] .cta-grid {
+  direction: rtl;
+}
+
+@media (min-width: 1024px) {
+  /* fabint uses asymmetric padding (right:0) for the right-edge SVG bleed.
+     For AR the text is now on the right, so swap padding: text gets the side
+     margin and the diagram bleeds to the LEFT edge instead. */
+  [lang="ar"] .fabint-section { padding-left: 0; padding-right: var(--spacing-side-lg); }
+  [lang="ar"] .fabint-top-rule { padding-left: var(--spacing-side-lg); padding-right: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────
    AMD NSRI — Design System Tokens
    ───────────────────────────────────────────────────────────── */
 :root {
+  /* Text direction/alignment — flipped to rtl/right by applyLang() for Arabic. */
+  --text-direction: ltr;
+  --text-align: left;
+
   --color-bg:             #0d0d0b;
   --color-surface:        #141412;
   --color-surface-2:      #1c1c19;
@@ -3071,6 +3169,8 @@ html[data-theme="white"] .nav-root.scrolled {
 }
 .ps2-heading-line { display: block; }
 .ps2-heading-line.ps2-heading-em { margin-left: clamp(24px, 4vw, 80px); }
+/* Arabic: mirror the staircase indent to the right side. */
+[lang="ar"] .ps2-heading-line.ps2-heading-em { margin-left: 0; margin-right: clamp(24px, 4vw, 80px); }
 .ps2-heading em {
   font-style: italic;
   color: var(--color-accent);

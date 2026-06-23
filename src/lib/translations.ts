@@ -286,6 +286,44 @@ export const translations = {
       details:        'Details',
       galleryPending: 'Visual documentation in progress',
     },
+    about: {
+      amadEn:          '— the distance to an endpoint. The path toward a destination.',
+      stmtEyebrow:     'Statement',
+      stmtLead:        'A facade is reasoned as a system, not clad as a surface — geometry, structure and finish resolved in one pair of hands.',
+      stmtBody:        'AMD NSRI is the independent practice of Ahmed Alnaseri — an Iraqi architect based in Istanbul working at the intersection of computational design, facade engineering, and fabrication intelligence. The practice exists to close the gap between architectural imagination and built reality.',
+      nameEyebrow:     'The Name',
+      nameTitle:       'The Name',
+      amdPre:          'Drawn from ',
+      amdMid:          ' — the founder’s name — and from the Arabic ',
+      amdParen:        ' (',
+      amdPost:         '): a goal, an endpoint, a distance, a duration; the path travelled toward a destination. The name carries both a signature and a direction.',
+      nsriPre:         'From ',
+      nsriPost:        ' — the founder’s family name. The root of the practice and its point of origin, carried into everything it makes.',
+      approachEyebrow: 'Approach',
+      approachTitle:   'From concept to built reality.',
+      approachBody:    'Every project moves through a deliberate sequence. Nothing is decorative; each step carries a production logic, resolved before it reaches the workshop floor.',
+      flowConcept:     'Concept',
+      flowGeometry:    'Geometry',
+      flowSystem:      'System',
+      flowTool:        'Tool',
+      flowFabrication: 'Fabrication',
+      flowBuilt:       'Built Reality',
+      practiceEyebrow: 'The Practice',
+      practiceTitle:   'Three disciplines, one pair of hands.',
+      disc1Title:      'Computational Design',
+      disc1Body:       'Grasshopper logic, parametric systems, and automation that turn one-off problems into repeatable, controllable definitions.',
+      disc2Title:      'Facade Engineering',
+      disc2Body:       'Panelization, substructure, tolerance and material limits — the skin resolved as a buildable system, not a rendered surface.',
+      disc3Title:      'Fabrication Intelligence',
+      disc3Body:       'Unfolding, shop drawings, and production geometry — design carried all the way to the file the workshop actually opens.',
+      founderEyebrow:  'Founder',
+      founderBody1:    'Ahmed Alnaseri is an Iraqi architect based in Istanbul. He trained in architecture but kept returning to the parts of the work most architects hand off — the panel that has to fold, the joint that has to close, the file the workshop opens.',
+      founderBody2:    'He founded AMD NSRI to be the translation between design and fabrication: a practice that carries an idea from concept to geometry to system to tool to fabricated reality, without losing intent at any seam.',
+      ctaLine1:        'From the first sketch',
+      ctaLine2:        'to the last bolt.',
+      ctaSolid:        'Start a Collaboration',
+      ctaGhost:        'View Selected Works',
+    },
   },
 
   TR: {
@@ -562,6 +600,44 @@ export const translations = {
       overview:       'Genel Bakış',
       details:        'Ayrıntılar',
       galleryPending: 'Görsel dokümantasyon hazırlanıyor',
+    },
+    about: {
+      amadEn:          '— bir varış noktasına olan mesafe. Bir hedefe giden yol.',
+      stmtEyebrow:     'Bildiri',
+      stmtLead:        'Bir cephe, yüzey olarak kaplanmaz; bir sistem olarak kurgulanır — geometri, strüktür ve son işlem tek elde çözülür.',
+      stmtBody:        'AMD NSRI, Ahmed Alnaseri’nin bağımsız pratiğidir — İstanbul’da yaşayan, hesaplamalı tasarım, cephe mühendisliği ve fabrikasyon zekâsının kesişiminde çalışan Iraklı bir mimar. Pratik, mimari hayal gücü ile inşa edilmiş gerçeklik arasındaki boşluğu kapatmak için vardır.',
+      nameEyebrow:     'İsim',
+      nameTitle:       'İsim',
+      amdPre:          'Kurucunun adı olan ',
+      amdMid:          ' ile Arapça ',
+      amdParen:        ' (',
+      amdPost:         ') sözcüğünden gelir: bir amaç, bir varış, bir mesafe, bir süre; bir hedefe giden yol. İsim hem bir imza hem de bir yön taşır.',
+      nsriPre:         'Kurucunun soyadı olan ',
+      nsriPost:        '’den gelir. Pratiğin kökü ve çıkış noktasıdır; ürettiği her şeye taşınır.',
+      approachEyebrow: 'Yaklaşım',
+      approachTitle:   'Konsepten inşa edilmiş gerçekliğe.',
+      approachBody:    'Her proje bilinçli bir sıralamadan geçer. Hiçbir şey dekoratif değildir; her adım, atölye zeminine ulaşmadan önce çözülen bir üretim mantığı taşır.',
+      flowConcept:     'Konsept',
+      flowGeometry:    'Geometri',
+      flowSystem:      'Sistem',
+      flowTool:        'Araç',
+      flowFabrication: 'Fabrikasyon',
+      flowBuilt:       'İnşa Edilmiş Gerçeklik',
+      practiceEyebrow: 'Pratik',
+      practiceTitle:   'Üç disiplin, tek el.',
+      disc1Title:      'Hesaplamalı Tasarım',
+      disc1Body:       'Grasshopper mantığı, parametrik sistemler ve tek seferlik sorunları tekrarlanabilir, kontrol edilebilir tanımlara dönüştüren otomasyon.',
+      disc2Title:      'Cephe Mühendisliği',
+      disc2Body:       'Panelleme, alt strüktür, tolerans ve malzeme sınırları — kaplama, render edilmiş bir yüzey değil, inşa edilebilir bir sistem olarak çözülür.',
+      disc3Title:      'Fabrikasyon Zekâsı',
+      disc3Body:       'Açınım, atölye çizimleri ve üretim geometrisi — tasarım, atölyenin gerçekten açtığı dosyaya kadar taşınır.',
+      founderEyebrow:  'Kurucu',
+      founderBody1:    'Ahmed Alnaseri, İstanbul’da yaşayan Iraklı bir mimardır. Mimarlık eğitimi aldı ancak çoğu mimarın başkasına devrettiği işlere geri dönmeyi sürdürdü — katlanması gereken panel, kapanması gereken birleşim, atölyenin açtığı dosya.',
+      founderBody2:    'AMD NSRI’yi tasarım ile fabrikasyon arasındaki çeviri olsun diye kurdu: bir fikri konseptten geometriye, sisteme, araca ve üretilmiş gerçekliğe taşıyan, hiçbir ek yerinde niyetini kaybetmeyen bir pratik.',
+      ctaLine1:        'İlk eskizden',
+      ctaLine2:        'son cıvataya.',
+      ctaSolid:        'Bir İş Birliği Başlat',
+      ctaGhost:        'Seçili Çalışmaları Gör',
     },
   },
 
@@ -840,6 +916,44 @@ export const translations = {
       details:        'التفاصيل',
       galleryPending: 'التوثيق البصري قيد الإعداد',
     },
+    about: {
+      amadEn:          '— المسافة إلى نقطة النهاية. الطريق نحو الوجهة.',
+      stmtEyebrow:     'بيان',
+      stmtLead:        'تُصاغ الواجهة كنظام، لا تُكسى كسطح — تُحَلّ الهندسة والبنية والتشطيب في زوجٍ واحد من اليدين.',
+      stmtBody:        'AMD NSRI هي الممارسة المستقلة لأحمد الناصري — مهندس معماري عراقي مقيم في إسطنبول يعمل عند تقاطع التصميم الحسابي وهندسة الواجهات وذكاء التصنيع. توجد الممارسة لسدّ الفجوة بين الخيال المعماري والواقع المبني.',
+      nameEyebrow:     'الاسم',
+      nameTitle:       'الاسم',
+      amdPre:          'مستمدّ من اسم المؤسس ',
+      amdMid:          ' — ومن الكلمة العربية ',
+      amdParen:        ' (',
+      amdPost:         '): غاية، ونهاية، ومسافة، ومدّة؛ الطريق المقطوع نحو الوجهة. يحمل الاسم توقيعاً واتجاهاً معاً.',
+      nsriPre:         'من ',
+      nsriPost:        ' — اسم عائلة المؤسس. جذر الممارسة ونقطة منشئها، محمولٌ في كل ما تصنعه.',
+      approachEyebrow: 'المنهج',
+      approachTitle:   'من الفكرة إلى الواقع المبني.',
+      approachBody:    'يمرّ كل مشروع عبر تسلسل مقصود. لا شيء زخرفي؛ كل خطوة تحمل منطق إنتاج يُحَلّ قبل أن يصل إلى أرض الورشة.',
+      flowConcept:     'الفكرة',
+      flowGeometry:    'الهندسة',
+      flowSystem:      'النظام',
+      flowTool:        'الأداة',
+      flowFabrication: 'التصنيع',
+      flowBuilt:       'الواقع المبني',
+      practiceEyebrow: 'الممارسة',
+      practiceTitle:   'ثلاثة تخصصات، زوجٌ واحد من اليدين.',
+      disc1Title:      'التصميم الحسابي',
+      disc1Body:       'منطق Grasshopper والأنظمة البارامترية والأتمتة التي تحوّل المشكلات الفردية إلى تعريفات قابلة للتكرار والتحكم.',
+      disc2Title:      'هندسة الواجهات',
+      disc2Body:       'التقسيم إلى ألواح، والبنية التحتية، والتفاوت، وحدود المواد — يُحَلّ الغلاف كنظام قابل للبناء، لا كسطح مُصيَّر.',
+      disc3Title:      'ذكاء التصنيع',
+      disc3Body:       'الفرد، ورسومات الورشة، وهندسة الإنتاج — يُحمَل التصميم حتى الملف الذي تفتحه الورشة فعلاً.',
+      founderEyebrow:  'المؤسس',
+      founderBody1:    'أحمد الناصري مهندس معماري عراقي مقيم في إسطنبول. تدرّب في العمارة لكنه ظل يعود إلى الأجزاء التي يتركها معظم المعماريين لغيرهم — اللوح الذي يجب أن ينثني، والوصلة التي يجب أن تُغلق، والملف الذي تفتحه الورشة.',
+      founderBody2:    'أسّس AMD NSRI ليكون الترجمة بين التصميم والتصنيع: ممارسة تحمل الفكرة من الفكرة إلى الهندسة إلى النظام إلى الأداة إلى الواقع المصنّع، دون فقدان المقصد عند أي وصلة.',
+      ctaLine1:        'من أول رسم',
+      ctaLine2:        'إلى آخر برغي.',
+      ctaSolid:        'ابدأ تعاوناً',
+      ctaGhost:        'استعرض أعمالاً مختارة',
+    },
   },
 } as const;
 
@@ -861,6 +975,34 @@ const VALUES: Record<Lang, ValueMap> = {
     'Commercial': 'Ticari',
     'Competition': 'Yarışma',
     'Mixed Use': 'Karma Kullanım',
+    // tool card descriptions (data-file one-liners — src/data/tools.ts)
+    'Flat cutting patterns with k-factor and bend radius control':
+      'K-faktörü ve büküm yarıçapı kontrolüyle düz kesim desenleri',
+    'Parametric perforation layouts — pitch, diameter, open area ratio':
+      'Parametrik delik düzenleri — aralık, çap, açık alan oranı',
+    'Groups facade panels by tolerance to minimize unique fabrication types':
+      'Benzersiz fabrikasyon tiplerini azaltmak için cephe panellerini toleransa göre gruplar',
+    'Projects image-based punch patterns onto 3D Rhino surface geometry':
+      'Görüntü tabanlı delgi desenlerini 3B Rhino yüzey geometrisine projekte eder',
+    'Location intelligence and site analysis — standalone software':
+      'Konum zekası ve arsa analizi — bağımsız yazılım',
+    'Total aluminum sheets, powder coat, and profiles — web or Grasshopper':
+      'Toplam alüminyum sac, toz boya ve profiller — web veya Grasshopper',
+    // shop card descriptions (src/data/shop-products.ts)
+    'GHPython unfolding script, ready to embed in your definition':
+      'GHPython açınım betiği, tanımınıza gömülmeye hazır',
+    'Standalone GHPython script for panel type reduction':
+      'Panel tipi azaltma için bağımsız GHPython betiği',
+    'Parametric perforation script with open-area output':
+      'Açık alan çıktılı parametrik delik betiği',
+    '30 aluminum panel connection details, Rhino 3dm format':
+      '30 alüminyum panel birleşim detayı, Rhino 3dm formatı',
+    'Full GH definition from the Hasyl Canopy project':
+      'Hasyl Canopy projesinden tam GH tanımı',
+    '3D printed aluminum-finish facade panel sculpture, 15cm':
+      '3D baskı alüminyum görünümlü cephe paneli heykeli, 15cm',
+    'Generative lattice structure, resin printed':
+      'Üretken kafes yapı, reçine baskı',
     'Parametric': 'Parametrik',
     'Computational': 'Hesaplamalı',
     'Facade Systems': 'Cephe Sistemleri',
@@ -1183,6 +1325,34 @@ const VALUES: Record<Lang, ValueMap> = {
     'Commercial': 'تجاري',
     'Competition': 'مسابقة',
     'Mixed Use': 'استخدام مختلط',
+    // tool card descriptions (data-file one-liners — src/data/tools.ts)
+    'Flat cutting patterns with k-factor and bend radius control':
+      'أنماط قص مسطّحة مع التحكم بعامل K ونصف قطر الثني',
+    'Parametric perforation layouts — pitch, diameter, open area ratio':
+      'تخطيطات تثقيب بارامترية — المسافة، القطر، نسبة المساحة المفتوحة',
+    'Groups facade panels by tolerance to minimize unique fabrication types':
+      'يجمع ألواح الواجهة حسب التفاوت لتقليل أنواع التصنيع الفريدة',
+    'Projects image-based punch patterns onto 3D Rhino surface geometry':
+      'يسقط أنماط التثقيب القائمة على الصور على هندسة أسطح Rhino ثلاثية الأبعاد',
+    'Location intelligence and site analysis — standalone software':
+      'ذكاء موقعي وتحليل المواقع — برنامج مستقل',
+    'Total aluminum sheets, powder coat, and profiles — web or Grasshopper':
+      'إجمالي ألواح الألمنيوم والطلاء البودري والمقاطع — ويب أو Grasshopper',
+    // shop card descriptions (src/data/shop-products.ts)
+    'GHPython unfolding script, ready to embed in your definition':
+      'سكربت فرد بـ GHPython، جاهز للدمج في تعريفك',
+    'Standalone GHPython script for panel type reduction':
+      'سكربت GHPython مستقل لتقليل أنواع الألواح',
+    'Parametric perforation script with open-area output':
+      'سكربت تثقيب بارامتري مع إخراج المساحة المفتوحة',
+    '30 aluminum panel connection details, Rhino 3dm format':
+      '30 تفصيلة وصل لألواح الألمنيوم، بصيغة Rhino 3dm',
+    'Full GH definition from the Hasyl Canopy project':
+      'تعريف GH كامل من مشروع Hasyl Canopy',
+    '3D printed aluminum-finish facade panel sculpture, 15cm':
+      'منحوتة لوح واجهة بطباعة ثلاثية الأبعاد بلمسة ألمنيوم، 15 سم',
+    'Generative lattice structure, resin printed':
+      'بنية شبكية توليدية، مطبوعة بالراتنج',
     'Parametric': 'بارامتري',
     'Computational': 'حوسبي',
     'Facade Systems': 'أنظمة الواجهات',

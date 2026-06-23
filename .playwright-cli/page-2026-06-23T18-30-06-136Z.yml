@@ -1,0 +1,192 @@
+- generic [active] [ref=e1]:
+  - navigation "Main navigation" [ref=e2]:
+    - list [ref=e4]:
+      - listitem "AMD NSRI homepage" [ref=e5] [cursor=pointer]: AMD NSRI
+      - listitem [ref=e6] [cursor=pointer]: Architecture
+      - listitem [ref=e7] [cursor=pointer]: Design
+      - listitem [ref=e8] [cursor=pointer]: Tools
+      - listitem [ref=e9] [cursor=pointer]: Fabrication
+      - listitem [ref=e10] [cursor=pointer]: Shop
+      - listitem [ref=e11] [cursor=pointer]: Journal
+      - listitem [ref=e12] [cursor=pointer]: Contact
+      - listitem [ref=e13] [cursor=pointer]: About
+      - listitem [ref=e14]:
+        - button "Switch language" [ref=e15] [cursor=pointer]: EN
+  - dialog [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]: AMD NSRI
+      - button [ref=e20] [cursor=pointer]
+    - navigation [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]: "01"
+        - link [ref=e26] [cursor=pointer]:
+          - /url: /architecture
+          - text: Architecture
+        - generic [ref=e27]: Spatial concepts and visualization
+      - generic [ref=e28]:
+        - generic [ref=e29]: "02"
+        - link [ref=e30] [cursor=pointer]:
+          - /url: /design
+          - text: Design
+        - generic [ref=e31]: Experimental design and objects
+      - generic [ref=e32]:
+        - generic [ref=e33]: "03"
+        - link [ref=e34] [cursor=pointer]:
+          - /url: /tools
+          - text: Tools
+        - generic [ref=e35]: Parametric tools and definitions
+      - generic [ref=e36]:
+        - generic [ref=e37]: "04"
+        - link [ref=e38] [cursor=pointer]:
+          - /url: /fabrication
+          - text: Fabrication
+        - generic [ref=e39]: Production and fabrication logic
+      - generic [ref=e40]:
+        - generic [ref=e41]: "05"
+        - link [ref=e42] [cursor=pointer]:
+          - /url: /shop
+          - text: Shop
+        - generic [ref=e43]: Products and resources
+      - generic [ref=e44]:
+        - generic [ref=e45]: "06"
+        - link [ref=e46] [cursor=pointer]:
+          - /url: /journal
+          - text: Journal
+        - generic [ref=e47]: Articles and process notes
+      - generic [ref=e48]:
+        - generic [ref=e49]: "07"
+        - link [ref=e50] [cursor=pointer]:
+          - /url: /contact
+          - text: Contact
+        - generic [ref=e51]: Collaboration inquiries
+      - generic [ref=e52]:
+        - generic [ref=e53]: "08"
+        - link [ref=e54] [cursor=pointer]:
+          - /url: /identity
+          - text: About
+        - generic [ref=e55]: The practice and its founder
+    - generic [ref=e56]:
+      - button [pressed] [ref=e58]: EN
+      - generic [ref=e59]:
+        - generic [ref=e60]: ·
+        - button [ref=e61] [cursor=pointer]: TR
+      - generic [ref=e62]:
+        - generic [ref=e63]: ·
+        - button [ref=e64] [cursor=pointer]: AR
+  - main [ref=e65]:
+    - generic [ref=e66]:
+      - paragraph [ref=e68]: Tools
+      - heading "Build. Automate. Deploy." [level=1] [ref=e69]
+      - paragraph [ref=e70]: Computational tools and definitions — from Grasshopper logic to web apps that turn fabrication problems into repeatable, shippable systems.
+      - group "Filter tools by platform" [ref=e71]:
+        - button "All06" [pressed] [ref=e72] [cursor=pointer]
+        - button "Grasshopper05" [ref=e73] [cursor=pointer]
+        - button "Web01" [ref=e74] [cursor=pointer]
+        - button "Software01" [ref=e75] [cursor=pointer]
+      - generic [ref=e76]:
+        - link "Sheet Metal Unfolder — view details" [ref=e77] [cursor=pointer]:
+          - /url: /tools/sheet-metal-unfolder
+          - generic [ref=e78]:
+            - generic: ◆
+          - generic [ref=e80]:
+            - generic [ref=e81]:
+              - generic [ref=e82]: Grasshopper
+              - generic [ref=e83]:
+                - generic [ref=e84]: Showcase
+                - generic [ref=e85]: Beta
+            - generic [ref=e87]:
+              - generic [ref=e88]: Sheet Metal Unfolder
+              - generic [ref=e89]: Flat cutting patterns with k-factor and bend radius control
+            - generic [ref=e90]:
+              - generic [ref=e91]: T-01
+              - generic [ref=e92]: →
+        - link "Perforation Pattern Engine — view details" [ref=e93] [cursor=pointer]:
+          - /url: /tools/perforation-pattern-engine
+          - generic [ref=e94]:
+            - generic: ◆
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - generic [ref=e98]: Grasshopper
+              - generic [ref=e99]:
+                - generic [ref=e100]: Showcase
+                - generic [ref=e101]: Beta
+            - generic [ref=e103]:
+              - generic [ref=e104]: Perforation Pattern Engine
+              - generic [ref=e105]: Parametric perforation layouts — pitch, diameter, open area ratio
+            - generic [ref=e106]:
+              - generic [ref=e107]: T-02
+              - generic [ref=e108]: →
+        - link "Panel Type Optimizer — view details" [ref=e109] [cursor=pointer]:
+          - /url: /tools/panel-type-optimizer
+          - generic [ref=e110]:
+            - generic: ◆
+          - generic [ref=e112]:
+            - generic [ref=e113]:
+              - generic [ref=e114]: Grasshopper
+              - generic [ref=e115]:
+                - generic [ref=e116]: Showcase
+                - generic [ref=e117]: Beta
+            - generic [ref=e119]:
+              - generic [ref=e120]: Panel Type Optimizer
+              - generic [ref=e121]: Groups facade panels by tolerance to minimize unique fabrication types
+            - generic [ref=e122]:
+              - generic [ref=e123]: T-03
+              - generic [ref=e124]: →
+        - link "Surface Punch Mapper — view details" [ref=e125] [cursor=pointer]:
+          - /url: /tools/surface-punch-mapper
+          - generic [ref=e126]:
+            - generic: ◆
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - generic [ref=e130]: Grasshopper
+              - generic [ref=e131]:
+                - generic [ref=e132]: Showcase
+                - generic [ref=e133]: Beta
+            - generic [ref=e135]:
+              - generic [ref=e136]: Surface Punch Mapper
+              - generic [ref=e137]: Projects image-based punch patterns onto 3D Rhino surface geometry
+            - generic [ref=e138]:
+              - generic [ref=e139]: T-04
+              - generic [ref=e140]: →
+        - link "Pinact — view details" [ref=e141] [cursor=pointer]:
+          - /url: /tools/pinact
+          - generic [ref=e142]:
+            - generic: ◆
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - generic [ref=e146]: Software
+              - generic [ref=e147]:
+                - generic [ref=e148]: Contact for pricing
+                - generic [ref=e149]: Live
+            - generic [ref=e151]:
+              - generic [ref=e152]: Pinact
+              - generic [ref=e153]: Location intelligence and site analysis — standalone software
+            - generic [ref=e154]:
+              - generic [ref=e155]: T-05
+              - generic [ref=e156]: →
+        - link "Material Quantity Estimator — view details" [ref=e157] [cursor=pointer]:
+          - /url: /tools/material-quantity-estimator
+          - generic [ref=e158]:
+            - generic: ◆
+          - generic [ref=e160]:
+            - generic [ref=e161]:
+              - generic [ref=e162]: Web + Grasshopper
+              - generic [ref=e163]:
+                - generic [ref=e164]: Free (web) · Grasshopper on request
+                - generic [ref=e165]: Beta
+            - generic [ref=e167]:
+              - generic [ref=e168]: Material Quantity Estimator
+              - generic [ref=e169]: Total aluminum sheets, powder coat, and profiles — web or Grasshopper
+            - generic [ref=e170]:
+              - generic [ref=e171]: T-06
+              - generic [ref=e172]: →
+      - generic [ref=e173]:
+        - generic [ref=e174]: AMD NSRI
+        - generic [ref=e175]: Tools
+        - generic [ref=e176]: Est. 2026
+  - alert [ref=e178]
+  - generic [ref=e181] [cursor=pointer]:
+    - img [ref=e182]
+    - generic [ref=e184]: 1 error
+    - button "Hide Errors" [ref=e185]:
+      - img [ref=e186]

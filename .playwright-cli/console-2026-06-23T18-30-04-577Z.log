@@ -1,0 +1,558 @@
+[    1281ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:38559
+[    1429ms] [ERROR] Warning: Text content did not match. Server: "%s" Client: "%s"%s 
+        /* ── page ──────────────────────────────────────────────── */
+        .tp {
+          background: var(--color-bg);
+          color: var(--color-text-primary);
+          font-family: var(--font-body);
+          padding: clamp(96px, 12vh, 140px) 24px clamp(32px, 4vh, 56px);
+          min-height: 100vh;
+        }
+        .tp-rule { height: 1px; background: var(--color-border); margin-bottom: clamp(40px,6vh,72px); }
+        .tp-eyebrow {
+          display: flex; align-items: center; gap: 12px;
+          font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+          color: var(--color-accent); margin-bottom: 28px;
+        }
+        .tp-eyebrow::before {
+          content: &#x27;&#x27;; display: block;
+          width: 28px; height: 1px; background: var(--color-accent); opacity: .7;
+        }
+        .tp-title {
+          font-family: var(--font-title);
+          font-size: clamp(48px,8vw,116px);
+          letter-spacing: -0.03em; line-height: .98;
+          color: var(--color-text-primary); margin: 0 0 28px; max-width: 14ch;
+        }
+        .tp-desc {
+          font-size: clamp(14px,1.4vw,17px); font-weight: 300;
+          letter-spacing: .02em; line-height: 1.7;
+          color: var(--color-text-secondary); max-width: 58ch;
+          margin: 0 0 clamp(40px,6vh,64px);
+        }
+
+        /* ── filters ───────────────────────────────────────────── */
+        .tp-filters {
+          display: flex; align-items: center; gap: clamp(20px,3vw,44px);
+          flex-wrap: wrap;
+          border-top: 1px solid var(--color-line);
+          border-bottom: 1px solid var(--color-line);
+          padding: 22px 0; margin-bottom: clamp(48px,7vh,80px);
+        }
+        .tp-f {
+          background: none; border: none; cursor: pointer;
+          font-family: var(--font-body); font-size: 12px;
+          letter-spacing: .16em; text-transform: uppercase;
+          color: rgba(255,255,255,.35); padding: 0;
+          transition: color 300ms ease;
+        }
+        .tp-f:hover { color: rgba(255,255,255,.7); }
+        .tp-f.on   { color: var(--color-accent); }
+        .tp-f:focus-visible { outline: 1px solid var(--color-accent); outline-offset: 6px; }
+        .tp-fn { font-size: 9px; color: var(--color-text-meta); margin-left: 6px; }
+        .tp-f.on .tp-fn { color: var(--color-accent-dim); }
+
+        /* ── grid ──────────────────────────────────────────────── */
+        .tp-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+          align-content: start;
+        }
+        .tp-empty {
+          grid-column: 1/-1; padding: 80px 0; text-align: center;
+          font-size: 13px; letter-spacing: .08em; color: var(--color-text-meta);
+        }
+
+        /* ── card ──────────────────────────────────────────────── */
+        .tc {
+          position: relative; overflow: hidden;
+          display: block;
+          min-height: 252px;
+          background: var(--color-bg);
+          border: 1px solid var(--color-border);
+          text-decoration: none;
+          transition:
+            border-color 400ms cubic-bezier(.16,1,.3,1),
+            transform 400ms cubic-bezier(.16,1,.3,1);
+        }
+        .tc:hover { border-color: var(--color-accent); transform: translateY(-3px); }
+        .tc:focus-visible { outline: 1px solid var(--color-accent); outline-offset: 3px; }
+
+        /* background image, right side */
+        .tc-media {
+          position: absolute; inset: 0; z-index: 0;
+          background-repeat: no-repeat;
+          background-position: right center;
+          background-size: cover;
+          opacity: .85;
+          transition: opacity 500ms ease, transform 600ms cubic-bezier(.16,1,.3,1);
+        }
+        .tc:hover .tc-media { opacity: 1; transform: scale(1.03); }
+        .tc-fade {
+          position: absolute; inset: 0; z-index: 1;
+          background: linear-gradient(to right, #0d0d0b 0%, #0d0d0b 45%, transparent 100%);
+        }
+        .tc-media--placeholder { background-image: none; }
+        .tc-diamond {
+          position: absolute; right: 22%; top: 50%; transform: translateY(-50%);
+          font-size: 72px; line-height: 1;
+          color: rgba(184,149,106,0.08);
+          pointer-events: none; user-select: none;
+        }
+
+        .tc-content {
+          position: relative; z-index: 2;
+          display: flex; flex-direction: column;
+          height: 100%; min-height: 252px;
+          padding: clamp(28px, 3vw, 40px);
+          box-sizing: border-box;
+        }
+
+        /* top: platform + (price|showcase) + status */
+        .tc-top {
+          display: flex; align-items: center; justify-content: space-between;
+          gap: 12px; margin-bottom: clamp(28px, 3.5vw, 44px);
+        }
+        .tc-top-right { display: flex; align-items: center; gap: 14px; }
+        .tc-platform {
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: .14em; text-transform: uppercase;
+          color: var(--color-accent);
+          border: 1px solid rgba(184,149,106,.38);
+          padding: 5px 11px; white-space: nowrap;
+        }
+        .tc-price {
+          font-family: var(--font-body); font-size: 12px; font-weight: 500;
+          letter-spacing: .06em; color: var(--color-accent); white-space: nowrap;
+        }
+        .tc-showcase {
+          font-family: var(--font-body); font-size: 9px;
+          letter-spacing: .2em; text-transform: uppercase;
+          color: var(--color-text-meta); white-space: nowrap;
+        }
+        .tc-status {
+          display: inline-flex; align-items: center; gap: 7px;
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: .14em; text-transform: uppercase; white-space: nowrap;
+        }
+        .tc-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+        .tc-status--live { color: var(--color-accent); }
+        .tc-status--beta { color: rgba(255,255,255,.6); }
+        .tc-status--soon { color: var(--color-text-meta); }
+        .tc-status--soon .tc-status-dot { background: transparent; border: 1px solid currentColor; }
+
+        /* body: name + description */
+        .tc-body { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+        .tc-name {
+          font-family: var(--font-title); font-weight: 400;
+          font-size: clamp(21px, 2.2vw, 24px);
+          letter-spacing: -.01em; line-height: 1.12;
+          color: var(--color-text-primary); margin: 0; max-width: 16ch;
+        }
+        .tc:hover .tc-name { color: #fff; }
+        .tc-desc {
+          font-family: var(--font-body); font-size: 14px; font-weight: 300;
+          letter-spacing: .02em; line-height: 1.65;
+          color: rgba(255,255,255,0.6); margin: 0; max-width: 36ch;
+        }
+
+        /* foot: index + arrow */
+        .tc-foot {
+          display: flex; align-items: flex-end; justify-content: space-between;
+          margin-top: clamp(24px, 3vw, 36px);
+        }
+        .tc-index {
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: .16em; text-transform: uppercase; color: var(--color-text-meta);
+        }
+        .tc-arrow {
+          font-family: var(--font-body); font-size: 20px; line-height: 1;
+          color: var(--color-accent);
+          transition: transform 400ms cubic-bezier(.16,1,.3,1);
+        }
+        .tc:hover .tc-arrow { transform: translateX(5px); }
+
+        /* ── bottom strip ──────────────────────────────────────── */
+        .tp-strip {
+          display: flex; align-items: stretch;
+          border-top: 1px solid var(--color-line);
+          margin-top: clamp(56px,8vh,96px);
+          font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+          color: var(--color-text-meta);
+        }
+        .tp-strip &gt; span {
+          display: flex; align-items: center;
+          padding: 14px clamp(14px,2.5vw,36px);
+          border-right: 1px solid var(--color-line); white-space: nowrap;
+        }
+        .tp-strip &gt; span:first-child { padding-left: 0; }
+        .tp-strip-fill { flex: 1; border-right: none !important; }
+
+        /* ── reduced motion ────────────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+          .tc, .tc-arrow, .tc-media, .tp-f { transition: none !important; }
+          .tc:hover { transform: none; }
+          .tc:hover .tc-media { transform: none; }
+          .tc:hover .tc-arrow { transform: none; }
+        }
+
+        /* ── responsive ────────────────────────────────────────── */
+        @media (max-width: 767px) {
+          .tp-grid { grid-template-columns: 1fr; gap: 16px; }
+          .tc, .tc-content { min-height: 0; }
+          .tc-desc { max-width: 38ch; }
+        }
+       
+        /* ── page ──────────────────────────────────────────────── */
+        .tp {
+          background: var(--color-bg);
+          color: var(--color-text-primary);
+          font-family: var(--font-body);
+          padding: clamp(96px, 12vh, 140px) 24px clamp(32px, 4vh, 56px);
+          min-height: 100vh;
+        }
+        .tp-rule { height: 1px; background: var(--color-border); margin-bottom: clamp(40px,6vh,72px); }
+        .tp-eyebrow {
+          display: flex; align-items: center; gap: 12px;
+          font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+          color: var(--color-accent); margin-bottom: 28px;
+        }
+        .tp-eyebrow::before {
+          content: ''; display: block;
+          width: 28px; height: 1px; background: var(--color-accent); opacity: .7;
+        }
+        .tp-title {
+          font-family: var(--font-title);
+          font-size: clamp(48px,8vw,116px);
+          letter-spacing: -0.03em; line-height: .98;
+          color: var(--color-text-primary); margin: 0 0 28px; max-width: 14ch;
+        }
+        .tp-desc {
+          font-size: clamp(14px,1.4vw,17px); font-weight: 300;
+          letter-spacing: .02em; line-height: 1.7;
+          color: var(--color-text-secondary); max-width: 58ch;
+          margin: 0 0 clamp(40px,6vh,64px);
+        }
+
+        /* ── filters ───────────────────────────────────────────── */
+        .tp-filters {
+          display: flex; align-items: center; gap: clamp(20px,3vw,44px);
+          flex-wrap: wrap;
+          border-top: 1px solid var(--color-line);
+          border-bottom: 1px solid var(--color-line);
+          padding: 22px 0; margin-bottom: clamp(48px,7vh,80px);
+        }
+        .tp-f {
+          background: none; border: none; cursor: pointer;
+          font-family: var(--font-body); font-size: 12px;
+          letter-spacing: .16em; text-transform: uppercase;
+          color: rgba(255,255,255,.35); padding: 0;
+          transition: color 300ms ease;
+        }
+        .tp-f:hover { color: rgba(255,255,255,.7); }
+        .tp-f.on   { color: var(--color-accent); }
+        .tp-f:focus-visible { outline: 1px solid var(--color-accent); outline-offset: 6px; }
+        .tp-fn { font-size: 9px; color: var(--color-text-meta); margin-left: 6px; }
+        .tp-f.on .tp-fn { color: var(--color-accent-dim); }
+
+        /* ── grid ──────────────────────────────────────────────── */
+        .tp-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+          align-content: start;
+        }
+        .tp-empty {
+          grid-column: 1/-1; padding: 80px 0; text-align: center;
+          font-size: 13px; letter-spacing: .08em; color: var(--color-text-meta);
+        }
+
+        /* ── card ──────────────────────────────────────────────── */
+        .tc {
+          position: relative; overflow: hidden;
+          display: block;
+          min-height: 252px;
+          background: var(--color-bg);
+          border: 1px solid var(--color-border);
+          text-decoration: none;
+          transition:
+            border-color 400ms cubic-bezier(.16,1,.3,1),
+            transform 400ms cubic-bezier(.16,1,.3,1);
+        }
+        .tc:hover { border-color: var(--color-accent); transform: translateY(-3px); }
+        .tc:focus-visible { outline: 1px solid var(--color-accent); outline-offset: 3px; }
+
+        /* background image, right side */
+        .tc-media {
+          position: absolute; inset: 0; z-index: 0;
+          background-repeat: no-repeat;
+          background-position: right center;
+          background-size: cover;
+          opacity: .85;
+          transition: opacity 500ms ease, transform 600ms cubic-bezier(.16,1,.3,1);
+        }
+        .tc:hover .tc-media { opacity: 1; transform: scale(1.03); }
+        .tc-fade {
+          position: absolute; inset: 0; z-index: 1;
+          background: linear-gradient(to right, #0d0d0b 0%, #0d0d0b 45%, transparent 100%);
+        }
+        .tc-media--placeholder { background-image: none; }
+        .tc-diamond {
+          position: absolute; right: 22%; top: 50%; transform: translateY(-50%);
+          font-size: 72px; line-height: 1;
+          color: rgba(184,149,106,0.08);
+          pointer-events: none; user-select: none;
+        }
+
+        .tc-content {
+          position: relative; z-index: 2;
+          display: flex; flex-direction: column;
+          height: 100%; min-height: 252px;
+          padding: clamp(28px, 3vw, 40px);
+          box-sizing: border-box;
+        }
+
+        /* top: platform + (price|showcase) + status */
+        .tc-top {
+          display: flex; align-items: center; justify-content: space-between;
+          gap: 12px; margin-bottom: clamp(28px, 3.5vw, 44px);
+        }
+        .tc-top-right { display: flex; align-items: center; gap: 14px; }
+        .tc-platform {
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: .14em; text-transform: uppercase;
+          color: var(--color-accent);
+          border: 1px solid rgba(184,149,106,.38);
+          padding: 5px 11px; white-space: nowrap;
+        }
+        .tc-price {
+          font-family: var(--font-body); font-size: 12px; font-weight: 500;
+          letter-spacing: .06em; color: var(--color-accent); white-space: nowrap;
+        }
+        .tc-showcase {
+          font-family: var(--font-body); font-size: 9px;
+          letter-spacing: .2em; text-transform: uppercase;
+          color: var(--color-text-meta); white-space: nowrap;
+        }
+        .tc-status {
+          display: inline-flex; align-items: center; gap: 7px;
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: .14em; text-transform: uppercase; white-space: nowrap;
+        }
+        .tc-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+        .tc-status--live { color: var(--color-accent); }
+        .tc-status--beta { color: rgba(255,255,255,.6); }
+        .tc-status--soon { color: var(--color-text-meta); }
+        .tc-status--soon .tc-status-dot { background: transparent; border: 1px solid currentColor; }
+
+        /* body: name + description */
+        .tc-body { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+        .tc-name {
+          font-family: var(--font-title); font-weight: 400;
+          font-size: clamp(21px, 2.2vw, 24px);
+          letter-spacing: -.01em; line-height: 1.12;
+          color: var(--color-text-primary); margin: 0; max-width: 16ch;
+        }
+        .tc:hover .tc-name { color: #fff; }
+        .tc-desc {
+          font-family: var(--font-body); font-size: 14px; font-weight: 300;
+          letter-spacing: .02em; line-height: 1.65;
+          color: rgba(255,255,255,0.6); margin: 0; max-width: 36ch;
+        }
+
+        /* foot: index + arrow */
+        .tc-foot {
+          display: flex; align-items: flex-end; justify-content: space-between;
+          margin-top: clamp(24px, 3vw, 36px);
+        }
+        .tc-index {
+          font-family: var(--font-body); font-size: 10px;
+          letter-spacing: .16em; text-transform: uppercase; color: var(--color-text-meta);
+        }
+        .tc-arrow {
+          font-family: var(--font-body); font-size: 20px; line-height: 1;
+          color: var(--color-accent);
+          transition: transform 400ms cubic-bezier(.16,1,.3,1);
+        }
+        .tc:hover .tc-arrow { transform: translateX(5px); }
+
+        /* ── bottom strip ──────────────────────────────────────── */
+        .tp-strip {
+          display: flex; align-items: stretch;
+          border-top: 1px solid var(--color-line);
+          margin-top: clamp(56px,8vh,96px);
+          font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+          color: var(--color-text-meta);
+        }
+        .tp-strip > span {
+          display: flex; align-items: center;
+          padding: 14px clamp(14px,2.5vw,36px);
+          border-right: 1px solid var(--color-line); white-space: nowrap;
+        }
+        .tp-strip > span:first-child { padding-left: 0; }
+        .tp-strip-fill { flex: 1; border-right: none !important; }
+
+        /* ── reduced motion ────────────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+          .tc, .tc-arrow, .tc-media, .tp-f { transition: none !important; }
+          .tc:hover { transform: none; }
+          .tc:hover .tc-media { transform: none; }
+          .tc:hover .tc-arrow { transform: none; }
+        }
+
+        /* ── responsive ────────────────────────────────────────── */
+        @media (max-width: 767px) {
+          .tp-grid { grid-template-columns: 1fr; gap: 16px; }
+          .tc, .tc-content { min-height: 0; }
+          .tc-desc { max-width: 38ch; }
+        }
+       
+    at style
+    at ToolsPage (webpack-internal:///(app-pages-browser)/./src/app/tools/page.tsx:208:88)
+    at ClientPageRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/client-page.js:14:11)
+    at InnerLayoutRouter (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:243:11)
+    at RedirectErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/redirect-boundary.js:74:9)
+    at RedirectBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/redirect-boundary.js:82:11)
+    at NotFoundBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:84:11)
+    at LoadingBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:349:11)
+    at ErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/error-boundary.js:160:11)
+    at InnerScrollAndFocusHandler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:153:9)
+    at ScrollAndFocusHandler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:228:11)
+    at RenderFromTemplateContext (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/render-from-template-context.js:16:44)
+    at OuterLayoutRouter (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:370:11)
+    at ToolsLayout (Server)
+    at InnerLayoutRouter (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:243:11)
+    at RedirectErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/redirect-boundary.js:74:9)
+    at RedirectBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/redirect-boundary.js:82:11)
+    at NotFoundErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:76:9)
+    at NotFoundBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:84:11)
+    at LoadingBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:349:11)
+    at ErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/error-boundary.js:160:11)
+    at InnerScrollAndFocusHandler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:153:9)
+    at ScrollAndFocusHandler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:228:11)
+    at RenderFromTemplateContext (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/render-from-template-context.js:16:44)
+    at OuterLayoutRouter (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/layout-router.js:370:11)
+    at main
+    at LanguageProvider (webpack-internal:///(app-pages-browser)/./src/lib/LanguageContext.tsx:21:11)
+    at ThemeProvider (webpack-internal:///(app-pages-browser)/./src/lib/ThemeContext.tsx:23:11)
+    at body
+    at html
+    at RootLayout (Server)
+    at RedirectErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/redirect-boundary.js:74:9)
+    at RedirectBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/redirect-boundary.js:82:11)
+    at NotFoundErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:76:9)
+    at NotFoundBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:84:11)
+    at DevRootNotFoundBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/dev-root-not-found-boundary.js:33:11)
+    at ReactDevOverlay (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/app/ReactDevOverlay.js:87:9)
+    at HotReload (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/app/hot-reloader-client.js:321:11)
+    at Router (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/app-router.js:207:11)
+    at ErrorBoundaryHandler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/error-boundary.js:113:9)
+    at ErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/error-boundary.js:160:11)
+    at AppRouter (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/app-router.js:585:13)
+    at ServerRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/app-index.js:112:27)
+    at Root (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/app-index.js:117:11) @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/app-index.js:32
+[    1432ms] [ERROR] Warning: An error occurred during hydration. The server HTML was replaced with client content in <%s>. #document @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/app-index.js:32
+[    1451ms] Error: Text content does not match server-rendered HTML.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+    at checkForUnmatchedText (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:32797:11)
+    at diffHydratedProperties (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:35055:9)
+    at hydrateInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:36127:3)
+    at prepareToHydrateHostInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:7246:3)
+    at completeWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:19769:13)
+    at completeUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25963:14)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25759:5)
+    at workLoopConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25734:5)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25690:9)
+    at performConcurrentWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:24504:38)
+    at workLoop (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:256:34)
+    at flushWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:225:14)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:534:21)
+[    1451ms] Error: Text content does not match server-rendered HTML.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+    at checkForUnmatchedText (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:32797:11)
+    at diffHydratedProperties (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:35055:9)
+    at hydrateInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:36127:3)
+    at prepareToHydrateHostInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:7246:3)
+    at completeWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:19769:13)
+    at completeUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25963:14)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25759:5)
+    at workLoopConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25734:5)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25690:9)
+    at performConcurrentWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:24504:38)
+    at workLoop (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:256:34)
+    at flushWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:225:14)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:534:21)
+[    1451ms] Error: Text content does not match server-rendered HTML.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+    at checkForUnmatchedText (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:32797:11)
+    at diffHydratedProperties (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:35055:9)
+    at hydrateInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:36127:3)
+    at prepareToHydrateHostInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:7246:3)
+    at completeWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:19769:13)
+    at completeUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25963:14)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25759:5)
+    at workLoopConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25734:5)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25690:9)
+    at performConcurrentWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:24504:38)
+    at workLoop (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:256:34)
+    at flushWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:225:14)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:534:21)
+[    1451ms] Error: Text content does not match server-rendered HTML.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+    at checkForUnmatchedText (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:32797:11)
+    at diffHydratedProperties (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:35055:9)
+    at hydrateInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:36127:3)
+    at prepareToHydrateHostInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:7246:3)
+    at completeWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:19769:13)
+    at completeUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25963:14)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25759:5)
+    at workLoopConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25734:5)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25690:9)
+    at performConcurrentWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:24504:38)
+    at workLoop (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:256:34)
+    at flushWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:225:14)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:534:21)
+[    1451ms] Error: Text content does not match server-rendered HTML.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+    at checkForUnmatchedText (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:32797:11)
+    at diffHydratedProperties (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:35055:9)
+    at hydrateInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:36127:3)
+    at prepareToHydrateHostInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:7246:3)
+    at completeWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:19769:13)
+    at completeUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25963:14)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25759:5)
+    at workLoopConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25734:5)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25690:9)
+    at performConcurrentWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:24504:38)
+    at workLoop (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:256:34)
+    at flushWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:225:14)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:534:21)
+[    1452ms] Error: Text content does not match server-rendered HTML.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+    at checkForUnmatchedText (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:32797:11)
+    at diffHydratedProperties (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:35055:9)
+    at hydrateInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:36127:3)
+    at prepareToHydrateHostInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:7246:3)
+    at completeWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:19769:13)
+    at completeUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25963:14)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25759:5)
+    at workLoopConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25734:5)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25690:9)
+    at performConcurrentWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:24504:38)
+    at workLoop (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:256:34)
+    at flushWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:225:14)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:534:21)
+[    1452ms] Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+    at updateHostRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:16571:57)
+    at beginWork$1 (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:18486:14)
+    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:26927:14)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25748:12)
+    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25464:5)
+    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:25419:7)
+    at recoverFromConcurrentError (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:24597:20)
+    at performConcurrentWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:24542:26)
+    at workLoop (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:256:34)
+    at flushWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:225:14)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:534:21)

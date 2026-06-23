@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useLanguage } from '@/lib/LanguageContext';
 
 /**
  * /identity — a single editorial page telling the story of the practice.
@@ -7,8 +10,10 @@ import Link from 'next/link';
  * Copy is grounded in the brief + CLAUDE.md brand content. A few sections
  * (The Name → NSRI, Approach, The Practice, Founder, closing) extend past the
  * brief, which was cut off mid-sentence — they follow the documented voice.
+ * All visible copy is keyed via t('about.*') so it switches with EN/TR/AR.
  */
 export default function IdentityPage() {
+  const { t } = useLanguage();
   return (
     <main className="id">
       {/* ── 1. HERO ─────────────────────────────────────────────── */}
@@ -18,25 +23,20 @@ export default function IdentityPage() {
         <p className="id-amad" dir="rtl" lang="ar">
           أَمَد
           <span className="id-amad-en" dir="ltr" lang="en">
-            — the distance to an endpoint. The path toward a destination.
+            {t('about.amadEn')}
           </span>
         </p>
-        <p className="id-subline">Istanbul · Est. 2026</p>
+        <p className="id-subline">{t('common.istanbul')} · {t('common.est2026')}</p>
       </header>
 
       {/* ── 2. STATEMENT ────────────────────────────────────────── */}
       <section className="id-section id-statement">
-        <p className="id-eyebrow">Statement</p>
+        <p className="id-eyebrow">{t('about.stmtEyebrow')}</p>
         <p className="id-lead">
-          A facade is reasoned as a system, not clad as a surface — geometry,
-          structure and finish resolved in one pair of hands.
+          {t('about.stmtLead')}
         </p>
         <p className="id-body">
-          AMD NSRI is the independent practice of Ahmed Alnaseri — an Iraqi
-          architect based in Istanbul working at the intersection of
-          computational design, facade engineering, and fabrication
-          intelligence. The practice exists to close the gap between
-          architectural imagination and built reality.
+          {t('about.stmtBody')}
         </p>
       </section>
 
@@ -44,8 +44,8 @@ export default function IdentityPage() {
 
       {/* ── 3. THE NAME ─────────────────────────────────────────── */}
       <section className="id-section id-name">
-        <p className="id-eyebrow">The Name</p>
-        <h2 className="id-h2">The Name</h2>
+        <p className="id-eyebrow">{t('about.nameEyebrow')}</p>
+        <h2 className="id-h2">{t('about.nameTitle')}</h2>
 
         <div className="id-name-grid">
           <div className="id-name-glyph" aria-hidden="true" dir="rtl" lang="ar">أَمَد</div>
@@ -54,19 +54,15 @@ export default function IdentityPage() {
             <div className="id-name-block">
               <span className="id-mono-mark">AMD</span>
               <p className="id-body">
-                Drawn from <em>Ahmed</em> — the founder&apos;s name — and from the
-                Arabic <span dir="rtl" lang="ar">أَمَد</span> (<em>AMD</em>): a goal, an
-                endpoint, a distance, a duration; the path travelled toward a
-                destination. The name carries both a signature and a direction.
+                {t('about.amdPre')}<em>Ahmed</em>{t('about.amdMid')}
+                <span dir="rtl" lang="ar">أَمَد</span>{t('about.amdParen')}<em>AMD</em>{t('about.amdPost')}
               </p>
             </div>
 
             <div className="id-name-block">
               <span className="id-mono-mark">NSRI</span>
               <p className="id-body">
-                From <em>Alnaseri</em> — the founder&apos;s family name. The root of
-                the practice and its point of origin, carried into everything it
-                makes.
+                {t('about.nsriPre')}<em>Alnaseri</em>{t('about.nsriPost')}
               </p>
             </div>
           </div>
@@ -77,26 +73,29 @@ export default function IdentityPage() {
 
       {/* ── 4. APPROACH ─────────────────────────────────────────── */}
       <section className="id-section id-approach">
-        <p className="id-eyebrow">Approach</p>
-        <h2 className="id-h2">From concept to built reality.</h2>
+        <p className="id-eyebrow">{t('about.approachEyebrow')}</p>
+        <h2 className="id-h2">{t('about.approachTitle')}</h2>
         <p className="id-body id-body--wide">
-          Every project moves through a deliberate sequence. Nothing is
-          decorative; each step carries a production logic, resolved before it
-          reaches the workshop floor.
+          {t('about.approachBody')}
         </p>
 
-        <ol className="id-flow" aria-label="Concept to built reality sequence">
-          {['Concept', 'Geometry', 'System', 'Tool', 'Fabrication', 'Built Reality'].map(
-            (stage, i, arr) => (
-              <li key={stage} className="id-flow-step">
-                <span className="id-flow-num">{String(i + 1).padStart(2, '0')}</span>
-                <span className="id-flow-label">{stage}</span>
-                {i < arr.length - 1 && (
-                  <span className="id-flow-arrow" aria-hidden="true">→</span>
-                )}
-              </li>
-            ),
-          )}
+        <ol className="id-flow" aria-label={t('about.approachTitle')}>
+          {[
+            t('about.flowConcept'),
+            t('about.flowGeometry'),
+            t('about.flowSystem'),
+            t('about.flowTool'),
+            t('about.flowFabrication'),
+            t('about.flowBuilt'),
+          ].map((stage, i, arr) => (
+            <li key={i} className="id-flow-step">
+              <span className="id-flow-num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="id-flow-label">{stage}</span>
+              {i < arr.length - 1 && (
+                <span className="id-flow-arrow" aria-hidden="true">→</span>
+              )}
+            </li>
+          ))}
         </ol>
       </section>
 
@@ -104,32 +103,29 @@ export default function IdentityPage() {
 
       {/* ── 5. THE PRACTICE ─────────────────────────────────────── */}
       <section className="id-section id-practice">
-        <p className="id-eyebrow">The Practice</p>
-        <h2 className="id-h2">Three disciplines, one pair of hands.</h2>
+        <p className="id-eyebrow">{t('about.practiceEyebrow')}</p>
+        <h2 className="id-h2">{t('about.practiceTitle')}</h2>
 
         <div className="id-disc-grid">
           <div className="id-disc">
             <span className="id-disc-no" aria-hidden="true">01</span>
-            <h3 className="id-disc-title">Computational Design</h3>
+            <h3 className="id-disc-title">{t('about.disc1Title')}</h3>
             <p className="id-body">
-              Grasshopper logic, parametric systems, and automation that turn
-              one-off problems into repeatable, controllable definitions.
+              {t('about.disc1Body')}
             </p>
           </div>
           <div className="id-disc">
             <span className="id-disc-no" aria-hidden="true">02</span>
-            <h3 className="id-disc-title">Facade Engineering</h3>
+            <h3 className="id-disc-title">{t('about.disc2Title')}</h3>
             <p className="id-body">
-              Panelization, substructure, tolerance and material limits — the
-              skin resolved as a buildable system, not a rendered surface.
+              {t('about.disc2Body')}
             </p>
           </div>
           <div className="id-disc">
             <span className="id-disc-no" aria-hidden="true">03</span>
-            <h3 className="id-disc-title">Fabrication Intelligence</h3>
+            <h3 className="id-disc-title">{t('about.disc3Title')}</h3>
             <p className="id-body">
-              Unfolding, shop drawings, and production geometry — design carried
-              all the way to the file the workshop actually opens.
+              {t('about.disc3Body')}
             </p>
           </div>
         </div>
@@ -139,21 +135,15 @@ export default function IdentityPage() {
 
       {/* ── 6. FOUNDER ──────────────────────────────────────────── */}
       <section className="id-section id-founder">
-        <p className="id-eyebrow">Founder</p>
+        <p className="id-eyebrow">{t('about.founderEyebrow')}</p>
         <div className="id-founder-grid">
           <h2 className="id-h2 id-founder-name">Ahmed Alnaseri</h2>
           <div className="id-founder-text">
             <p className="id-body">
-              Ahmed Alnaseri is an Iraqi architect based in Istanbul. He trained
-              in architecture but kept returning to the parts of the work most
-              architects hand off — the panel that has to fold, the joint that
-              has to close, the file the workshop opens.
+              {t('about.founderBody1')}
             </p>
             <p className="id-body">
-              He founded AMD NSRI to be the translation between design and
-              fabrication: a practice that carries an idea from concept to
-              geometry to system to tool to fabricated reality, without losing
-              intent at any seam.
+              {t('about.founderBody2')}
             </p>
           </div>
         </div>
@@ -162,18 +152,18 @@ export default function IdentityPage() {
       {/* ── 7. CLOSING / CTA ────────────────────────────────────── */}
       <section className="id-cta">
         <p className="id-cta-line">
-          From the first sketch<br />to the last bolt.
+          {t('about.ctaLine1')}<br />{t('about.ctaLine2')}
         </p>
         <div className="id-cta-actions">
-          <Link href="/contact" className="id-btn id-btn--solid">Start a Collaboration</Link>
-          <Link href="/architecture" className="id-btn">View Selected Works</Link>
+          <Link href="/contact" className="id-btn id-btn--solid">{t('about.ctaSolid')}</Link>
+          <Link href="/architecture" className="id-btn">{t('about.ctaGhost')}</Link>
         </div>
       </section>
 
       <div className="id-strip" aria-hidden="true">
         <span>AMD NSRI</span>
-        <span>About</span>
-        <span>Istanbul · Est. 2026</span>
+        <span>{t('nav.identity')}</span>
+        <span>{t('common.istanbul')} · {t('common.est2026')}</span>
         <span className="id-strip-fill" />
       </div>
 

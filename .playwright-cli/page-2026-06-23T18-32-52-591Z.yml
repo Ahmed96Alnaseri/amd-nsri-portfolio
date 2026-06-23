@@ -1,0 +1,196 @@
+- generic [ref=e1]:
+  - navigation "Main navigation" [ref=e182]:
+    - list [ref=e184]:
+      - listitem "AMD NSRI homepage" [ref=e185] [cursor=pointer]: AMD NSRI
+      - listitem [ref=e186] [cursor=pointer]: Architecture
+      - listitem [ref=e187] [cursor=pointer]: Design
+      - listitem [ref=e188] [cursor=pointer]: Tools
+      - listitem [ref=e189] [cursor=pointer]: Fabrication
+      - listitem [ref=e190] [cursor=pointer]: Shop
+      - listitem [ref=e191] [cursor=pointer]: Journal
+      - listitem [ref=e192] [cursor=pointer]: Contact
+      - listitem [ref=e193] [cursor=pointer]: About
+      - listitem [ref=e194]:
+        - button "Switch language" [expanded] [active] [ref=e195] [cursor=pointer]: EN
+        - group "Select language" [ref=e369]:
+          - button "EN" [pressed] [ref=e370]
+          - button "TR" [ref=e371] [cursor=pointer]
+          - button "AR" [ref=e372] [cursor=pointer]
+  - dialog [ref=e197]:
+    - generic [ref=e198]:
+      - generic [ref=e199]: AMD NSRI
+      - button [ref=e200] [cursor=pointer]
+    - navigation [ref=e203]:
+      - generic [ref=e204]:
+        - generic [ref=e205]: "01"
+        - link [ref=e206] [cursor=pointer]:
+          - /url: /architecture
+          - text: Architecture
+        - generic [ref=e207]: Spatial concepts and visualization
+      - generic [ref=e208]:
+        - generic [ref=e209]: "02"
+        - link [ref=e210] [cursor=pointer]:
+          - /url: /design
+          - text: Design
+        - generic [ref=e211]: Experimental design and objects
+      - generic [ref=e212]:
+        - generic [ref=e213]: "03"
+        - link [ref=e214] [cursor=pointer]:
+          - /url: /tools
+          - text: Tools
+        - generic [ref=e215]: Parametric tools and definitions
+      - generic [ref=e216]:
+        - generic [ref=e217]: "04"
+        - link [ref=e218] [cursor=pointer]:
+          - /url: /fabrication
+          - text: Fabrication
+        - generic [ref=e219]: Production and fabrication logic
+      - generic [ref=e220]:
+        - generic [ref=e221]: "05"
+        - link [ref=e222] [cursor=pointer]:
+          - /url: /shop
+          - text: Shop
+        - generic [ref=e223]: Products and resources
+      - generic [ref=e224]:
+        - generic [ref=e225]: "06"
+        - link [ref=e226] [cursor=pointer]:
+          - /url: /journal
+          - text: Journal
+        - generic [ref=e227]: Articles and process notes
+      - generic [ref=e228]:
+        - generic [ref=e229]: "07"
+        - link [ref=e230] [cursor=pointer]:
+          - /url: /contact
+          - text: Contact
+        - generic [ref=e231]: Collaboration inquiries
+      - generic [ref=e232]:
+        - generic [ref=e233]: "08"
+        - link [ref=e234] [cursor=pointer]:
+          - /url: /identity
+          - text: About
+        - generic [ref=e235]: The practice and its founder
+    - generic [ref=e236]:
+      - button [pressed] [ref=e238]: EN
+      - generic [ref=e239]:
+        - generic [ref=e240]: ·
+        - button [ref=e241] [cursor=pointer]: TR
+      - generic [ref=e242]:
+        - generic [ref=e243]: ·
+        - button [ref=e244] [cursor=pointer]: AR
+  - main [ref=e245]:
+    - generic [ref=e246]:
+      - paragraph [ref=e248]: Tools
+      - heading "Build. Automate. Deploy." [level=1] [ref=e249]
+      - paragraph [ref=e250]: Computational tools and definitions — from Grasshopper logic to web apps that turn fabrication problems into repeatable, shippable systems.
+      - group "Filter tools by platform" [ref=e251]:
+        - button "All06" [pressed] [ref=e252] [cursor=pointer]
+        - button "Grasshopper05" [ref=e253] [cursor=pointer]
+        - button "Web01" [ref=e254] [cursor=pointer]
+        - button "Software01" [ref=e255] [cursor=pointer]
+      - generic [ref=e256]:
+        - link "Sheet Metal Unfolder — view details" [ref=e257] [cursor=pointer]:
+          - /url: /tools/sheet-metal-unfolder
+          - generic [ref=e258]:
+            - generic: ◆
+          - generic [ref=e260]:
+            - generic [ref=e261]:
+              - generic [ref=e262]: Grasshopper
+              - generic [ref=e263]:
+                - generic [ref=e264]: Showcase
+                - generic [ref=e265]: Beta
+            - generic [ref=e267]:
+              - generic [ref=e268]: Sheet Metal Unfolder
+              - generic [ref=e269]: Flat cutting patterns with k-factor and bend radius control
+            - generic [ref=e270]:
+              - generic [ref=e271]: T-01
+              - generic [ref=e272]: →
+        - link "Perforation Pattern Engine — view details" [ref=e273] [cursor=pointer]:
+          - /url: /tools/perforation-pattern-engine
+          - generic [ref=e274]:
+            - generic: ◆
+          - generic [ref=e276]:
+            - generic [ref=e277]:
+              - generic [ref=e278]: Grasshopper
+              - generic [ref=e279]:
+                - generic [ref=e280]: Showcase
+                - generic [ref=e281]: Beta
+            - generic [ref=e283]:
+              - generic [ref=e284]: Perforation Pattern Engine
+              - generic [ref=e285]: Parametric perforation layouts — pitch, diameter, open area ratio
+            - generic [ref=e286]:
+              - generic [ref=e287]: T-02
+              - generic [ref=e288]: →
+        - link "Panel Type Optimizer — view details" [ref=e289] [cursor=pointer]:
+          - /url: /tools/panel-type-optimizer
+          - generic [ref=e290]:
+            - generic: ◆
+          - generic [ref=e292]:
+            - generic [ref=e293]:
+              - generic [ref=e294]: Grasshopper
+              - generic [ref=e295]:
+                - generic [ref=e296]: Showcase
+                - generic [ref=e297]: Beta
+            - generic [ref=e299]:
+              - generic [ref=e300]: Panel Type Optimizer
+              - generic [ref=e301]: Groups facade panels by tolerance to minimize unique fabrication types
+            - generic [ref=e302]:
+              - generic [ref=e303]: T-03
+              - generic [ref=e304]: →
+        - link "Surface Punch Mapper — view details" [ref=e305] [cursor=pointer]:
+          - /url: /tools/surface-punch-mapper
+          - generic [ref=e306]:
+            - generic: ◆
+          - generic [ref=e308]:
+            - generic [ref=e309]:
+              - generic [ref=e310]: Grasshopper
+              - generic [ref=e311]:
+                - generic [ref=e312]: Showcase
+                - generic [ref=e313]: Beta
+            - generic [ref=e315]:
+              - generic [ref=e316]: Surface Punch Mapper
+              - generic [ref=e317]: Projects image-based punch patterns onto 3D Rhino surface geometry
+            - generic [ref=e318]:
+              - generic [ref=e319]: T-04
+              - generic [ref=e320]: →
+        - link "Pinact — view details" [ref=e321] [cursor=pointer]:
+          - /url: /tools/pinact
+          - generic [ref=e322]:
+            - generic: ◆
+          - generic [ref=e324]:
+            - generic [ref=e325]:
+              - generic [ref=e326]: Software
+              - generic [ref=e327]:
+                - generic [ref=e328]: Contact for pricing
+                - generic [ref=e329]: Live
+            - generic [ref=e331]:
+              - generic [ref=e332]: Pinact
+              - generic [ref=e333]: Location intelligence and site analysis — standalone software
+            - generic [ref=e334]:
+              - generic [ref=e335]: T-05
+              - generic [ref=e336]: →
+        - link "Material Quantity Estimator — view details" [ref=e337] [cursor=pointer]:
+          - /url: /tools/material-quantity-estimator
+          - generic [ref=e338]:
+            - generic: ◆
+          - generic [ref=e340]:
+            - generic [ref=e341]:
+              - generic [ref=e342]: Web + Grasshopper
+              - generic [ref=e343]:
+                - generic [ref=e344]: Free (web) · Grasshopper on request
+                - generic [ref=e345]: Beta
+            - generic [ref=e347]:
+              - generic [ref=e348]: Material Quantity Estimator
+              - generic [ref=e349]: Total aluminum sheets, powder coat, and profiles — web or Grasshopper
+            - generic [ref=e350]:
+              - generic [ref=e351]: T-06
+              - generic [ref=e352]: →
+      - generic [ref=e353]:
+        - generic [ref=e354]: AMD NSRI
+        - generic [ref=e355]: Tools
+        - generic [ref=e356]: Est. 2026
+  - alert [ref=e358]
+  - generic [ref=e361] [cursor=pointer]:
+    - img [ref=e362]
+    - generic [ref=e364]: 1 error
+    - button "Hide Errors" [ref=e365]:
+      - img [ref=e366]

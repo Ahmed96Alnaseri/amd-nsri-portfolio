@@ -53,8 +53,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
  */
 function applyLang(lang: Lang) {
   const html = document.documentElement;
-  html.lang = lang === 'EN' ? 'en' : lang === 'TR' ? 'tr' : 'ar';
+  const isAR = lang === 'AR';
+  // `lang` attribute drives the [lang="ar"] CSS rules; layout stays LTR.
+  html.setAttribute('lang', isAR ? 'ar' : lang === 'TR' ? 'tr' : 'en');
   html.dir = 'ltr';
+  // Styling hooks: a class + custom properties, both consumed in globals.css.
+  html.classList.toggle('lang-ar', isAR);
+  html.style.setProperty('--text-direction', isAR ? 'rtl' : 'ltr');
+  html.style.setProperty('--text-align', isAR ? 'right' : 'left');
 }
 
 export const useLanguage = () => useContext(LanguageContext);
