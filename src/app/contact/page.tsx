@@ -162,6 +162,7 @@ export default function ContactPage() {
   const [errors, setErrors]     = useState<Errs>({});
   const [submitting, setSubmit] = useState(false);
   const [done, setDone]         = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
 
   const update = (k: keyof Fields) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -174,9 +175,20 @@ export default function ContactPage() {
     const errs = validate(form);
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setSubmit(true);
-    await new Promise(r => setTimeout(r, 1300));
-    setDone(true);
-    setSubmit(false);
+    setSendError(null);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error('request failed');
+      setDone(true);
+    } catch {
+      setSendError(t('contact.errSend'));
+    } finally {
+      setSubmit(false);
+    }
   };
 
   const inputBase = (name: keyof Fields): React.CSSProperties => ({
@@ -508,6 +520,22 @@ export default function ContactPage() {
                     `${t('contact.send')} →`
                   )}
                 </button>
+
+                {sendError && (
+                  <p role="alert" style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '12px',
+                    letterSpacing: '0.06em',
+                    color: '#e05555',
+                    marginTop: '18px',
+                  }}>
+                    <span style={{ display: 'block', width: '20px', height: '1px', background: '#e05555' }} />
+                    {sendError}
+                  </p>
+                )}
 
                 <p style={{
                   fontFamily: 'var(--font-body)',
