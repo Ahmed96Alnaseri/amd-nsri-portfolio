@@ -28,24 +28,21 @@ export default function IntroSection() {
     const SCAN_RANGE = isMobile ? 0.68 : 0.65;
     const SUB_START  = isMobile ? 0.78 : 0.82;
 
-    // Cached previous values — write only on change.
     let prevPct = -1;
     let prevStatus = '';
     let prevDone = false;
     let prevScanHidden = false;
 
     const apply = (p: number) => {
-      const fill = clamp01((p - SCAN_START) / SCAN_RANGE);
-      const eased = 1 - Math.pow(1 - fill, 2);
+      const fill     = clamp01((p - SCAN_START) / SCAN_RANGE);
+      const eased    = 1 - Math.pow(1 - fill, 2);
       const insetTop = (1 - eased) * 100;
-      const done = eased > 0.995;
+      const done     = eased > 0.995;
 
-      if (solidRef.current) {
+      if (solidRef.current)
         solidRef.current.style.clipPath = `inset(${insetTop.toFixed(2)}% 0 0 0)`;
-      }
+
       if (scanRef.current) {
-        // top: % keeps the scanline's reference frame identical to the
-        // wordmark's clip-path so the two finish in lockstep.
         scanRef.current.style.top = `${insetTop.toFixed(2)}%`;
         if (done !== prevScanHidden) {
           scanRef.current.style.opacity = done ? '0' : '1';
@@ -59,7 +56,11 @@ export default function IntroSection() {
         prevPct = pct;
       }
 
-      const status = p < SCAN_START ? t('intro.standby') : done ? t('intro.complete') : t('intro.fabricating');
+      // Words switch at the 35% and 70% counter marks.
+      const status =
+        pct < 35 ? t('intro.standby') :
+        pct < 70 ? t('intro.fabricating') :
+                   t('intro.complete');
       if (status !== prevStatus && statusRef.current) {
         statusRef.current.textContent = status;
         prevStatus = status;
@@ -81,6 +82,7 @@ export default function IntroSection() {
     if (reduced) { apply(1); return; }
 
     let cancelled = false;
+
     const loop = () => {
       if (cancelled) return;
       const vh = window.innerHeight;

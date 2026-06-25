@@ -25,7 +25,9 @@ export default function Navigation() {
   const [scrolled,  setScrolled]  = useState(false);
   const [menuOpen,  setMenuOpen]  = useState(false);
   const [langOpen,  setLangOpen]  = useState(false);
+  const [catOpen,   setCatOpen]   = useState(false);
   const langTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const catTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -47,6 +49,7 @@ export default function Navigation() {
   }, []);
 
   useEffect(() => () => { if (langTimer.current) clearTimeout(langTimer.current); }, []);
+  useEffect(() => () => { if (catTimer.current)  clearTimeout(catTimer.current);  }, []);
 
   const openLang  = () => {
     if (langTimer.current) { clearTimeout(langTimer.current); langTimer.current = null; }
@@ -58,6 +61,18 @@ export default function Navigation() {
   };
   const onLangWrapBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     if (!e.currentTarget.contains(e.relatedTarget as Node)) setLangOpen(false);
+  };
+
+  const openCat  = () => {
+    if (catTimer.current) { clearTimeout(catTimer.current); catTimer.current = null; }
+    setCatOpen(true);
+  };
+  const closeCat = () => {
+    if (catTimer.current) clearTimeout(catTimer.current);
+    catTimer.current = setTimeout(() => setCatOpen(false), 120);
+  };
+  const onCatWrapBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) setCatOpen(false);
   };
 
   return (
@@ -94,6 +109,50 @@ export default function Navigation() {
             <Link href="/" className="nav-link" role="listitem" aria-label="AMD NSRI homepage">
               <span style={{ color: '#b8956a' }}>{t('nav.wordmark')}</span>
             </Link>
+
+            {/* Catalogue hover popover */}
+            <div
+              className="nav-cat-wrap"
+              onMouseEnter={openCat}
+              onMouseLeave={closeCat}
+              onFocus={openCat}
+              onBlur={onCatWrapBlur}
+              onKeyDown={(e) => { if (e.key === 'Escape') setCatOpen(false); }}
+              role="listitem"
+            >
+              <button
+                type="button"
+                className="nav-link nav-cat-trigger"
+                onClick={openCat}
+                aria-haspopup="true"
+                aria-expanded={catOpen}
+                aria-controls="nav-cat-pop"
+              >
+                {t('nav.catalogue')}
+              </button>
+
+              {catOpen && (
+                <div id="nav-cat-pop" className="nav-cat-pop" role="dialog" aria-label={t('nav.catalogue')}>
+                  <a
+                    href="/catalogue/amd-nsri-catalogue.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="nav-cat-card"
+                    style={{ animationDelay: '0ms' }}
+                  >
+                    {t('nav.catPreview')}
+                  </a>
+                  <a
+                    href="/catalogue/amd-nsri-catalogue.pdf"
+                    download
+                    className="nav-cat-card"
+                    style={{ animationDelay: '60ms' }}
+                  >
+                    {t('nav.catDownload')}
+                  </a>
+                </div>
+              )}
+            </div>
 
             {NAV_HREFS.map((item) => (
               <Link
@@ -228,6 +287,20 @@ export default function Navigation() {
 
         {/* Nav items */}
         <nav aria-label="Mobile navigation links">
+          {/* Catalogue download item */}
+          <div className="mobile-nav-item">
+            <span className="mobile-nav-num">00</span>
+            <a
+              href="/catalogue/amd-nsri-catalogue.pdf"
+              className="mobile-nav-label"
+              download
+              onClick={() => setMenuOpen(false)}
+            >
+              {t('nav.catalogue')}
+            </a>
+            <span className="mobile-nav-desc">{t('nav.downloadPdf')} →</span>
+          </div>
+
           {NAV_HREFS.map((item, i) => (
             <div key={item.href} className="mobile-nav-item">
               <span className="mobile-nav-num">{MOBILE_NUMS[i]}</span>
@@ -279,6 +352,60 @@ export default function Navigation() {
         }
         .mobile-nav-label--active {
           color: #b8956a !important;
+        }
+
+        /* ── catalogue popover (desktop) ── */
+        .nav-cat-wrap {
+          position: relative;
+          display: inline-flex;
+        }
+        .nav-cat-trigger {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          padding-bottom: 2px;
+        }
+        .nav-cat-pop {
+          position: absolute;
+          top: calc(100% + 12px);
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 200;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          min-width: 140px;
+        }
+        .nav-cat-card {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 18px 28px;
+          background: rgba(255, 255, 255, 0.06);
+          -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 2px;
+          font-family: var(--font-title);
+          font-size: 15px;
+          color: #ffffff;
+          text-decoration: none;
+          white-space: nowrap;
+          animation: navCatDrop 250ms ease-out both;
+          transition: border-color 200ms ease;
+        }
+        .nav-cat-card:hover,
+        .nav-cat-card:focus-visible {
+          border-color: #b8956a;
+          outline: none;
+        }
+        @keyframes navCatDrop {
+          from { opacity: 0; transform: translateY(-10px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .nav-cat-card { animation: none; opacity: 1; }
         }
 
         /* ── lang switcher (desktop) ── */

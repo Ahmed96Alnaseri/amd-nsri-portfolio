@@ -61,7 +61,7 @@
 [lang="ar"] .eco-card-num, [lang="ar"] .eco-card-ghostnum, [lang="ar"] .work-card-num,
 [lang="ar"] .ap-fn, [lang="ar"] .id-flow-num, [lang="ar"] .id-disc-no,
 [lang="ar"] .hero2-idx, [lang="ar"] .hero2-sheetno,
-[lang="ar"] .ps2-spec-no, [lang="ar"] .ps2-amd-num, [lang="ar"] .ps2-amd-letter,
+[lang="ar"] .ps2-spec-no, [lang="ar"] .ps2-amd-num,
 [lang="ar"] .fabint-kw-index,
 [lang="ar"] .amd-stat__num, [lang="ar"] .amd-stat__suffix,
 [lang="ar"] .hero2-titleblock, [lang="ar"] .hero2-titleblock *,
@@ -88,6 +88,43 @@
 [lang="ar"] .cpage-grid,
 [lang="ar"] .cta-grid {
   direction: rtl;
+}
+
+/* Mirror the AMD breakdown grid and each column's letterrow in Arabic */
+[lang="ar"] .ps2-amd-grid {
+  direction: rtl;
+}
+[lang="ar"] .ps2-amd-col {
+  direction: rtl;
+}
+[lang="ar"] .ps2-amd-col + .ps2-amd-col {
+  border-left: none;
+  border-right: 1px solid var(--color-border);
+}
+
+/* Stats subtitle: push the max-width block to the right so it sits below the title */
+[lang="ar"] .amd-stats__sub {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* Architecture page header: push max-width blocks right to align with the grid */
+[lang="ar"] .ap-title,
+[lang="ar"] .ap-desc {
+  margin-left: auto;
+  margin-right: 0;
+  text-align: right;
+}
+
+/* Section headings that use a 2-col header grid: collapse to single column in
+   Arabic so the title spans full width and text-align:right (global h2 rule)
+   aligns it with the rightmost card */
+[lang="ar"] .works-header {
+  grid-template-columns: 1fr;
+}
+
+[lang="ar"] .eco-header {
+  grid-template-columns: 1fr;
 }
 
 @media (min-width: 1024px) {
@@ -1212,7 +1249,7 @@ html[data-theme="white"] .nav-root.scrolled {
 
 .eco-card-tag {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-meta);

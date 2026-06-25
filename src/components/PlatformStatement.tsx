@@ -11,14 +11,14 @@ const SPEC_KEYS = [
   ['platform.specScaleL',    'platform.specScaleV'],
 ] as const;
 
-const AMD = [
-  ['A', '01', 'platform.amdA'],
-  ['M', '02', 'platform.amdM'],
-  ['D', '03', 'platform.amdD'],
-] as const;
+const AMD_DATA = [
+  { letterKey: 'platform.amdLetterA' as const, num: '01', descKey: 'platform.amdA' as const },
+  { letterKey: 'platform.amdLetterM' as const, num: '02', descKey: 'platform.amdM' as const },
+  { letterKey: 'platform.amdLetterD' as const, num: '03', descKey: 'platform.amdD' as const },
+];
 
 export default function PlatformStatement() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
@@ -41,6 +41,20 @@ export default function PlatformStatement() {
   const setRef = (i: number) => (el: HTMLElement | null) => {
     revealRefs.current[i] = el;
   };
+
+  // Arabic readings: the paragraph block sits at the LEFT of the readings column
+  // (the gap beside أَمَد). The copper header shares the paragraph's 520px box but is
+  // right-aligned, so it sits directly above the paragraph's right edge.
+  const ar = lang === 'AR';
+  const readWrapStyle: React.CSSProperties = ar
+    ? { textAlign: 'left', direction: 'rtl', width: '100%' }
+    : { textAlign: 'left', direction: 'ltr' };
+  const readHeadStyle: React.CSSProperties = ar
+    ? { display: 'block', maxWidth: 520, marginRight: 'auto', marginLeft: 0, textAlign: 'right', direction: 'rtl' }
+    : {};
+  const readBodyStyle: React.CSSProperties = ar
+    ? { display: 'block', textAlign: 'left', direction: 'rtl', marginRight: 'auto', marginLeft: 0 }
+    : {};
 
   return (
     <section
@@ -166,15 +180,15 @@ export default function PlatformStatement() {
 
           {/* two readings */}
           <div className="ps2-readings">
-            <div className="ps2-reading">
-              <span className="ps2-reading-idx">{t('platform.reading1Label')}</span>
-              <p>
+            <div className="ps2-reading" style={readWrapStyle}>
+              <span className="ps2-reading-idx" style={readHeadStyle}>{t('platform.reading1Label')}</span>
+              <p style={readBodyStyle}>
                 {t('platform.reading1Pre')}<em>{t('platform.reading1Em')}</em>{t('platform.reading1Post')}
               </p>
             </div>
-            <div className="ps2-reading">
-              <span className="ps2-reading-idx">{t('platform.reading2Label')}</span>
-              <p>
+            <div className="ps2-reading" style={readWrapStyle}>
+              <span className="ps2-reading-idx" style={readHeadStyle}>{t('platform.reading2Label')}</span>
+              <p style={readBodyStyle}>
                 {t('platform.reading2Pre')}
                 <span lang="ar" className="ps2-arabic-inline">أَمَد</span>
                 {t('platform.reading2Post')}
@@ -185,10 +199,10 @@ export default function PlatformStatement() {
 
         {/* A · M · D breakdown */}
         <div className="ps2-amd-grid">
-          {AMD.map(([letter, num, descKey]) => (
-            <div className="ps2-amd-col" key={letter}>
+          {AMD_DATA.map(({ letterKey, num, descKey }) => (
+            <div className="ps2-amd-col" key={letterKey}>
               <div className="ps2-amd-letterrow" aria-hidden="true">
-                <span className="ps2-amd-letter">{letter}</span>
+                <span className="ps2-amd-letter">{t(letterKey)}</span>
                 <span className="ps2-amd-num">/ {num}</span>
               </div>
               <p className="ps2-amd-desc">{t(descKey)}</p>
