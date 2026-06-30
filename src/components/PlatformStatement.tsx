@@ -96,7 +96,6 @@ export default function PlatformStatement() {
             style={{ '--delay': '80ms' } as React.CSSProperties}
           >
             <span className="ps2-heading-line">{t('platform.headingLine1')}</span>
-            <span className="ps2-heading-line">{t('platform.headingLine2')}</span>
             <span className="ps2-heading-line ps2-heading-em">
               {t('platform.headingPre')}<em>{t('platform.headingSystem')}</em><span className="ps2-period">.</span>
             </span>

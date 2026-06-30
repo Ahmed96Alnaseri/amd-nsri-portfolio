@@ -3205,9 +3205,6 @@ html[data-theme="white"] .nav-root.scrolled {
   margin: 0 0 48px;
 }
 .ps2-heading-line { display: block; }
-.ps2-heading-line.ps2-heading-em { margin-left: clamp(24px, 4vw, 80px); }
-/* Arabic: mirror the staircase indent to the right side. */
-[lang="ar"] .ps2-heading-line.ps2-heading-em { margin-left: 0; margin-right: clamp(24px, 4vw, 80px); }
 .ps2-heading em {
   font-style: italic;
   color: var(--color-accent);
@@ -3757,7 +3754,6 @@ html[data-theme="white"] .nav-root.scrolled {
 
   /* ── Section 02 — Platform Statement ── */
   .ps2-heading { font-size: clamp(28px, 8.5vw, 44px); margin-bottom: 32px; }
-  .ps2-heading-line.ps2-heading-em { margin-left: 16px; }
   .ps2-body-cols { grid-template-columns: 1fr; gap: 20px; }
   .ps2-body { font-size: 13px; }
   .ps2-spec { max-width: none; width: 100%; }
