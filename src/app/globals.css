@@ -3280,7 +3280,7 @@ html[data-theme="white"] .nav-root.scrolled {
 .ps2-spec-stamp {
   display: inline-block;
   font-family: var(--font-body);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-accent);
