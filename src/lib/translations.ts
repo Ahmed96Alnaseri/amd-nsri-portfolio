@@ -1250,7 +1250,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Mild Steel 3mm': 'Yumuşak Çelik 3mm',
     'Zinc': 'Çinko',
     // locations
-    'Turkmenistan': 'Türkmenistan',
+    'Awaza, Turkmenistan': 'Avaza, Türkmenistan',
     'Istanbul': 'İstanbul',
     'Istanbul, Türkiye': 'İstanbul, Türkiye',
     'Baghdad, Iraq': 'Bağdat, Irak',
@@ -1607,7 +1607,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Mild Steel 3mm': 'فولاذ طري 3مم',
     'Zinc': 'زنك',
     // locations
-    'Turkmenistan': 'تركمانستان',
+    'Awaza, Turkmenistan': 'أوازا، تركمانستان',
     'Istanbul': 'إسطنبول',
     'Istanbul, Türkiye': 'إسطنبول، تركيا',
     'Baghdad, Iraq': 'بغداد، العراق',

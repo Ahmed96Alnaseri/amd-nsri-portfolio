@@ -40,7 +40,7 @@ const HASYL_CANOPY: CaseStudy = {
   title: 'Hasyl Canopy',
   category: 'Architecture',
   year: '2025',
-  location: 'Turkmenistan',
+  location: 'Awaza, Turkmenistan',
   client: 'Mahli',
   architect: 'Ahmed Alnaseri, Furkan Kartekin',
   heroImage: '/Hasyl/render/CANOPY_V1_1 - Photo.jpg',

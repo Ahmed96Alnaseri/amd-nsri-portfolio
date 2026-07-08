@@ -27,7 +27,7 @@ const PROJECTS: Project[] = [
     category: 'Commercial',
     type: 'Parametric Canopy',
     year: '2025',
-    location: 'Turkmenistan',
+    location: 'Awaza, Turkmenistan',
     architect: 'Ahmed Alnaseri, Furkan Kartekin',
     area: '500 m²',
     images: [

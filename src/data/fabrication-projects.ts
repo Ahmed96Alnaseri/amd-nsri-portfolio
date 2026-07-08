@@ -39,7 +39,7 @@ const fabricationProjects: FabricationProject[] = [
     type: 'Parametric Canopy',
     material: 'Aluminum Composite',
     year: '2025',
-    location: 'Turkmenistan',
+    location: 'Awaza, Turkmenistan',
     images: [],
   },
   {
@@ -48,7 +48,7 @@ const fabricationProjects: FabricationProject[] = [
     type: 'Structural Node',
     material: 'Steel + Aluminum',
     year: '2025',
-    location: 'Turkmenistan',
+    location: 'Awaza, Turkmenistan',
     images: [],
   },
   {
