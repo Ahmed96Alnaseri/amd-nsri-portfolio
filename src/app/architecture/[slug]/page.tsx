@@ -14,13 +14,22 @@ type CaseStudy = {
   year: string;
   location: string;
   client: string;
+  architect?: string;
   /** Empty string renders a placeholder hero (perforation pattern) */
   heroImage: string;
+  /** CSS object-position for the hero image crop; defaults to 'center' */
+  heroPosition?: string;
+  /** CSS height for the hero section; defaults to 70vh (56vh on mobile) */
+  heroHeight?: string;
+  /** object-fit for the hero image; defaults to 'cover' (crops to fill). Use 'contain' to show the full image, uncropped. */
+  heroFit?: 'cover' | 'contain';
   description: string;
   program: string;
   area: string;
   status: string;
-  tools: string;
+  tools?: string;
+  /** When set, replaces the "Tools Used" row with a "Manufacturers" row */
+  manufacturers?: string;
   gallery: GalleryImage[];
   /** Back-link target + label; defaults to /architecture */
   backHref?: string;
@@ -30,24 +39,24 @@ type CaseStudy = {
 const HASYL_CANOPY: CaseStudy = {
   title: 'Hasyl Canopy',
   category: 'Architecture',
-  year: '2024',
+  year: '2025',
   location: 'Turkmenistan',
-  client: 'Hasyl',
-  heroImage: '/project-hysel-01.png',
+  client: 'Mahli',
+  architect: 'Ahmed Alnaseri, Furkan Kartekin',
+  heroImage: '/Hasyl/render/CANOPY_V1_1 - Photo.jpg',
   description:
-    'A parametric canopy structure designed for the Hasyl complex entrance. The columns draw from Islamic geometric patterns, translated into a contemporary fabrication logic using algorithmic design tools.',
-  program: 'Canopy Structure',
-  area: '800 m²',
+    'A parametric canopy designed for the entrance of the Hasyl Complex, creating a refined architectural gesture with a sense of movement and luxury. The column forms extend upward and continue into the ceiling, maintaining one continuous design language. The concept is translated into a contemporary fabrication logic through algorithmic design tools, allowing the form to be developed with precision, rhythm, and buildable geometry.',
+  program: 'Canopy',
+  area: '500 m²',
   status: 'Built',
-  tools: 'Rhino, Grasshopper, 3ds Max',
+  manufacturers: 'Kasso Engineering',
   gallery: [
-    { src: '/project-hysel-01.png',      caption: 'Exterior View',            w: 1920, h: 1080 },
-    { src: '/ceiling türkmen.png',       caption: 'Ceiling Pattern Detail',   w: 1200, h: 900  },
-    { src: '/kolon4.png',                caption: 'Column Technical Drawing', w: 900,  h: 1200 },
-    { src: '/kolon.png',                 caption: 'Parametric Column Detail', w: 900,  h: 1200 },
-    { src: '/Canopy_V3_3 - Photo.jpg',   caption: 'Canopy View 3',            w: 1920, h: 1080 },
-    { src: '/Canopy_V3_4 - Photo.jpg',   caption: 'Canopy View 4',            w: 1920, h: 1080 },
-    { src: '/Canopy_V3_6.jpg',           caption: 'Canopy View 6',            w: 1920, h: 1080 },
+    { src: '/Hasyl/render/CANOPY_V1_1 - Photo.jpg', caption: 'Exterior View',            w: 1920, h: 1080 },
+    { src: '/Hasyl/Diagram/ceiling türkmen.png',    caption: 'Ceiling Pattern Detail',   w: 1200, h: 900  },
+    { src: '/Hasyl/Diagram/kolon4.png',             caption: 'Column Technical Drawing', w: 900,  h: 1200 },
+    { src: '/Hasyl/Diagram/kolon.png',              caption: 'Parametric Column Detail', w: 900,  h: 1200 },
+    { src: '/Hasyl/render/CANOPY_V1_3 - Photo.jpg', caption: 'Canopy View 3',            w: 1920, h: 1080 },
+    { src: '/Hasyl/render/CANOPY_V1_4 - Photo.jpg', caption: 'Canopy View 4',            w: 1920, h: 1080 },
   ],
 };
 
@@ -106,12 +115,61 @@ const SUSTAINABLE_MONUMENT: CaseStudy = {
   backLabel: 'Back to Design',
 };
 
+const CORTEN_FACADE_VILLA: CaseStudy = {
+  title: 'Corten Facade Villa',
+  category: 'Architecture',
+  year: '2026',
+  location: 'Lamu, Kenya',
+  client: 'Kaba',
+  architect: 'Ahmed Alnaseri, Yassir Rawi',
+  heroImage: '/Kalilou Kaba/render/image 11.png',
+  heroPosition: 'center 55%',
+  description:
+    'A contemporary villa facade study exploring Corten steel as both a protective skin and an architectural expression. The design uses perforated and folded metal panels to create privacy, shading, and depth, while allowing light and shadow to animate the building throughout the day.\nThe warm weathered texture of Corten gives the project a natural, timeless character, blending modern geometry with an earthy material presence.',
+  program: 'Villa',
+  area: '140 m²',
+  status: 'Concept',
+  gallery: [
+    { src: '/Kalilou Kaba/render/image 11.png', caption: 'Exterior View',        w: 1123, h: 1401 },
+    { src: '/Kalilou Kaba/render/İmage 2.png', caption: 'Facade Detail',         w: 1920, h: 1080 },
+    { src: '/Kalilou Kaba/render/interior.png', caption: 'Interior View',        w: 1122, h: 1402 },
+    { src: '/Kalilou Kaba/render/İmage 3.png', caption: 'Corten Panel Close-up', w: 1350, h: 1080 },
+    { src: '/Kalilou Kaba/render/image 4.png', caption: 'Living Room View',      w: 1122, h: 1402 },
+    { src: '/Kalilou Kaba/render/model.png',   caption: 'Massing Model',         w: 1920, h: 1080 },
+  ],
+};
+
+const BAGHDAD_HOSPITAL: CaseStudy = {
+  title: 'Baghdad Private Hospital',
+  category: 'Architecture',
+  year: '2026',
+  location: 'Baghdad, Iraq',
+  client: 'Dr. Saif Alshamarati',
+  architect: 'Ahmed Alnaseri, Yassir Rawi',
+  heroImage: '/Baghdad Private Hospital/Render/facade 1.jpeg',
+  heroHeight: '56vh',
+  heroPosition: 'center 27%',
+  description:
+    'Baghdad Private Hospital explores a contemporary healthcare identity through a fluid parametric façade. Perforated aluminum panels filter natural light, provide privacy, and create a dynamic architectural expression that changes throughout the day, combining performance with a calm, welcoming presence.',
+  program: 'Hospital',
+  area: '800 m²',
+  status: 'Concept',
+  gallery: [
+    { src: '/Baghdad Private Hospital/Render/facade 1.jpeg',          caption: 'Main Entrance',        w: 1254, h: 1254 },
+    { src: '/Baghdad Private Hospital/Render/Exterior hospital 2.png', caption: 'Facade Detail',        w: 1254, h: 1254 },
+    { src: '/Baghdad Private Hospital/Render/scrpt.png',              caption: 'Parametric Definition', w: 1080, h: 1350 },
+    { src: '/Baghdad Private Hospital/Render/model1.jpeg',            caption: 'Panel Shop Drawing',    w: 877,  h: 1101 },
+  ],
+};
+
 const CASE_STUDIES: Record<string, CaseStudy> = {
   'hasyl-canopy': HASYL_CANOPY,
   '001': HASYL_CANOPY,
   'hospital-facade-perforation-system': HOSPITAL_FACADE,
   'aziz-gold-smith-facade': AZIZ_FACADE,
   'sustainable-cities-monument': SUSTAINABLE_MONUMENT,
+  'corten-facade-villa': CORTEN_FACADE_VILLA,
+  'baghdad-private-hospital': BAGHDAD_HOSPITAL,
 };
 
 /* ─── page ──────────────────────────────────────────────────────────── */
@@ -207,10 +265,17 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
     { label: t('common.client'),   value: tv(project.client) },
   ];
   const detailItems = [
-    { label: t('common.program'),   value: tv(project.program) },
-    { label: t('common.area'),      value: project.area },
-    { label: t('common.status'),    value: tv(project.status) },
-    { label: t('common.toolsUsed'), value: tv(project.tools) },
+    { label: t('common.program'), value: tv(project.program) },
+    ...(project.architect
+      ? [{ label: t('common.architect'), value: tv(project.architect) }]
+      : []),
+    { label: t('common.area'),   value: project.area },
+    { label: t('common.status'), value: tv(project.status) },
+    ...(project.manufacturers
+      ? [{ label: t('common.manufacturers'), value: tv(project.manufacturers) }]
+      : project.tools
+        ? [{ label: t('common.toolsUsed'), value: tv(project.tools) }]
+        : []),
   ];
 
   return (
@@ -356,6 +421,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           color: var(--color-text-secondary);
           margin: 0;
           max-width: 56ch;
+          white-space: pre-line;
         }
         .cs-details { display: flex; flex-direction: column; }
         .cs-detail-row {
@@ -569,9 +635,23 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       <div className="cs-wrap">
 
         {/* 1 — Hero */}
-        <div className={`cs-hero${project.heroImage ? '' : ' cs-hero--ph'}`}>
+        <div
+          className={`cs-hero${project.heroImage ? '' : ' cs-hero--ph'}`}
+          style={project.heroHeight ? { height: project.heroHeight } : undefined}
+        >
           {project.heroImage ? (
-            <Image src={project.heroImage} alt={project.title} fill priority sizes="100vw" className="cs-hero-img" />
+            <Image
+              src={project.heroImage}
+              alt={project.title}
+              fill
+              priority
+              sizes="100vw"
+              className="cs-hero-img"
+              style={{
+                ...(project.heroPosition ? { objectPosition: project.heroPosition } : {}),
+                ...(project.heroFit ? { objectFit: project.heroFit } : {}),
+              }}
+            />
           ) : (
             <>
               <div className="cs-hero-perf" aria-hidden="true" />

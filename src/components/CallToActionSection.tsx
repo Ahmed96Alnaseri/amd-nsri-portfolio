@@ -109,9 +109,9 @@ export default function CallToActionSection() {
             className="cta-buttons reveal-item"
             style={{ '--delay': '200ms' } as React.CSSProperties}
           >
-            <a href="mailto:ahmed@amdnsri.com" className="cta-btn-primary">
+            <Link href="/contact" className="cta-btn-primary">
               {t('cta.primaryBtn')} →
-            </a>
+            </Link>
 
             {/* Explore Works — hover/focus popover */}
             <div

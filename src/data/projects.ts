@@ -36,7 +36,7 @@ const projects: Project[] = [
       'A parametric facade system driven by solar exposure data, translating environmental logic into geometric perforation patterns.',
     tags: ['Facade', 'Parametric', 'Panelization', 'Rhino'],
     overlayKeywords: ['SHOP DRAWINGS', 'RATIONALIZATION', 'SUBSTRUCTURE', 'CNC READY'],
-    image: '/project-hysel-01.png',
+    image: '/Hasyl/render/CANOPY_V1_1 - Photo.jpg',
     caseStudyLink: '/architecture/001',
   },
   {

@@ -59,6 +59,7 @@ export const translations = {
       client:         'Client',
       program:        'Program',
       toolsUsed:      'Tools Used',
+      manufacturers:  'Manufacturers',
     },
     intro: {
       subtitle:    'Architecture · Design · Fabrication',
@@ -381,6 +382,7 @@ export const translations = {
       client:         'Müşteri',
       program:        'Program',
       toolsUsed:      'Kullanılan Araçlar',
+      manufacturers:  'Üreticiler',
     },
     intro: {
       subtitle:    'Mimarlık · Tasarım · Fabrikasyon',
@@ -703,6 +705,7 @@ export const translations = {
       client:         'العميل',
       program:        'البرنامج',
       toolsUsed:      'الأدوات المستخدمة',
+      manufacturers:  'المصنّعون',
     },
     intro: {
       subtitle:    'العمارة · التصميم · التصنيع',
@@ -1236,7 +1239,9 @@ const VALUES: Record<Lang, ValueMap> = {
     'Sheet Development': 'Sac Açınımı',
     'Interior Screen': 'İç Mekân Paravanı',
     'Roof System': 'Çatı Sistemi',
-    'Canopy Structure': 'Kanopi Strüktürü',
+    'Canopy': 'Kanopi',
+    'Villa': 'Villa',
+    'Hospital': 'Hastane',
     // materials
     'Aluminum Composite': 'Alüminyum Kompozit',
     'Steel + Aluminum': 'Çelik + Alüminyum',
@@ -1249,6 +1254,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Istanbul': 'İstanbul',
     'Istanbul, Türkiye': 'İstanbul, Türkiye',
     'Baghdad, Iraq': 'Bağdat, Irak',
+    'Lamu, Kenya': 'Lamu, Kenya',
     'International': 'Uluslararası',
     // clients
     'Confidential': 'Gizli',
@@ -1330,14 +1336,18 @@ const VALUES: Record<Lang, ValueMap> = {
     'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.':
       'Merdiven geometrisinden üretilen korkuluk geometrisi — her panel benzersiz, tümü tek bir parametrik kuraldan türetilir ve ayrı DXF dosyaları olarak dışa aktarılır.',
     // case-study descriptions
-    'A parametric canopy structure designed for the Hasyl complex entrance. The columns draw from Islamic geometric patterns, translated into a contemporary fabrication logic using algorithmic design tools.':
-      'Hasyl kompleksinin girişi için tasarlanmış parametrik bir kanopi strüktürü. Kolonlar, algoritmik tasarım araçlarıyla çağdaş bir fabrikasyon mantığına çevrilen İslam geometrik desenlerinden beslenir.',
+    'A parametric canopy designed for the entrance of the Hasyl Complex, creating a refined architectural gesture with a sense of movement and luxury. The column forms extend upward and continue into the ceiling, maintaining one continuous design language. The concept is translated into a contemporary fabrication logic through algorithmic design tools, allowing the form to be developed with precision, rhythm, and buildable geometry.':
+      'Hasyl Kompleksi\'nin girişi için tasarlanmış parametrik bir kanopi, hareket ve lüks duygusu taşıyan zarif bir mimari jest yaratıyor. Kolon formları yukarı doğru uzanarak tavana devam eder ve tek, sürekli bir tasarım dilini korur. Konsept, algoritmik tasarım araçları aracılığıyla çağdaş bir fabrikasyon mantığına çevrilir; bu da formun hassasiyet, ritim ve inşa edilebilir geometriyle geliştirilmesine olanak tanır.',
     'A parametric perforation system for a hospital facade, mapping interior daylight and privacy requirements to a gradient of aperture sizes across the building skin. The pattern is generated algorithmically and rationalized into fabrication-ready panels.':
       'Bir hastane cephesi için parametrik delik sistemi; iç mekân gün ışığı ve mahremiyet gereksinimlerini, bina kabuğu boyunca açıklık boyutlarının bir gradyanına eşler. Desen algoritmik olarak üretilir ve fabrikasyona hazır panellere rasyonalize edilir.',
     'A facade system for the Aziz Gold Smith building, developed parametrically to balance retail visibility with a refined, ornamental street presence. Panel geometry and mullion rhythm are driven by a single controllable definition.':
       'Aziz Gold Smith binası için, perakende görünürlüğünü zarif ve süslemeli bir sokak varlığıyla dengelemek üzere parametrik olarak geliştirilen bir cephe sistemi. Panel geometrisi ve kayıt ritmi, kontrol edilebilir tek bir tanımla yönlendirilir.',
     'A competition entry for a monument celebrating sustainable cities. Parametric geometry and real-time visualization in Unreal Engine 5 were used to study form, light, and public experience at urban scale.':
       'Sürdürülebilir şehirleri kutlayan bir anıt için yarışma katılımı. Form, ışık ve kamusal deneyimi kentsel ölçekte incelemek için parametrik geometri ve Unreal Engine 5\'te gerçek zamanlı görselleştirme kullanıldı.',
+    'A contemporary villa facade study exploring Corten steel as both a protective skin and an architectural expression. The design uses perforated and folded metal panels to create privacy, shading, and depth, while allowing light and shadow to animate the building throughout the day.\nThe warm weathered texture of Corten gives the project a natural, timeless character, blending modern geometry with an earthy material presence.':
+      'Corten çeliğini hem koruyucu bir kabuk hem de mimari bir ifade biçimi olarak ele alan çağdaş bir villa cephesi çalışması. Tasarım, mahremiyet, gölgeleme ve derinlik yaratmak için delikli ve katlanmış metal paneller kullanırken, ışık ve gölgenin gün boyunca binayı canlandırmasına izin verir.\nCorten\'in sıcak, yıpranmış dokusu projeye doğal ve zamansız bir karakter kazandırarak modern geometriyi topraksı bir malzeme varlığıyla harmanlar.',
+    'Baghdad Private Hospital explores a contemporary healthcare identity through a fluid parametric façade. Perforated aluminum panels filter natural light, provide privacy, and create a dynamic architectural expression that changes throughout the day, combining performance with a calm, welcoming presence.':
+      'Bağdat Özel Hastanesi, akışkan parametrik bir cephe aracılığıyla çağdaş bir sağlık kimliği araştırıyor. Delikli alüminyum paneller doğal ışığı süzer, mahremiyet sağlar ve gün boyunca değişen dinamik bir mimari ifade yaratırken, performansı sakin ve davetkâr bir varlıkla birleştirir.',
   },
   AR: {
     // filters / categories
@@ -1586,7 +1596,9 @@ const VALUES: Record<Lang, ValueMap> = {
     'Sheet Development': 'فرد الصفائح',
     'Interior Screen': 'ساتر داخلي',
     'Roof System': 'نظام سقف',
-    'Canopy Structure': 'بنية مظلّة',
+    'Canopy': 'مظلّة',
+    'Villa': 'فيلا',
+    'Hospital': 'مستشفى',
     // materials
     'Aluminum Composite': 'ألمنيوم مركّب',
     'Steel + Aluminum': 'فولاذ + ألمنيوم',
@@ -1600,6 +1612,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Istanbul, Türkiye': 'إسطنبول، تركيا',
     'Baghdad, Iraq': 'بغداد، العراق',
     'International': 'دولي',
+    'Lamu, Kenya': 'لامو، كينيا',
     // clients
     'Confidential': 'سرّي',
     'Open Competition': 'مسابقة مفتوحة',
@@ -1680,14 +1693,18 @@ const VALUES: Record<Lang, ValueMap> = {
     'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.':
       'هندسة درابزين مولّدة من هندسة الدرج — كل لوح فريد، جميعها مستمدّة من قاعدة بارامترية واحدة وتُصدَّر كملفات DXF منفصلة.',
     // case-study descriptions
-    'A parametric canopy structure designed for the Hasyl complex entrance. The columns draw from Islamic geometric patterns, translated into a contemporary fabrication logic using algorithmic design tools.':
-      'بنية مظلّة بارامترية مصمّمة لمدخل مجمّع Hasyl. تستلهم الأعمدة من الأنماط الهندسية الإسلامية، مترجمةً إلى منطق تصنيع معاصر باستخدام أدوات التصميم الخوارزمي.',
+    'A parametric canopy designed for the entrance of the Hasyl Complex, creating a refined architectural gesture with a sense of movement and luxury. The column forms extend upward and continue into the ceiling, maintaining one continuous design language. The concept is translated into a contemporary fabrication logic through algorithmic design tools, allowing the form to be developed with precision, rhythm, and buildable geometry.':
+      'مظلّة بارامترية صُممت لمدخل مجمّع Hasyl، تخلق إيماءة معمارية راقية تحمل إحساساً بالحركة والفخامة. تمتد أشكال الأعمدة إلى الأعلى وتستمر في السقف، محافظةً على لغة تصميم واحدة متواصلة. تُترجم الفكرة إلى منطق تصنيع معاصر عبر أدوات التصميم الخوارزمي، مما يتيح تطوير الشكل بدقة وإيقاع وهندسة قابلة للبناء.',
     'A parametric perforation system for a hospital facade, mapping interior daylight and privacy requirements to a gradient of aperture sizes across the building skin. The pattern is generated algorithmically and rationalized into fabrication-ready panels.':
       'نظام تثقيب بارامتري لواجهة مستشفى، يربط متطلّبات الإضاءة النهارية والخصوصية الداخلية بتدرّج في أحجام الفتحات عبر قشرة المبنى. يُولَّد النمط خوارزمياً ويُرشَّد إلى ألواح جاهزة للتصنيع.',
     'A facade system for the Aziz Gold Smith building, developed parametrically to balance retail visibility with a refined, ornamental street presence. Panel geometry and mullion rhythm are driven by a single controllable definition.':
       'نظام واجهة لمبنى Aziz Gold Smith، طُوّر بارامترياً لموازنة وضوح المتجر مع حضور شارعي مهذّب وزخرفي. تُدار هندسة الألواح وإيقاع القوائم بتعريف واحد قابل للتحكم.',
     'A competition entry for a monument celebrating sustainable cities. Parametric geometry and real-time visualization in Unreal Engine 5 were used to study form, light, and public experience at urban scale.':
       'مشاركة في مسابقة لنصب يحتفي بالمدن المستدامة. استُخدمت الهندسة البارامترية والتصور الفوري في Unreal Engine 5 لدراسة الشكل والضوء والتجربة العامة على المقياس الحضري.',
+    'A contemporary villa facade study exploring Corten steel as both a protective skin and an architectural expression. The design uses perforated and folded metal panels to create privacy, shading, and depth, while allowing light and shadow to animate the building throughout the day.\nThe warm weathered texture of Corten gives the project a natural, timeless character, blending modern geometry with an earthy material presence.':
+      'دراسة واجهة فيلا معاصرة تستكشف صلب الكورتين بوصفه قشرة واقية وتعبيراً معمارياً في آنٍ واحد. يستخدم التصميم ألواحاً معدنية مثقّبة ومطوية لخلق الخصوصية والتظليل والعمق، مع السماح للضوء والظل بتحريك المبنى على مدار اليوم.\nيمنح الملمس الدافئ المتآكل لصلب الكورتين المشروعَ طابعاً طبيعياً خالداً، يمزج الهندسة الحديثة بحضور مادي ترابي.',
+    'Baghdad Private Hospital explores a contemporary healthcare identity through a fluid parametric façade. Perforated aluminum panels filter natural light, provide privacy, and create a dynamic architectural expression that changes throughout the day, combining performance with a calm, welcoming presence.':
+      'يستكشف مستشفى بغداد الأهلي هويةً صحيةً معاصرة من خلال واجهة بارامترية انسيابية. تُرشّح الألواح الألمنيومية المثقّبة الضوء الطبيعي، وتوفّر الخصوصية، وتخلق تعبيراً معمارياً ديناميكياً يتغيّر على مدار اليوم، جامعةً بين الأداء وحضور هادئ ومرحّب.',
   },
 };
 
