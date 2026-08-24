@@ -36,6 +36,52 @@ type CaseStudy = {
   backLabel?: string;
 };
 
+const NATIONAL_HOSPITAL: CaseStudy = {
+  title: 'National Hospital Facade',
+  category: 'Architecture',
+  year: '2025',
+  location: 'Baghdad, Iraq',
+  client: 'National Hospital — Mansoor',
+  architect: 'Ahmed Alnaseri',
+  heroImage: '/Hospital in mansoor/hospital mansor gpt.png',
+  description:
+    "A facade for a cardiac hospital that wears its purpose on its surface. The design centers on a single, large perforated heart form cut into the aluminum cladding — not as symbol applied after the fact, but as the organizing geometry of the entire panel system. Light passes through the perforation from behind, so the facade reads differently by day and by night: a precise metal skin in daylight, a glowing heart after dark. The perforated pattern graduates in density outward from the heart's edge, giving the form weight at its center and dissolving it toward the boundary — a field of light that breathes. For a building where cardiac care happens daily, the architecture makes no attempt to hide what occurs inside. The heart is the facade.",
+  program: 'Facade Design',
+  area: '300 m²',
+  status: 'Built',
+  gallery: [
+    { src: '/Hospital in mansoor/hospital mansor gpt.png', caption: 'Exterior View', w: 1448, h: 1086 },
+    { src: '/Hospital in mansoor/hospital mansore.png',    caption: 'Interior View', w: 1447, h: 1087 },
+    { src: '/Hospital in mansoor/facade hospital.png',     caption: 'Massing Model', w: 3742, h: 4490 },
+    { src: '/Hospital in mansoor/detail 1.png',            caption: 'Facade Detail', w: 1448, h: 1086 },
+    { src: '/Hospital in mansoor/panel facade hos.png',    caption: 'Panel Study',        w: 5000, h: 5000 },
+    { src: '/Hospital in mansoor/hos 1.png',               caption: 'Night View — Red',   w: 1199, h: 1312 },
+    { src: '/Hospital in mansoor/hos3.png',                caption: 'Night View — Green', w: 1199, h: 1312 },
+  ],
+};
+
+const PPG_FACTORY_FACADE: CaseStudy = {
+  title: 'PPG Factory Facade',
+  category: 'Architecture',
+  year: '2024',
+  location: 'Bursa, Türkiye',
+  client: 'PPG Industries',
+  architect: 'Ahmed Alnaseri, Furkan Kartekin',
+  heroImage: '/PPG FACADE/RENDER/V3_2.png',
+  description:
+    'A facade conceived not as decoration but as identity. PPG produces paint — substance that flows, layers, and transforms surfaces. The cladding system answers that logic directly: aluminum panels cut and folded into wave-derived geometries, each a frozen moment of pigment in motion. The surface shifts tone as light rakes across it through the day, from warm copper at dawn to cool silver by midday, without a single painted surface. The 1,371 m² system was developed parametrically, panel geometry driven by a sine-based attractor field so the whole facade behaves as one continuous form despite being fabricated as individual sheet metal components.',
+  program: 'Facade Design',
+  area: '1,371 m²',
+  status: 'Concept Design',
+  gallery: [
+    { src: '/PPG FACADE/RENDER/V3_2.png', caption: 'Exterior View',    w: 1920, h: 1080 },
+    { src: '/PPG FACADE/RENDER/V3_1.png', caption: 'Facade Detail',    w: 1920, h: 1080 },
+    { src: '/PPG FACADE/RENDER/V3_3.png', caption: 'Panel Study',      w: 1920, h: 1080 },
+    { src: '/PPG FACADE/RENDER/4.png',    caption: 'Close-up',         w: 1920, h: 1080 },
+    { src: '/PPG FACADE/RENDER/v4.png',   caption: 'Courtyard Detail', w: 1448, h: 1086 },
+  ],
+};
+
 const HASYL_CANOPY: CaseStudy = {
   title: 'Hasyl Canopy',
   category: 'Architecture',
@@ -163,6 +209,9 @@ const BAGHDAD_HOSPITAL: CaseStudy = {
 };
 
 const CASE_STUDIES: Record<string, CaseStudy> = {
+  'ppg-factory-facade': PPG_FACTORY_FACADE,
+  'national-hospital-facade': NATIONAL_HOSPITAL,
+  'national-hospital-baghdad': NATIONAL_HOSPITAL,
   'hasyl-canopy': HASYL_CANOPY,
   '001': HASYL_CANOPY,
   'hospital-facade-perforation-system': HOSPITAL_FACADE,

@@ -1046,6 +1046,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'In Production': 'Üretimde',
     'Released': 'Yayımlandı',
     'Concept': 'Konsept',
+    'Concept Design': 'Konsept Tasarım',
     'Fabricated': 'Üretildi',
     'In Development': 'Geliştiriliyor',
     'Research': 'Araştırma',
@@ -1242,6 +1243,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Canopy': 'Kanopi',
     'Villa': 'Villa',
     'Hospital': 'Hastane',
+    'Facade Design': 'Cephe Tasarımı',
     // materials
     'Aluminum Composite': 'Alüminyum Kompozit',
     'Steel + Aluminum': 'Çelik + Alüminyum',
@@ -1255,6 +1257,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Istanbul, Türkiye': 'İstanbul, Türkiye',
     'Baghdad, Iraq': 'Bağdat, Irak',
     'Lamu, Kenya': 'Lamu, Kenya',
+    'Bursa, Türkiye': 'Bursa, Türkiye',
     'International': 'Uluslararası',
     // clients
     'Confidential': 'Gizli',
@@ -1336,6 +1339,10 @@ const VALUES: Record<Lang, ValueMap> = {
     'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.':
       'Merdiven geometrisinden üretilen korkuluk geometrisi — her panel benzersiz, tümü tek bir parametrik kuraldan türetilir ve ayrı DXF dosyaları olarak dışa aktarılır.',
     // case-study descriptions
+    "A facade for a cardiac hospital that wears its purpose on its surface. The design centers on a single, large perforated heart form cut into the aluminum cladding — not as symbol applied after the fact, but as the organizing geometry of the entire panel system. Light passes through the perforation from behind, so the facade reads differently by day and by night: a precise metal skin in daylight, a glowing heart after dark. The perforated pattern graduates in density outward from the heart's edge, giving the form weight at its center and dissolving it toward the boundary — a field of light that breathes. For a building where cardiac care happens daily, the architecture makes no attempt to hide what occurs inside. The heart is the facade.":
+      'Amacını yüzeyinde taşıyan bir kardiyoloji hastanesi cephesi. Tasarım, alüminyum giydirmeye işlenmiş tek, büyük ve delikli bir kalp formu etrafında şekilleniyor — sonradan eklenen bir sembol değil, tüm panel sisteminin kurucu geometrisi olarak. Işık, deliklerden arkadan geçer; bu yüzden cephe gündüz ve gece farklı okunur: gün ışığında hassas bir metal kabuk, karanlıkta ışıldayan bir kalp. Delik deseni, kalbin kenarından dışa doğru yoğunluğunu kademeli olarak azaltır — merkezde forma ağırlık kazandırıp sınırlara doğru onu çözerken, nefes alan bir ışık alanı yaratır. Kardiyak bakımın her gün yaşandığı bir bina için mimari, içeride olanı gizlemeye çalışmaz. Kalp, cephenin kendisidir.',
+    'A facade conceived not as decoration but as identity. PPG produces paint — substance that flows, layers, and transforms surfaces. The cladding system answers that logic directly: aluminum panels cut and folded into wave-derived geometries, each a frozen moment of pigment in motion. The surface shifts tone as light rakes across it through the day, from warm copper at dawn to cool silver by midday, without a single painted surface. The 1,371 m² system was developed parametrically, panel geometry driven by a sine-based attractor field so the whole facade behaves as one continuous form despite being fabricated as individual sheet metal components.':
+      'Bir cephe, süsleme değil kimlik olarak tasarlandı. PPG boya üretir — akan, katmanlanan ve yüzeyleri dönüştüren bir madde. Giydirme sistemi bu mantığa doğrudan yanıt verir: dalga kökenli geometrilere kesilip katlanmış alüminyum paneller, her biri hareket hâlindeki pigmentin donmuş bir anı. Yüzey, gün boyunca üzerinde kayan ışıkla ton değiştirir — şafakta sıcak bakırdan öğlen soğuk gümüşe — tek bir boyalı yüzey olmadan. 1.371 m²\'lik sistem parametrik olarak geliştirildi; panel geometrisi sinüs tabanlı bir çekim alanı tarafından yönlendirilerek, cephenin ayrı sac metal bileşenler olarak üretilmesine rağmen bütünüyle tek, sürekli bir form gibi davranmasını sağladı.',
     'A parametric canopy designed for the entrance of the Hasyl Complex, creating a refined architectural gesture with a sense of movement and luxury. The column forms extend upward and continue into the ceiling, maintaining one continuous design language. The concept is translated into a contemporary fabrication logic through algorithmic design tools, allowing the form to be developed with precision, rhythm, and buildable geometry.':
       'Hasyl Kompleksi\'nin girişi için tasarlanmış parametrik bir kanopi, hareket ve lüks duygusu taşıyan zarif bir mimari jest yaratıyor. Kolon formları yukarı doğru uzanarak tavana devam eder ve tek, sürekli bir tasarım dilini korur. Konsept, algoritmik tasarım araçları aracılığıyla çağdaş bir fabrikasyon mantığına çevrilir; bu da formun hassasiyet, ritim ve inşa edilebilir geometriyle geliştirilmesine olanak tanır.',
     'A parametric perforation system for a hospital facade, mapping interior daylight and privacy requirements to a gradient of aperture sizes across the building skin. The pattern is generated algorithmically and rationalized into fabrication-ready panels.':
@@ -1403,6 +1410,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'In Production': 'قيد الإنتاج',
     'Released': 'صدر',
     'Concept': 'مفهوم',
+    'Concept Design': 'تصميم مبدئي',
     'Fabricated': 'مُصنَّع',
     'In Development': 'قيد التطوير',
     'Research': 'بحث',
@@ -1599,6 +1607,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Canopy': 'مظلّة',
     'Villa': 'فيلا',
     'Hospital': 'مستشفى',
+    'Facade Design': 'تصميم واجهة',
     // materials
     'Aluminum Composite': 'ألمنيوم مركّب',
     'Steel + Aluminum': 'فولاذ + ألمنيوم',
@@ -1613,6 +1622,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Baghdad, Iraq': 'بغداد، العراق',
     'International': 'دولي',
     'Lamu, Kenya': 'لامو، كينيا',
+    'Bursa, Türkiye': 'بورصة، تركيا',
     // clients
     'Confidential': 'سرّي',
     'Open Competition': 'مسابقة مفتوحة',
@@ -1693,6 +1703,10 @@ const VALUES: Record<Lang, ValueMap> = {
     'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.':
       'هندسة درابزين مولّدة من هندسة الدرج — كل لوح فريد، جميعها مستمدّة من قاعدة بارامترية واحدة وتُصدَّر كملفات DXF منفصلة.',
     // case-study descriptions
+    "A facade for a cardiac hospital that wears its purpose on its surface. The design centers on a single, large perforated heart form cut into the aluminum cladding — not as symbol applied after the fact, but as the organizing geometry of the entire panel system. Light passes through the perforation from behind, so the facade reads differently by day and by night: a precise metal skin in daylight, a glowing heart after dark. The perforated pattern graduates in density outward from the heart's edge, giving the form weight at its center and dissolving it toward the boundary — a field of light that breathes. For a building where cardiac care happens daily, the architecture makes no attempt to hide what occurs inside. The heart is the facade.":
+      'واجهة لمستشفى قلبية تحمل غايتها على سطحها. يتمحور التصميم حول شكل قلب واحد كبير مثقّب في الكسوة الألمنيومية — لا كرمز أُضيف لاحقاً، بل كهندسة تنظيمية لكامل نظام الألواح. يمرّ الضوء عبر التثقيب من الخلف، فتُقرأ الواجهة بشكل مختلف نهاراً وليلاً: قشرة معدنية دقيقة في النهار، وقلب متوهّج بعد حلول الظلام. يتدرّج نمط التثقيب في الكثافة من حافة القلب نحو الخارج، مانحاً الشكل ثقلاً في مركزه ومُذيباً حدوده تدريجياً نحو الأطراف — حقل من الضوء يتنفّس. بالنسبة لمبنى تُمارَس فيه الرعاية القلبية يومياً، لا تحاول العمارة إخفاء ما يجري في داخله. القلب هو الواجهة.',
+    'A facade conceived not as decoration but as identity. PPG produces paint — substance that flows, layers, and transforms surfaces. The cladding system answers that logic directly: aluminum panels cut and folded into wave-derived geometries, each a frozen moment of pigment in motion. The surface shifts tone as light rakes across it through the day, from warm copper at dawn to cool silver by midday, without a single painted surface. The 1,371 m² system was developed parametrically, panel geometry driven by a sine-based attractor field so the whole facade behaves as one continuous form despite being fabricated as individual sheet metal components.':
+      'واجهة صُمّمت لا كزخرفة بل كهوية. تُنتِج PPG الطلاء — مادة تتدفّق وتتراكم وتُحوّل الأسطح. يستجيب نظام الكسوة لهذا المنطق مباشرةً: ألواح ألمنيوم مقطوعة ومطوية إلى هندسات مستمدّة من الموجة، كل واحدة لحظة متجمّدة من صبغة في حركة. يتغيّر لون السطح مع انزلاق الضوء عليه على مدار اليوم — من نحاسي دافئ عند الفجر إلى فضي بارد عند الظهيرة — دون وجود سطح مطليّ واحد. طُوِّر النظام البالغة مساحته 1,371 م² بارامترياً، حيث تُوجَّه هندسة الألواح بحقل جذب مبني على دالة الجيب، بحيث تتصرّف الواجهة بأكملها كشكل واحد متواصل رغم تصنيعها كمكوّنات صفائح معدنية منفصلة.',
     'A parametric canopy designed for the entrance of the Hasyl Complex, creating a refined architectural gesture with a sense of movement and luxury. The column forms extend upward and continue into the ceiling, maintaining one continuous design language. The concept is translated into a contemporary fabrication logic through algorithmic design tools, allowing the form to be developed with precision, rhythm, and buildable geometry.':
       'مظلّة بارامترية صُممت لمدخل مجمّع Hasyl، تخلق إيماءة معمارية راقية تحمل إحساساً بالحركة والفخامة. تمتد أشكال الأعمدة إلى الأعلى وتستمر في السقف، محافظةً على لغة تصميم واحدة متواصلة. تُترجم الفكرة إلى منطق تصنيع معاصر عبر أدوات التصميم الخوارزمي، مما يتيح تطوير الشكل بدقة وإيقاع وهندسة قابلة للبناء.',
     'A parametric perforation system for a hospital facade, mapping interior daylight and privacy requirements to a gradient of aperture sizes across the building skin. The pattern is generated algorithmically and rationalized into fabrication-ready panels.':
