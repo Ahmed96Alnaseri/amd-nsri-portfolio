@@ -12,6 +12,11 @@ type Category = 'Residential' | 'Commercial' | 'Competition' | 'Mixed Use';
 
 type Project = {
   title: string;
+  /** Explicit URL slug override. Use for titles with non-ASCII characters —
+   * slugify() only lowercases and swaps spaces for hyphens, it does not
+   * transliterate, so a title like "Balıkesir..." would otherwise produce a
+   * non-ASCII URL segment that Next.js dynamic routing does not reliably match. */
+  slug?: string;
   category: Category;
   type: string;
   year: string;
@@ -52,6 +57,7 @@ const PROJECTS: Project[] = [
       { src: '/Baghdad Private Hospital/Render/Exterior hospital 2.png', subtitle: 'Facade Detail' },
       { src: '/Baghdad Private Hospital/Render/scrpt.png',               subtitle: 'Parametric Definition' },
       { src: '/Baghdad Private Hospital/Render/model1.jpeg',             subtitle: 'Panel Shop Drawing' },
+      { src: '/Baghdad Private Hospital/Render/facade 1.jpeg',           subtitle: 'Main Entrance' },
     ],
   },
   {
@@ -103,6 +109,53 @@ const PROJECTS: Project[] = [
       { src: '/PPG FACADE/RENDER/V3_3.png', subtitle: 'Panel Study' },
       { src: '/PPG FACADE/RENDER/4.png',    subtitle: 'Close-up' },
       { src: '/PPG FACADE/RENDER/v4.png',   subtitle: 'Courtyard Detail' },
+    ],
+  },
+  {
+    title: 'Kerkuk Restaurant',
+    category: 'Commercial',
+    type: 'Facade Design',
+    year: '2024',
+    location: 'Kirkuk, Iraq',
+    architect: 'Ahmed Alnaseri',
+    area: '350 m²',
+    images: [
+      { src: '/Restrant Kerkuk/IMG_3260.JPG',                 subtitle: 'Exterior View', position: 'center 80%' },
+      { src: '/Restrant Kerkuk/restaurant facade.png',        subtitle: 'Facade Study' },
+      { src: '/Restrant Kerkuk/IMG_3266.JPG',                 subtitle: 'Street Corner View' },
+      { src: '/Restrant Kerkuk/IMG_3261.JPG',                 subtitle: 'Facade at Dusk' },
+      { src: '/Restrant Kerkuk/IMG_3259.JPG',                 subtitle: 'Facade Detail' },
+      { src: '/Restrant Kerkuk/IMG_3262.JPG',                 subtitle: 'Cantilever Detail' },
+      { src: '/Restrant Kerkuk/IMG_3264.JPG',                 subtitle: 'Facade Overhang' },
+      { src: '/Restrant Kerkuk/IMG_3265.JPG',                 subtitle: 'Soffit Detail' },
+      { src: '/Restrant Kerkuk/Resturant Facade part 1.png',  subtitle: 'Panel Gradient Model' },
+      { src: '/Restrant Kerkuk/Resturant Facade part 2.png',  subtitle: 'Panel Study — Detail' },
+    ],
+  },
+  {
+    title: 'Balıkesir Cumhuriyet Meydanı',
+    slug: 'balikesir-cumhuriyet-meydani',
+    category: 'Competition',
+    type: 'Urban Design',
+    year: '2026',
+    location: 'Balıkesir, Türkiye',
+    architect: 'Furkan Kartekin, Ezgi Kartekin',
+    area: '—',
+    images: [
+      { src: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/1.jpg', subtitle: 'Elevated Deck View' },
+      { src: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/5.jpg', subtitle: 'Main Square View' },
+      { src: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/6.jpg', subtitle: 'Timber Canopy View' },
+      { src: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/7.jpg', subtitle: 'Covered Passage View' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/1. kat planı.jpg', subtitle: 'First Floor Plan' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/GÖRÜNÜŞ 1.jpg', subtitle: 'Elevation 1' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/GÖRÜNÜŞ 2.jpg', subtitle: 'Elevation 2' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/KESİT DETAY.jpg', subtitle: 'Section Detail' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/VAZİYET PLANI.jpg', subtitle: 'Site Plan' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/ZEMİN KAT PLANI 2.png', subtitle: 'Ground Floor Plan' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 1.jpg', subtitle: 'Use Scenario 1' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 2.jpg', subtitle: 'Use Scenario 2' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 3.jpg', subtitle: 'Use Scenario 3' },
+      { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 4.jpg', subtitle: 'Use Scenario 4' },
     ],
   },
 ];
@@ -589,7 +642,7 @@ export default function ArchitecturePage() {
           {visible.length === 0
             ? <p className="ap-empty">{t('common.noProjects')}</p>
             : visible.map((p, i) => (
-                <ProjectCard key={p.title} project={p} index={i} slug={slugify(p.title)} />
+                <ProjectCard key={p.title} project={p} index={i} slug={p.slug ?? slugify(p.title)} />
               ))}
         </div>
 

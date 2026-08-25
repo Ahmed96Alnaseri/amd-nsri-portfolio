@@ -48,6 +48,7 @@ export const translations = {
       viewCaseStudy:  'View Case Study',
       viewAllWorks:   'View all works',
       architect:      'Architect',
+      visualization:  'Visualization',
       area:           'Area',
       year:           'Year',
       location:       'Location',
@@ -371,6 +372,7 @@ export const translations = {
       viewCaseStudy:  'Vaka İncelemesini Gör',
       viewAllWorks:   'Tüm çalışmaları gör',
       architect:      'Mimar',
+      visualization:  'Görselleştirme',
       area:           'Alan',
       year:           'Yıl',
       location:       'Konum',
@@ -694,6 +696,7 @@ export const translations = {
       viewCaseStudy:  'عرض دراسة الحالة',
       viewAllWorks:   'عرض جميع الأعمال',
       architect:      'المعماري',
+      visualization:  'التصور المرئي',
       area:           'المساحة',
       year:           'السنة',
       location:       'الموقع',
@@ -1244,6 +1247,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Villa': 'Villa',
     'Hospital': 'Hastane',
     'Facade Design': 'Cephe Tasarımı',
+    'Urban Design': 'Kentsel Tasarım',
     // materials
     'Aluminum Composite': 'Alüminyum Kompozit',
     'Steel + Aluminum': 'Çelik + Alüminyum',
@@ -1258,6 +1262,8 @@ const VALUES: Record<Lang, ValueMap> = {
     'Baghdad, Iraq': 'Bağdat, Irak',
     'Lamu, Kenya': 'Lamu, Kenya',
     'Bursa, Türkiye': 'Bursa, Türkiye',
+    'Kirkuk, Iraq': 'Kerkük, Irak',
+    'Balıkesir, Türkiye': 'Balıkesir, Türkiye',
     'International': 'Uluslararası',
     // clients
     'Confidential': 'Gizli',
@@ -1339,6 +1345,10 @@ const VALUES: Record<Lang, ValueMap> = {
     'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.':
       'Merdiven geometrisinden üretilen korkuluk geometrisi — her panel benzersiz, tümü tek bir parametrik kuraldan türetilir ve ayrı DXF dosyaları olarak dışa aktarılır.',
     // case-study descriptions
+    "Balıkesir Cumhuriyet Meydanı is envisioned as a new civic heart for the city — transforming an existing passage zone into a vibrant public space for gathering, resting, meeting, waiting, shopping, and everyday social life. The project reinterprets Balıkesir's traditional arasta and courtyard culture through a contemporary architectural language. A timber canopy and elevated public deck create a strong pedestrian spine while forming shaded, semi-open spaces beneath for exhibitions, temporary events, seating, social interaction, and commercial activities. The design strengthens connections between important surrounding elements including the mosque, railway station, commercial areas, and public facilities, creating different urban experiences along each edge of the square. Pedestrian priority, accessibility, greenery, water elements, natural materials, and flexible public spaces form the core of the proposal. The result is a warm and inclusive urban environment designed not only for movement, but for people to stop, interact, and become part of the city's everyday life.":
+      "Balıkesir Cumhuriyet Meydanı, kent için yeni bir sivil kalp olarak tasarlanıyor — mevcut bir geçiş bölgesini toplanma, dinlenme, buluşma, bekleme, alışveriş ve günlük sosyal yaşam için canlı bir kamusal alana dönüştürüyor. Proje, Balıkesir'in geleneksel arasta ve avlu kültürünü çağdaş bir mimari dille yeniden yorumluyor. Ahşap bir kanopi ve yükseltilmiş bir kamusal güverte, güçlü bir yaya omurgası oluştururken altında sergiler, geçici etkinlikler, oturma alanları, sosyal etkileşim ve ticari faaliyetler için gölgeli, yarı açık mekânlar yaratıyor. Tasarım, cami, tren istasyonu, ticari alanlar ve kamu tesisleri gibi önemli çevre unsurları arasındaki bağlantıları güçlendirerek meydanın her kenarında farklı kentsel deneyimler yaratıyor. Yaya önceliği, erişilebilirlik, yeşillik, su öğeleri, doğal malzemeler ve esnek kamusal alanlar önerinin özünü oluşturuyor. Sonuç, yalnızca hareket için değil, insanların durup etkileşime geçmesi ve kentin günlük yaşamının bir parçası olması için tasarlanmış sıcak ve kapsayıcı bir kentsel ortam.",
+    'A restaurant facade that turns perforation into atmosphere. The aluminum cladding system uses a gradient multi-perforation pattern — hole density shifts continuously across the surface, from dense and opaque at the base to open and luminous at the upper register. By day the facade reads as a textured metal skin, the gradient giving it depth and movement without ornament. After dark the logic reverses: interior light bleeds through the perforations and the gradient glows, the busiest tables casting the brightest wash onto the street. The system was fabricated as flat sheet metal panels with CNC-punched perforation fields, each panel a section of the continuous gradient. For a restaurant on a commercial street in Kirkuk, the facade does the work of drawing people in before they reach the door.':
+      'Delikliliği atmosfere dönüştüren bir restoran cephesi. Alüminyum giydirme sistemi, gradyanlı çok delikli bir desen kullanır — delik yoğunluğu yüzey boyunca sürekli değişir: tabanda yoğun ve opak, üst kademede açık ve ışıltılı. Gündüz cephe, süslemesiz derinlik ve hareket kazandıran gradyanla dokulu bir metal kabuk olarak okunur. Karanlık çökünce mantık tersine döner: iç mekân ışığı deliklerden sızar ve gradyan parlar, en dolu masalar sokağa en parlak yansımayı düşürür. Sistem, CNC ile delinmiş perforasyon alanlarına sahip düz sac metal paneller olarak üretildi; her panel sürekli gradyanın bir kesiti. Kerkük\'te ticari bir caddedeki bir restoran için cephe, insanları kapıya ulaşmadan önce içeri çekme işini üstleniyor.',
     "A facade for a cardiac hospital that wears its purpose on its surface. The design centers on a single, large perforated heart form cut into the aluminum cladding — not as symbol applied after the fact, but as the organizing geometry of the entire panel system. Light passes through the perforation from behind, so the facade reads differently by day and by night: a precise metal skin in daylight, a glowing heart after dark. The perforated pattern graduates in density outward from the heart's edge, giving the form weight at its center and dissolving it toward the boundary — a field of light that breathes. For a building where cardiac care happens daily, the architecture makes no attempt to hide what occurs inside. The heart is the facade.":
       'Amacını yüzeyinde taşıyan bir kardiyoloji hastanesi cephesi. Tasarım, alüminyum giydirmeye işlenmiş tek, büyük ve delikli bir kalp formu etrafında şekilleniyor — sonradan eklenen bir sembol değil, tüm panel sisteminin kurucu geometrisi olarak. Işık, deliklerden arkadan geçer; bu yüzden cephe gündüz ve gece farklı okunur: gün ışığında hassas bir metal kabuk, karanlıkta ışıldayan bir kalp. Delik deseni, kalbin kenarından dışa doğru yoğunluğunu kademeli olarak azaltır — merkezde forma ağırlık kazandırıp sınırlara doğru onu çözerken, nefes alan bir ışık alanı yaratır. Kardiyak bakımın her gün yaşandığı bir bina için mimari, içeride olanı gizlemeye çalışmaz. Kalp, cephenin kendisidir.',
     'A facade conceived not as decoration but as identity. PPG produces paint — substance that flows, layers, and transforms surfaces. The cladding system answers that logic directly: aluminum panels cut and folded into wave-derived geometries, each a frozen moment of pigment in motion. The surface shifts tone as light rakes across it through the day, from warm copper at dawn to cool silver by midday, without a single painted surface. The 1,371 m² system was developed parametrically, panel geometry driven by a sine-based attractor field so the whole facade behaves as one continuous form despite being fabricated as individual sheet metal components.':
@@ -1608,6 +1618,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Villa': 'فيلا',
     'Hospital': 'مستشفى',
     'Facade Design': 'تصميم واجهة',
+    'Urban Design': 'تصميم حضري',
     // materials
     'Aluminum Composite': 'ألمنيوم مركّب',
     'Steel + Aluminum': 'فولاذ + ألمنيوم',
@@ -1620,9 +1631,11 @@ const VALUES: Record<Lang, ValueMap> = {
     'Istanbul': 'إسطنبول',
     'Istanbul, Türkiye': 'إسطنبول، تركيا',
     'Baghdad, Iraq': 'بغداد، العراق',
+    'Kirkuk, Iraq': 'كركوك، العراق',
     'International': 'دولي',
     'Lamu, Kenya': 'لامو، كينيا',
     'Bursa, Türkiye': 'بورصة، تركيا',
+    'Balıkesir, Türkiye': 'باليكسير، تركيا',
     // clients
     'Confidential': 'سرّي',
     'Open Competition': 'مسابقة مفتوحة',
@@ -1703,6 +1716,10 @@ const VALUES: Record<Lang, ValueMap> = {
     'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.':
       'هندسة درابزين مولّدة من هندسة الدرج — كل لوح فريد، جميعها مستمدّة من قاعدة بارامترية واحدة وتُصدَّر كملفات DXF منفصلة.',
     // case-study descriptions
+    "Balıkesir Cumhuriyet Meydanı is envisioned as a new civic heart for the city — transforming an existing passage zone into a vibrant public space for gathering, resting, meeting, waiting, shopping, and everyday social life. The project reinterprets Balıkesir's traditional arasta and courtyard culture through a contemporary architectural language. A timber canopy and elevated public deck create a strong pedestrian spine while forming shaded, semi-open spaces beneath for exhibitions, temporary events, seating, social interaction, and commercial activities. The design strengthens connections between important surrounding elements including the mosque, railway station, commercial areas, and public facilities, creating different urban experiences along each edge of the square. Pedestrian priority, accessibility, greenery, water elements, natural materials, and flexible public spaces form the core of the proposal. The result is a warm and inclusive urban environment designed not only for movement, but for people to stop, interact, and become part of the city's everyday life.":
+      'يُتصوَّر ميدان الجمهورية في باليكسير كقلب مدني جديد للمدينة — يحوّل منطقة عبور قائمة إلى فضاء عام نابض بالحياة للتجمّع والراحة واللقاء والانتظار والتسوّق والحياة الاجتماعية اليومية. يعيد المشروع تفسير ثقافة الأرستا والباحات التقليدية في باليكسير من خلال لغة معمارية معاصرة. تُنشئ مظلّة خشبية ومنصّة عامة مرتفعة عموداً فقرياً قوياً للمشاة، بينما تُشكّل تحتها مساحات مظلّلة شبه مفتوحة للمعارض والفعاليات المؤقتة والجلوس والتفاعل الاجتماعي والأنشطة التجارية. يعزّز التصميم الروابط بين العناصر المحيطة المهمة، بما في ذلك المسجد ومحطة السكك الحديدية والمناطق التجارية والمرافق العامة، مما يخلق تجارب حضرية مختلفة على طول كل حافة من الميدان. تشكّل أولوية المشاة، وإمكانية الوصول، والمساحات الخضراء، وعناصر المياه، والمواد الطبيعية، والفضاءات العامة المرنة جوهر المقترح. والنتيجة بيئة حضرية دافئة وشاملة، لا تُصمَّم للحركة فقط، بل ليتوقّف الناس ويتفاعلوا ويصبحوا جزءاً من الحياة اليومية للمدينة.',
+    'A restaurant facade that turns perforation into atmosphere. The aluminum cladding system uses a gradient multi-perforation pattern — hole density shifts continuously across the surface, from dense and opaque at the base to open and luminous at the upper register. By day the facade reads as a textured metal skin, the gradient giving it depth and movement without ornament. After dark the logic reverses: interior light bleeds through the perforations and the gradient glows, the busiest tables casting the brightest wash onto the street. The system was fabricated as flat sheet metal panels with CNC-punched perforation fields, each panel a section of the continuous gradient. For a restaurant on a commercial street in Kirkuk, the facade does the work of drawing people in before they reach the door.':
+      'واجهة مطعم تحوّل التثقيب إلى أجواء. يستخدم نظام الكسوة الألمنيومية نمط تثقيب متعدد متدرّج — تتغيّر كثافة الثقوب باستمرار عبر السطح، من كثيفة ومعتمة عند القاعدة إلى مفتوحة ومضيئة في السجل العلوي. نهاراً تُقرأ الواجهة كقشرة معدنية ذات ملمس، يمنحها التدرّج عمقاً وحركة دون زخرفة. وبعد حلول الظلام ينعكس المنطق: يتسرّب ضوء الداخل عبر الثقوب فيتوهّج التدرّج، وتُلقي أكثر الطاولات ازدحاماً أسطع انعكاس على الشارع. صُنع النظام كألواح صفائح معدنية مسطّحة بحقول تثقيب مثقوبة بالـCNC، كل لوح مقطع من التدرّج المتواصل. بالنسبة لمطعم على شارع تجاري في كركوك، تقوم الواجهة بمهمة جذب الناس قبل وصولهم إلى الباب.',
     "A facade for a cardiac hospital that wears its purpose on its surface. The design centers on a single, large perforated heart form cut into the aluminum cladding — not as symbol applied after the fact, but as the organizing geometry of the entire panel system. Light passes through the perforation from behind, so the facade reads differently by day and by night: a precise metal skin in daylight, a glowing heart after dark. The perforated pattern graduates in density outward from the heart's edge, giving the form weight at its center and dissolving it toward the boundary — a field of light that breathes. For a building where cardiac care happens daily, the architecture makes no attempt to hide what occurs inside. The heart is the facade.":
       'واجهة لمستشفى قلبية تحمل غايتها على سطحها. يتمحور التصميم حول شكل قلب واحد كبير مثقّب في الكسوة الألمنيومية — لا كرمز أُضيف لاحقاً، بل كهندسة تنظيمية لكامل نظام الألواح. يمرّ الضوء عبر التثقيب من الخلف، فتُقرأ الواجهة بشكل مختلف نهاراً وليلاً: قشرة معدنية دقيقة في النهار، وقلب متوهّج بعد حلول الظلام. يتدرّج نمط التثقيب في الكثافة من حافة القلب نحو الخارج، مانحاً الشكل ثقلاً في مركزه ومُذيباً حدوده تدريجياً نحو الأطراف — حقل من الضوء يتنفّس. بالنسبة لمبنى تُمارَس فيه الرعاية القلبية يومياً، لا تحاول العمارة إخفاء ما يجري في داخله. القلب هو الواجهة.',
     'A facade conceived not as decoration but as identity. PPG produces paint — substance that flows, layers, and transforms surfaces. The cladding system answers that logic directly: aluminum panels cut and folded into wave-derived geometries, each a frozen moment of pigment in motion. The surface shifts tone as light rakes across it through the day, from warm copper at dawn to cool silver by midday, without a single painted surface. The 1,371 m² system was developed parametrically, panel geometry driven by a sine-based attractor field so the whole facade behaves as one continuous form despite being fabricated as individual sheet metal components.':

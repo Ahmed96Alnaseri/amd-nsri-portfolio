@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { useLanguage } from '@/lib/LanguageContext';
 
 /* ─── types & data ──────────────────────────────────────────────────── */
@@ -15,6 +16,8 @@ type CaseStudy = {
   location: string;
   client: string;
   architect?: string;
+  /** Separate visualization/rendering credit, distinct from the architect(s) */
+  visualization?: string;
   /** Empty string renders a placeholder hero (perforation pattern) */
   heroImage: string;
   /** CSS object-position for the hero image crop; defaults to 'center' */
@@ -79,6 +82,65 @@ const PPG_FACTORY_FACADE: CaseStudy = {
     { src: '/PPG FACADE/RENDER/V3_3.png', caption: 'Panel Study',      w: 1920, h: 1080 },
     { src: '/PPG FACADE/RENDER/4.png',    caption: 'Close-up',         w: 1920, h: 1080 },
     { src: '/PPG FACADE/RENDER/v4.png',   caption: 'Courtyard Detail', w: 1448, h: 1086 },
+  ],
+};
+
+const KERKUK_RESTAURANT: CaseStudy = {
+  title: 'Kerkuk Restaurant',
+  category: 'Architecture',
+  year: '2024',
+  location: 'Kirkuk, Iraq',
+  client: 'Kerkuk Restaurant',
+  architect: 'Ahmed Alnaseri',
+  heroImage: '/Restrant Kerkuk/IMG_3260.JPG',
+  description:
+    'A restaurant facade that turns perforation into atmosphere. The aluminum cladding system uses a gradient multi-perforation pattern — hole density shifts continuously across the surface, from dense and opaque at the base to open and luminous at the upper register. By day the facade reads as a textured metal skin, the gradient giving it depth and movement without ornament. After dark the logic reverses: interior light bleeds through the perforations and the gradient glows, the busiest tables casting the brightest wash onto the street. The system was fabricated as flat sheet metal panels with CNC-punched perforation fields, each panel a section of the continuous gradient. For a restaurant on a commercial street in Kirkuk, the facade does the work of drawing people in before they reach the door.',
+  program: 'Facade Design',
+  area: '350 m²',
+  status: 'Built',
+  gallery: [
+    { src: '/Restrant Kerkuk/IMG_3260.JPG',                caption: 'Exterior View',         w: 2854, h: 3569 },
+    { src: '/Restrant Kerkuk/restaurant facade.png',       caption: 'Facade Study',          w: 3426, h: 2481 },
+    { src: '/Restrant Kerkuk/IMG_3266.JPG',                caption: 'Street Corner View',    w: 2854, h: 3569 },
+    { src: '/Restrant Kerkuk/IMG_3261.JPG',                caption: 'Facade at Dusk',        w: 3137, h: 4689 },
+    { src: '/Restrant Kerkuk/IMG_3259.JPG',                caption: 'Facade Detail',         w: 3137, h: 4689 },
+    { src: '/Restrant Kerkuk/IMG_3262.JPG',                caption: 'Cantilever Detail',     w: 3137, h: 4689 },
+    { src: '/Restrant Kerkuk/IMG_3264.JPG',                caption: 'Facade Overhang',       w: 3137, h: 4689 },
+    { src: '/Restrant Kerkuk/IMG_3265.JPG',                caption: 'Soffit Detail',         w: 3137, h: 4689 },
+    { src: '/Restrant Kerkuk/Resturant Facade part 1.png', caption: 'Panel Gradient Model',  w: 3800, h: 3800 },
+    { src: '/Restrant Kerkuk/Resturant Facade part 2.png', caption: 'Panel Study — Detail',  w: 5000, h: 5000 },
+  ],
+};
+
+const BALIKESIR_MEYDANI: CaseStudy = {
+  title: 'Balıkesir Cumhuriyet Meydanı',
+  category: 'Architecture',
+  year: '2026',
+  location: 'Balıkesir, Türkiye',
+  client: 'Balıkesir Municipality',
+  architect: 'Furkan Kartekin, Ezgi Kartekin',
+  visualization: 'Ahmed Alnaseri',
+  heroImage: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/1.jpg',
+  description:
+    "Balıkesir Cumhuriyet Meydanı is envisioned as a new civic heart for the city — transforming an existing passage zone into a vibrant public space for gathering, resting, meeting, waiting, shopping, and everyday social life. The project reinterprets Balıkesir's traditional arasta and courtyard culture through a contemporary architectural language. A timber canopy and elevated public deck create a strong pedestrian spine while forming shaded, semi-open spaces beneath for exhibitions, temporary events, seating, social interaction, and commercial activities. The design strengthens connections between important surrounding elements including the mosque, railway station, commercial areas, and public facilities, creating different urban experiences along each edge of the square. Pedestrian priority, accessibility, greenery, water elements, natural materials, and flexible public spaces form the core of the proposal. The result is a warm and inclusive urban environment designed not only for movement, but for people to stop, interact, and become part of the city's everyday life.",
+  program: 'Urban Design',
+  area: '—',
+  status: 'Competition',
+  gallery: [
+    { src: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/1.jpg', caption: 'Elevated Deck View',  w: 7680, h: 5120 },
+    { src: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/5.jpg', caption: 'Main Square View',    w: 7680, h: 5114 },
+    { src: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/6.jpg', caption: 'Timber Canopy View',  w: 7680, h: 5120 },
+    { src: '/Balıkesir Cumhuriyet meydanı/Renderlar-usb/7.jpg', caption: 'Covered Passage View', w: 7680, h: 5114 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/1. kat planı.jpg',        caption: 'First Floor Plan',   w: 6058, h: 5028 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/GÖRÜNÜŞ 1.jpg',            caption: 'Elevation 1',        w: 5973, h: 1799 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/GÖRÜNÜŞ 2.jpg',            caption: 'Elevation 2',        w: 5923, h: 1750 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/KESİT DETAY.jpg',          caption: 'Section Detail',     w: 4255, h: 5160 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/VAZİYET PLANI.jpg',        caption: 'Site Plan',          w: 6930, h: 8047 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/ZEMİN KAT PLANI 2.png',    caption: 'Ground Floor Plan',  w: 3511, h: 2483 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 1.jpg',         caption: 'Use Scenario 1',     w: 3508, h: 1972 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 2.jpg',         caption: 'Use Scenario 2',     w: 3508, h: 1967 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 3.jpg',         caption: 'Use Scenario 3',     w: 3508, h: 1971 },
+    { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 4.jpg',         caption: 'Use Scenario 4',     w: 3508, h: 1963 },
   ],
 };
 
@@ -210,6 +272,9 @@ const BAGHDAD_HOSPITAL: CaseStudy = {
 
 const CASE_STUDIES: Record<string, CaseStudy> = {
   'ppg-factory-facade': PPG_FACTORY_FACADE,
+  'balıkesir-cumhuriyet-meydanı': BALIKESIR_MEYDANI,
+  'balikesir-cumhuriyet-meydani': BALIKESIR_MEYDANI,
+  'kerkuk-restaurant': KERKUK_RESTAURANT,
   'national-hospital-facade': NATIONAL_HOSPITAL,
   'national-hospital-baghdad': NATIONAL_HOSPITAL,
   'hasyl-canopy': HASYL_CANOPY,
@@ -224,7 +289,8 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
 /* ─── page ──────────────────────────────────────────────────────────── */
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const { t, tv } = useLanguage();
-  const project = CASE_STUDIES[params.slug] ?? HASYL_CANOPY;
+  const project = CASE_STUDIES[params.slug];
+  if (!project) notFound();
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [scale, setScale]   = useState(1);
@@ -317,6 +383,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
     { label: t('common.program'), value: tv(project.program) },
     ...(project.architect
       ? [{ label: t('common.architect'), value: tv(project.architect) }]
+      : []),
+    ...(project.visualization
+      ? [{ label: t('common.visualization'), value: tv(project.visualization) }]
       : []),
     { label: t('common.area'),   value: project.area },
     { label: t('common.status'), value: tv(project.status) },
