@@ -107,8 +107,8 @@ const KERKUK_RESTAURANT: CaseStudy = {
     { src: '/Restrant Kerkuk/IMG_3262.JPG',                caption: 'Cantilever Detail',     w: 3137, h: 4689 },
     { src: '/Restrant Kerkuk/IMG_3264.JPG',                caption: 'Facade Overhang',       w: 3137, h: 4689 },
     { src: '/Restrant Kerkuk/IMG_3265.JPG',                caption: 'Soffit Detail',         w: 3137, h: 4689 },
-    { src: '/Restrant Kerkuk/Resturant Facade part 1.png', caption: 'Panel Gradient Model',  w: 3800, h: 3800 },
-    { src: '/Restrant Kerkuk/Resturant Facade part 2.png', caption: 'Panel Study — Detail',  w: 5000, h: 5000 },
+    { src: '/Restrant Kerkuk/Resturant Facade part 1.png', caption: '3D Partial Detail_ Interior', w: 3800, h: 3800 },
+    { src: '/Restrant Kerkuk/Resturant Facade part 2.png', caption: '3D Partial Detail_ Exterior', w: 5000, h: 5000 },
   ],
 };
 

@@ -128,8 +128,8 @@ const PROJECTS: Project[] = [
       { src: '/Restrant Kerkuk/IMG_3262.JPG',                 subtitle: 'Cantilever Detail' },
       { src: '/Restrant Kerkuk/IMG_3264.JPG',                 subtitle: 'Facade Overhang' },
       { src: '/Restrant Kerkuk/IMG_3265.JPG',                 subtitle: 'Soffit Detail' },
-      { src: '/Restrant Kerkuk/Resturant Facade part 1.png',  subtitle: 'Panel Gradient Model' },
-      { src: '/Restrant Kerkuk/Resturant Facade part 2.png',  subtitle: 'Panel Study — Detail' },
+      { src: '/Restrant Kerkuk/Resturant Facade part 1.png',  subtitle: '3D Partial Detail_ Interior' },
+      { src: '/Restrant Kerkuk/Resturant Facade part 2.png',  subtitle: '3D Partial Detail_ Exterior' },
     ],
   },
   {
