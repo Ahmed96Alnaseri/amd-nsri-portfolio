@@ -6,6 +6,8 @@ export interface Project {
   /** Zero-padded project number, e.g. "001" */
   num: string;
   title: string;
+  /** Slug matching this project's entry in the architecture PROJECTS array — used to look up coverImage. */
+  slug: string;
   category: ProjectCategory;
   year: string;
   status: ProjectStatus;
@@ -15,12 +17,6 @@ export interface Project {
   tags: string[];
   /** Production keywords revealed on hover over the image */
   overlayKeywords: string[];
-  /**
-   * Path to the project image relative to /public.
-   * e.g. "/projects/perforated-facade.jpg"
-   * Leave as empty string "" until the image is ready — the placeholder grid will show instead.
-   */
-  image: string;
   /** URL for the case study page */
   caseStudyLink: string;
 }
@@ -29,6 +25,7 @@ const projects: Project[] = [
   {
     num: '001',
     title: 'Hasyl Canopy',
+    slug: 'hasyl-canopy',
     category: 'Facade',
     year: '2025',
     status: 'Completed',
@@ -36,73 +33,72 @@ const projects: Project[] = [
       'A parametric facade system driven by solar exposure data, translating environmental logic into geometric perforation patterns.',
     tags: ['Facade', 'Parametric', 'Panelization', 'Rhino'],
     overlayKeywords: ['SHOP DRAWINGS', 'RATIONALIZATION', 'SUBSTRUCTURE', 'CNC READY'],
-    image: '/Hasyl/render/CANOPY_V1_1 - Photo.jpg',
     caseStudyLink: '/architecture/001',
   },
   {
     num: '002',
-    title: 'Folded Aluminum Canopy',
-    category: 'Fabrication',
-    year: '2024',
+    title: 'Toyota SAS & Lexus Showroom',
+    slug: 'lexus-toyota-showroom-slemani',
+    category: 'Facade',
+    year: '2026',
     status: 'In Production',
     concept:
-      'Structural canopy developed from a single folded geometry, optimized for CNC cutting and on-site assembly with minimal connections.',
-    tags: ['Unfolding', 'Aluminum', 'Structure', 'Assembly'],
-    overlayKeywords: ['UNFOLDING', 'TOLERANCE STUDY', 'JOINT DETAIL', 'MATERIAL SPEC'],
-    image: '',
-    caseStudyLink: '/architecture/002',
+      '600 compound-curved aluminum panels, computationally clustered into repeatable types and automatically unfolded for CNC fabrication of a Sulaymaniyah showroom facade.',
+    tags: ['Facade', 'Aluminum', 'Computational', 'Grasshopper'],
+    overlayKeywords: ['600 PANELS', 'TOLERANCE GROUPING', 'AUTO UNFOLD', 'CNC READY'],
+    caseStudyLink: '/architecture/lexus-toyota-showroom-slemani',
   },
   {
     num: '003',
-    title: 'Grasshopper Panelization Engine',
-    category: 'Tools',
-    year: '2023',
-    status: 'Released',
+    title: 'National Hospital Facade',
+    slug: 'national-hospital-baghdad',
+    category: 'Facade',
+    year: '2025',
+    status: 'Completed',
     concept:
-      'A Grasshopper definition that divides any freeform surface into fabrication-ready flat panels with automatic seam logic and numbering.',
-    tags: ['Grasshopper', 'Automation', 'Plugin', 'Workflow'],
-    overlayKeywords: ['DEFINITION', 'SEAM LOGIC', 'AUTO NUMBERING', 'EXPORT READY'],
-    image: '',
-    caseStudyLink: '/architecture/003',
+      'A perforated aluminum facade for a cardiac hospital in Baghdad, its graduated pattern forming a glowing heart visible after dark.',
+    tags: ['Facade', 'Perforated', 'Aluminum', 'Healthcare'],
+    overlayKeywords: ['GRADIENT PATTERN', 'HEART GEOMETRY', 'DAY / NIGHT', 'PERFORATION FIELD'],
+    caseStudyLink: '/architecture/national-hospital-baghdad',
   },
   {
     num: '004',
-    title: 'Residential Tower Skin Study',
-    category: 'Architecture',
-    year: '2023',
-    status: 'Concept',
+    title: 'Kerkuk Restaurant',
+    slug: 'kerkuk-restaurant',
+    category: 'Facade',
+    year: '2024',
+    status: 'Completed',
     concept:
-      'Facade language exploration for a high-rise residential project — testing depth, shadow, and materiality across twelve skin variations.',
-    tags: ['High-Rise', 'Visualization', 'Concept', 'Urban'],
-    overlayKeywords: ['12 VARIATIONS', 'SHADOW STUDY', 'DEPTH 200–600mm', 'MATERIAL OPTIONS'],
-    image: '',
-    caseStudyLink: '/architecture/004',
+      'A gradient multi-perforated aluminum facade for a restaurant in Kirkuk, hole density shifting from dense at the base to luminous at the crown.',
+    tags: ['Facade', 'Perforated', 'Gradient', 'Restaurant'],
+    overlayKeywords: ['GRADIENT DENSITY', 'CNC PUNCHED', 'FLAT PANELS', 'NIGHT GLOW'],
+    caseStudyLink: '/architecture/kerkuk-restaurant',
   },
   {
     num: '005',
-    title: 'Laser-Cut Screen Partition',
-    category: 'Design',
-    year: '2024',
-    status: 'Fabricated',
+    title: 'Balıkesir Cumhuriyet Meydanı',
+    slug: 'balikesir-cumhuriyet-meydani',
+    category: 'Architecture',
+    year: '2026',
+    status: 'Concept',
     concept:
-      'Interior screen system derived from Islamic geometric patterns, rationalized for laser cutting in 3mm steel with press-fit assembly.',
-    tags: ['Laser Cut', 'Interior', 'Steel', 'Pattern'],
-    overlayKeywords: ['3mm STEEL', 'PRESS-FIT', 'LASER PATH', 'PATTERN DENSITY'],
-    image: '',
-    caseStudyLink: '/architecture/005',
+      "A competition proposal reimagining Balıkesir's central square through a timber canopy and elevated deck, reinterpreting the city's traditional arasta culture.",
+    tags: ['Competition', 'Urban Design', 'Timber', 'Public Space'],
+    overlayKeywords: ['TIMBER CANOPY', 'PEDESTRIAN SPINE', 'PUBLIC DECK', 'COMPETITION ENTRY'],
+    caseStudyLink: '/architecture/balikesir-cumhuriyet-meydani',
   },
   {
     num: '006',
-    title: 'Parametric Stair Balustrade',
-    category: 'Fabrication',
-    year: '2023',
-    status: 'Completed',
+    title: 'PPG Factory Facade',
+    slug: 'ppg-factory-facade',
+    category: 'Facade',
+    year: '2024',
+    status: 'Concept',
     concept:
-      'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.',
-    tags: ['Stair', 'DXF Export', 'Unique Panels', 'Steel'],
-    overlayKeywords: ['UNIQUE PANELS', 'DXF EXPORT', 'BEND RADIUS', 'WELD SPEC'],
-    image: '',
-    caseStudyLink: '/architecture/006',
+      'A gradient multi-perforated aluminum cladding system for a paint factory in Bursa, panel geometry driven by a sine-based attractor field.',
+    tags: ['Facade', 'Concept', 'Computational', 'Aluminum'],
+    overlayKeywords: ['SINE ATTRACTOR', 'GRADIENT PERFORATION', 'PARAMETRIC PANELS', 'CONCEPT DESIGN'],
+    caseStudyLink: '/architecture/ppg-factory-facade',
   },
 ];
 

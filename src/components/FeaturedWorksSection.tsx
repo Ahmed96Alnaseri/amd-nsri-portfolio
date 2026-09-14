@@ -2,8 +2,26 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import projects from '@/data/projects';
+import curatedProjects from '@/data/projects';
+import { PROJECTS as ARCHITECTURE_PROJECTS, slugify } from '@/data/architectureProjects';
 import { useLanguage } from '@/lib/LanguageContext';
+
+/** Selected Works: exactly these projects, in this order — matched by slug against the architecture PROJECTS array. */
+const SELECTED_WORK_SLUGS = [
+  'hasyl-canopy',
+  'lexus-toyota-showroom-slemani',
+  'national-hospital-baghdad',
+  'kerkuk-restaurant',
+  'balikesir-cumhuriyet-meydani',
+  'ppg-factory-facade',
+];
+
+const projects = SELECTED_WORK_SLUGS.map((slug) => {
+  const arch = ARCHITECTURE_PROJECTS.find((p) => (p.slug ?? slugify(p.title)) === slug);
+  const curated = curatedProjects.find((p) => p.slug === slug);
+  if (!arch || !curated) return null;
+  return { ...curated, coverImage: arch.coverImage };
+}).filter((p): p is NonNullable<typeof p> => p !== null);
 
 export default function FeaturedWorksSection() {
   const { t, tv } = useLanguage();
@@ -58,9 +76,9 @@ export default function FeaturedWorksSection() {
           >
             {/* Image zone — shows real image if set in projects.ts, placeholder grid otherwise */}
             <div className="work-card-image" aria-hidden="true">
-              {project.image && (
+              {project.coverImage && (
                 <Image
-                  src={project.image}
+                  src={project.coverImage}
                   alt={project.title}
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 680px) 50vw, 100vw"

@@ -253,9 +253,12 @@ function ProjectCard({ project, index }: { project: DesignProject; index: number
 export default function DesignPage() {
   const { t, tv } = useLanguage();
   const [active, setActive] = useState<Filter>('All');
-  const visible = active === 'All'
+  const yearOf = (y: string) => parseInt(y, 10) || 0;
+  const visible = (active === 'All'
     ? designProjects
-    : designProjects.filter(p => p.category === (active as DesignCategory));
+    : designProjects.filter(p => p.category === (active as DesignCategory)))
+    .slice()
+    .sort((a, b) => yearOf(b.year) - yearOf(a.year));
 
   return (
     <>

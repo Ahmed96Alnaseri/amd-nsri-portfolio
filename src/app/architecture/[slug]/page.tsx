@@ -18,6 +18,14 @@ type CaseStudy = {
   architect?: string;
   /** Separate visualization/rendering credit, distinct from the architect(s) */
   visualization?: string;
+  /** For projects with no architect credit — e.g. "Computational Design & Fabrication" */
+  role?: string;
+  /** Individual credited for the role, rendered as "By" */
+  contributor?: string;
+  /** Fabrication shop credit, distinct from manufacturers */
+  fabricator?: string;
+  /** Installation/construction contractor credit */
+  contractor?: string;
   /** Empty string renders a placeholder hero (perforation pattern) */
   heroImage: string;
   /** CSS object-position for the hero image crop; defaults to 'center' */
@@ -270,7 +278,40 @@ const BAGHDAD_HOSPITAL: CaseStudy = {
   ],
 };
 
+const LEXUS_TOYOTA_SHOWROOM: CaseStudy = {
+  title: 'Toyota SAS & Lexus Showroom',
+  category: 'Architecture',
+  year: '2026',
+  location: 'Sulaymaniyah, Iraq',
+  client: 'Toyota SAS & Lexus Showroom',
+  role: 'Computational Design & Fabrication',
+  contributor: 'Ahmed Alnaseri',
+  fabricator: 'Kasso Engineering',
+  contractor: 'Facade Construction',
+  heroImage: '/Lexus/Lexus Facade.jpg',
+  description:
+    '600 aluminum panels. Every one different. The Toyota SAS & Lexus showroom in Sulaymaniyah presented a facade of compound-curved panels — each unique in geometry, each requiring its own fabrication documentation. The computational work began with remodeling the full panel system in Grasshopper, rebuilding the surface logic to allow precise control over panel positioning and orientation. A custom script was then written to minimize panel types: by applying a three-value tolerance grouping algorithm, panels were clustered by area similarity, collapsing hundreds of unique geometries into the smallest possible set of repeatable types without compromising the visual intent of the facade. This reduced fabrication complexity and material waste significantly. Every panel was then unfolded automatically through code — flat-pattern geometry generated directly from the 3D surface, ready for CNC cutting and sheet metal fabrication. Kasso Engineering executed the fabrication; Facade Construction handled installation. The 500 m² facade is currently under construction.',
+  program: 'Facade Design',
+  area: '500 m²',
+  status: 'In Progress',
+  gallery: [
+    { src: '/Lexus/Lexus Facade.jpg',        caption: 'Exterior View',                         w: 1320, h: 2144 },
+    { src: '/Lexus/Complete facade 3D.png',  caption: 'Complete Facade Model',                 w: 5000, h: 5000 },
+    { src: '/Lexus/Facade 2.JPG',            caption: 'Facade Detail',                         w: 960,  h: 1280 },
+    { src: '/Lexus/Facade 3.JPG',            caption: 'Panel Installation Detail',             w: 960,  h: 1280 },
+    { src: '/Lexus/Facade 4.JPG',            caption: 'Construction Progress',                 w: 960,  h: 1280 },
+    { src: '/Lexus/Facade 5.jpg',            caption: 'Facade Underside View',                 w: 1320, h: 2195 },
+    { src: '/Lexus/Mockup.jpeg',             caption: 'Panel Mockup',                          w: 5712, h: 4284 },
+    { src: '/Lexus/3D model Mockup.JPG',     caption: 'Panel Type Grouping',                   w: 298,  h: 674  },
+    { src: '/Lexus/Poses 3D.png',            caption: 'Panel Type Map',                        w: 5000, h: 5000 },
+    { src: '/Lexus/Poses 3D 2.png',          caption: 'Panel Type Map — End View',              w: 5000, h: 5000 },
+    { src: '/Lexus/Poses 3D 3.png',          caption: 'Panel Type Map — Perspective',           w: 5000, h: 5000 },
+    { src: '/Lexus/Planar script.png',       caption: 'Grasshopper Script — Planarity Check',  w: 2434, h: 1142 },
+  ],
+};
+
 const CASE_STUDIES: Record<string, CaseStudy> = {
+  'lexus-toyota-showroom-slemani': LEXUS_TOYOTA_SHOWROOM,
   'ppg-factory-facade': PPG_FACTORY_FACADE,
   'balıkesir-cumhuriyet-meydanı': BALIKESIR_MEYDANI,
   'balikesir-cumhuriyet-meydani': BALIKESIR_MEYDANI,
@@ -387,6 +428,12 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
     ...(project.visualization
       ? [{ label: t('common.visualization'), value: tv(project.visualization) }]
       : []),
+    ...(project.role
+      ? [{ label: t('common.role'), value: tv(project.role) }]
+      : []),
+    ...(project.contributor
+      ? [{ label: t('common.by'), value: tv(project.contributor) }]
+      : []),
     { label: t('common.area'),   value: project.area },
     { label: t('common.status'), value: tv(project.status) },
     ...(project.manufacturers
@@ -394,6 +441,12 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       : project.tools
         ? [{ label: t('common.toolsUsed'), value: tv(project.tools) }]
         : []),
+    ...(project.fabricator
+      ? [{ label: t('common.fabricator'), value: tv(project.fabricator) }]
+      : []),
+    ...(project.contractor
+      ? [{ label: t('common.contractor'), value: tv(project.contractor) }]
+      : []),
   ];
 
   return (

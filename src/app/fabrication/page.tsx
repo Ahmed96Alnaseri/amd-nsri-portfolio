@@ -256,9 +256,12 @@ function ProjectCard({ project, index }: { project: FabricationProject; index: n
 export default function FabricationPage() {
   const { t, tv } = useLanguage();
   const [active, setActive] = useState<Filter>('All');
-  const visible = active === 'All'
+  const yearOf = (y: string) => parseInt(y, 10) || 0;
+  const visible = (active === 'All'
     ? fabricationProjects
-    : fabricationProjects.filter(p => p.category === (active as FabricationCategory));
+    : fabricationProjects.filter(p => p.category === (active as FabricationCategory)))
+    .slice()
+    .sort((a, b) => yearOf(b.year) - yearOf(a.year));
 
   return (
     <>

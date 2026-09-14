@@ -89,6 +89,29 @@ const fabricationProjects: FabricationProject[] = [
       { src: '/Restrant Kerkuk/Resturant Facade part 2.png',  subtitle: 'Panel Study — Detail' },
     ],
   },
+  {
+    title: 'Toyota SAS & Lexus Showroom',
+    category: 'Perforated Panels',
+    type: 'Facade Design',
+    material: 'Compound-Curved Aluminum',
+    year: '2026',
+    location: 'Sulaymaniyah, Iraq',
+    detailHref: '/architecture/lexus-toyota-showroom-slemani',
+    images: [
+      { src: '/Lexus/Lexus Facade.jpg',        subtitle: 'Exterior View' },
+      { src: '/Lexus/Complete facade 3D.png',  subtitle: 'Complete Facade Model' },
+      { src: '/Lexus/Facade 2.JPG',            subtitle: 'Facade Detail' },
+      { src: '/Lexus/Facade 3.JPG',            subtitle: 'Panel Installation Detail' },
+      { src: '/Lexus/Facade 4.JPG',            subtitle: 'Construction Progress' },
+      { src: '/Lexus/Facade 5.jpg',            subtitle: 'Facade Underside View' },
+      { src: '/Lexus/Mockup.jpeg',             subtitle: 'Panel Mockup' },
+      { src: '/Lexus/3D model Mockup.JPG',     subtitle: 'Panel Type Grouping' },
+      { src: '/Lexus/Poses 3D.png',            subtitle: 'Panel Type Map' },
+      { src: '/Lexus/Poses 3D 2.png',          subtitle: 'Panel Type Map — End View' },
+      { src: '/Lexus/Poses 3D 3.png',          subtitle: 'Panel Type Map — Perspective' },
+      { src: '/Lexus/Planar script.png',       subtitle: 'Grasshopper Script — Planarity Check' },
+    ],
+  },
 ];
 
 export default fabricationProjects;

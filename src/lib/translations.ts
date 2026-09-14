@@ -49,6 +49,10 @@ export const translations = {
       viewAllWorks:   'View all works',
       architect:      'Architect',
       visualization:  'Visualization',
+      role:           'Role',
+      by:             'By',
+      fabricator:     'Fabricator',
+      contractor:     'Contractor',
       area:           'Area',
       year:           'Year',
       location:       'Location',
@@ -373,6 +377,10 @@ export const translations = {
       viewAllWorks:   'Tüm çalışmaları gör',
       architect:      'Mimar',
       visualization:  'Görselleştirme',
+      role:           'Rol',
+      by:             'Hazırlayan',
+      fabricator:     'Üretici Atölye',
+      contractor:     'Yüklenici',
       area:           'Alan',
       year:           'Yıl',
       location:       'Konum',
@@ -697,6 +705,10 @@ export const translations = {
       viewAllWorks:   'عرض جميع الأعمال',
       architect:      'المعماري',
       visualization:  'التصور المرئي',
+      role:           'الدور',
+      by:             'بواسطة',
+      fabricator:     'المُصنِّع',
+      contractor:     'المقاول',
       area:           'المساحة',
       year:           'السنة',
       location:       'الموقع',
@@ -1052,6 +1064,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Concept Design': 'Konsept Tasarım',
     'Fabricated': 'Üretildi',
     'In Development': 'Geliştiriliyor',
+    'In Progress': 'Devam Ediyor',
     'Research': 'Araştırma',
     'Prototype': 'Prototip',
     'Competition Entry': 'Yarışma Katılımı',
@@ -1255,6 +1268,8 @@ const VALUES: Record<Lang, ValueMap> = {
     'Sheet Steel 2mm': 'Sac Çelik 2mm',
     'Mild Steel 3mm': 'Yumuşak Çelik 3mm',
     'Zinc': 'Çinko',
+    'Perforated Aluminum': 'Delikli Alüminyum',
+    'Compound-Curved Aluminum': 'Bileşik Eğrisel Alüminyum',
     // locations
     'Awaza, Turkmenistan': 'Avaza, Türkmenistan',
     'Istanbul': 'İstanbul',
@@ -1264,6 +1279,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Bursa, Türkiye': 'Bursa, Türkiye',
     'Kirkuk, Iraq': 'Kerkük, Irak',
     'Balıkesir, Türkiye': 'Balıkesir, Türkiye',
+    'Sulaymaniyah, Iraq': 'Süleymaniye, Irak',
     'International': 'Uluslararası',
     // clients
     'Confidential': 'Gizli',
@@ -1289,6 +1305,12 @@ const VALUES: Record<Lang, ValueMap> = {
     'Stair': 'Merdiven',
     'DXF Export': 'DXF Dışa Aktarım',
     'Unique Panels': 'Benzersiz Paneller',
+    'Perforated': 'Delikli',
+    'Healthcare': 'Sağlık',
+    'Gradient': 'Gradyan',
+    'Restaurant': 'Restoran',
+    'Timber': 'Ahşap',
+    'Public Space': 'Kamusal Alan',
     // overlay keywords
     'SHOP DRAWINGS': 'ATÖLYE ÇİZİMLERİ',
     'RATIONALIZATION': 'RASYONALİZASYON',
@@ -1301,6 +1323,25 @@ const VALUES: Record<Lang, ValueMap> = {
     'DEFINITION': 'TANIM',
     'SEAM LOGIC': 'DİKİŞ MANTIĞI',
     'AUTO NUMBERING': 'OTOMATİK NUMARALANDIRMA',
+    '600 PANELS': '600 PANEL',
+    'TOLERANCE GROUPING': 'TOLERANS GRUPLAMA',
+    'AUTO UNFOLD': 'OTOMATİK AÇINIM',
+    'GRADIENT PATTERN': 'GRADYAN DESEN',
+    'HEART GEOMETRY': 'KALP GEOMETRİSİ',
+    'DAY / NIGHT': 'GÜN / GECE',
+    'PERFORATION FIELD': 'DELİK ALANI',
+    'GRADIENT DENSITY': 'GRADYAN YOĞUNLUĞU',
+    'CNC PUNCHED': 'CNC DELİNMİŞ',
+    'FLAT PANELS': 'DÜZ PANELLER',
+    'NIGHT GLOW': 'GECE IŞILTISI',
+    'TIMBER CANOPY': 'AHŞAP KANOPİ',
+    'PEDESTRIAN SPINE': 'YAYA OMURGASI',
+    'PUBLIC DECK': 'KAMUSAL GÜVERTE',
+    'COMPETITION ENTRY': 'YARIŞMA KATILIMI',
+    'SINE ATTRACTOR': 'SİNÜS ÇEKİCİ',
+    'GRADIENT PERFORATION': 'GRADYAN DELİK',
+    'PARAMETRIC PANELS': 'PARAMETRİK PANELLER',
+    'CONCEPT DESIGN': 'KONSEPT TASARIM',
     'EXPORT READY': 'DIŞA AKTARIMA HAZIR',
     '12 VARIATIONS': '12 VARYASYON',
     'SHADOW STUDY': 'GÖLGE ÇALIŞMASI',
@@ -1344,7 +1385,20 @@ const VALUES: Record<Lang, ValueMap> = {
       'İslam geometrik desenlerinden türetilen, 3mm çelikte lazer kesim ve geçmeli montaj için rasyonalize edilmiş iç mekân paravan sistemi.',
     'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.':
       'Merdiven geometrisinden üretilen korkuluk geometrisi — her panel benzersiz, tümü tek bir parametrik kuraldan türetilir ve ayrı DXF dosyaları olarak dışa aktarılır.',
+    // featured work concepts (homepage Selected Works cards)
+    '600 compound-curved aluminum panels, computationally clustered into repeatable types and automatically unfolded for CNC fabrication of a Sulaymaniyah showroom facade.':
+      'Süleymaniye\'deki bir showroom cephesi için hesaplamalı olarak tekrarlanabilir tiplere kümelenmiş ve CNC üretimi için otomatik olarak açındırılmış 600 bileşik eğrisel alüminyum panel.',
+    'A perforated aluminum facade for a cardiac hospital in Baghdad, its graduated pattern forming a glowing heart visible after dark.':
+      'Bağdat\'ta bir kalp hastanesi için delikli bir alüminyum cephe; derecelendirilmiş deseni karanlıkta ışıldayan bir kalp oluşturuyor.',
+    'A gradient multi-perforated aluminum facade for a restaurant in Kirkuk, hole density shifting from dense at the base to luminous at the crown.':
+      'Kerkük\'te bir restoran için gradyanlı çok delikli alüminyum cephe; delik yoğunluğu tabanda yoğundan tepede ışıltılıya doğru değişiyor.',
+    "A competition proposal reimagining Balıkesir's central square through a timber canopy and elevated deck, reinterpreting the city's traditional arasta culture.":
+      'Balıkesir\'in merkezi meydanını ahşap bir kanopi ve yükseltilmiş bir güverte aracılığıyla yeniden hayal eden, kentin geleneksel arasta kültürünü yeniden yorumlayan bir yarışma önerisi.',
+    'A gradient multi-perforated aluminum cladding system for a paint factory in Bursa, panel geometry driven by a sine-based attractor field.':
+      'Bursa\'daki bir boya fabrikası için gradyanlı çok delikli alüminyum giydirme sistemi; panel geometrisi sinüs tabanlı bir çekim alanı tarafından yönlendiriliyor.',
     // case-study descriptions
+    '600 aluminum panels. Every one different. The Toyota SAS & Lexus showroom in Sulaymaniyah presented a facade of compound-curved panels — each unique in geometry, each requiring its own fabrication documentation. The computational work began with remodeling the full panel system in Grasshopper, rebuilding the surface logic to allow precise control over panel positioning and orientation. A custom script was then written to minimize panel types: by applying a three-value tolerance grouping algorithm, panels were clustered by area similarity, collapsing hundreds of unique geometries into the smallest possible set of repeatable types without compromising the visual intent of the facade. This reduced fabrication complexity and material waste significantly. Every panel was then unfolded automatically through code — flat-pattern geometry generated directly from the 3D surface, ready for CNC cutting and sheet metal fabrication. Kasso Engineering executed the fabrication; Facade Construction handled installation. The 500 m² facade is currently under construction.':
+      '600 alüminyum panel. Her biri farklı. Süleymaniye\'deki Toyota SAS & Lexus showroom\'u, bileşik eğrisel panellerden oluşan bir cephe sunuyordu — her biri geometride benzersiz, her biri kendi üretim belgelerini gerektiriyordu. Hesaplamalı çalışma, panel sistemi bütünüyle Grasshopper\'da yeniden modellenerek başladı; panel konumlandırma ve yönlendirmesi üzerinde hassas kontrol sağlamak için yüzey mantığı yeniden kuruldu. Ardından panel tiplerini en aza indirmek için özel bir script yazıldı: üç değerli bir tolerans gruplama algoritması uygulanarak paneller alan benzerliğine göre kümelendi ve yüzlerce benzersiz geometri, cephenin görsel niyetinden ödün vermeden mümkün olan en küçük tekrarlanabilir tip setine indirgendi. Bu, üretim karmaşıklığını ve malzeme israfını önemli ölçüde azalttı. Her panel daha sonra kod aracılığıyla otomatik olarak açındırıldı — 3D yüzeyden doğrudan üretilen düz-desen geometrisi, CNC kesime ve sac metal üretimine hazır hale getirildi. Üretimi Kasso Engineering gerçekleştirdi; montajı Facade Construction üstlendi. 500 m²\'lik cephe şu anda inşa halindedir.',
     "Balıkesir Cumhuriyet Meydanı is envisioned as a new civic heart for the city — transforming an existing passage zone into a vibrant public space for gathering, resting, meeting, waiting, shopping, and everyday social life. The project reinterprets Balıkesir's traditional arasta and courtyard culture through a contemporary architectural language. A timber canopy and elevated public deck create a strong pedestrian spine while forming shaded, semi-open spaces beneath for exhibitions, temporary events, seating, social interaction, and commercial activities. The design strengthens connections between important surrounding elements including the mosque, railway station, commercial areas, and public facilities, creating different urban experiences along each edge of the square. Pedestrian priority, accessibility, greenery, water elements, natural materials, and flexible public spaces form the core of the proposal. The result is a warm and inclusive urban environment designed not only for movement, but for people to stop, interact, and become part of the city's everyday life.":
       "Balıkesir Cumhuriyet Meydanı, kent için yeni bir sivil kalp olarak tasarlanıyor — mevcut bir geçiş bölgesini toplanma, dinlenme, buluşma, bekleme, alışveriş ve günlük sosyal yaşam için canlı bir kamusal alana dönüştürüyor. Proje, Balıkesir'in geleneksel arasta ve avlu kültürünü çağdaş bir mimari dille yeniden yorumluyor. Ahşap bir kanopi ve yükseltilmiş bir kamusal güverte, güçlü bir yaya omurgası oluştururken altında sergiler, geçici etkinlikler, oturma alanları, sosyal etkileşim ve ticari faaliyetler için gölgeli, yarı açık mekânlar yaratıyor. Tasarım, cami, tren istasyonu, ticari alanlar ve kamu tesisleri gibi önemli çevre unsurları arasındaki bağlantıları güçlendirerek meydanın her kenarında farklı kentsel deneyimler yaratıyor. Yaya önceliği, erişilebilirlik, yeşillik, su öğeleri, doğal malzemeler ve esnek kamusal alanlar önerinin özünü oluşturuyor. Sonuç, yalnızca hareket için değil, insanların durup etkileşime geçmesi ve kentin günlük yaşamının bir parçası olması için tasarlanmış sıcak ve kapsayıcı bir kentsel ortam.",
     'A restaurant facade that turns perforation into atmosphere. The aluminum cladding system uses a gradient multi-perforation pattern — hole density shifts continuously across the surface, from dense and opaque at the base to open and luminous at the upper register. By day the facade reads as a textured metal skin, the gradient giving it depth and movement without ornament. After dark the logic reverses: interior light bleeds through the perforations and the gradient glows, the busiest tables casting the brightest wash onto the street. The system was fabricated as flat sheet metal panels with CNC-punched perforation fields, each panel a section of the continuous gradient. For a restaurant on a commercial street in Kirkuk, the facade does the work of drawing people in before they reach the door.':
@@ -1423,6 +1477,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Concept Design': 'تصميم مبدئي',
     'Fabricated': 'مُصنَّع',
     'In Development': 'قيد التطوير',
+    'In Progress': 'قيد التنفيذ',
     'Research': 'بحث',
     'Prototype': 'نموذج أولي',
     'Competition Entry': 'مشاركة مسابقة',
@@ -1626,6 +1681,8 @@ const VALUES: Record<Lang, ValueMap> = {
     'Sheet Steel 2mm': 'صفيحة فولاذ 2مم',
     'Mild Steel 3mm': 'فولاذ طري 3مم',
     'Zinc': 'زنك',
+    'Perforated Aluminum': 'ألمنيوم مثقّب',
+    'Compound-Curved Aluminum': 'ألمنيوم مزدوج الانحناء',
     // locations
     'Awaza, Turkmenistan': 'أوازا، تركمانستان',
     'Istanbul': 'إسطنبول',
@@ -1636,6 +1693,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Lamu, Kenya': 'لامو، كينيا',
     'Bursa, Türkiye': 'بورصة، تركيا',
     'Balıkesir, Türkiye': 'باليكسير، تركيا',
+    'Sulaymaniyah, Iraq': 'السليمانية، العراق',
     // clients
     'Confidential': 'سرّي',
     'Open Competition': 'مسابقة مفتوحة',
@@ -1660,6 +1718,12 @@ const VALUES: Record<Lang, ValueMap> = {
     'Stair': 'درج',
     'DXF Export': 'تصدير DXF',
     'Unique Panels': 'ألواح فريدة',
+    'Perforated': 'مثقّب',
+    'Healthcare': 'رعاية صحية',
+    'Gradient': 'متدرّج',
+    'Restaurant': 'مطعم',
+    'Timber': 'خشب',
+    'Public Space': 'فضاء عام',
     // overlay keywords
     'SHOP DRAWINGS': 'رسومات تنفيذية',
     'RATIONALIZATION': 'ترشيد',
@@ -1672,6 +1736,25 @@ const VALUES: Record<Lang, ValueMap> = {
     'DEFINITION': 'تعريف',
     'SEAM LOGIC': 'منطق الوصلات',
     'AUTO NUMBERING': 'ترقيم تلقائي',
+    '600 PANELS': '600 لوح',
+    'TOLERANCE GROUPING': 'تجميع بالتفاوت',
+    'AUTO UNFOLD': 'فرد تلقائي',
+    'GRADIENT PATTERN': 'نمط متدرّج',
+    'HEART GEOMETRY': 'هندسة القلب',
+    'DAY / NIGHT': 'نهار / ليل',
+    'PERFORATION FIELD': 'حقل التثقيب',
+    'GRADIENT DENSITY': 'كثافة متدرّجة',
+    'CNC PUNCHED': 'مثقوب CNC',
+    'FLAT PANELS': 'ألواح مسطّحة',
+    'NIGHT GLOW': 'توهّج ليلي',
+    'TIMBER CANOPY': 'مظلّة خشبية',
+    'PEDESTRIAN SPINE': 'عمود فقري للمشاة',
+    'PUBLIC DECK': 'منصّة عامة',
+    'COMPETITION ENTRY': 'مشاركة مسابقة',
+    'SINE ATTRACTOR': 'جاذب جيبي',
+    'GRADIENT PERFORATION': 'تثقيب متدرّج',
+    'PARAMETRIC PANELS': 'ألواح بارامترية',
+    'CONCEPT DESIGN': 'تصميم مبدئي',
     'EXPORT READY': 'جاهز للتصدير',
     '12 VARIATIONS': '12 تنويعاً',
     'SHADOW STUDY': 'دراسة ظل',
@@ -1715,7 +1798,20 @@ const VALUES: Record<Lang, ValueMap> = {
       'نظام ساتر داخلي مستمدّ من الأنماط الهندسية الإسلامية، مُرشَّد للقصّ بالليزر في فولاذ 3مم بتجميع بالضغط.',
     'Balustrade geometry generated from stair geometry — each panel unique, all derived from a single parametric rule and exported as individual DXF files.':
       'هندسة درابزين مولّدة من هندسة الدرج — كل لوح فريد، جميعها مستمدّة من قاعدة بارامترية واحدة وتُصدَّر كملفات DXF منفصلة.',
+    // featured work concepts (homepage Selected Works cards)
+    '600 compound-curved aluminum panels, computationally clustered into repeatable types and automatically unfolded for CNC fabrication of a Sulaymaniyah showroom facade.':
+      '600 لوح ألمنيوم مزدوج الانحناء لواجهة معرض في السليمانية، مُجمّعة حسابياً في أنواع قابلة للتكرار ومفرودة تلقائياً للتصنيع بالـCNC.',
+    'A perforated aluminum facade for a cardiac hospital in Baghdad, its graduated pattern forming a glowing heart visible after dark.':
+      'واجهة ألمنيوم مثقّبة لمستشفى قلبية في بغداد، يشكّل نمطها المتدرّج قلباً متوهّجاً يظهر بعد حلول الظلام.',
+    'A gradient multi-perforated aluminum facade for a restaurant in Kirkuk, hole density shifting from dense at the base to luminous at the crown.':
+      'واجهة ألمنيوم متعددة الثقوب متدرّجة لمطعم في كركوك، تتغيّر كثافة الثقوب من كثيفة عند القاعدة إلى مضيئة عند القمة.',
+    "A competition proposal reimagining Balıkesir's central square through a timber canopy and elevated deck, reinterpreting the city's traditional arasta culture.":
+      'مقترح مسابقة يعيد تصوّر الميدان المركزي لباليكسير عبر مظلّة خشبية ومنصّة مرتفعة، معيداً تفسير ثقافة الأرستا التقليدية للمدينة.',
+    'A gradient multi-perforated aluminum cladding system for a paint factory in Bursa, panel geometry driven by a sine-based attractor field.':
+      'نظام كسوة ألمنيوم متعدد الثقوب متدرّج لمصنع طلاء في بورصة، تُوجَّه هندسة ألواحه بحقل جذب مبني على دالة الجيب.',
     // case-study descriptions
+    '600 aluminum panels. Every one different. The Toyota SAS & Lexus showroom in Sulaymaniyah presented a facade of compound-curved panels — each unique in geometry, each requiring its own fabrication documentation. The computational work began with remodeling the full panel system in Grasshopper, rebuilding the surface logic to allow precise control over panel positioning and orientation. A custom script was then written to minimize panel types: by applying a three-value tolerance grouping algorithm, panels were clustered by area similarity, collapsing hundreds of unique geometries into the smallest possible set of repeatable types without compromising the visual intent of the facade. This reduced fabrication complexity and material waste significantly. Every panel was then unfolded automatically through code — flat-pattern geometry generated directly from the 3D surface, ready for CNC cutting and sheet metal fabrication. Kasso Engineering executed the fabrication; Facade Construction handled installation. The 500 m² facade is currently under construction.':
+      '600 لوح ألمنيوم. كل واحد مختلف. قدّم معرض Toyota SAS & Lexus في السليمانية واجهة من ألواح مزدوجة الانحناء — كل لوح فريد في هندسته، وكل واحد يتطلّب وثائق تصنيع خاصة به. بدأ العمل الحسابي بإعادة نمذجة نظام الألواح بالكامل في Grasshopper، وإعادة بناء منطق السطح للسماح بتحكّم دقيق في موضع الألواح واتجاهها. ثم كُتب سكريبت مخصّص لتقليل أنواع الألواح: من خلال تطبيق خوارزمية تجميع بثلاث قيم تفاوت، جُمّعت الألواح حسب تشابه المساحة، مما اختزل مئات الأشكال الفريدة إلى أصغر مجموعة ممكنة من الأنواع القابلة للتكرار دون المساس بالمقصد البصري للواجهة. قلّل هذا بشكل كبير من تعقيد التصنيع وهدر المواد. ثم فُرد كل لوح تلقائياً عبر الكود — هندسة نمط مسطّح مُولَّدة مباشرة من السطح ثلاثي الأبعاد، جاهزة للقصّ بالـCNC وتصنيع الصفائح المعدنية. نفّذت Kasso Engineering أعمال التصنيع؛ وتولّت Facade Construction التركيب. الواجهة البالغة مساحتها 500 م² قيد الإنشاء حالياً.',
     "Balıkesir Cumhuriyet Meydanı is envisioned as a new civic heart for the city — transforming an existing passage zone into a vibrant public space for gathering, resting, meeting, waiting, shopping, and everyday social life. The project reinterprets Balıkesir's traditional arasta and courtyard culture through a contemporary architectural language. A timber canopy and elevated public deck create a strong pedestrian spine while forming shaded, semi-open spaces beneath for exhibitions, temporary events, seating, social interaction, and commercial activities. The design strengthens connections between important surrounding elements including the mosque, railway station, commercial areas, and public facilities, creating different urban experiences along each edge of the square. Pedestrian priority, accessibility, greenery, water elements, natural materials, and flexible public spaces form the core of the proposal. The result is a warm and inclusive urban environment designed not only for movement, but for people to stop, interact, and become part of the city's everyday life.":
       'يُتصوَّر ميدان الجمهورية في باليكسير كقلب مدني جديد للمدينة — يحوّل منطقة عبور قائمة إلى فضاء عام نابض بالحياة للتجمّع والراحة واللقاء والانتظار والتسوّق والحياة الاجتماعية اليومية. يعيد المشروع تفسير ثقافة الأرستا والباحات التقليدية في باليكسير من خلال لغة معمارية معاصرة. تُنشئ مظلّة خشبية ومنصّة عامة مرتفعة عموداً فقرياً قوياً للمشاة، بينما تُشكّل تحتها مساحات مظلّلة شبه مفتوحة للمعارض والفعاليات المؤقتة والجلوس والتفاعل الاجتماعي والأنشطة التجارية. يعزّز التصميم الروابط بين العناصر المحيطة المهمة، بما في ذلك المسجد ومحطة السكك الحديدية والمناطق التجارية والمرافق العامة، مما يخلق تجارب حضرية مختلفة على طول كل حافة من الميدان. تشكّل أولوية المشاة، وإمكانية الوصول، والمساحات الخضراء، وعناصر المياه، والمواد الطبيعية، والفضاءات العامة المرنة جوهر المقترح. والنتيجة بيئة حضرية دافئة وشاملة، لا تُصمَّم للحركة فقط، بل ليتوقّف الناس ويتفاعلوا ويصبحوا جزءاً من الحياة اليومية للمدينة.',
     'A restaurant facade that turns perforation into atmosphere. The aluminum cladding system uses a gradient multi-perforation pattern — hole density shifts continuously across the surface, from dense and opaque at the base to open and luminous at the upper register. By day the facade reads as a textured metal skin, the gradient giving it depth and movement without ornament. After dark the logic reverses: interior light bleeds through the perforations and the gradient glows, the busiest tables casting the brightest wash onto the street. The system was fabricated as flat sheet metal panels with CNC-punched perforation fields, each panel a section of the continuous gradient. For a restaurant on a commercial street in Kirkuk, the facade does the work of drawing people in before they reach the door.':
