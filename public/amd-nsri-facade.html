@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10110f">
+  <meta name="description" content="Explore the components behind a buildable metal façade. An interactive assembly by AMD NSRI.">
+  <title>Behind the façade — AMD NSRI</title>
+  <style>
+    /*
+      AMD NSRI / INTERACTIVE FACADE — one file, no external dependencies.
+
+      Open this file directly to view the full section.
+      To use ONLY the right-hand interactive diagram in your existing website:
+        <iframe src="/amd-nsri-facade.html?embed=1"
+          title="Interactive façade assembly"
+          style="width:100%;height:900px;border:0;display:block"
+          loading="lazy"></iframe>
+      Set the iframe height to suit your column; the illustration is responsive.
+      Or copy <amd-facade> into your page together with its module script below.
+      The component uses Shadow DOM, so its styles cannot affect your website.
+      Edit COLORS and COMPONENTS in the script to customize the illustration.
+      Geometry is an illustrative cassette assembly, not a fabrication detail.
+    */
+    :root { color-scheme: dark; --bg:#10110f; --ink:#e3e1d8; --muted:#92958b; --gold:#b89a6d; --line:#2b2d27; }
+    * { box-sizing:border-box; }
+    html { background:var(--bg); }
+    body { margin:0; color:var(--ink); background:var(--bg); font-family:"Courier New",Courier,monospace; -webkit-font-smoothing:antialiased; }
+    .page { max-width:1640px; margin:auto; padding:0 5.1%; }
+    .masthead { display:flex; justify-content:space-between; gap:20px; align-items:center; min-height:73px; border-bottom:1px solid var(--line); font-size:10px; letter-spacing:1.8px; text-transform:uppercase; }
+    .wordmark { color:var(--gold); font-weight:normal; font-size:13px; letter-spacing:2.6px; }
+    .masthead-note { color:var(--muted); }
+    .fabrication { display:grid; grid-template-columns:minmax(330px,.83fr) minmax(0,1.17fr); gap:clamp(35px,5vw,90px); padding:68px 0 48px; align-items:start; }
+    .eyebrow { margin:0 0 27px; color:var(--gold); font-size:10px; letter-spacing:2px; text-transform:uppercase; }
+    h1 { font-size:clamp(40px,4.1vw,65px); font-weight:400; line-height:1.08; letter-spacing:-2.4px; margin:0 0 34px; }
+    h1 em { font-family:Georgia,"Times New Roman",serif; font-size:1.15em; font-weight:400; color:var(--gold); letter-spacing:-2.8px; }
+    .intro { max-width:475px; font-size:12px; line-height:1.95; color:#a1a298; margin:0 0 35px; }
+    .principles { list-style:none; padding:0; margin:0; max-width:490px; border-top:1px solid var(--line); }
+    .principles li { display:grid; grid-template-columns:25px 1.05fr 1.1fr; gap:14px; align-items:start; border-bottom:1px solid #242620; padding:17px 0; font-size:10px; line-height:1.7; }
+    .principles .num { color:var(--gold); font-size:9px; }
+    .principles .term { color:#b0b1a7; text-transform:uppercase; letter-spacing:.7px; }
+    .principles .definition { color:#84887e; }
+    .page-footer { border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; padding:24px 0; text-transform:uppercase; color:#868a7e; letter-spacing:1.2px; font-size:9px; }
+    amd-facade { display:block; min-width:0; }
+    html.embed .page { max-width:none; padding:0; }
+    html.embed .masthead,html.embed .copy,html.embed .page-footer { display:none; }
+    html.embed .fabrication { display:block; padding:0; }
+    @media(min-width:1700px) { .fabrication { gap:110px; } }
+    @media(max-width:1020px) {
+      .fabrication { grid-template-columns:minmax(280px,.84fr) minmax(0,1.16fr); gap:26px; padding-top:45px; }
+      h1 { font-size:42px; }
+      .principles li { grid-template-columns:19px 1fr 1fr; gap:8px; }
+    }
+    @media(max-width:760px) {
+      .page { padding:0 6%; }
+      .masthead { min-height:63px; }
+      .masthead-note { font-size:8px; letter-spacing:1px; }
+      .fabrication { grid-template-columns:1fr; padding-top:38px; gap:42px; }
+      h1 { font-size:clamp(40px,8vw,62px); max-width:600px; }
+      .intro { max-width:550px; }
+      .principles { max-width:none; }
+      .principles li { grid-template-columns:22px 1fr 1.1fr; gap:12px; }
+      .page-footer { font-size:8px; line-height:1.8; }
+    }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <span class="wordmark">AMD NSRI</span>
+      <span class="masthead-note">Design &nbsp;/&nbsp; Computation &nbsp;/&nbsp; Fabrication</span>
+    </header>
+    <main class="fabrication">
+      <section class="copy" aria-labelledby="section-title">
+        <p class="eyebrow">Behind the surface &nbsp; / &nbsp; 06</p>
+        <h1 id="section-title">The hidden<br><em>intelligence</em><br>behind buildable<br>design.</h1>
+        <p class="intro">Behind every complex form there is a hidden structure of decisions: panel division, unfolding logic, substructure coordination, material limits, assembly sequence, and production constraints. AMD NSRI treats fabrication as part of the design language itself.</p>
+        <ol class="principles">
+          <li><span class="num">01</span><span class="term">Panel division</span><span class="definition">Geometry rationalization<br>for fabrication</span></li>
+          <li><span class="num">02</span><span class="term">Unfolding logic</span><span class="definition">Flat pattern extraction<br>from 3D surfaces</span></li>
+          <li><span class="num">03</span><span class="term">Substructure</span><span class="definition">Support systems and<br>fixing geometry</span></li>
+          <li><span class="num">04</span><span class="term">Material limits</span><span class="definition">Bend radii, sheet sizes,<br>and tolerances</span></li>
+          <li><span class="num">05</span><span class="term">Assembly sequence</span><span class="definition">Installation order<br>and site logic</span></li>
+          <li><span class="num">06</span><span class="term">Production constraints</span><span class="definition">CNC, laser, and press<br>brake parameters</span></li>
+        </ol>
+      </section>
+      <amd-facade aria-label="Interactive metal façade assembly"></amd-facade>
+    </main>
+    <footer class="page-footer"><span>From geometry to built reality.</span><span>AMD NSRI &nbsp; / &nbsp; Fabrication</span></footer>
+  </div>
+  <noscript><p style="padding:24px">Enable JavaScript to explore the interactive façade assembly.</p></noscript>
+
+  <script>
+    if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');
+
+    (() => {
+      'use strict';
+      const NS = 'http://www.w3.org/2000/svg';
+      const COLORS = {
+        wall:'#1a1a1a', wallEdge:'#757673', metal:'#999a97', metalEdge:'#c1c2bf',
+        metalDark:'#454b40', gold:'#ba9c6c', goldLight:'#e4ca98', panel:'#53574b'
+      };
+      const COMPONENTS = [
+        {id:'panel', n:'01', short:'Panel', name:'Folded cassette panel', category:'THE OUTER SKIN',
+          description:'The folded metal face. Returned edges stiffen the cassette and form its concealed connection to the support system.',
+          point:[250,164,245], spread:225, lift:20},
+        {id:'clips', n:'02', short:'Hanger clips', name:'Panel hanger clips', category:'THE CONCEALED CONNECTION',
+          description:'Hooks on the cassette engage with clips on the vertical rails. The panel moves inward, then lowers into position.',
+          point:[326,145,330], spread:140, lift:8},
+        {id:'rails', n:'03', short:'Vertical rails', name:'Vertical support rails', category:'THE SUBSTRUCTURE',
+          description:'Continuous metal profiles align the panel grid and connect the cassette hangers to the wall brackets.',
+          point:[310,122,393], spread:102, lift:0},
+        {id:'brackets', n:'04', short:'Wall brackets', name:'Adjustable wall brackets', category:'THE STAND-OFF',
+          description:'Folded brackets connect the rails to the backing wall. Slotted connections allow alignment and adjustment of the façade plane.',
+          point:[316,75,412], spread:57, lift:0},
+        {id:'screws', n:'05', short:'Screws & anchors', name:'Screws & wall anchors', category:'THE FIXINGS',
+          description:'Rail screws secure the metal connections; wall anchors fix the brackets to the substrate. Both are highlighted together.',
+          point:[316,137,230], spread:128, lift:0},
+        {id:'pads', n:'06', short:'Thermal pads', name:'Thermal isolation pads', category:'THE SEPARATION',
+          description:'Isolation pads sit between the brackets and backing wall to reduce thermal bridging through the metal support system.',
+          point:[302,23,243], spread:29, lift:0},
+        {id:'insulation', n:'07', short:'Insulation', name:'Insulation layer', category:'THE THERMAL LAYER',
+          description:'Insulation follows the backing wall, with space in front for the ventilated cavity and panel support system.',
+          point:[88,49,418], spread:14, lift:0},
+        {id:'wall', n:'08', short:'Backing wall', name:'Primary backing wall', category:'THE SUPPORTING STRUCTURE',
+          description:'The backing wall receives the façade anchors. It is exposed here so the complete connection sequence can be explored.',
+          point:[335,5,362], spread:0, lift:0}
+      ];
+      const componentMap = Object.fromEntries(COMPONENTS.map(c => [c.id,c]));
+      const P = ([x,y,z]) => [390 + .87*x - .87*y, 521 + .42*x + .42*y - z];
+      const points = arr => arr.map(p => P(p).map(n => n.toFixed(2)).join(',')).join(' ');
+      function el(tag, attrs={}, parent) {
+        const node = document.createElementNS(NS,tag);
+        for (const [k,v] of Object.entries(attrs)) node.setAttribute(k,v);
+        if (parent) parent.appendChild(node);
+        return node;
+      }
+      function line(g, arr, attrs={}) { return el('polyline',{points:points(arr),fill:'none',...attrs},g); }
+      function face(g, arr, attrs={}) { return el('polygon',{points:points(arr),class:'surface',...attrs},g); }
+      function box(g,x,y,z,w,d,h,colors={}) {
+        const a=[x,y,z], b=[x+w,y,z], c=[x+w,y+d,z], f=[x,y+d,z];
+        const A=[x,y,z+h], B=[x+w,y,z+h], C=[x+w,y+d,z+h], F=[x,y+d,z+h];
+        face(g,[b,c,C,B],{fill:colors.side||'#393f34'});
+        face(g,[f,c,C,F],{fill:colors.front||COLORS.metal});
+        face(g,[A,B,C,F],{fill:colors.top||'#b4b5b2'});
+        if (colors.left) face(g,[a,f,F,A],{fill:colors.left});
+      }
+      function circleOnPlane(g, x,y,z,r, attrs={}) {
+        const coords=[];
+        for(let i=0;i<28;i++) {const a=i/28*Math.PI*2; coords.push([x+Math.cos(a)*r,y,z+Math.sin(a)*r]);}
+        return face(g,coords,{fill:'#171b15',...attrs});
+      }
+      function slot(g,x,y,z,w,h) {
+        // A rounded vertical slot in the bracket face.
+        const arr=[]; const r=w/2;
+        for(let i=0;i<=10;i++){let a=i/10*Math.PI;arr.push([x+Math.cos(a)*r,y,z+h/2-r+Math.sin(a)*r]);}
+        for(let i=0;i<=10;i++){let a=Math.PI+i/10*Math.PI;arr.push([x+Math.cos(a)*r,y,z-h/2+r+Math.sin(a)*r]);}
+        face(g,arr,{fill:'#141811',stroke:'#c9c9c6','stroke-width':.7});
+      }
+      function screw(g,x,y,z,length=15,r=3.8) {
+        const a=P([x,y-length,z]), b=P([x,y,z]);
+        el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#adaeaa','stroke-width':3},g);
+        for(let i=3;i<length;i+=3.1) line(g,[[x-1.9,y-i,z-1.5],[x+1.9,y-i,z+1.5]],{stroke:'#d0d1cd','stroke-width':.65});
+        circleOnPlane(g,x,y+.8,z,r,{fill:'#b9bab6',stroke:'#e2e2df','stroke-width':.75});
+        line(g,[[x-r*.47,y+1,z],[x+r*.47,y+1,z]],{stroke:'#373835','stroke-width':1});
+        line(g,[[x,y+1,z-r*.5],[x,y+1,z+r*.5]],{stroke:'#373835','stroke-width':1});
+      }
+
+      class AMDFacade extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({mode:'open'});
+          this.selected=null;
+          this.pinned=null;
+          this.exploded=true;
+          this.open=.72;
+          this.groups=[];
+          this.pins=[];
+          this.leaveTimer=null;
+          this.abort=null;
+        }
+        connectedCallback() {
+          this.abort = new AbortController();
+          if (this.shadowRoot.children.length) { this.bind(); return; }
+          this.render();
+          this.buildAssembly();
+          this.bind();
+          this.updatePosition();
+        }
+        disconnectedCallback() { clearTimeout(this.leaveTimer); this.abort?.abort(); }
+        render() {
+          this.shadowRoot.innerHTML = `
+            <style>
+              :host { display:block; color:#e3e1d8; font-family:"Courier New",Courier,monospace; --gold:#ba9c6c; --muted:#a2a3a0; --line:#30342a; }
+              * { box-sizing:border-box; }
+              button { font:inherit; color:inherit; -webkit-tap-highlight-color:transparent; }
+              button:focus-visible { outline:1px solid #e4ca98; outline-offset:5px; }
+              .widget { container-type:inline-size; position:relative; background:#10110f; }
+              .topline { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 0 16px; border-bottom:1px solid var(--line); }
+              .title { font-size:10px; letter-spacing:1.6px; color:#b5b8ac; text-transform:uppercase; line-height:1.5; }
+              .title span { color:var(--gold); margin-right:9px; }
+              .mode { display:flex; padding:3px; border:1px solid #35392f; border-radius:3px; flex-shrink:0; }
+              .mode button { border:0; background:none; color:#9a9b98; font-size:9px; letter-spacing:.2px; padding:8px 9px; cursor:pointer; border-radius:1px; transition:color .2s,background .2s; }
+              .mode button[aria-pressed=true] { background:#2b2e25; color:#e4ca98; }
+              .stage { position:relative; aspect-ratio:790/770; margin:12px 0 0; isolation:isolate; }
+              .stage::before { content:''; position:absolute; inset:7% 6% 4%; z-index:-1; background:radial-gradient(ellipse at 58% 55%,#23271a66,transparent 67%); pointer-events:none; }
+              svg.diagram { width:100%; height:100%; display:block; overflow:visible; }
+              .part { cursor:pointer; transition:transform .85s cubic-bezier(.22,.72,.22,1), opacity .4s, filter .4s; }
+              .part .surface { stroke-width:.85; stroke-linejoin:round; transition:stroke .35s,fill-opacity .35s; }
+              .part.active .surface { stroke:#e4ca98; }
+              .part.active { filter:drop-shadow(0 0 5px #c49d4826); }
+              .part.active[data-part=panel] .main-face { fill:url(#amd-panel-active); }
+              .part.active[data-part=insulation] .surface { fill-opacity:.96; }
+              .stage.has-active .part:not(.active) { opacity:.31; }
+              .stage.has-active .context-panels { opacity:.11; }
+              .stage.has-active .wall-grid { opacity:.14; }
+              .context-panels { pointer-events:none; transition:opacity .4s; }
+              .part:focus { outline:none; }
+              .construction { pointer-events:none; opacity:.23; stroke:#7e7f7b; stroke-width:.8; }
+              .axis { fill:#8a8c87; font-size:8px; letter-spacing:1px; }
+              .guides { opacity:.5; transition:opacity .4s; pointer-events:none; }
+              .pin { transition:transform .85s cubic-bezier(.22,.72,.22,1),opacity .3s; pointer-events:all; cursor:pointer; }
+              .pin circle { stroke:#979891; stroke-width:1; fill:#171b12; }
+              .pin text { fill:#d6d3ba; font-family:"Courier New",monospace; font-size:10px; text-anchor:middle; dominant-baseline:central; }
+              .pin line { stroke:#93938e; stroke-width:.8; }
+              .pin.active circle { fill:#c2a373; stroke:#e9d8b4; }
+              .pin.active text { fill:#11140e; }
+              .stage.has-active .pin:not(.active) { opacity:.3; }
+              .callout { pointer-events:none; opacity:0; transition:opacity .25s; }
+              .callout.visible { opacity:1; }
+              .callout line { stroke:#c0a577; stroke-width:.9; stroke-dasharray:4 5; }
+              .callout circle { fill:#dfc393; }
+              .callout rect { fill:#171a13; stroke:#70634c; stroke-width:.75; }
+              .callout text { fill:#e2d2b7; font:12px "Courier New",monospace; letter-spacing:.2px; }
+              .hint { display:flex; align-items:center; gap:8px; color:#9d9f9b; font-size:9px; line-height:1.5; letter-spacing:.4px; margin:0 0 19px; }
+              .hint svg { width:14px; height:14px; flex:none; }
+              .hint .right { margin-left:auto; color:#888a86; font-size:8px; letter-spacing:1px; }
+              .detail { min-height:120px; padding:20px 0 19px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); display:grid; grid-template-columns:37px 1fr 25px; column-gap:13px; align-content:start; }
+              .detail-number { color:var(--gold); font-size:28px; font-weight:normal; padding-top:14px; }
+              .detail-kicker { margin:0 0 7px; color:#9b9c98; font-size:11px; letter-spacing:1.5px; line-height:1.6; }
+              .detail h2 { margin:0 0 9px; font-family:Georgia,"Times New Roman",serif; font-size:29px; line-height:1.15; font-weight:400; color:#dedccb; }
+              .detail p { max-width:460px; margin:0; color:#a2a3a0; font-size:13px; line-height:1.8; }
+              .reset { width:25px; height:27px; background:none; border:1px solid #494a46; color:#c6c5b1; font-size:19px; cursor:pointer; line-height:1; }
+              .reset[hidden] { display:none; }
+              .components { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0 12px; padding:13px 0 0; }
+              .component { display:flex; align-items:center; gap:8px; min-height:42px; padding:6px 0; background:none; border:0; border-bottom:1px solid #22271d; text-align:left; cursor:pointer; transition:color .2s; font-size:9px; line-height:1.5; color:#a4a6a2; }
+              .component .n { color:#888985; font-size:8px; }
+              .component:hover,.component.active,.component[aria-pressed=true] { color:#e4ca98; }
+              .component.active .n { color:#d1ae76; }
+              .component[aria-pressed=true] { border-bottom-color:#b69a6b; }
+              .note { display:flex; justify-content:space-between; gap:12px; margin:19px 0 0; font-size:8px; color:#858683; letter-spacing:.7px; line-height:1.6; text-transform:uppercase; }
+              .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+              @container (max-width:480px) {
+                .topline { gap:10px; }
+                .title { font-size:9px; letter-spacing:1px; }
+                .mode button { padding:8px 7px; font-size:8px; }
+                .components { grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 18px; }
+                .component { min-height:44px; font-size:10px; }
+                .detail { grid-template-columns:30px 1fr 25px; gap:10px; min-height:143px; }
+                .detail h2 { font-size:22px; }
+                .detail p { font-size:13px; }
+                .hint .right { display:none; }
+                .stage { margin-top:18px; }
+              }
+              @media(prefers-reduced-motion:reduce) { *,*::before,*::after { transition:none!important; animation:none!important; } }
+            </style>
+            <section class="widget" aria-label="Explore a cassette façade system">
+              <div class="topline">
+                <div class="title"><span>F / 01</span> Anatomy of a façade</div>
+                <div class="mode" role="group" aria-label="Assembly view">
+                  <button type="button" data-mode="assembled" aria-pressed="false">Assembled</button>
+                  <button type="button" data-mode="exploded" aria-pressed="true">Exploded</button>
+                </div>
+              </div>
+              <div class="stage">
+                <svg class="diagram" viewBox="0 0 790 770" role="group" aria-label="Isometric façade illustration. Use the component buttons below to explore every layer.">
+                  <defs>
+                    <linearGradient id="amd-panel" x1="0" y1="0" x2=".9" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#959692"/><stop offset=".32" stop-color="#676864"/><stop offset="1" stop-color="#373836"/></linearGradient>
+                    <linearGradient id="amd-panel-active" x1="0" y1="0" x2="1" y2=".8" gradientUnits="objectBoundingBox"><stop stop-color="#b9aa84"/><stop offset=".4" stop-color="#7d7659"/><stop offset="1" stop-color="#444331"/></linearGradient>
+                    <pattern id="amd-insulation" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><path d="M0 0V9M4.5 0V9" stroke="#8e8f89" stroke-width=".6" opacity=".45"/></pattern>
+                  </defs>
+                  <g class="construction" aria-hidden="true"></g>
+                  <g class="geometry"></g>
+                  <g class="guides" aria-hidden="true"></g>
+                  <g class="markers" aria-hidden="true"></g>
+                  <g class="callout" aria-hidden="true"><line/><circle r="3"/><rect x="436" y="21" width="324" height="38" rx="2"/><text x="451" y="45"></text></g>
+                </svg>
+              </div>
+              <p class="hint"><svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 2.5V13l3-2 2.2 4 2-1.2-2.2-4H13L4 2.5Z" stroke="#b89a6d" stroke-width="1"/></svg><span class="hint-text">Hover to explore · Click a part to keep it selected</span><span class="right">AXONOMETRIC / 08 COMPONENTS</span></p>
+              <div class="detail">
+                <span class="detail-number" aria-hidden="true">↗</span>
+                <div><div class="detail-kicker">DESIGNED AS ONE SYSTEM</div><h2 class="detail-title">Every connection matters.</h2><p class="detail-description">Explore the layers behind the surface. Select a component to see how it connects the panel to the building.</p></div>
+                <button class="reset" type="button" aria-label="Clear selected component" hidden>×</button>
+              </div>
+              <div class="components" role="group" aria-label="Façade components">
+                ${COMPONENTS.map(c=>`<button type="button" class="component" data-select="${c.id}" aria-pressed="false" aria-label="${c.n} ${c.name}"><span class="n">${c.n}</span><span>${c.short}</span></button>`).join('')}
+              </div>
+              <p class="note"><span>AMD NSRI / Design to fabrication</span><span>Illustrative assembly</span></p>
+              <div class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+            </section>`;
+          this.root=this.shadowRoot;
+          this.svg=this.root.querySelector('.diagram');
+          this.stage=this.root.querySelector('.stage');
+        }
+        group(id,extra={}) {
+          const c=componentMap[id];
+          const g=el('g',{class:'part','data-part':id,stroke:COLORS.metalEdge,fill:COLORS.metal,...extra},this.root.querySelector('.geometry'));
+          const title=el('title',{},g); title.textContent=c.name;
+          this.groups.push({node:g,id}); return g;
+        }
+        buildAssembly() {
+          const geo=this.root.querySelector('.geometry');
+          const construction=this.root.querySelector('.construction');
+          // Floor datum and cropped construction axes, kept intentionally quiet.
+          line(construction,[[-60,0,-17],[410,0,-17]]);
+          line(construction,[[0,-30,-17],[0,390,-17]]);
+          line(construction,[[350,0,-17],[350,390,-17]]);
+          for(const pt of [[32,18],[757,18],[32,735],[757,735]]) {
+            const [x,y]=pt;
+            el('path',{d:`M${x-6} ${y}h12M${x} ${y-6}v12`,stroke:'#747570','stroke-width':.7},construction);
+          }
+          const wall=this.group('wall',{stroke:'#666666'});
+          box(wall,0,-17,0,350,24,465,{front:COLORS.wall,top:'#2a2a2a',side:'#131313'});
+          const grid=el('g',{class:'wall-grid',stroke:'#666666','stroke-width':.65,opacity:.57},wall);
+          for(let z=0;z<465;z+=47) {
+            line(grid,[[0,7.2,z],[350,7.2,z]]);
+            const start=(Math.floor(z/47)%2)*44;
+            for(let x=start;x<350;x+=88) if(x>0) line(grid,[[x,7.3,z],[x,7.3,Math.min(465,z+47)]]);
+          }
+          const insulation=this.group('insulation',{stroke:'#959690'});
+          box(insulation,0,9,0,134,39,463,{front:'#434541',side:'#2e302c',top:'#5a5c56'});
+          face(insulation,[[0,48.1,0],[134,48.1,0],[134,48.1,463],[0,48.1,463]],{fill:'url(#amd-insulation)',stroke:'none'});
+          for(let z=7;z<460;z+=9) line(insulation,[[134,10,z],[134,46,z+5]],{stroke:'#adaea6','stroke-width':.65,opacity:.55});
+          const pads=this.group('pads',{stroke:'#878883'});
+          const brackets=this.group('brackets');
+          // Two support lines, three brackets per line. Pads are shown at each base.
+          for(const x of [105,312]) for(const z of [62,228,409]) {
+            box(pads,x-19,8,z-26,39,10,55,{front:'#2b2c29',side:'#151c10',top:'#4f514c'});
+            for(let dz=-20;dz<25;dz+=6) line(pads,[[x-18,18.1,z+dz],[x+19,18.1,z+dz]],{stroke:'#696b65','stroke-width':.8});
+            // L-shaped folded bracket: substrate base, perpendicular stand-off leg.
+            box(brackets,x-16,20,z-23,35,4,49,{front:'#848582',side:'#3f423e',top:'#b8bab5'});
+            box(brackets,x+12,24,z-23,4,85,49,{front:'#abada8',side:'#61635e',top:'#a4a7a1',left:'#7d807a'});
+            box(brackets,x+11,96,z-23,17,4,49,{front:'#9fa19c',side:'#51544f',top:'#c1c3bd'});
+            slot(brackets,x+20,100.3,z+3,5.4,18);
+            circleOnPlane(brackets,x-6,24.2,z+12,3.9,{stroke:'#c2c3be','stroke-width':.8});
+            circleOnPlane(brackets,x-6,24.2,z-10,3.9,{stroke:'#c2c3be','stroke-width':.8});
+          }
+          const anchors=this.group('screws',{'data-fixing':'anchors'});
+          for(const x of [105,312]) for(const z of [62,228,409]) {
+            screw(anchors,x-6,31,z+12,25,4.5);
+            screw(anchors,x-6,31,z-10,25,4.5);
+          }
+          const rails=this.group('rails',{stroke:'#c4c5c1'});
+          for(const x of [119,326]) {
+            // T-section: a deep web and a wide front flange.
+            box(rails,x-2,84,0,4,34,469,{front:'#80827d',side:'#50534d',top:'#b9bcb5',left:'#575a55'});
+            box(rails,x-13,118,0,26,4,469,{front:'#8f918c',side:'#4d504a',top:'#cdceca'});
+            line(rails,[[x-8,122.2,0],[x-8,122.2,469]],{stroke:'#cccdc8','stroke-width':.65});
+            line(rails,[[x+8,122.2,0],[x+8,122.2,469]],{stroke:'#656762','stroke-width':.9});
+            for(const z of [65,231,412]) slot(rails,x+1,122.3,z,5,15);
+          }
+          const clips=this.group('clips',{stroke:'#c6c7c2'});
+          for(const x of [119,326]) for(const z of [47,158,325,435]) {
+            box(clips,x-11,124,z-14,22,5,29,{front:'#6c6e68',side:'#3d413c',top:'#babcb6'});
+            box(clips,x-11,129,z-14,4,18,26,{front:'#aaada7',side:'#555953',top:'#c9cbc5',left:'#969991'});
+            box(clips,x+7,129,z-14,4,18,26,{front:'#aaada7',side:'#555953',top:'#c9cbc5',left:'#969991'});
+            box(clips,x-9,141,z-13,18,5,5,{front:'#c8cac4',side:'#5d6259',top:'#d2d4cf'});
+            circleOnPlane(clips,x,130,z+5,2.7,{stroke:'#c6c7c2','stroke-width':.6});
+          }
+          const screws=this.group('screws',{'data-fixing':'rail'});
+          for(const x of [119,326]) {
+            for(const z of [65,231,412]) screw(screws,x+1,140,z,19,4);
+            for(const z of [47,158,325,435]) screw(screws,x,147,z+5,16,3.2);
+          }
+          const context=el('g',{class:'context-panels',stroke:'#757772',opacity:.43},geo);
+          for(const [z,h] of [[0,132],[143,149],[303,162]]) this.cassette(context,0,158,z,101,h,false);
+          this.cassette(context,112,158,0,234,132,false);
+          const panel=this.group('panel',{stroke:'#c8c7ad'});
+          this.cassette(panel,112,165,144,234,177,true);
+          const markers=this.root.querySelector('.markers');
+          const offsets={panel:[-34,8],clips:[-30,-7],rails:[-29,-18],brackets:[38,-19],screws:[-36,5],pads:[27,17],insulation:[-26,-15],wall:[29,8]};
+          for(const c of COMPONENTS) {
+            const [px,py]=P(c.point), [dx,dy]=offsets[c.id];
+            const g=el('g',{class:'pin','data-pin':c.id,'data-part':c.id},markers);
+            el('line',{x1:px,y1:py,x2:px+dx,y2:py+dy},g);
+            el('circle',{cx:px+dx,cy:py+dy,r:12.5},g);
+            const text=el('text',{x:px+dx,y:py+dy+.5},g);text.textContent=c.n;
+            this.pins.push({node:g,id:c.id});
+          }
+          this.renderGuides();
+        }
+        cassette(g,x,y,z,w,h,hero) {
+          // The thin face and its four folded returns form a three-dimensional tray.
+          box(g,x,y-26,z+h-2,w,28,2,{front:'#a4a6a2',top:hero?'#959691':'#474945',side:'#454842'});
+          box(g,x+w-2,y-26,z,2,28,h,{front:'#898b85',side:'#5e615b',top:'#b8bab5',left:'#4b4d48'});
+          box(g,x,y-26,z,2,28,h,{front:'#7b7e78',side:'#4e514b',top:'#b8bab5'});
+          box(g,x,y-26,z,w,28,2,{front:'#7f817c',side:'#4b4d48',top:'#777973'});
+          const f=face(g,[[x,y+2,z],[x+w,y+2,z],[x+w,y+2,z+h],[x,y+2,z+h]],{class:'surface main-face',fill:hero?'url(#amd-panel)':'#333532'});
+          line(g,[[x+3,y+2.1,z+3],[x+3,y+2.1,z+h-3],[x+w-3,y+2.1,z+h-3]],{stroke:hero?'#c7c8c3':'#8f918c','stroke-width':.7,opacity:.66});
+          if(hero) {
+            // Corner reliefs and fixing holes remain readable on the returned metal.
+            for(const p of [[x+8,y-11,z+h+.25],[x+w-8,y-11,z+h+.25]]) {
+              const [px,py]=P(p);el('ellipse',{cx:px,cy:py,rx:2.5,ry:1.35,fill:'#1f201d',stroke:'#c1c3be','stroke-width':.6},g);
+            }
+            for(const zz of [z+12,z+h-14]) {
+              const [px,py]=P([x+w+.2,y-12,zz]);el('ellipse',{cx:px,cy:py,rx:1.9,ry:3.1,fill:'#2b2d29',stroke:'#c1c3be','stroke-width':.6},g);
+            }
+            for(const zz of [z+24,z+h-27]) {
+              const X=x+w+.3;
+              face(g,[[X,y-26,zz+7],[X,y-15,zz+7],[X,y-15,zz-5],[X,y-19,zz-5],[X,y-19,zz+2],[X,y-26,zz+2]],{fill:'#171c13',stroke:'#c5c5c2','stroke-width':.6});
+            }
+          }
+          return f;
+        }
+        offset(id) {
+          const c=componentMap[id];
+          const extra=this.selected===id?(id==='wall'?3:14):0;
+          const depth=c.spread*this.open+extra;
+          return [-.87*depth,.42*depth-c.lift*this.open-(id==='panel'&&extra?8:0)];
+        }
+        updatePosition() {
+          for(const item of [...this.groups,...this.pins]) {
+            const [x,y]=this.offset(item.id);
+            item.node.style.transform=`translate(${x}px,${y}px)`;
+          }
+          this.renderGuides();
+          this.updateCallout();
+        }
+        renderGuides() {
+          const guides=this.root.querySelector('.guides');guides.replaceChildren();
+          if(this.open<.1) return;
+          const [dx,dy]=this.offset('panel');
+          for(const pt of [[112,165,321],[346,165,321],[346,165,144]]) {
+            const [x,y]=P(pt);
+            el('line',{x1:x,y1:y,x2:x+dx,y2:y+dy,stroke:'#a79c77','stroke-width':.7,'stroke-dasharray':'4 7'},guides);
+          }
+          const path=el('path',{d:'M139 570l-29 14m29-14-8-2m8 2-4 7',stroke:'#bda473','stroke-width':1,fill:'none'},guides);
+          const text=el('text',{x:46,y:615,fill:'#a39e82','font-size':8,'letter-spacing':1.8,transform:'rotate(-26 46 615)'},guides);
+          text.textContent='OUTER FACE';
+        }
+        updateCallout() {
+          const callout=this.root.querySelector('.callout');
+          callout.classList.toggle('visible',!!this.selected);
+          if(!this.selected) return;
+          const c=componentMap[this.selected], [px,py]=P(c.point), [dx,dy]=this.offset(c.id);
+          const lineNode=callout.querySelector('line');
+          for(const [k,v] of Object.entries({x1:px+dx,y1:py+dy,x2:590,y2:59})) lineNode.setAttribute(k,v);
+          const circle=callout.querySelector('circle');circle.setAttribute('cx',px+dx);circle.setAttribute('cy',py+dy);
+          callout.querySelector('text').textContent=`${c.n} / ${c.name}`;
+        }
+        show(id, announce=false) {
+          if(this.selected===id) return;
+          this.selected=id;
+          this.stage.classList.toggle('has-active',!!id);
+          for(const g of this.groups) g.node.classList.toggle('active',g.id===id);
+          for(const p of this.pins) p.node.classList.toggle('active',p.id===id);
+          for(const btn of this.root.querySelectorAll('[data-select]')) btn.classList.toggle('active',btn.dataset.select===id);
+          const c=componentMap[id];
+          this.root.querySelector('.detail-number').textContent=c?.n||'↗';
+          this.root.querySelector('.detail-kicker').textContent=c?.category||'DESIGNED AS ONE SYSTEM';
+          this.root.querySelector('.detail-title').textContent=c?.name||'Every connection matters.';
+          this.root.querySelector('.detail-description').textContent=c?.description||'Explore the layers behind the surface. Select a component to see how it connects the panel to the building.';
+          this.root.querySelector('.reset').hidden=!id;
+          if(announce) this.root.querySelector('[role=status]').textContent=c?`${c.name}. ${c.description}`:'Component selection cleared.';
+          this.updatePosition();
+        }
+        setPinned(id) {
+          this.pinned=this.pinned===id?null:id;
+          for(const button of this.root.querySelectorAll('[data-select]')) button.setAttribute('aria-pressed',String(button.dataset.select===this.pinned));
+          this.show(this.pinned,true);
+          // Announce again when an already-hovered part is pinned.
+          if(this.pinned) {const c=componentMap[this.pinned];this.root.querySelector('[role=status]').textContent=`${c.name} selected. ${c.description}`;}
+        }
+        setMode(mode) {
+          this.exploded=mode==='exploded';this.open=this.exploded?.72:0;
+          for(const b of this.root.querySelectorAll('[data-mode]')) b.setAttribute('aria-pressed',String(b.dataset.mode===mode));
+          this.updatePosition();
+          this.root.querySelector('[role=status]').textContent=`${this.exploded?'Exploded':'Assembled'} view.`;
+        }
+        bind() {
+          const listen=(node,type,fn)=>node.addEventListener(type,fn,{signal:this.abort.signal});
+          const hover=(id)=>{clearTimeout(this.leaveTimer);this.show(id);};
+          const leave=()=>{clearTimeout(this.leaveTimer);this.leaveTimer=setTimeout(()=>this.show(this.pinned),140);};
+          // Use actual pointer movement, not boundary events caused by animated parts.
+          // This keeps small screws from repeatedly selecting/deselecting as they move.
+          listen(this.stage,'pointermove',e=>{
+            if(e.pointerType==='touch') return;
+            const part=e.target.closest('.part, .pin');
+            if(part) hover(part.dataset.part); else leave();
+          });
+          listen(this.stage,'pointerleave',leave);
+          listen(this.stage,'click',e=>{
+            const part=e.target.closest('.part, .pin');
+            if(part) this.setPinned(part.dataset.part);
+          });
+          for(const b of this.root.querySelectorAll('[data-select]')) {
+            listen(b,'pointerenter',e=>{if(e.pointerType!=='touch') hover(b.dataset.select);});
+            listen(b,'pointerleave',e=>{if(e.pointerType!=='touch') leave();});
+            listen(b,'focus',()=>hover(b.dataset.select));
+            listen(b,'blur',leave);
+            listen(b,'click',()=>{clearTimeout(this.leaveTimer);this.setPinned(b.dataset.select);});
+          }
+          for(const b of this.root.querySelectorAll('[data-mode]')) listen(b,'click',()=>this.setMode(b.dataset.mode));
+          const reset=()=>{clearTimeout(this.leaveTimer);this.pinned=null;for(const b of this.root.querySelectorAll('[data-select]')) b.setAttribute('aria-pressed','false');this.show(null,true);};
+          listen(this.root.querySelector('.reset'),'click',reset);
+          listen(this,'keydown',e=>{if(e.key==='Escape') {reset();e.preventDefault();}});
+          if(matchMedia('(hover: none)').matches) this.root.querySelector('.hint-text').textContent='Tap a part or choose a component below';
+        }
+      }
+      if(!customElements.get('amd-facade')) customElements.define('amd-facade',AMDFacade);
+    })();
+  </script>
+</body>
+</html>

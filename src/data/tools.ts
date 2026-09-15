@@ -1,6 +1,6 @@
 export type ToolPlatform = 'Grasshopper' | 'Web' | 'Software' | 'Web + Grasshopper';
-export type ToolStatus = 'Live' | 'Beta' | 'Coming Soon';
-export type ToolType = 'showcase' | 'product';
+export type ToolStatus = 'Live' | 'Beta' | 'Coming Soon' | 'Available';
+export type ToolType = 'showcase' | 'product' | 'quote';
 
 export interface Tool {
   /** URL slug — /tools/[slug] */
@@ -17,12 +17,21 @@ export interface Tool {
   platform: ToolPlatform;
   /** Status badge — Live / Beta / Coming Soon */
   status: ToolStatus;
-  /** showcase = portfolio piece (commission); product = purchasable */
+  /** showcase = portfolio piece (commission); product = purchasable; quote = priced per project */
   type: ToolType;
   /** Background/hero image path. null = show default diamond placeholder. */
   image: string | null;
   /** Product price (e.g. "Contact for pricing"); null for showcase */
   price: string | null;
+  /** Fine print under the price/CTA explaining how the price is arrived at. */
+  pricingNote?: string;
+  /** Overrides the default CTA label on the detail page. */
+  ctaLabel?: string;
+  /** Overrides the default CTA destination on the detail page. */
+  ctaLink?: string;
+  /** Optional second, outline-style CTA for tools that invite a conversation first. */
+  secondaryCtaLabel?: string;
+  secondaryCtaLink?: string;
 }
 
 /** Filter chips shown above the grid (in order). */
@@ -42,10 +51,15 @@ const tools: Tool[] = [
       'DXF-ready output for laser cutting and press brake',
     ],
     platform: 'Grasshopper',
-    status: 'Beta',
-    type: 'showcase',
+    status: 'Available',
+    type: 'quote',
     image: null,
-    price: null,
+    price: 'Quote on request',
+    pricingNote: 'Priced per project scope — panel count, geometry complexity, and output format',
+    ctaLabel: 'Request a Quote',
+    ctaLink: '/contact?tool=sheet-metal-unfolder&subject=Sheet+Metal+Unfolder+Quote',
+    secondaryCtaLabel: 'Discuss Your Project',
+    secondaryCtaLink: '/contact?tool=sheet-metal-unfolder&subject=Sheet+Metal+Unfolder+Discussion',
   },
   {
     slug: 'perforation-pattern-engine',

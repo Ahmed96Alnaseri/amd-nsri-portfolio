@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
+import { toolsBySlug } from '@/data/tools';
 
 /* ─── data ─────────────────────────────────────────────────────────── */
 // `value` is the canonical (English) value stored in form state so validation
@@ -12,6 +13,7 @@ const SUBJECTS = [
   { value: 'Facade Design & Cladding',     labelKey: 'contact.subjFacade' },
   { value: 'Fabrication & Shop Drawings',  labelKey: 'contact.subjFabrication' },
   { value: 'Collaboration',                labelKey: 'contact.subjCollaboration' },
+  { value: 'Tool Quote',                   labelKey: 'contact.subjToolQuote' },
   { value: 'Other',                        labelKey: 'contact.subjOther' },
 ] as const;
 
@@ -163,6 +165,19 @@ export default function ContactPage() {
   const [submitting, setSubmit] = useState(false);
   const [done, setDone]         = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+
+  // Arriving from a tool page (/contact?tool=…) seeds the enquiry with that
+  // tool's name and the details a quote actually needs.
+  useEffect(() => {
+    const slug = new URLSearchParams(window.location.search).get('tool');
+    if (!slug) return;
+    const name = toolsBySlug[slug]?.name ?? slug;
+    setForm(f => ({
+      ...f,
+      subject: f.subject || 'Tool Quote',
+      message: f.message || `Hi, I'm interested in the ${name} tool. Here's what I need:\n\n[Project description]\n\nPanel count (approx):\nGeometry type:\nOutput needed (DXF / PDF / other):`,
+    }));
+  }, []);
 
   const update = (k: keyof Fields) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

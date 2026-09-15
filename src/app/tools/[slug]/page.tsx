@@ -6,6 +6,7 @@ import { toolsBySlug, type ToolStatus } from '@/data/tools';
 
 const STATUS_MOD: Record<ToolStatus, string> = {
   'Live': 'td-status--live',
+  'Available': 'td-status--live',
   'Beta': 'td-status--beta',
   'Coming Soon': 'td-status--soon',
 };
@@ -27,13 +28,14 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
   }
 
   const isProduct = tool.type === 'product';
+  const isQuote = tool.type === 'quote';
 
   return (
     <div className="td">
       <Link href="/tools" className="td-back">← {t('tools.back')}</Link>
 
       <p className="td-eyebrow">
-        {tool.platform} · {isProduct ? t('tools.product') : t('tools.showcase')}
+        {tool.platform} · {isQuote ? t('tools.quoteOnRequest') : isProduct ? t('tools.product') : t('tools.showcase')}
       </p>
       <h1 className="td-title">{tv(tool.name)}</h1>
       <p className="td-lede">{tv(tool.detail)}</p>
@@ -78,7 +80,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               <span className="td-spec-lbl">{t('common.status')}</span>
               <span className="td-spec-val">{tv(tool.status)}</span>
             </div>
-            {isProduct && tool.price && (
+            {(isProduct || isQuote) && tool.price && (
               <>
                 <div className="td-spec-sep" />
                 <div className="td-spec-row">
@@ -89,7 +91,19 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
             )}
           </div>
 
-          {isProduct ? (
+          {isQuote ? (
+            <div className="td-cta">
+              <Link href={tool.ctaLink ?? '/contact'} className="td-btn">
+                {tv(tool.ctaLabel ?? 'Request a Quote')} →
+              </Link>
+              {tool.secondaryCtaLabel && tool.secondaryCtaLink && (
+                <Link href={tool.secondaryCtaLink} className="td-btn td-btn--ghost">
+                  {tv(tool.secondaryCtaLabel)} →
+                </Link>
+              )}
+              {tool.pricingNote && <p className="td-cta-note">{tv(tool.pricingNote)}</p>}
+            </div>
+          ) : isProduct ? (
             <Link href="/shop" className="td-btn">{t('tools.getTool')} →</Link>
           ) : (
             <Link href="/contact" className="td-btn">{t('tools.commission')} →</Link>
@@ -239,6 +253,23 @@ const baseCss = `
   }
   .td-btn:hover { background: var(--color-accent); color: var(--color-bg); }
   .td-btn:focus-visible { outline: 1px solid var(--color-accent); outline-offset: 3px; }
+
+  /* quote CTA pair + fine print */
+  .td-cta { display: flex; flex-direction: column; gap: 12px; }
+  .td-btn--ghost {
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
+  }
+  .td-btn--ghost:hover {
+    background: transparent;
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  .td-cta-note {
+    margin: 4px 0 0;
+    font-family: var(--font-body); font-size: 11px;
+    line-height: 1.7; color: #666;
+  }
 
   /* bottom strip */
   .td-strip {

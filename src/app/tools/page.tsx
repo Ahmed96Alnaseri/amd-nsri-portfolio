@@ -15,6 +15,7 @@ type Filter = (typeof FILTERS)[number];
 /* status → modifier class */
 const STATUS_MOD: Record<ToolStatus, string> = {
   'Live': 'tc-status--live',
+  'Available': 'tc-status--live',
   'Beta': 'tc-status--beta',
   'Coming Soon': 'tc-status--soon',
 };
@@ -39,9 +40,11 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
         <span className="tc-top">
           <span className="tc-platform">{tool.platform}</span>
           <span className="tc-top-right">
-            {tool.type === 'product' && tool.price
-              ? <span className="tc-price">{tv(tool.price)}</span>
-              : <span className="tc-showcase">{t('tools.showcase')}</span>}
+            {tool.type === 'quote'
+              ? <span className="tc-quote">{t('tools.quoteOnRequest')}</span>
+              : tool.type === 'product' && tool.price
+                ? <span className="tc-price">{tv(tool.price)}</span>
+                : <span className="tc-showcase">{t('tools.showcase')}</span>}
             <span className={`tc-status ${STATUS_MOD[tool.status]}`}>
               <span className="tc-status-dot" aria-hidden="true" />
               {tv(tool.status)}
@@ -207,6 +210,11 @@ export default function ToolsPage() {
           font-family: var(--font-body); font-size: 9px;
           letter-spacing: .2em; text-transform: uppercase;
           color: var(--color-text-meta); white-space: nowrap;
+        }
+        .tc-quote {
+          font-family: var(--font-body); font-size: 9px;
+          letter-spacing: .2em; text-transform: uppercase;
+          color: var(--color-accent); white-space: nowrap;
         }
         .tc-status {
           display: inline-flex; align-items: center; gap: 7px;
