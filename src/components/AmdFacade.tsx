@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       'amd-facade': DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>;
