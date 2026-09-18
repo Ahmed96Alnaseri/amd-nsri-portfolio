@@ -29,6 +29,22 @@ export interface Tool {
   ctaLabel?: string;
   /** Overrides the default CTA destination on the detail page. */
   ctaLink?: string;
+  /** ctaLink points outside the app — open it in a new tab. */
+  ctaExternal?: boolean;
+  /** Single badge replacing the card's price + status pair. */
+  cardBadge?: string;
+  /** Drop the sidebar's status row (nothing to announce for a service or a live web tool). */
+  hideStatus?: boolean;
+  /** Overrides the sidebar's platform value (the bare `platform` still drives filtering). */
+  platformLabel?: string;
+  /** Path to a self-contained page embedded as the detail hero, replacing the placeholder. */
+  embed?: string;
+  embedHeight?: number;
+  /** Embeds that restack on narrow screens need their own height there. */
+  embedHeightMobile?: number;
+  embedTitle?: string;
+  /** Info row — what the client sends in. */
+  input?: string;
   /** Info row — what the client gets back. */
   output?: string;
   /** Overrides the eyebrow's leading term (defaults to platform). */
@@ -74,6 +90,7 @@ const tools: Tool[] = [
     platform: 'Submission-based',
     eyebrow: 'Unfolding Service',
     status: 'Available',
+    hideStatus: true,
     type: 'quote',
     image: null,
     price: 'Quote on request',
@@ -82,25 +99,38 @@ const tools: Tool[] = [
     ctaLink: '/contact?tool=sheet-metal-unfolding&subject=Sheet+Metal+Unfolding+Quote',
     quoteTemplate:
       "Hi, I'd like to submit a project for sheet metal unfolding.\n\nProject description:\nPanel count (approx):\nMaterial & thickness:\nRequired output format (DWG / STEP / other):\nDeadline (if any):",
+    embed: '/sheet-metal-unfolder-hero.html',
+    embedHeight: 480,
+    embedHeightMobile: 720,
+    embedTitle: 'Sheet Metal Unfolder — interactive demo',
     output: 'DWG flat pattern · STEP',
     tags: ['unfolding', 'sheet metal', 'fabrication', 'DWG', 'grasshopper', 'service'],
   },
   {
     slug: 'perforation-pattern-engine',
-    name: 'Perforation Pattern Engine',
-    description: 'Parametric perforation layouts — pitch, diameter, open area ratio',
+    name: 'IPunch',
+    description: 'Upload an image. Get a perforated panel pattern with live DXF export.',
     detail:
-      'A Grasshopper definition that generates production-ready perforation layouts from parametric inputs. Control pitch, diameter, and open area ratio across panel fields — output is rationalized for CNC punching and laser cutting workflows.',
+      'IPunch converts any image into a fabrication-ready perforation pattern. Upload a photo, drawing, or graphic — the tool maps pixel brightness to hole density across a panel grid. Adjust hole radius, spacing, pattern type (grid or hex), and open-area ratio live. Export as DXF for AutoCAD and CNC directly from the browser. No installation, no account.',
     features: [
-      'Parametric control over pitch, diameter, and open area ratio',
-      'Generates rationalized layouts for CNC punching and laser cutting',
-      'Panel-ready output with zone-by-zone fabrication documentation',
+      'Maps pixel brightness to hole density across a panel grid',
+      'Live control of hole radius, spacing, pattern type, and open-area ratio',
+      'DXF export for AutoCAD and CNC straight from the browser',
     ],
-    platform: 'Grasshopper',
-    status: 'Beta',
-    type: 'showcase',
+    platform: 'Web',
+    platformLabel: 'Web — runs in browser',
+    status: 'Live',
+    type: 'product',
     image: null,
-    price: null,
+    price: 'Free',
+    cardBadge: 'Free · Live',
+    hideStatus: true,
+    ctaLabel: 'Open Tool',
+    ctaLink: '/ipunch.html',
+    ctaExternal: true,
+    input: 'Any image (JPG · PNG · GIF)',
+    output: 'DXF · SVG · PNG',
+    tags: ['perforation', 'web', 'DXF', 'image', 'facade', 'panel', 'free'],
   },
   {
     slug: 'panel-type-optimizer',

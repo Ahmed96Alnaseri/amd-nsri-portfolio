@@ -40,13 +40,15 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       <h1 className="td-title">{tv(tool.name)}</h1>
       <p className="td-lede">{tv(tool.detail)}</p>
 
-      {tool.slug === 'sheet-metal-unfolder' ? (
-        <div className="td-hero-bleed">
-          <iframe
-            src="/sheet-metal-unfolder-hero.html"
-            title="Sheet Metal Unfolder — interactive demo"
-            loading="lazy"
-          />
+      {tool.embed ? (
+        <div
+          className="td-hero-bleed"
+          style={{
+            '--embed-h': `${tool.embedHeight ?? 480}px`,
+            '--embed-h-sm': `${tool.embedHeightMobile ?? tool.embedHeight ?? 480}px`,
+          } as React.CSSProperties}
+        >
+          <iframe src={tool.embed} title={tool.embedTitle ?? tool.name} loading="lazy" />
         </div>
       ) : (
         <div
@@ -97,8 +99,17 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
           <div className="td-spec">
             <div className="td-spec-row">
               <span className="td-spec-lbl">{t('tools.platform')}</span>
-              <span className="td-spec-val">{tool.platform}</span>
+              <span className="td-spec-val">{tv(tool.platformLabel ?? tool.platform)}</span>
             </div>
+            {tool.input && (
+              <>
+                <div className="td-spec-sep" />
+                <div className="td-spec-row">
+                  <span className="td-spec-lbl">{t('tools.input')}</span>
+                  <span className="td-spec-val">{tv(tool.input)}</span>
+                </div>
+              </>
+            )}
             {tool.output && (
               <>
                 <div className="td-spec-sep" />
@@ -108,8 +119,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                 </div>
               </>
             )}
-            {/* A service has no build status to advertise. */}
-            {!isQuote && (
+            {!tool.hideStatus && (
               <>
                 <div className="td-spec-sep" />
                 <div className="td-spec-row">
@@ -129,11 +139,17 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
             )}
           </div>
 
-          {isQuote ? (
+          {tool.ctaLink ? (
             <div className="td-cta">
-              <Link href={tool.ctaLink ?? '/contact'} className="td-btn">
-                {tv(tool.ctaLabel ?? 'Request a Quote')} →
-              </Link>
+              {tool.ctaExternal ? (
+                <a href={tool.ctaLink} target="_blank" rel="noopener noreferrer" className="td-btn">
+                  {tv(tool.ctaLabel ?? '')} →
+                </a>
+              ) : (
+                <Link href={tool.ctaLink} className="td-btn">
+                  {tv(tool.ctaLabel ?? '')} →
+                </Link>
+              )}
               {tool.pricingNote && <p className="td-cta-note">{tv(tool.pricingNote)}</p>}
             </div>
           ) : isProduct ? (
@@ -220,7 +236,7 @@ const baseCss = `
     position: relative;
     width: 100vw;
     margin-left: calc(-50vw + 50%);
-    height: 480px;
+    height: var(--embed-h, 480px);
     overflow: hidden;
     border: none;
   }
@@ -232,7 +248,7 @@ const baseCss = `
   /* The embed restacks into a tall column at this same width, so the banner
      height has to grow with it or the Unfold control falls outside the frame. */
   @media (max-width: 1000px) {
-    .td-hero-bleed { height: 720px; }
+    .td-hero-bleed { height: var(--embed-h-sm, var(--embed-h, 480px)); }
   }
   .td-hero-diamond {
     position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);

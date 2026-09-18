@@ -12,7 +12,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#0d0d0b;color:#eae5d9}
 body{min-height:100vh;display:grid;place-items:center}
-#amd-unfolder{--gold:#bc965e;--muted:#a9a69b;--ivory:#eae5d9;width:100%;max-width:100%;position:relative;overflow:hidden;background:radial-gradient(ellipse at 64% 47%,#1a1a18 0%,#101010 43%,#0d0d0b 78%);font-family:"Courier New",monospace;isolation:isolate;container-type:inline-size}
+#amd-unfolder{--gold:#bc965e;--muted:#a9a69b;--ivory:#eae5d9;width:100%;max-width:100%;position:relative;overflow:hidden;background:radial-gradient(ellipse at 64% 47%,#131412 0%,#0f0f0d 43%,#0d0d0b 78%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,black 8%,black 92%,transparent 100%),linear-gradient(to right,transparent 0%,black 3%,black 97%,transparent 100%);-webkit-mask-composite:destination-in;mask-image:linear-gradient(to bottom,transparent 0%,black 8%,black 92%,transparent 100%),linear-gradient(to right,transparent 0%,black 3%,black 97%,transparent 100%);mask-composite:intersect;font-family:"Courier New",monospace;isolation:isolate;container-type:inline-size}
 .hero-content{position:relative;display:grid;grid-template-columns:0% 100%;height:480px;aspect-ratio:unset}
 .intro{position:relative;z-index:2;padding:10.8% 0 8% 13%;display:flex;flex-direction:column;align-items:flex-start}
 .eyebrow{color:var(--gold);font-size:clamp(9px,.71cqw,11px);letter-spacing:.23em;line-height:1.5;margin:0 0 6.9%;white-space:nowrap;display:flex;align-items:center;gap:18px;width:100%}

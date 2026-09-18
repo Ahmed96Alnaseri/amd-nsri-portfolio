@@ -40,15 +40,21 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
         <span className="tc-top">
           <span className="tc-platform">{tool.platform}</span>
           <span className="tc-top-right">
-            {tool.type === 'quote'
-              ? <span className="tc-quote">{t('tools.quoteOnRequest')}</span>
-              : tool.type === 'product' && tool.price
-                ? <span className="tc-price">{tv(tool.price)}</span>
-                : <span className="tc-showcase">{t('tools.showcase')}</span>}
-            <span className={`tc-status ${STATUS_MOD[tool.status]}`}>
-              <span className="tc-status-dot" aria-hidden="true" />
-              {tv(tool.status)}
-            </span>
+            {tool.cardBadge ? (
+              <span className="tc-price">{tv(tool.cardBadge)}</span>
+            ) : (
+              <>
+                {tool.type === 'quote'
+                  ? <span className="tc-quote">{t('tools.quoteOnRequest')}</span>
+                  : tool.type === 'product' && tool.price
+                    ? <span className="tc-price">{tv(tool.price)}</span>
+                    : <span className="tc-showcase">{t('tools.showcase')}</span>}
+                <span className={`tc-status ${STATUS_MOD[tool.status]}`}>
+                  <span className="tc-status-dot" aria-hidden="true" />
+                  {tv(tool.status)}
+                </span>
+              </>
+            )}
           </span>
         </span>
 

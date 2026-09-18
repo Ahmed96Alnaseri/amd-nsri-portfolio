@@ -223,6 +223,7 @@ export const translations = {
       quoteOnRequest: 'Quote on Request',
       back:        'Back to Tools',
       platform:    'Platform',
+      input:       'Input',
       output:      'Output',
       price:       'Price',
     },
@@ -555,6 +556,7 @@ export const translations = {
       quoteOnRequest: 'Talebe Göre Fiyat',
       back:        'Araçlara Dön',
       platform:    'Platform',
+      input:       'Girdi',
       output:      'Çıktı',
       price:       'Fiyat',
     },
@@ -887,6 +889,7 @@ export const translations = {
       quoteOnRequest: 'عرض سعر عند الطلب',
       back:        'العودة إلى الأدوات',
       platform:    'المنصّة',
+      input:       'المُدخل',
       output:      'المُخرج',
       price:       'السعر',
     },
@@ -1090,6 +1093,21 @@ const VALUES: Record<Lang, ValueMap> = {
     'Request a Quote': 'Fiyat Teklifi İste',
     'Submission-based': 'Gönderim Esaslı',
     'Unfolding Service': 'Açınım Hizmeti',
+    'Open Tool': 'Aracı Aç',
+    'Web — runs in browser': 'Web — tarayıcıda çalışır',
+    'Free · Live': 'Ücretsiz · Yayında',
+    'Any image (JPG · PNG · GIF)': 'Herhangi bir görsel (JPG · PNG · GIF)',
+    'DXF · SVG · PNG': 'DXF · SVG · PNG',
+    'Upload an image. Get a perforated panel pattern with live DXF export.':
+      'Bir görsel yükleyin. Canlı DXF dışa aktarımıyla delikli panel deseni alın.',
+    'IPunch converts any image into a fabrication-ready perforation pattern. Upload a photo, drawing, or graphic — the tool maps pixel brightness to hole density across a panel grid. Adjust hole radius, spacing, pattern type (grid or hex), and open-area ratio live. Export as DXF for AutoCAD and CNC directly from the browser. No installation, no account.':
+      'IPunch, herhangi bir görseli üretime hazır bir delik desenine dönüştürür. Bir fotoğraf, çizim veya grafik yükleyin — araç, piksel parlaklığını panel ızgarası boyunca delik yoğunluğuna eşler. Delik yarıçapını, aralığı, desen tipini (ızgara veya altıgen) ve boşluk oranını canlı olarak ayarlayın. AutoCAD ve CNC için DXF olarak doğrudan tarayıcıdan dışa aktarın. Kurulum yok, hesap yok.',
+    'Maps pixel brightness to hole density across a panel grid':
+      'Piksel parlaklığını panel ızgarası boyunca delik yoğunluğuna eşler',
+    'Live control of hole radius, spacing, pattern type, and open-area ratio':
+      'Delik yarıçapı, aralık, desen tipi ve boşluk oranı üzerinde canlı kontrol',
+    'DXF export for AutoCAD and CNC straight from the browser':
+      'Doğrudan tarayıcıdan AutoCAD ve CNC için DXF dışa aktarımı',
     'Submit a Project': 'Proje Gönder',
     'DWG flat pattern · STEP': 'DWG açınım deseni · STEP',
     'Sheet Metal Unfolding': 'Sac Metal Açınımı',
@@ -1528,6 +1546,21 @@ const VALUES: Record<Lang, ValueMap> = {
     'Request a Quote': 'اطلب عرض سعر',
     'Submission-based': 'قائم على الإرسال',
     'Unfolding Service': 'خدمة الفرد',
+    'Open Tool': 'افتح الأداة',
+    'Web — runs in browser': 'ويب — يعمل في المتصفّح',
+    'Free · Live': 'مجاني · مباشر',
+    'Any image (JPG · PNG · GIF)': 'أي صورة (JPG · PNG · GIF)',
+    'DXF · SVG · PNG': 'DXF · SVG · PNG',
+    'Upload an image. Get a perforated panel pattern with live DXF export.':
+      'ارفع صورة. احصل على نمط لوح مثقّب مع تصدير DXF حيّ.',
+    'IPunch converts any image into a fabrication-ready perforation pattern. Upload a photo, drawing, or graphic — the tool maps pixel brightness to hole density across a panel grid. Adjust hole radius, spacing, pattern type (grid or hex), and open-area ratio live. Export as DXF for AutoCAD and CNC directly from the browser. No installation, no account.':
+      'يحوّل IPunch أي صورة إلى نمط تثقيب جاهز للتصنيع. ارفع صورة أو رسماً أو عملاً غرافيكياً — تربط الأداة سطوع البكسل بكثافة الثقوب عبر شبكة اللوح. اضبط نصف قطر الثقب والتباعد ونوع النمط (شبكي أو سداسي) ونسبة المساحة المفتوحة بشكل حيّ. صدّر بصيغة DXF لـ AutoCAD وCNC مباشرةً من المتصفّح. بلا تثبيت وبلا حساب.',
+    'Maps pixel brightness to hole density across a panel grid':
+      'يربط سطوع البكسل بكثافة الثقوب عبر شبكة اللوح',
+    'Live control of hole radius, spacing, pattern type, and open-area ratio':
+      'تحكّم حيّ بنصف قطر الثقب والتباعد ونوع النمط ونسبة المساحة المفتوحة',
+    'DXF export for AutoCAD and CNC straight from the browser':
+      'تصدير DXF لـ AutoCAD وCNC مباشرةً من المتصفّح',
     'Submit a Project': 'أرسل مشروعاً',
     'DWG flat pattern · STEP': 'نمط مفرود DWG · STEP',
     'Sheet Metal Unfolding': 'فرد الصفائح المعدنية',
