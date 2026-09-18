@@ -220,7 +220,7 @@ export default function ArchitecturePage() {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ── page ──────────────────────────────────────────────── */
         .ap {
           background: var(--color-bg);
@@ -463,7 +463,7 @@ export default function ArchitecturePage() {
           .ac-main { height: 260px; }
           .ac-thumb { height: 60px; }
         }
-      `}</style>
+      ` }} />
 
       <div className="ap">
         <div className="ap-rule" />

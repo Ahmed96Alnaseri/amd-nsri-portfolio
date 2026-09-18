@@ -167,7 +167,7 @@ export default function IdentityPage() {
         <span className="id-strip-fill" />
       </div>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .id {
           background: var(--color-bg);
           color: var(--color-text-primary);
@@ -364,7 +364,7 @@ export default function IdentityPage() {
           .id-disc-grid { grid-template-columns: 1fr; }
           .id-name-glyph { font-size: clamp(80px, 24vw, 140px); }
         }
-      `}</style>
+      ` }} />
     </main>
   );
 }

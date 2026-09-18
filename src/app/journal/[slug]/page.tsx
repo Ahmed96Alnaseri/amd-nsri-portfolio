@@ -15,7 +15,7 @@ export default function JournalArticlePage({ params }: { params: { slug: string 
         <h1 className="ja-title">404</h1>
         <p className="ja-lede">{t('common.noProjects')}</p>
         <Link href="/journal" className="ja-back">← {t('journal.back')}</Link>
-        <style>{baseCss}</style>
+        <style dangerouslySetInnerHTML={{ __html: baseCss }} />
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function JournalArticlePage({ params }: { params: { slug: string 
         <span className="ja-strip-fill" />
       </div>
 
-      <style>{baseCss}</style>
+      <style dangerouslySetInnerHTML={{ __html: baseCss }} />
     </article>
   );
 }

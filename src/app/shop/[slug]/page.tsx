@@ -22,7 +22,7 @@ export default function ShopProductPage({ params }: { params: { slug: string } }
         <h1 className="sd-title">404</h1>
         <p className="sd-lede">{t('common.noProjects')}</p>
         <Link href="/shop" className="sd-back">← {t('shop.back')}</Link>
-        <style>{baseCss}</style>
+        <style dangerouslySetInnerHTML={{ __html: baseCss }} />
       </div>
     );
   }
@@ -128,7 +128,7 @@ export default function ShopProductPage({ params }: { params: { slug: string } }
         <span className="sd-strip-fill" />
       </div>
 
-      <style>{baseCss}</style>
+      <style dangerouslySetInnerHTML={{ __html: baseCss }} />
     </div>
   );
 }

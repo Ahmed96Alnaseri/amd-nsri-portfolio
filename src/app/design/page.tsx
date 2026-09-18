@@ -262,7 +262,7 @@ export default function DesignPage() {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ── page ──────────────────────────────────────────────── */
         .dp {
           background: var(--color-bg);
@@ -561,7 +561,7 @@ export default function DesignPage() {
           .dc-main { height: 280px; }
           .dc-thumbs { height: 72px; }
         }
-      `}</style>
+      ` }} />
 
       <div className="dp">
         <div className="dp-rule" />

@@ -128,7 +128,7 @@ export default function ShopPage() {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ── page ──────────────────────────────────────────────── */
         .sp {
           background: var(--color-bg);
@@ -391,7 +391,7 @@ export default function ShopPage() {
           .sp-grid { grid-template-columns: 1fr; gap: 12px; }
           .spc-glass { transform: translateY(0); }
         }
-      `}</style>
+      ` }} />
 
       <div className="sp">
         <div className="sp-rule" />

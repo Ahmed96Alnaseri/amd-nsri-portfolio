@@ -232,7 +232,7 @@ export default function ContactPage() {
   return (
     <>
       {/* ── page-scoped styles ─────────────────────────────────────── */}
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .cpage-input::placeholder {
           color: var(--color-text-meta);
           font-family: var(--font-body);
@@ -292,7 +292,7 @@ export default function ContactPage() {
           .cpage-strip { flex-wrap: wrap; gap: 0 20px; }
           .cpage-strip > span { border-right: none !important; padding: 10px 0 0 !important; }
         }
-      `}</style>
+      ` }} />
 
       <div className="cpage-wrap" style={{
         minHeight: '100vh',

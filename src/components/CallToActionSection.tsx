@@ -196,7 +196,7 @@ export default function CallToActionSection() {
         <span className="cta-bottom-fill" />
       </div>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .cta-works-wrap {
           position: relative;
           display: inline-flex;
@@ -260,7 +260,7 @@ export default function CallToActionSection() {
           .cta-works-wrap { width: 100%; }
           .cta-works-trigger { width: 100%; justify-content: center; }
         }
-      `}</style>
+      ` }} />
 
     </section>
   );

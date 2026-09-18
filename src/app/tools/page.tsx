@@ -79,7 +79,7 @@ export default function ToolsPage() {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ── page ──────────────────────────────────────────────── */
         .tp {
           background: var(--color-bg);
@@ -288,7 +288,7 @@ export default function ToolsPage() {
           .tc, .tc-content { min-height: 0; }
           .tc-desc { max-width: 38ch; }
         }
-      `}</style>
+      ` }} />
 
       <div className="tp">
         <div className="tp-rule" />

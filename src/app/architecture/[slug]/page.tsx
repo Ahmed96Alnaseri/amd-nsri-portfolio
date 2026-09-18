@@ -451,7 +451,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ── Wrapper ──────────────────────────────────────────────── */
         .cs-wrap {
           background: var(--color-bg);
@@ -801,7 +801,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           .cs-lightbox-arrow-l { left: 10px; }
           .cs-lightbox-arrow-r { right: 10px; }
         }
-      `}</style>
+      ` }} />
 
       <div className="cs-wrap">
 

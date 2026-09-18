@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Sheet Metal Unfolder — AMD NSRI</title>
+<style>
+/* Self-contained hero. No libraries, fonts, images, or network requests required.
+   Set the contact link's href to your site's contact page before embedding.
+   The panel is an illustrative animation, not a manufacturing calculation. */
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d0e0b;color:#eae5d9}
+body{min-height:100vh;display:grid;place-items:center}
+#amd-unfolder{--gold:#bc965e;--muted:#a9a69b;--ivory:#eae5d9;width:100%;max-width:100%;position:relative;overflow:hidden;background:radial-gradient(ellipse at 64% 47%,#1b1d16 0%,#10110d 43%,#0d0e0b 78%);font-family:"Courier New",monospace;isolation:isolate;container-type:inline-size}
+.hero-content{position:relative;display:grid;grid-template-columns:0% 100%;aspect-ratio:1540/480}
+.intro{position:relative;z-index:2;padding:10.8% 0 8% 13%;display:flex;flex-direction:column;align-items:flex-start}
+.eyebrow{color:var(--gold);font-size:clamp(9px,.71cqw,11px);letter-spacing:.23em;line-height:1.5;margin:0 0 6.9%;white-space:nowrap;display:flex;align-items:center;gap:18px;width:100%}
+.eyebrow:after{content:"";height:1px;background:#51452e;flex:1;max-width:54px}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(35px,4.6cqw,71px);line-height:.99;letter-spacing:-.043em;margin:0 0 5.6%;text-wrap:nowrap}
+h1 span{display:block}
+.intro-copy{font-size:clamp(12px,1.12cqw,17px);color:var(--muted);line-height:1.65;letter-spacing:.015em;margin:0 0 7.5%;max-width:92%}
+.contact{color:#d7b887;border:1px solid #a88a55;text-decoration:none;text-transform:uppercase;letter-spacing:.17em;display:inline-flex;align-items:center;gap:22px;padding:14px 21px;font-size:clamp(10px,.85cqw,13px);transition:background .2s,border-color .2s;min-height:44px}
+.contact:hover,.contact:focus-visible{background:#242217;border-color:#ddbc82;outline:2px solid transparent}
+.signature{font-size:clamp(8px,.55cqw,9px);letter-spacing:.19em;color:#88877d;margin-top:auto;padding-top:20px;display:flex;align-items:center;gap:18px;white-space:nowrap}
+.signature:after{content:"";height:1px;width:60px;background:#50442d}
+.scene{position:relative;min-width:0;overflow:hidden;align-self:stretch}
+.scene:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#bbb18708 1px,transparent 1px),linear-gradient(90deg,#bbb18708 1px,transparent 1px);background-size:26px 26px;mask-image:radial-gradient(ellipse at 49% 45%,#000,transparent 76%);pointer-events:none}
+#panel-canvas{width:100%;height:100%;position:absolute;inset:0;z-index:1}
+.process{position:absolute;left:28.5%;width:34%;top:0;height:100%;z-index:2;pointer-events:none}
+.process-visual{position:absolute;inset:0;transition:opacity .4s}
+.processing .process-visual{opacity:var(--process-opacity,1)}
+.process-title{position:absolute;top:12.5%;left:0;width:100%;margin:0;text-align:center;color:#b5b2a6;font-size:clamp(10px,.86cqw,13px);letter-spacing:.035em}
+.graph{position:absolute;top:19.5%;width:100%;height:26.5%;overflow:visible}
+.graph .wire{fill:none;stroke:#a48856;stroke-width:1.4}
+.graph .signal{fill:none;stroke:#e7c189;stroke-width:2;stroke-dasharray:5 65;stroke-dashoffset:70;opacity:0}
+.processing .graph .signal{opacity:1;animation:signal .9s linear infinite}
+@keyframes signal{to{stroke-dashoffset:0}}
+.graph .node{fill:url(#node-fill);stroke:#7f7d70;stroke-width:1.2}
+.graph .port{fill:#c6a06a}
+.graph .icon{fill:none;stroke:#d7d1c0;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.bend-detail{position:absolute;top:48%;left:3%;width:94%;height:19%;overflow:visible}
+.bend-detail text{font-family:"Courier New",monospace;fill:#b6b2a4;font-size:11px}
+.bend-detail .fine{fill:none;stroke:#a98c5c;stroke-width:1}
+.bend-detail .sheet{fill:#292a22;stroke:#d1ad72;stroke-width:1.5}
+.bend-detail .neutral{fill:none;stroke:#d1ad72;stroke-width:1;stroke-dasharray:4 3}
+.unfold-control{position:absolute;left:50%;top:71.5%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;min-width:190px;pointer-events:auto}
+#unfold-button{font-family:inherit;font-size:12px;letter-spacing:.19em;min-height:46px;min-width:170px;padding:13px 22px;border:1px solid #c8a36b;color:#10110d;background:#c4a06a;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:20px;transition:background .2s,box-shadow .2s}
+#unfold-button:hover{background:#e0bd88;box-shadow:0 0 25px #bc965e19}
+#unfold-button:focus-visible{outline:2px solid #eae5d9;outline-offset:4px}
+#unfold-button:disabled{cursor:progress;background:#2f2c21;color:#d5b27c}
+#unfold-button .button-arrow{font-size:17px;line-height:12px}
+.status{font-size:10px;text-align:center;line-height:1.5;color:#a19d8f;margin:10px 0 0;min-height:30px;max-width:230px}
+.panel-label{position:absolute;bottom:5.5%;z-index:3;color:#c19b63;font-size:clamp(9px,.75cqw,11px);letter-spacing:.22em;text-align:center;pointer-events:none;margin:0}
+.label-3d{left:1%;width:26%}
+.label-flat{right:9%;width:28%}
+.output-caption{position:absolute;right:.5%;top:51%;color:#a9a69b;font-size:clamp(9px,.73cqw,11px);line-height:1.55;max-width:68px;z-index:2;opacity:.6;transition:opacity .7s;pointer-events:none}
+.output-caption:before{content:"";width:17px;height:1px;background:#bd985f;position:absolute;left:-23px;top:6px}
+.is-flat .output-caption{opacity:1}
+/* A quiet spreadsheet preview sits inside the flat panel's unused center.
+   Values are illustrative; this preview does not calculate or export data. */
+.panel-data{position:absolute;left:79.6%;top:37%;width:10.3%;z-index:3;padding:7px 5px 5px;border:1px solid #bc965e26;background:#10120c8c;opacity:.58;pointer-events:none;transition:opacity .5s,transform .5s}
+.data-heading{display:flex;align-items:center;justify-content:space-between;gap:4px;margin:0 0 7px;color:#d0b481;font-size:clamp(7px,.6cqw,9px);font-weight:400;letter-spacing:.06em;white-space:nowrap}
+.data-heading span{color:#969585;font-size:.88em;letter-spacing:0}
+.panel-data table{width:100%;border-collapse:collapse;table-layout:fixed;color:#c7c4b6;font-size:clamp(7px,.59cqw,9px);font-variant-numeric:tabular-nums}
+.panel-data th,.panel-data td{padding:4px 1px;text-align:right;border-bottom:1px solid #b3a67c20;border-right:1px solid #b3a67c14;white-space:nowrap}
+.panel-data th{color:#a6a392;font-size:clamp(6.3px,.51cqw,8px);font-weight:400;letter-spacing:0;background:#bc965e0a}
+.panel-data th:first-child,.panel-data td:first-child{text-align:left;padding-left:3px}
+.panel-data th:last-child,.panel-data td:last-child{border-right:0;padding-right:3px}
+.panel-data tbody tr:last-child td{border-bottom:0}
+.panel-data td:first-child{color:#c6ab7f}
+.data-note{margin:6px 0 0;color:#92917f;font-size:clamp(6.5px,.52cqw,8px);letter-spacing:.02em}
+.is-flat .panel-data{opacity:.95}
+.processing .panel-data{opacity:0;transform:translateY(4px)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:1001px) and (max-width:1100px){.contact{padding:9px 12px;gap:12px}.signature{padding-top:10px}.intro{padding-left:10%;padding-top:9%}.eyebrow{letter-spacing:.13em;gap:8px}.unfold-control{top:69%;min-width:150px}#unfold-button{font-size:10px;min-width:139px;padding:9px 14px;min-height:40px}.status{font-size:9px;margin-top:6px}.output-caption{right:.3%;max-width:53px}}
+@media(max-width:1000px){
+ body{display:block} .hero-content{display:flex;flex-direction:column;aspect-ratio:auto}
+ .intro{padding:30px 26px 17px}.eyebrow{font-size:10px;letter-spacing:.19em;margin-bottom:22px;max-width:350px}.eyebrow:after{max-width:none}
+ h1{font-size:clamp(43px,12vw,74px);margin-bottom:16px}h1 span{display:block}
+ .intro-copy{font-size:14px;max-width:350px;margin-bottom:22px}.contact{font-size:11px;padding:12px 16px}.signature{display:none}
+ .scene{height:490px;align-self:auto}.process{left:8%;width:84%;height:140px;top:auto;bottom:0}
+ .process-title{top:5px;left:0;width:auto;font-size:11px}.graph{top:28px;left:0;width:45%;height:76px}.bend-detail{display:none}
+ .unfold-control{left:auto;right:0;top:24px;transform:none;min-width:150px}#unfold-button{font-size:11px;min-width:148px;min-height:46px}.status{font-size:10px;max-width:160px}
+ .panel-label{bottom:151px;font-size:9px;letter-spacing:.17em}.label-3d{left:7%;width:32%}.label-flat{right:5%;width:38%}
+ .output-caption{top:auto;bottom:130px;right:4%;max-width:none;width:40%;text-align:center;font-size:10px}.output-caption:before{display:none}
+ .panel-data{position:relative;left:auto;top:auto;width:calc(100% - 52px);align-self:center;margin:0 0 20px;padding:10px 12px 8px}
+ .data-heading{font-size:10px;margin-bottom:6px}.panel-data table{font-size:11px}.panel-data th{font-size:10px}.panel-data th,.panel-data td{padding:4px 6px}.data-note{font-size:9px;margin-top:6px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<section id="amd-unfolder" aria-label="Sheet Metal Unfolder interactive hero">
+ <div class="hero-content">
+  <header class="intro"></header>
+  <div class="scene">
+   <canvas id="panel-canvas" role="img" aria-label="A folded aluminum panel and its front-view unfolded pattern. Use the Unfold button to see the transformation.">A 3D aluminum panel unfolds into a flat panel with cut edges, fixing holes and bend lines.</canvas>
+   <div class="process">
+    <div class="process-visual">
+     <p class="process-title">Grasshopper scripts</p>
+     <svg class="graph" viewBox="0 0 310 122" aria-hidden="true">
+      <defs><linearGradient id="node-fill" x2=".7" y2="1"><stop stop-color="#383930"/><stop offset="1" stop-color="#22241c"/></linearGradient></defs>
+      <g class="wire"><path d="M56 60 C86 60 83 21 115 21"/><path d="M56 60 H115"/><path d="M56 60 C86 60 83 99 115 99"/><path d="M164 21 C204 21 198 60 232 60"/><path d="M164 60 H232"/><path d="M164 99 C204 99 198 60 232 60"/><path d="M275 60 H303 l-6 -4 M303 60 l-6 4"/></g>
+      <g class="signal"><path d="M56 60 C86 60 83 21 115 21"/><path d="M56 60 H115"/><path d="M56 60 C86 60 83 99 115 99"/><path d="M164 21 C204 21 198 60 232 60"/><path d="M164 60 H232"/><path d="M164 99 C204 99 198 60 232 60"/></g>
+      <rect class="node" x="11" y="38" width="45" height="44" rx="5"/><rect class="node" x="115" y="3" width="49" height="35" rx="5"/><rect class="node" x="115" y="43" width="49" height="35" rx="5"/><rect class="node" x="115" y="82" width="49" height="35" rx="5"/><rect class="node" x="232" y="38" width="43" height="44" rx="5"/>
+      <g class="port"><circle cx="11" cy="60" r="3"/><circle cx="56" cy="53" r="3"/><circle cx="56" cy="60" r="3"/><circle cx="56" cy="67" r="3"/><circle cx="115" cy="21" r="3"/><circle cx="115" cy="60" r="3"/><circle cx="115" cy="99" r="3"/><circle cx="164" cy="21" r="3"/><circle cx="164" cy="60" r="3"/><circle cx="164" cy="99" r="3"/><circle cx="232" cy="60" r="3"/><circle cx="275" cy="60" r="3"/></g>
+      <g class="icon"><path d="M23 55 l10 -6 10 6 v12 l-10 6 -10 -6 Z M23 55 l10 6 10 -6 M33 61 v12 M33 49 v12"/><path d="M128 27 C131 2 137 10 139 21 S148 33 152 13"/><path d="M128 53 v15 h22 M132 65 l16 -12"/><path d="M129 91 h22 M129 96 h22 M129 101 h22 M129 106 h22"/><path d="M246 50 h10 l7 7 v15 h-17 Z M256 50 v7 h7"/></g>
+     </svg>
+     <svg class="bend-detail" viewBox="0 0 290 90" aria-hidden="true">
+      <text x="6" y="13">K-factor</text><text x="164" y="13">Bend allowance</text>
+      <path class="fine" d="M53 20 L107 42 M206 20 L166 49"/><circle cx="107" cy="42" r="2" fill="#c5a06a"/><circle cx="166" cy="49" r="2" fill="#c5a06a"/>
+      <path class="sheet" d="M128 18 H137 V65 Q137 71 143 71 H200 V80 H143 Q128 80 128 65 Z"/>
+      <path class="neutral" d="M133 28 V65 Q133 76 145 76 H192 M133 47 A29 29 0 0 1 163 76"/>
+     </svg>
+    </div>
+    <div class="unfold-control">
+     <button id="unfold-button" type="button" aria-controls="panel-canvas" aria-pressed="false"><span class="button-text">UNFOLD</span><span class="button-arrow" aria-hidden="true">→</span></button>
+     <p id="unfold-status" class="status" role="status" aria-live="polite">See your panel unfold</p>
+    </div>
+   </div>
+   <p class="panel-label label-3d">3D PANEL</p>
+   <p class="panel-label label-flat">UNFOLDED PANEL</p>
+   <p class="output-caption">DXF-ready<br>output</p>
+  </div>
+  <aside class="panel-data" aria-label="Illustrative Excel panel schedule">
+   <p class="data-heading">PANEL DATA <span>.XLSX</span></p>
+   <table aria-label="Sample panel poses, width and length in millimeters, and panel quantities">
+    <thead><tr><th scope="col">Pose</th><th scope="col" aria-label="Width in millimeters">Width</th><th scope="col" aria-label="Length in millimeters">Length</th><th scope="col" aria-label="Quantity of panels">Qty</th></tr></thead>
+    <tbody>
+     <tr><td>P01</td><td>600</td><td>1200</td><td>12</td></tr>
+     <tr><td>P02</td><td>600</td><td>1500</td><td>8</td></tr>
+     <tr><td>P03</td><td>750</td><td>1200</td><td>6</td></tr>
+    </tbody>
+   </table>
+   <p class="data-note">Sample · mm</p>
+  </aside>
+ </div>
+</section>
+<script>
+(()=>{
+ 'use strict';
+ const hero=document.getElementById('amd-unfolder');
+ const canvas=document.getElementById('panel-canvas');
+ const ctx=canvas.getContext('2d');
+ const button=document.getElementById('unfold-button');
+ const buttonText=button.querySelector('.button-text');
+ const buttonArrow=button.querySelector('.button-arrow');
+ const status=document.getElementById('unfold-status');
+ const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+ const TAU=Math.PI*2, HALF=Math.PI/2, W=82, H=165;
+ let width=1021,height=480,progress=0,target=0,raf=0,busy=false;
+ const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+ const mix=(a,b,t)=>a+(b-a)*t;
+ const smooth=(a,b,t)=>{t=clamp((t-a)/(b-a));return t*t*(3-2*t)};
+ const circle=(x,y,r,n=18)=>Array.from({length:n},(_,i)=>[x+Math.cos(i/n*TAU)*r,y+Math.sin(i/n*TAU)*r]);
+ const slot=(x,y,w,h)=>{const r=w/2;return [...Array.from({length:9},(_,i)=>[x+Math.cos(Math.PI+i/8*Math.PI)*r,y-h/2+r+Math.sin(Math.PI+i/8*Math.PI)*r]),...Array.from({length:9},(_,i)=>[x+Math.cos(i/8*Math.PI)*r,y+h/2-r+Math.sin(i/8*Math.PI)*r])];};
+ const sideProfile=[[0,-H],[54,-H],[54,-160],[25,-134]];
+ const slotYs=[-105,-44,17,78,139];
+ for(const y of slotYs)sideProfile.push([25,y-7],[23,y-5],[23,y+4],[25,y+7]);
+ sideProfile.push([25,154],[28,157],[54,157],[54,H],[0,H]);
+
+ function geometry(p){
+  const sideAngle=HALF*(1-smooth(.10,.70,p));
+  const edgeAngle=HALF*(1-smooth(.23,.76,p));
+  const lipAngle=HALF*(1-smooth(.02,.27,p));
+  const faces=[],bends=[];
+  const add=(id,points,map,holes=[])=>faces.push({id,points:points.map(map),holes:holes.map(h=>h.map(map))});
+  const side=(s,u,y,z=0)=>[s*(W+u*Math.cos(sideAngle)+z*Math.sin(sideAngle)),y,-u*Math.sin(sideAngle)+z*Math.cos(sideAngle)];
+  add('front',[[-W,-H],[W,-H],[W,H],[-W,H]],([x,y])=>[x,y,0]);
+  for(const s of [-1,1]){
+   const holes=slotYs.map(y=>slot(21.1,y,1.7,6.6));
+   add('side',sideProfile,([u,y])=>side(s,u,y),holes);
+   bends.push([[s*W,-H,0],[s*W,H,0]]);
+   const topMap=([u,d])=>side(s,u,-H-d*Math.cos(lipAngle),-d*Math.sin(lipAngle));
+   add('wing',[[5,0],[54,0],[54,12],[5,12]],topMap,[circle(51,8,1.15)]);
+   bends.push([topMap([5,0]),topMap([54,0])]);
+  }
+  for(const sy of [-1,1]){
+   const e=sy===-1?9:7;
+   const map=([x,d])=>[x,sy*(H+d*Math.cos(edgeAngle)),-d*Math.sin(edgeAngle)];
+   add('edge',[[-W,0],[W,0],[W-4,e],[-W+4,e]],map,[-65,0,65].map(x=>circle(x,e*.59,1.1)));
+   bends.push([map([-W,0]),map([W,0])]);
+   if(sy===-1){
+    const lipMap=([x,d])=>[x,-H-e*Math.cos(edgeAngle)-d*Math.cos(edgeAngle-lipAngle),-e*Math.sin(edgeAngle)-d*Math.sin(edgeAngle-lipAngle)];
+    add('lip',[[-W+4,0],[W-4,0],[W-4,7],[-W+4,7]],lipMap,[-8,8].map(x=>circle(x,4,1.1)));
+    bends.push([lipMap([-W+4,0]),lipMap([W-4,0])]);
+   }
+  }
+  return {faces,bends};
+ }
+ function project(v,p,cx,cy,scale){
+  const camera=1-smooth(.19,.86,p),yaw=.72*camera,pitch=-.45*camera;
+  const x=v[0]*Math.cos(yaw)+v[2]*Math.sin(yaw);
+  const z=-v[0]*Math.sin(yaw)+v[2]*Math.cos(yaw);
+  const y=v[1]*Math.cos(pitch)-z*Math.sin(pitch);
+  const depth=v[1]*Math.sin(pitch)+z*Math.cos(pitch);
+  const perspective=1+depth/2200*camera;
+  return [cx+x*scale*perspective,cy+y*scale*perspective,depth];
+ }
+ function trace(points,close=true){ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);if(close)ctx.closePath()}
+ function drawModel(p,cx,cy,scale,alpha=1,outlineOnly=false){
+  const g=geometry(p),flatten=smooth(.66,1,p);
+  const faces=g.faces.map(f=>({...f,screen:f.points.map(v=>project(v,p,cx,cy,scale)),holes:f.holes.map(h=>h.map(v=>project(v,p,cx,cy,scale)))}));
+  for(const f of faces)f.depth=f.screen.reduce((a,b)=>a+b[2],0)/f.screen.length;
+  faces.sort((a,b)=>a.depth-b.depth);
+  ctx.save();ctx.globalAlpha=alpha;ctx.lineJoin='round';ctx.lineCap='round';
+  if(!outlineOnly&&flatten<1){
+   const shadow=ctx.createRadialGradient(cx,cy+H*scale+10,0,cx,cy+H*scale+10,105*scale);
+   shadow.addColorStop(0,'#00000070');shadow.addColorStop(1,'#00000000');
+   ctx.save();ctx.translate(0,(cy+H*scale+10)*.84);ctx.scale(1,.16);ctx.fillStyle=shadow;ctx.fillRect(cx-150*scale,cy+H*scale-150*scale,300*scale,300*scale);ctx.restore();
+  }
+  for(const f of faces){
+   ctx.beginPath();trace(f.screen);for(const h of f.holes)trace(h);
+   if(!outlineOnly){
+    const front=f.id==='front',g=ctx.createLinearGradient(cx-100*scale,cy-150*scale,cx+120*scale,cy+170*scale);
+    const high=front?[213,208,194]:[169,166,153],low=front?[122,125,114]:[83,89,78];
+    const rgba=(rgb,l)=>'rgb('+rgb.map((v,i)=>Math.round(mix(v,[31,33,26][i],l))).join(',')+')';
+    g.addColorStop(0,rgba(high,flatten*.88));g.addColorStop(.30,rgba(high.map(v=>Math.min(v+17,255)),flatten*.88));g.addColorStop(.71,rgba(low.map(v=>v+24),flatten*.88));g.addColorStop(1,rgba(low,flatten*.88));
+    ctx.fillStyle=g;ctx.fill('evenodd');
+   }
+   ctx.strokeStyle=outlineOnly?'#bc9f6c':flatten>.8?'#d3b883':f.id==='front'?'#ddd6c2':'#beb59b';
+   ctx.lineWidth=outlineOnly?.9:1.05;ctx.stroke();
+   if(!outlineOnly&&f.id==='front'&&flatten<.8){
+    ctx.save();ctx.beginPath();trace(f.screen);ctx.clip();ctx.globalAlpha=alpha*.06*(1-flatten);
+    ctx.lineWidth=.45;ctx.strokeStyle='#eee8d7';
+    for(let i=-130;i<130;i+=1.8){ctx.beginPath();ctx.moveTo(cx+i*scale,cy-220*scale);ctx.lineTo(cx+(i-18)*scale,cy+220*scale);ctx.stroke()}ctx.restore();
+   }
+  }
+  if(flatten>.8||outlineOnly){
+   ctx.strokeStyle='#1b1d16';ctx.lineWidth=2;
+   for(const bend of g.bends){ctx.beginPath();trace(bend.map(v=>project(v,p,cx,cy,scale)),false);ctx.stroke()}
+  }
+  if(p>.08||outlineOnly){
+   ctx.globalAlpha=alpha*(outlineOnly?.7:mix(.1,.85,flatten));ctx.strokeStyle='#d6b978';ctx.lineWidth=.9;ctx.setLineDash([4,3]);
+   for(const bend of g.bends){ctx.beginPath();trace(bend.map(v=>project(v,p,cx,cy,scale)),false);ctx.stroke()}
+  }
+  ctx.restore();
+ }
+ function render(){
+  ctx.clearRect(0,0,width,height);
+  const mobile=hero.clientWidth<=1000;
+  let left,right,cy,scale;
+  if(mobile){left=width*.245;right=width*.742;cy=175;scale=Math.min(width/630,.88)}
+  else {left=width*.145;right=width*.77;cy=height*.468;scale=height/480*1.03}
+  const travel=smooth(.55,1,progress);
+  hero.style.setProperty('--process-opacity',String(1-.86*Math.sin(Math.PI*travel)));
+  if(progress<.99)drawModel(1,right,cy,scale,.38*(1-travel),true);
+  if(progress>.01)drawModel(0,left,cy,scale,.21*smooth(.28,.85,progress),true);
+  const zoom=1-.26*Math.sin(Math.PI*travel),rise=(mobile?5:27)*Math.sin(Math.PI*travel)*height/480;
+  drawModel(progress,mix(left,right,travel),cy-rise,scale*zoom,1,false);
+  hero.dataset.progress=progress.toFixed(4);
+ }
+ function resize(){
+  const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);render();
+ }
+ function complete(){
+  progress=target;busy=false;raf=0;hero.classList.remove('processing');hero.classList.toggle('is-flat',target===1);
+  button.disabled=false;button.setAttribute('aria-pressed',String(target===1));buttonText.textContent=target?'FOLD BACK':'UNFOLD';buttonArrow.textContent=target?'↶':'→';
+  status.textContent=target?'Flat panel · front view':'See your panel unfold';
+  canvas.setAttribute('aria-label',target?'The panel is unfolded and shown in a straight-on front view, with cut edges, fixing holes and dashed bend lines.':'A folded aluminum panel and its front-view unfolded pattern. Use the Unfold button to see the transformation.');
+  render();
+ }
+ button.addEventListener('click',()=>{
+  if(busy)return;target=progress<.5?1:0;
+  if(reduceMotion.matches){complete();return}
+  busy=true;button.disabled=true;hero.classList.add('processing');hero.classList.remove('is-flat');
+  buttonText.textContent=target?'UNFOLDING':'FOLDING';buttonArrow.textContent='·';status.textContent=target?'Opening bends → flat panel':'Returning to the 3D panel';
+  const start=progress,started=performance.now(),duration=target?3800:2900;
+  const tick=now=>{const t=clamp((now-started)/duration);progress=mix(start,target,t);render();if(t<1)raf=requestAnimationFrame(tick);else complete()};
+  raf=requestAnimationFrame(tick);
+ });
+ reduceMotion.addEventListener('change',()=>{if(reduceMotion.matches&&busy){cancelAnimationFrame(raf);complete()}});
+ new ResizeObserver(resize).observe(canvas);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&busy){cancelAnimationFrame(raf);complete()}});
+ resize();
+})();
+</script>
+</body>
+</html>

@@ -22,7 +22,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
         <h1 className="td-title">404</h1>
         <p className="td-lede">{t('common.noProjects')}</p>
         <Link href="/tools" className="td-back">← {t('tools.back')}</Link>
-        <style>{baseCss}</style>
+        <style dangerouslySetInnerHTML={{ __html: baseCss }} />
       </div>
     );
   }
@@ -40,19 +40,29 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       <h1 className="td-title">{tv(tool.name)}</h1>
       <p className="td-lede">{tv(tool.detail)}</p>
 
-      <div
-        className={`td-hero${tool.image ? '' : ' td-hero--placeholder'}`}
-        style={tool.image ? { backgroundImage: `url(${tool.image})` } : undefined}
-        role="img"
-        aria-label={tool.name}
-      >
-        {!tool.image && <span className="td-hero-diamond" aria-hidden="true">◆</span>}
-        <span className="td-hero-fade" aria-hidden="true" />
-        <span className={`td-status ${STATUS_MOD[tool.status]}`}>
-          <span className="td-status-dot" aria-hidden="true" />
-          {tv(tool.status)}
-        </span>
-      </div>
+      {tool.slug === 'sheet-metal-unfolder' ? (
+        <div className="td-hero-bleed">
+          <iframe
+            src="/sheet-metal-unfolder-hero.html"
+            title="Sheet Metal Unfolder — interactive demo"
+            loading="lazy"
+          />
+        </div>
+      ) : (
+        <div
+          className={`td-hero${tool.image ? '' : ' td-hero--placeholder'}`}
+          style={tool.image ? { backgroundImage: `url(${tool.image})` } : undefined}
+          role="img"
+          aria-label={tool.name}
+        >
+          {!tool.image && <span className="td-hero-diamond" aria-hidden="true">◆</span>}
+          <span className="td-hero-fade" aria-hidden="true" />
+          <span className={`td-status ${STATUS_MOD[tool.status]}`}>
+            <span className="td-status-dot" aria-hidden="true" />
+            {tv(tool.status)}
+          </span>
+        </div>
+      )}
 
       <div className="td-grid">
         {/* What it does */}
@@ -118,7 +128,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
         <span className="td-strip-fill" />
       </div>
 
-      <style>{baseCss}</style>
+      <style dangerouslySetInnerHTML={{ __html: baseCss }} />
     </div>
   );
 }
@@ -181,6 +191,26 @@ const baseCss = `
                 radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184,149,106,0.06) 0%, transparent 70%);
   }
   .td-hero--placeholder { background-color: var(--color-surface); }
+
+  /* full-bleed interactive hero — no frame, breaks out of the page padding */
+  .td-hero-bleed {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    height: 480px;
+    overflow: hidden;
+    border: none;
+  }
+  .td-hero-bleed iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: none; display: block;
+  }
+  /* The embed restacks into a tall column at this same width, so the banner
+     height has to grow with it or the Unfold control falls outside the frame. */
+  @media (max-width: 1000px) {
+    .td-hero-bleed { height: 870px; }
+  }
   .td-hero-diamond {
     position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
     font-size: 96px; line-height: 1;

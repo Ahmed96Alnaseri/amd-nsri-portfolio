@@ -265,7 +265,7 @@ export default function FabricationPage() {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ── page ──────────────────────────────────────────────── */
         .fp {
           background: var(--color-bg);
@@ -546,7 +546,7 @@ export default function FabricationPage() {
           .fc-main { height: 280px; }
           .fc-thumbs { height: 72px; }
         }
-      `}</style>
+      ` }} />
 
       <div className="fp">
         <div className="fp-rule" />

@@ -75,7 +75,7 @@ export default function JournalPage() {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ── page ──────────────────────────────────────────────── */
         .jp {
           background: var(--color-bg);
@@ -293,7 +293,7 @@ export default function JournalPage() {
           .jp-grid { grid-template-columns: 1fr; gap: 16px; }
           .jc { min-height: 0; }
         }
-      `}</style>
+      ` }} />
 
       <div className="jp">
         <div className="jp-rule" />
