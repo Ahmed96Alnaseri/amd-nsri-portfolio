@@ -171,11 +171,14 @@ export default function ContactPage() {
   useEffect(() => {
     const slug = new URLSearchParams(window.location.search).get('tool');
     if (!slug) return;
-    const name = toolsBySlug[slug]?.name ?? slug;
+    const tool = toolsBySlug[slug];
+    const name = tool?.name ?? slug;
+    const template = tool?.quoteTemplate
+      ?? `Hi, I'm interested in the ${name} tool. Here's what I need:\n\n[Project description]\n\nPanel count (approx):\nGeometry type:\nOutput needed (DXF / PDF / other):`;
     setForm(f => ({
       ...f,
       subject: f.subject || 'Tool Quote',
-      message: f.message || `Hi, I'm interested in the ${name} tool. Here's what I need:\n\n[Project description]\n\nPanel count (approx):\nGeometry type:\nOutput needed (DXF / PDF / other):`,
+      message: f.message || template,
     }));
   }, []);
 

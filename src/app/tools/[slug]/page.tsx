@@ -35,7 +35,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       <Link href="/tools" className="td-back">← {t('tools.back')}</Link>
 
       <p className="td-eyebrow">
-        {tool.platform} · {isQuote ? t('tools.quoteOnRequest') : isProduct ? t('tools.product') : t('tools.showcase')}
+        {tv(tool.eyebrow ?? tool.platform)} · {isQuote ? t('tools.quoteOnRequest') : isProduct ? t('tools.product') : t('tools.showcase')}
       </p>
       <h1 className="td-title">{tv(tool.name)}</h1>
       <p className="td-lede">{tv(tool.detail)}</p>
@@ -67,15 +67,29 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       <div className="td-grid">
         {/* What it does */}
         <div className="td-main">
-          <h2 className="td-h2">{t('tools.whatItDoes')}</h2>
-          <ul className="td-features">
-            {tool.features.map(f => (
-              <li key={f} className="td-feature">
-                <span className="td-feature-mark" aria-hidden="true" />
-                {tv(f)}
-              </li>
-            ))}
-          </ul>
+          <h2 className="td-h2">{tool.steps ? t('tools.howItWorks') : t('tools.whatItDoes')}</h2>
+          {tool.steps ? (
+            <ol className="td-features td-steps">
+              {tool.steps.map((s, i) => (
+                <li key={s.label} className="td-feature td-step">
+                  <span className="td-step-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="td-step-body">
+                    <span className="td-step-label">{tv(s.label)}</span>
+                    <span className="td-step-desc">{tv(s.description)}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <ul className="td-features">
+              {tool.features.map(f => (
+                <li key={f} className="td-feature">
+                  <span className="td-feature-mark" aria-hidden="true" />
+                  {tv(f)}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* Spec + CTA */}
@@ -85,11 +99,25 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               <span className="td-spec-lbl">{t('tools.platform')}</span>
               <span className="td-spec-val">{tool.platform}</span>
             </div>
-            <div className="td-spec-sep" />
-            <div className="td-spec-row">
-              <span className="td-spec-lbl">{t('common.status')}</span>
-              <span className="td-spec-val">{tv(tool.status)}</span>
-            </div>
+            {tool.output && (
+              <>
+                <div className="td-spec-sep" />
+                <div className="td-spec-row">
+                  <span className="td-spec-lbl">{t('tools.output')}</span>
+                  <span className="td-spec-val">{tv(tool.output)}</span>
+                </div>
+              </>
+            )}
+            {/* A service has no build status to advertise. */}
+            {!isQuote && (
+              <>
+                <div className="td-spec-sep" />
+                <div className="td-spec-row">
+                  <span className="td-spec-lbl">{t('common.status')}</span>
+                  <span className="td-spec-val">{tv(tool.status)}</span>
+                </div>
+              </>
+            )}
             {(isProduct || isQuote) && tool.price && (
               <>
                 <div className="td-spec-sep" />
@@ -106,11 +134,6 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               <Link href={tool.ctaLink ?? '/contact'} className="td-btn">
                 {tv(tool.ctaLabel ?? 'Request a Quote')} →
               </Link>
-              {tool.secondaryCtaLabel && tool.secondaryCtaLink && (
-                <Link href={tool.secondaryCtaLink} className="td-btn td-btn--ghost">
-                  {tv(tool.secondaryCtaLabel)} →
-                </Link>
-              )}
               {tool.pricingNote && <p className="td-cta-note">{tv(tool.pricingNote)}</p>}
             </div>
           ) : isProduct ? (
@@ -209,7 +232,7 @@ const baseCss = `
   /* The embed restacks into a tall column at this same width, so the banner
      height has to grow with it or the Unfold control falls outside the frame. */
   @media (max-width: 1000px) {
-    .td-hero-bleed { height: 870px; }
+    .td-hero-bleed { height: 720px; }
   }
   .td-hero-diamond {
     position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
@@ -259,6 +282,25 @@ const baseCss = `
     border: 1px solid var(--color-accent); background: transparent;
   }
 
+  /* numbered process steps — service pages */
+  .td-steps { counter-reset: none; }
+  .td-step { align-items: baseline; gap: 20px; }
+  .td-step-n {
+    flex-shrink: 0;
+    font-family: var(--font-body); font-size: 11px;
+    letter-spacing: .12em; color: var(--color-accent);
+  }
+  .td-step-body { display: flex; flex-direction: column; gap: 6px; }
+  .td-step-label {
+    font-family: var(--font-body); font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+  .td-step-desc {
+    font-size: clamp(13px, 1.2vw, 15px); font-weight: 300;
+    line-height: 1.6; color: var(--color-text-secondary);
+  }
+
   /* side: spec + cta */
   .td-side { display: flex; flex-direction: column; gap: 28px; }
   .td-spec { display: flex; flex-direction: column; }
@@ -286,15 +328,6 @@ const baseCss = `
 
   /* quote CTA pair + fine print */
   .td-cta { display: flex; flex-direction: column; gap: 12px; }
-  .td-btn--ghost {
-    color: var(--color-text-secondary);
-    border-color: var(--color-border);
-  }
-  .td-btn--ghost:hover {
-    background: transparent;
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-  }
   .td-cta-note {
     margin: 4px 0 0;
     font-family: var(--font-body); font-size: 11px;

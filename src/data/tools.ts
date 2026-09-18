@@ -1,4 +1,4 @@
-export type ToolPlatform = 'Grasshopper' | 'Web' | 'Software' | 'Web + Grasshopper';
+export type ToolPlatform = 'Grasshopper' | 'Web' | 'Software' | 'Web + Grasshopper' | 'Submission-based';
 export type ToolStatus = 'Live' | 'Beta' | 'Coming Soon' | 'Available';
 export type ToolType = 'showcase' | 'product' | 'quote';
 
@@ -29,9 +29,16 @@ export interface Tool {
   ctaLabel?: string;
   /** Overrides the default CTA destination on the detail page. */
   ctaLink?: string;
-  /** Optional second, outline-style CTA for tools that invite a conversation first. */
-  secondaryCtaLabel?: string;
-  secondaryCtaLink?: string;
+  /** Info row — what the client gets back. */
+  output?: string;
+  /** Overrides the eyebrow's leading term (defaults to platform). */
+  eyebrow?: string;
+  /** Service tools describe a process instead of a feature list; replaces `features` when set. */
+  steps?: { label: string; description: string }[];
+  /** Seeds the contact form when arriving from this tool's CTA. */
+  quoteTemplate?: string;
+  /** Keywords for this tool. Not rendered yet. */
+  tags?: string[];
 }
 
 /** Filter chips shown above the grid (in order). */
@@ -41,25 +48,42 @@ export type ToolPlatformFilter = (typeof TOOL_PLATFORMS)[number];
 const tools: Tool[] = [
   {
     slug: 'sheet-metal-unfolder',
-    name: 'Sheet Metal Unfolder',
-    description: 'Flat cutting patterns with k-factor and bend radius control',
+    name: 'Sheet Metal Unfolding',
+    description: 'Send your file. Receive fabrication-ready flat patterns.',
     detail:
-      'A GHPython definition that unfolds complex sheet metal geometry into accurate flat cutting patterns. Configurable k-factor and bend radius ensure each fold lands precisely where the model predicts — DXF-ready output for laser cutting and press brake.',
-    features: [
-      'Unfolds 3D sheet metal geometry into flat, fabrication-ready patterns',
-      'Configurable k-factor and bend radius for accurate bend allowance',
-      'DXF-ready output for laser cutting and press brake',
+      'An unfolding service for complex sheet metal panels. Submit your files — DWG, PDF, image, or any usable reference — and receive accurate flat cutting patterns with correct k-factor and bend allowance applied. Output is DWG-ready for laser cutting and press brake, plus STEP for CNC verification.',
+    features: [],
+    steps: [
+      {
+        label: 'Submit your files',
+        description: 'Send your DWG, PDF, image, or any reference file via the quote form.',
+      },
+      {
+        label: 'Scope & quote',
+        description: 'A project-specific quote is prepared based on panel count, geometry complexity, and output requirements.',
+      },
+      {
+        label: 'Unfolding',
+        description: 'Each panel is unfolded using specific workflows with configurable k-factor and bend radius for your material spec.',
+      },
+      {
+        label: 'Delivery',
+        description: 'You receive DWG flat patterns ready for laser cutting or press brake, plus STEP files for CNC verification.',
+      },
     ],
-    platform: 'Grasshopper',
+    platform: 'Submission-based',
+    eyebrow: 'Unfolding Service',
     status: 'Available',
     type: 'quote',
     image: null,
     price: 'Quote on request',
     pricingNote: 'Priced per project scope — panel count, geometry complexity, and output format',
-    ctaLabel: 'Request a Quote',
-    ctaLink: '/contact?tool=sheet-metal-unfolder&subject=Sheet+Metal+Unfolder+Quote',
-    secondaryCtaLabel: 'Discuss Your Project',
-    secondaryCtaLink: '/contact?tool=sheet-metal-unfolder&subject=Sheet+Metal+Unfolder+Discussion',
+    ctaLabel: 'Submit a Project',
+    ctaLink: '/contact?tool=sheet-metal-unfolding&subject=Sheet+Metal+Unfolding+Quote',
+    quoteTemplate:
+      "Hi, I'd like to submit a project for sheet metal unfolding.\n\nProject description:\nPanel count (approx):\nMaterial & thickness:\nRequired output format (DWG / STEP / other):\nDeadline (if any):",
+    output: 'DWG flat pattern · STEP',
+    tags: ['unfolding', 'sheet metal', 'fabrication', 'DWG', 'grasshopper', 'service'],
   },
   {
     slug: 'perforation-pattern-engine',
@@ -149,8 +173,11 @@ const tools: Tool[] = [
 ];
 
 /** Lookup by slug for the /tools/[slug] detail route. */
-export const toolsBySlug: Record<string, Tool> = Object.fromEntries(
-  tools.map(tl => [tl.slug, tl]),
-);
+export const toolsBySlug: Record<string, Tool> = {
+  ...Object.fromEntries(tools.map(tl => [tl.slug, tl])),
+  // The unfolding service's CTA passes ?tool=sheet-metal-unfolding, which the
+  // contact form resolves through this map.
+  'sheet-metal-unfolding': tools[0],
+};
 
 export default tools;

@@ -215,6 +215,7 @@ export const translations = {
       title:       'Build. Automate. Deploy.',
       desc:        'Computational tools and definitions — from Grasshopper logic to web apps that turn fabrication problems into repeatable, shippable systems.',
       whatItDoes:  'What it does',
+      howItWorks:  'How it works',
       commission:  'Commission a Project',
       getTool:     'Get This Tool',
       showcase:    'Showcase',
@@ -222,6 +223,7 @@ export const translations = {
       quoteOnRequest: 'Quote on Request',
       back:        'Back to Tools',
       platform:    'Platform',
+      output:      'Output',
       price:       'Price',
     },
     shop: {
@@ -545,6 +547,7 @@ export const translations = {
       title:       'Kur. Otomatikleştir. Yayınla.',
       desc:        'Hesaplamalı araçlar ve tanımlar — Grasshopper mantığından, fabrikasyon problemlerini tekrarlanabilir ve yayınlanabilir sistemlere dönüştüren web uygulamalarına.',
       whatItDoes:  'Ne işe yarar',
+      howItWorks:  'Nasıl çalışır',
       commission:  'Proje Talep Et',
       getTool:     'Bu Aracı Edin',
       showcase:    'Vitrin',
@@ -552,6 +555,7 @@ export const translations = {
       quoteOnRequest: 'Talebe Göre Fiyat',
       back:        'Araçlara Dön',
       platform:    'Platform',
+      output:      'Çıktı',
       price:       'Fiyat',
     },
     shop: {
@@ -875,6 +879,7 @@ export const translations = {
       title:       'ابنِ. أتمِت. انشُر.',
       desc:        'أدوات وتعريفات حوسبية — من منطق Grasshopper إلى تطبيقات الويب التي تحوّل مشكلات التصنيع إلى أنظمة قابلة للتكرار والنشر.',
       whatItDoes:  'ماذا يفعل',
+      howItWorks:  'كيف تعمل الخدمة',
       commission:  'اطلب مشروعاً',
       getTool:     'احصل على الأداة',
       showcase:    'عرض',
@@ -882,6 +887,7 @@ export const translations = {
       quoteOnRequest: 'عرض سعر عند الطلب',
       back:        'العودة إلى الأدوات',
       platform:    'المنصّة',
+      output:      'المُخرج',
       price:       'السعر',
     },
     shop: {
@@ -1082,7 +1088,26 @@ const VALUES: Record<Lang, ValueMap> = {
     'Custom': 'Özel',
     'Quote on request': 'Talep üzerine fiyat',
     'Request a Quote': 'Fiyat Teklifi İste',
-    'Discuss Your Project': 'Projenizi Görüşün',
+    'Submission-based': 'Gönderim Esaslı',
+    'Unfolding Service': 'Açınım Hizmeti',
+    'Submit a Project': 'Proje Gönder',
+    'DWG flat pattern · STEP': 'DWG açınım deseni · STEP',
+    'Sheet Metal Unfolding': 'Sac Metal Açınımı',
+    'Send your file. Receive fabrication-ready flat patterns.':
+      'Dosyanızı gönderin. Üretime hazır açınım desenlerini alın.',
+    'An unfolding service for complex sheet metal panels. Submit your files — DWG, PDF, image, or any usable reference — and receive accurate flat cutting patterns with correct k-factor and bend allowance applied. Output is DWG-ready for laser cutting and press brake, plus STEP for CNC verification.':
+      'Karmaşık sac metal paneller için bir açınım hizmeti. Dosyalarınızı gönderin — DWG, PDF, görsel veya kullanılabilir herhangi bir referans — doğru k-faktörü ve büküm payı uygulanmış hassas açınım kesim desenlerini alın. Çıktı, lazer kesim ve abkant için DWG olarak hazırdır; ayrıca CNC doğrulaması için STEP verilir.',
+    'Submit your files': 'Dosyalarınızı gönderin',
+    'Send your DWG, PDF, image, or any reference file via the quote form.':
+      'DWG, PDF, görsel veya herhangi bir referans dosyanızı teklif formu üzerinden gönderin.',
+    'Scope & quote': 'Kapsam ve teklif',
+    'A project-specific quote is prepared based on panel count, geometry complexity, and output requirements.':
+      'Panel sayısı, geometri karmaşıklığı ve çıktı gereksinimlerine göre projeye özel bir teklif hazırlanır.',
+    'Each panel is unfolded using specific workflows with configurable k-factor and bend radius for your material spec.':
+      'Her panel, malzeme şartnamenize göre ayarlanabilir k-faktörü ve büküm yarıçapıyla özel iş akışları kullanılarak açılır.',
+    'Delivery': 'Teslimat',
+    'You receive DWG flat patterns ready for laser cutting or press brake, plus STEP files for CNC verification.':
+      'Lazer kesim veya abkant için hazır DWG açınım desenlerini, ayrıca CNC doğrulaması için STEP dosyalarını alırsınız.',
     'Priced per project scope — panel count, geometry complexity, and output format':
       'Proje kapsamına göre fiyatlandırılır — panel sayısı, geometri karmaşıklığı ve çıktı formatı',
     // tool names
@@ -1501,7 +1526,26 @@ const VALUES: Record<Lang, ValueMap> = {
     'Custom': 'مخصّص',
     'Quote on request': 'عرض سعر عند الطلب',
     'Request a Quote': 'اطلب عرض سعر',
-    'Discuss Your Project': 'ناقش مشروعك',
+    'Submission-based': 'قائم على الإرسال',
+    'Unfolding Service': 'خدمة الفرد',
+    'Submit a Project': 'أرسل مشروعاً',
+    'DWG flat pattern · STEP': 'نمط مفرود DWG · STEP',
+    'Sheet Metal Unfolding': 'فرد الصفائح المعدنية',
+    'Send your file. Receive fabrication-ready flat patterns.':
+      'أرسل ملفك. استلم أنماطاً مفرودة جاهزة للتصنيع.',
+    'An unfolding service for complex sheet metal panels. Submit your files — DWG, PDF, image, or any usable reference — and receive accurate flat cutting patterns with correct k-factor and bend allowance applied. Output is DWG-ready for laser cutting and press brake, plus STEP for CNC verification.':
+      'خدمة فرد لألواح الصفائح المعدنية المعقّدة. أرسل ملفاتك — DWG أو PDF أو صورة أو أي مرجع قابل للاستخدام — واستلم أنماط قصّ مفرودة دقيقة مع تطبيق معامل K وبدل الثني الصحيحين. المخرجات جاهزة بصيغة DWG للقصّ بالليزر والمكبس، إضافةً إلى STEP للتحقق على CNC.',
+    'Submit your files': 'أرسل ملفاتك',
+    'Send your DWG, PDF, image, or any reference file via the quote form.':
+      'أرسل ملف DWG أو PDF أو صورة أو أي ملف مرجعي عبر نموذج طلب عرض السعر.',
+    'Scope & quote': 'النطاق وعرض السعر',
+    'A project-specific quote is prepared based on panel count, geometry complexity, and output requirements.':
+      'يُعدّ عرض سعر خاص بالمشروع بناءً على عدد الألواح وتعقيد الهندسة ومتطلبات المخرجات.',
+    'Each panel is unfolded using specific workflows with configurable k-factor and bend radius for your material spec.':
+      'يُفرد كل لوح باستخدام مسارات عمل مخصّصة مع معامل K ونصف قطر ثني قابلين للضبط وفق مواصفات مادتك.',
+    'Delivery': 'التسليم',
+    'You receive DWG flat patterns ready for laser cutting or press brake, plus STEP files for CNC verification.':
+      'تستلم أنماطاً مفرودة بصيغة DWG جاهزة للقصّ بالليزر أو المكبس، إضافةً إلى ملفات STEP للتحقق على CNC.',
     'Priced per project scope — panel count, geometry complexity, and output format':
       'يُسعّر حسب نطاق المشروع — عدد الألواح وتعقيد الهندسة وصيغة المخرجات',
     // tool names
