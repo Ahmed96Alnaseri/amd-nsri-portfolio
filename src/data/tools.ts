@@ -1,4 +1,10 @@
-export type ToolPlatform = 'Grasshopper' | 'Web' | 'Software' | 'Web + Grasshopper' | 'Submission-based';
+export type ToolPlatform =
+  | 'Grasshopper'
+  | 'Web'
+  | 'Software'
+  | 'Web + Grasshopper'
+  | 'Submission-based'
+  | 'Grasshopper · Service';
 export type ToolStatus = 'Live' | 'Beta' | 'Coming Soon' | 'Available';
 export type ToolType = 'showcase' | 'product' | 'quote';
 
@@ -31,6 +37,23 @@ export interface Tool {
   ctaLink?: string;
   /** ctaLink points outside the app — open it in a new tab. */
   ctaExternal?: boolean;
+  /** Render the primary CTA filled rather than outlined. */
+  ctaFilled?: boolean;
+  /** Optional second CTA, rendered outlined beneath the primary one. */
+  ctaSecondaryLabel?: string;
+  ctaSecondaryLink?: string;
+  /** Replaces the whole eyebrow line, including the trailing type label. */
+  eyebrowFull?: string;
+  /** Replaces the "What it does" heading. */
+  featuresHeading?: string;
+  /** Feature list split into labelled tiers; replaces `features` when set. */
+  featureGroups?: { label: string; items: string[] }[];
+  /** Extra sidebar rows with their own labels, inserted before the price row. */
+  specRows?: { label: string; value: string }[];
+  /** Replaces the price row's value. */
+  priceLabelOverride?: string;
+  /** Subject-specific contact templates; first match on the ?subject= param wins. */
+  quoteTemplates?: { match: string; template: string }[];
   /** Single badge replacing the card's price + status pair. */
   cardBadge?: string;
   /** Drop the sidebar's status row (nothing to announce for a service or a live web tool). */
@@ -135,19 +158,65 @@ const tools: Tool[] = [
   {
     slug: 'panel-type-optimizer',
     name: 'Panel Type Optimizer',
-    description: 'Groups facade panels by tolerance to minimize unique fabrication types',
+    description:
+      'Reduce unique panel types across a complex facade. The free Grasshopper script handles basic tolerance-based grouping. The professional service covers full model rationalization — cleaned 3D geometry, reduced panel schedule, and Excel output with panel poses.',
     detail:
       'A Grasshopper tool that analyzes all facade panels and groups similar geometries by configurable area tolerance. Reducing unique panel types cuts fabrication cost and shortens production lead time without compromising design intent.',
-    features: [
-      'Groups panels by configurable area tolerance thresholds',
-      'Visualizes unique type distribution across the facade',
-      'Outputs a rationalized panel schedule ready for fabrication',
+    features: [],
+    featureGroups: [
+      {
+        label: 'Free — Grasshopper Script',
+        items: [
+          'Groups panels by area similarity using a 3-value tolerance system',
+          'Minimizes unique fabrication types across the full panel set',
+          'Outputs grouped panel IDs ready for shop drawing annotation',
+          'Download and run on your own model in Grasshopper',
+        ],
+      },
+      {
+        label: 'Professional Service',
+        items: [
+          'Send your 3D facade model (Rhino · STEP · OBJ)',
+          'Full rationalization pass with custom tolerance tuning per project',
+          'Cleaned 3D model returned with rationalized panel geometry',
+          'Excel schedule with panel type, dimensions, quantity, and poses',
+        ],
+      },
     ],
-    platform: 'Grasshopper',
+    featuresHeading: 'What you get',
+    platform: 'Grasshopper · Service',
+    platformLabel: 'Grasshopper',
+    eyebrowFull: 'Grasshopper · Free + Pro Service',
     status: 'Beta',
-    type: 'showcase',
+    hideStatus: true,
+    type: 'product',
     image: null,
-    price: null,
+    price: 'Free script · Pro on request',
+    cardBadge: 'FREE + PRO SERVICE',
+    specRows: [
+      { label: 'Free output', value: 'Grouped panel IDs · GH script' },
+      { label: 'Pro output', value: '3D model · Excel with poses' },
+    ],
+    priceLabelOverride: 'Script free · Service on request',
+    ctaLabel: 'Download Free Script',
+    ctaLink: '/contact?tool=panel-type-optimizer&subject=Free+Script+Download',
+    ctaFilled: true,
+    ctaSecondaryLabel: 'Request Pro Service',
+    ctaSecondaryLink: '/contact?tool=panel-type-optimizer&subject=Panel+Optimizer+Pro+Service',
+    pricingNote:
+      'Pro service: send your model, receive rationalized geometry + Excel panel schedule.',
+    quoteTemplates: [
+      {
+        match: 'Free Script',
+        template:
+          "Hi, I'd like to download the Panel Type Optimizer Grasshopper script.\n\nProject context (optional):\nNumber of panels (approx):\nGrasshopper version:",
+      },
+      {
+        match: 'Pro Service',
+        template:
+          "Hi, I'd like to request the professional Panel Type Optimizer service.\n\nProject description:\nNumber of panels (approx):\nFile format available (Rhino / STEP / OBJ):\nDeadline (if any):",
+      },
+    ],
   },
   {
     slug: 'surface-punch-mapper',

@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import { toolsBySlug, type ToolStatus } from '@/data/tools';
@@ -35,7 +36,9 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       <Link href="/tools" className="td-back">← {t('tools.back')}</Link>
 
       <p className="td-eyebrow">
-        {tv(tool.eyebrow ?? tool.platform)} · {isQuote ? t('tools.quoteOnRequest') : isProduct ? t('tools.product') : t('tools.showcase')}
+        {tool.eyebrowFull
+          ? tv(tool.eyebrowFull)
+          : <>{tv(tool.eyebrow ?? tool.platform)} · {isQuote ? t('tools.quoteOnRequest') : isProduct ? t('tools.product') : t('tools.showcase')}</>}
       </p>
       <h1 className="td-title">{tv(tool.name)}</h1>
       <p className="td-lede">{tv(tool.detail)}</p>
@@ -69,8 +72,26 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       <div className="td-grid">
         {/* What it does */}
         <div className="td-main">
-          <h2 className="td-h2">{tool.steps ? t('tools.howItWorks') : t('tools.whatItDoes')}</h2>
-          {tool.steps ? (
+          <h2 className="td-h2">
+            {tool.featuresHeading
+              ? tv(tool.featuresHeading)
+              : tool.steps ? t('tools.howItWorks') : t('tools.whatItDoes')}
+          </h2>
+          {tool.featureGroups ? (
+            tool.featureGroups.map(group => (
+              <div key={group.label} className="td-tier">
+                <p className="td-tier-label">{tv(group.label)}</p>
+                <ul className="td-features">
+                  {group.items.map(item => (
+                    <li key={item} className="td-feature">
+                      <span className="td-feature-mark" aria-hidden="true" />
+                      {tv(item)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          ) : tool.steps ? (
             <ol className="td-features td-steps">
               {tool.steps.map((s, i) => (
                 <li key={s.label} className="td-feature td-step">
@@ -119,6 +140,15 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                 </div>
               </>
             )}
+            {tool.specRows?.map(row => (
+              <React.Fragment key={row.label}>
+                <div className="td-spec-sep" />
+                <div className="td-spec-row">
+                  <span className="td-spec-lbl">{tv(row.label)}</span>
+                  <span className="td-spec-val">{tv(row.value)}</span>
+                </div>
+              </React.Fragment>
+            ))}
             {!tool.hideStatus && (
               <>
                 <div className="td-spec-sep" />
@@ -133,7 +163,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                 <div className="td-spec-sep" />
                 <div className="td-spec-row">
                   <span className="td-spec-lbl">{t('tools.price')}</span>
-                  <span className="td-spec-val td-spec-val--price">{tv(tool.price)}</span>
+                  <span className="td-spec-val td-spec-val--price">{tv(tool.priceLabelOverride ?? tool.price)}</span>
                 </div>
               </>
             )}
@@ -142,12 +172,22 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
           {tool.ctaLink ? (
             <div className="td-cta">
               {tool.ctaExternal ? (
-                <a href={tool.ctaLink} target="_blank" rel="noopener noreferrer" className="td-btn">
+                <a
+                  href={tool.ctaLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`td-btn${tool.ctaFilled ? ' td-btn--fill' : ''}`}
+                >
                   {tv(tool.ctaLabel ?? '')} →
                 </a>
               ) : (
-                <Link href={tool.ctaLink} className="td-btn">
+                <Link href={tool.ctaLink} className={`td-btn${tool.ctaFilled ? ' td-btn--fill' : ''}`}>
                   {tv(tool.ctaLabel ?? '')} →
+                </Link>
+              )}
+              {tool.ctaSecondaryLabel && tool.ctaSecondaryLink && (
+                <Link href={tool.ctaSecondaryLink} className="td-btn">
+                  {tv(tool.ctaSecondaryLabel)} →
                 </Link>
               )}
               {tool.pricingNote && <p className="td-cta-note">{tv(tool.pricingNote)}</p>}
@@ -341,6 +381,17 @@ const baseCss = `
   }
   .td-btn:hover { background: var(--color-accent); color: var(--color-bg); }
   .td-btn:focus-visible { outline: 1px solid var(--color-accent); outline-offset: 3px; }
+  .td-btn--fill { background: var(--color-accent); color: var(--color-bg); }
+  .td-btn--fill:hover { background: transparent; color: var(--color-accent); }
+
+  /* tiered feature groups — free / pro */
+  .td-tier + .td-tier { margin-top: 36px; }
+  .td-tier-label {
+    margin: 0 0 14px;
+    font-family: var(--font-body); font-size: 11px;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--color-accent);
+  }
 
   /* quote CTA pair + fine print */
   .td-cta { display: flex; flex-direction: column; gap: 12px; }

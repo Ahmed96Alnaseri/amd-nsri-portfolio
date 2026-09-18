@@ -169,11 +169,15 @@ export default function ContactPage() {
   // Arriving from a tool page (/contact?tool=…) seeds the enquiry with that
   // tool's name and the details a quote actually needs.
   useEffect(() => {
-    const slug = new URLSearchParams(window.location.search).get('tool');
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('tool');
     if (!slug) return;
+    const subject = params.get('subject') ?? '';
     const tool = toolsBySlug[slug];
     const name = tool?.name ?? slug;
-    const template = tool?.quoteTemplate
+    // A tool can offer several enquiry types; the ?subject= param picks between them.
+    const template = tool?.quoteTemplates?.find(qt => subject.includes(qt.match))?.template
+      ?? tool?.quoteTemplate
       ?? `Hi, I'm interested in the ${name} tool. Here's what I need:\n\n[Project description]\n\nPanel count (approx):\nGeometry type:\nOutput needed (DXF / PDF / other):`;
     setForm(f => ({
       ...f,

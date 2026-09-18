@@ -1094,6 +1094,39 @@ const VALUES: Record<Lang, ValueMap> = {
     'Submission-based': 'Gönderim Esaslı',
     'Unfolding Service': 'Açınım Hizmeti',
     'Open Tool': 'Aracı Aç',
+    'What you get': 'Ne alırsınız',
+    'Grasshopper · Free + Pro Service': 'Grasshopper · Ücretsiz + Pro Hizmet',
+    'FREE + PRO SERVICE': 'ÜCRETSİZ + PRO HİZMET',
+    'Free — Grasshopper Script': 'Ücretsiz — Grasshopper Script',
+    'Professional Service': 'Profesyonel Hizmet',
+    'Free script · Pro on request': 'Ücretsiz script · Pro talep üzerine',
+    'Script free · Service on request': 'Script ücretsiz · Hizmet talep üzerine',
+    'Free output': 'Ücretsiz çıktı',
+    'Pro output': 'Pro çıktı',
+    'Grouped panel IDs · GH script': 'Gruplanmış panel kimlikleri · GH script',
+    '3D model · Excel with poses': '3B model · pozlu Excel',
+    'Download Free Script': 'Ücretsiz Script İndir',
+    'Request Pro Service': 'Pro Hizmet Talep Et',
+    'Pro service: send your model, receive rationalized geometry + Excel panel schedule.':
+      'Pro hizmet: modelinizi gönderin, rasyonalize edilmiş geometri + Excel panel listesi alın.',
+    'Reduce unique panel types across a complex facade. The free Grasshopper script handles basic tolerance-based grouping. The professional service covers full model rationalization — cleaned 3D geometry, reduced panel schedule, and Excel output with panel poses.':
+      'Karmaşık bir cephedeki benzersiz panel tiplerini azaltın. Ücretsiz Grasshopper script temel tolerans tabanlı gruplamayı yapar. Profesyonel hizmet ise tam model rasyonalizasyonunu kapsar — temizlenmiş 3B geometri, azaltılmış panel listesi ve panel pozlarını içeren Excel çıktısı.',
+    'Groups panels by area similarity using a 3-value tolerance system':
+      'Panelleri 3 değerli tolerans sistemiyle alan benzerliğine göre gruplar',
+    'Minimizes unique fabrication types across the full panel set':
+      'Panel setinin tamamında benzersiz üretim tiplerini en aza indirir',
+    'Outputs grouped panel IDs ready for shop drawing annotation':
+      'İmalat çizimi notlandırmasına hazır gruplanmış panel kimlikleri üretir',
+    'Download and run on your own model in Grasshopper':
+      'İndirin ve Grasshopper içinde kendi modelinizde çalıştırın',
+    'Send your 3D facade model (Rhino · STEP · OBJ)':
+      '3B cephe modelinizi gönderin (Rhino · STEP · OBJ)',
+    'Full rationalization pass with custom tolerance tuning per project':
+      'Projeye özel tolerans ayarıyla tam rasyonalizasyon geçişi',
+    'Cleaned 3D model returned with rationalized panel geometry':
+      'Rasyonalize edilmiş panel geometrisiyle temizlenmiş 3B model teslim edilir',
+    'Excel schedule with panel type, dimensions, quantity, and poses':
+      'Panel tipi, ölçüler, adet ve pozları içeren Excel listesi',
     'Web — runs in browser': 'Web — tarayıcıda çalışır',
     'Free · Live': 'Ücretsiz · Yayında',
     'Any image (JPG · PNG · GIF)': 'Herhangi bir görsel (JPG · PNG · GIF)',
@@ -1547,6 +1580,39 @@ const VALUES: Record<Lang, ValueMap> = {
     'Submission-based': 'قائم على الإرسال',
     'Unfolding Service': 'خدمة الفرد',
     'Open Tool': 'افتح الأداة',
+    'What you get': 'ما الذي تحصل عليه',
+    'Grasshopper · Free + Pro Service': 'Grasshopper · مجاني + خدمة احترافية',
+    'FREE + PRO SERVICE': 'مجاني + خدمة احترافية',
+    'Free — Grasshopper Script': 'مجاني — سكربت Grasshopper',
+    'Professional Service': 'الخدمة الاحترافية',
+    'Free script · Pro on request': 'سكربت مجاني · الاحترافي عند الطلب',
+    'Script free · Service on request': 'السكربت مجاني · الخدمة عند الطلب',
+    'Free output': 'المخرج المجاني',
+    'Pro output': 'المخرج الاحترافي',
+    'Grouped panel IDs · GH script': 'معرّفات ألواح مجمّعة · سكربت GH',
+    '3D model · Excel with poses': 'نموذج ثلاثي الأبعاد · Excel مع الأوضاع',
+    'Download Free Script': 'حمّل السكربت المجاني',
+    'Request Pro Service': 'اطلب الخدمة الاحترافية',
+    'Pro service: send your model, receive rationalized geometry + Excel panel schedule.':
+      'الخدمة الاحترافية: أرسل نموذجك، واستلم هندسة مرشّدة + جدول ألواح بصيغة Excel.',
+    'Reduce unique panel types across a complex facade. The free Grasshopper script handles basic tolerance-based grouping. The professional service covers full model rationalization — cleaned 3D geometry, reduced panel schedule, and Excel output with panel poses.':
+      'قلّل أنواع الألواح الفريدة عبر واجهة معقّدة. يتولّى سكربت Grasshopper المجاني التجميع الأساسي القائم على التفاوت. أما الخدمة الاحترافية فتغطي ترشيد النموذج بالكامل — هندسة ثلاثية الأبعاد منقّاة، وجدول ألواح مختصر، ومخرجات Excel تتضمّن أوضاع الألواح.',
+    'Groups panels by area similarity using a 3-value tolerance system':
+      'يجمّع الألواح حسب تشابه المساحة باستخدام نظام تفاوت ثلاثي القيم',
+    'Minimizes unique fabrication types across the full panel set':
+      'يقلّل أنواع التصنيع الفريدة عبر مجموعة الألواح كاملة',
+    'Outputs grouped panel IDs ready for shop drawing annotation':
+      'يُخرج معرّفات ألواح مجمّعة جاهزة للتأشير على مخططات التنفيذ',
+    'Download and run on your own model in Grasshopper':
+      'حمّله وشغّله على نموذجك داخل Grasshopper',
+    'Send your 3D facade model (Rhino · STEP · OBJ)':
+      'أرسل نموذج واجهتك ثلاثي الأبعاد (Rhino · STEP · OBJ)',
+    'Full rationalization pass with custom tolerance tuning per project':
+      'مرحلة ترشيد كاملة مع ضبط تفاوت مخصّص لكل مشروع',
+    'Cleaned 3D model returned with rationalized panel geometry':
+      'يُعاد نموذج ثلاثي الأبعاد منقّى بهندسة ألواح مرشّدة',
+    'Excel schedule with panel type, dimensions, quantity, and poses':
+      'جدول Excel يتضمّن نوع اللوح والأبعاد والكمية والأوضاع',
     'Web — runs in browser': 'ويب — يعمل في المتصفّح',
     'Free · Live': 'مجاني · مباشر',
     'Any image (JPG · PNG · GIF)': 'أي صورة (JPG · PNG · GIF)',
