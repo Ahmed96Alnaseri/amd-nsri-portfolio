@@ -86,6 +86,32 @@ export type ToolPlatformFilter = (typeof TOOL_PLATFORMS)[number];
 
 const tools: Tool[] = [
   {
+    slug: 'perforation-pattern-engine',
+    name: 'IPunch',
+    description: 'Upload an image. Get a perforated panel pattern with live DXF export.',
+    detail:
+      'IPunch converts any image into a fabrication-ready perforation pattern. Upload a photo, drawing, or graphic — the tool maps pixel brightness to hole density across a panel grid. Adjust hole radius, spacing, pattern type (grid or hex), and open-area ratio live. Export as DXF for AutoCAD and CNC directly from the browser. No installation, no account.',
+    features: [
+      'Maps pixel brightness to hole density across a panel grid',
+      'Live control of hole radius, spacing, pattern type, and open-area ratio',
+      'DXF export for AutoCAD and CNC straight from the browser',
+    ],
+    platform: 'Web',
+    platformLabel: 'Web — runs in browser',
+    status: 'Live',
+    type: 'product',
+    image: null,
+    price: 'Free',
+    cardBadge: 'Free · Live',
+    hideStatus: true,
+    ctaLabel: 'Open Tool',
+    ctaLink: '/ipunch.html',
+    ctaExternal: true,
+    input: 'Any image (JPG · PNG · GIF)',
+    output: 'DXF · SVG · PNG',
+    tags: ['perforation', 'web', 'DXF', 'image', 'facade', 'panel', 'free'],
+  },
+  {
     slug: 'sheet-metal-unfolder',
     name: 'Sheet Metal Unfolding',
     description: 'Send your file. Receive fabrication-ready flat patterns.',
@@ -128,32 +154,6 @@ const tools: Tool[] = [
     embedTitle: 'Sheet Metal Unfolder — interactive demo',
     output: 'DWG flat pattern · STEP',
     tags: ['unfolding', 'sheet metal', 'fabrication', 'DWG', 'grasshopper', 'service'],
-  },
-  {
-    slug: 'perforation-pattern-engine',
-    name: 'IPunch',
-    description: 'Upload an image. Get a perforated panel pattern with live DXF export.',
-    detail:
-      'IPunch converts any image into a fabrication-ready perforation pattern. Upload a photo, drawing, or graphic — the tool maps pixel brightness to hole density across a panel grid. Adjust hole radius, spacing, pattern type (grid or hex), and open-area ratio live. Export as DXF for AutoCAD and CNC directly from the browser. No installation, no account.',
-    features: [
-      'Maps pixel brightness to hole density across a panel grid',
-      'Live control of hole radius, spacing, pattern type, and open-area ratio',
-      'DXF export for AutoCAD and CNC straight from the browser',
-    ],
-    platform: 'Web',
-    platformLabel: 'Web — runs in browser',
-    status: 'Live',
-    type: 'product',
-    image: null,
-    price: 'Free',
-    cardBadge: 'Free · Live',
-    hideStatus: true,
-    ctaLabel: 'Open Tool',
-    ctaLink: '/ipunch.html',
-    ctaExternal: true,
-    input: 'Any image (JPG · PNG · GIF)',
-    output: 'DXF · SVG · PNG',
-    tags: ['perforation', 'web', 'DXF', 'image', 'facade', 'panel', 'free'],
   },
   {
     slug: 'panel-type-optimizer',
@@ -222,7 +222,7 @@ const tools: Tool[] = [
     slug: 'surface-punch-mapper',
     name: 'NESTRI',
     description:
-      'Sheet nesting for fabrication. Paste your panel schedule — pose, width, length, quantity — and get an optimized nesting layout that minimizes material waste and maximizes sheet utilization. Export the nested sheets as DXF, ready for CNC cutting.',
+      'Paste your panel schedule and get an optimized nesting layout. Minimizes sheet waste and exports DXF for CNC cutting.',
     detail:
       'Sheet nesting for fabrication. Paste your panel schedule — pose, width, length, quantity — and get an optimized nesting layout that minimizes material waste and maximizes sheet utilization. Export the nested sheets as DXF, ready for CNC cutting.',
     features: [
@@ -287,7 +287,7 @@ export const toolsBySlug: Record<string, Tool> = {
   ...Object.fromEntries(tools.map(tl => [tl.slug, tl])),
   // The unfolding service's CTA passes ?tool=sheet-metal-unfolding, which the
   // contact form resolves through this map.
-  'sheet-metal-unfolding': tools[0],
+  'sheet-metal-unfolding': tools.find(tl => tl.slug === 'sheet-metal-unfolder')!,
 };
 
 export default tools;
