@@ -1,0 +1,2047 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NESTRI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#0d0d0b;
+  --ground-2:#111110;
+  --card:rgba(255,255,255,.035);
+  --line:rgba(255,255,255,.09);
+  --line-soft:rgba(255,255,255,.055);
+  --line-copper:rgba(184,149,106,.28);
+  --ink:#ece7dd;
+  --ink-dim:#9c948a;
+  --ink-faint:#6a645c;
+  --ink-ghost:#48433c;
+  --copper:#b8956a;
+  --copper-bright:#d8bb92;
+  --copper-deep:#8c6b46;
+  --good:#7fa06a;
+  --crit:#d4705a;
+  --fs-xs:10px;
+  --fs-sm:11.5px;
+  --fs-md:13px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:var(--fs-md);line-height:1.5;font-variant-numeric:tabular-nums;
+}
+.wrap{max-width:1720px;margin:0 auto;padding-inline:clamp(16px,2.2vw,34px);padding-block:0 28px}
+
+/* ---------------- file stamp + masthead ---------------- */
+.filebar{
+  padding-block:16px 12px;border-bottom:1px solid var(--line);
+  font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);
+}
+.filebar b{color:var(--copper);font-weight:500}
+.mast{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-block:22px 18px}
+.eyebrow{margin:0 0 6px;font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:var(--copper)}
+.eyebrow::before{content:"— ";color:var(--copper-deep)}
+.markrow{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
+h1{
+  font-family:"DM Serif Display",Georgia,serif;font-weight:400;margin:0;
+  font-size:clamp(34px,4.2vw,46px);line-height:.95;letter-spacing:.01em;
+}
+h1 em{font-style:italic;color:var(--copper)}
+.markmeta{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+.projbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.projbar .plabel{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+.projbar input[type=text]{width:220px;border-bottom:1px solid var(--line)}
+
+/* ---------------- run bar ---------------- */
+.runbar{
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  border:1px solid var(--line);background:var(--card);padding:14px 16px;
+}
+.vrule{width:1px;height:34px;background:var(--line)}
+.runbar .field{min-width:104px}
+.runstat{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--copper)}
+.runstat.idle{color:var(--ink-faint)}
+.runstat.err{color:var(--crit)}
+.runstat.warn{color:var(--copper-bright)}
+.btn-primary.pending{box-shadow:0 0 0 1px var(--ground),0 0 0 3px rgba(184,149,106,.35)}
+
+/* ---------------- three-column body ---------------- */
+.cols{
+  display:grid;gap:16px;margin-top:16px;align-items:start;
+  grid-template-columns:320px minmax(0,1.08fr) minmax(0,1fr);
+  grid-template-areas:"inputs report report" "inputs table view";
+}
+.cols>*{min-width:0}
+.col-inputs{grid-area:inputs;display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-content:start}
+.col-report{grid-area:report}
+.col-table{grid-area:table;display:flex;flex-direction:column}
+.col-view{grid-area:view}
+
+/* ---------------- cards ---------------- */
+.card{position:relative;min-width:0;background:var(--card);border:1px solid var(--line);padding:14px 14px 12px}
+.card::before,.card::after{content:"";position:absolute;width:9px;height:9px;pointer-events:none;border-color:var(--line-copper);border-style:solid}
+.card::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.card::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+.cardhead{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.cardhead .num{color:var(--copper)}
+.badge{margin-left:auto;color:var(--copper);border:1px solid var(--line-copper);padding:2px 7px;letter-spacing:.14em;font-size:9px;white-space:nowrap}
+
+/* ---------------- tables ---------------- */
+.tscroll{overflow:auto}
+.rows{max-height:300px}
+.rows.short{max-height:230px}
+table{border-collapse:collapse;width:100%;font-size:var(--fs-sm)}
+thead th{
+  text-align:right;font-weight:400;color:var(--ink-faint);font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;padding:0 6px 7px;border-bottom:1px solid var(--line);white-space:nowrap;
+  position:sticky;top:0;z-index:1;background:#141310;
+}
+thead th:first-child{text-align:left}
+tbody td{padding:3px 6px;border-bottom:1px solid var(--line-soft);text-align:right;white-space:nowrap}
+tbody td:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:0}
+tbody tr.row-off td{opacity:.42}
+.idx{width:26px;color:var(--ink-ghost);font-size:9.5px}
+.col-lbl{min-width:76px}
+.col-num{min-width:58px;width:16%}
+.col-act{width:26px}
+.col-inputs .idx{width:20px}
+.col-inputs .col-lbl{min-width:70px}
+.col-unl{width:48px;font-size:8px;letter-spacing:.04em}
+.col-inputs .col-num{min-width:40px}
+.col-inputs input[type=text],.col-inputs input[type=number]{font-size:11px}
+.col-inputs thead th{padding:0 4px 7px;letter-spacing:.1em}
+.col-inputs tbody td{padding:3px 4px}
+input[type=text],input[type=number]{
+  width:100%;background:transparent;border:0;border-bottom:1px solid transparent;color:var(--ink);
+  font:inherit;font-size:var(--fs-sm);padding:2px 2px;text-align:right;border-radius:0;font-variant-numeric:tabular-nums;
+}
+input[type=text]{text-align:left}
+input[type=text]:hover,input[type=number]:hover{border-bottom-color:var(--line)}
+input[type=text]:focus,input[type=number]:focus{outline:none;border-bottom-color:var(--copper);background:rgba(184,149,106,.06)}
+input[type=text]:disabled,input[type=number]:disabled{color:var(--ink-faint)}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.tgl{appearance:none;-webkit-appearance:none;width:26px;height:15px;border:1px solid var(--line);background:rgba(255,255,255,.05);position:relative;cursor:pointer;vertical-align:middle;padding:0}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:9px;height:9px;background:var(--ink-faint);transition:.14s}
+.tgl:checked{border-color:var(--line-copper);background:rgba(184,149,106,.16)}
+.tgl:checked::after{left:13px;background:var(--copper)}
+.tgl:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
+.xbtn{background:none;border:0;color:var(--ink-ghost);cursor:pointer;font:inherit;font-size:13px;line-height:1;padding:2px 3px}
+.xbtn:hover{color:var(--crit)}
+
+/* ---------------- buttons + fields ---------------- */
+.btn{
+  font:inherit;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;background:transparent;
+  color:var(--ink-dim);border:1px solid var(--line);padding:7px 12px;cursor:pointer;transition:.15s;
+}
+.btn:hover:not(:disabled){color:var(--copper-bright);border-color:var(--line-copper);background:rgba(184,149,106,.07)}
+.btn:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
+.btn:disabled{opacity:.3;cursor:default}
+.btn-primary{background:var(--copper);border-color:var(--copper);color:#14120f;font-weight:500;padding:11px 24px;letter-spacing:.2em}
+.btn-primary:hover:not(:disabled){background:var(--copper-bright);border-color:var(--copper-bright);color:#14120f}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.field{display:flex;flex-direction:column;gap:3px}
+.field label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.field input[type=number]{border-bottom:1px solid var(--line);text-align:left;font-size:var(--fs-md)}
+.tglwrap{display:flex;align-items:center;gap:8px;padding-top:4px}
+.tglwrap span{font-size:var(--fs-sm);color:var(--ink-dim)}
+.status{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);min-height:14px}
+.status.ok{color:var(--good)}
+.status.err{color:var(--crit)}
+
+/* ---------------- paste blocks ---------------- */
+details{margin-top:10px;border-top:1px solid var(--line);padding-top:9px}
+summary{
+  display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";color:var(--copper);margin-right:2px}
+details[open] summary::before{content:"–"}
+summary:hover{color:var(--copper)}
+.tag{margin-left:auto;color:var(--copper);letter-spacing:.16em}
+.zoom{border:1px solid var(--line);background:none;color:var(--ink-faint);cursor:pointer;padding:3px 5px;line-height:0}
+.zoom:hover{color:var(--copper);border-color:var(--line-copper)}
+.zoom svg{display:block}
+textarea{
+  width:100%;margin-top:8px;min-height:74px;background:rgba(0,0,0,.28);border:1px solid var(--line);
+  color:var(--ink);font:inherit;font-size:var(--fs-sm);padding:8px;resize:vertical;
+}
+textarea.tall{min-height:280px}
+textarea:focus{outline:none;border-color:var(--line-copper)}
+
+/* ---------------- report ---------------- */
+.sechead{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
+.sechead .num{color:var(--copper);font-size:var(--fs-sm);letter-spacing:.1em}
+.sechead .title{font-size:var(--fs-sm);letter-spacing:.24em;text-transform:uppercase}
+.sechead .note{margin-left:auto;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.sechead .note.stale{color:var(--copper-bright)}
+.sechead .note.stale::after{content:" · out of date"}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
+.stat{padding:13px 15px;display:grid;gap:5px;align-content:start;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat .k{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
+.stat .v{font-family:"DM Serif Display",Georgia,serif;font-size:34px;line-height:1;color:var(--ink)}
+.stat .v small{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-dim);margin-left:3px}
+.stat .v.empty{font-size:20px;color:var(--ink-ghost)}
+.stat.accent .v{color:var(--copper-bright)}
+.stat .v.short{color:var(--crit)}
+.stat .sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.stat .sub.short{color:var(--crit)}
+.meter{height:3px;background:rgba(255,255,255,.08);margin-top:2px}
+.meter i{display:block;height:100%;background:var(--copper)}
+
+.band{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--line);padding:12px 14px;margin-top:14px;font-size:var(--fs-sm);line-height:1.6}
+.band .tagw{flex:none;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);padding-top:2px}
+.band.ok{border-color:rgba(127,160,106,.35);background:rgba(127,160,106,.06)}
+.band.ok .tagw{color:var(--good)}
+.band.short{border-color:rgba(212,112,90,.4);background:rgba(212,112,90,.07)}
+.band.short .tagw{color:var(--crit)}
+.band .txt{color:var(--ink-dim)}
+.band .txt b{color:var(--ink);font-weight:400}
+.band .btn{flex:none;margin-left:auto}
+.shortlist{margin-top:10px;border:1px solid var(--line);padding:10px 12px;font-size:var(--fs-sm);color:var(--ink-dim);display:flex;flex-wrap:wrap;gap:6px 18px}
+
+.subhead{display:flex;align-items:baseline;gap:12px;margin:16px 0 8px}
+.subhead .title{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.subhead .note{margin-left:auto;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.repbox{position:relative;border:1px solid var(--line);min-height:220px;max-height:440px;overflow:auto;flex:1}
+.repbox::after{content:"";position:absolute;bottom:-1px;right:-1px;width:9px;height:9px;border:solid var(--line-copper);border-width:0 1px 1px 0;pointer-events:none}
+.rep thead th{padding:9px 9px;background:#131210;letter-spacing:.1em}
+.rep tbody td{padding:7px 9px}
+.rep tfoot td{padding:9px 9px;border-top:1px solid var(--line-copper);text-align:right;color:var(--copper-bright)}
+.rep tfoot td:first-child{text-align:left;letter-spacing:.14em;text-transform:uppercase;font-size:var(--fs-xs)}
+.out{color:var(--crit);font-size:9px;letter-spacing:.14em;margin-left:6px}
+.bar{display:inline-block;width:34px;height:5px;background:rgba(255,255,255,.08);vertical-align:middle;margin-left:8px}
+.bar i{display:block;height:100%;background:var(--copper)}
+
+/* ---------------- viewer ---------------- */
+.viewer{border:1px solid var(--line);background:var(--ground-2);padding:12px}
+.viewhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.viewhead b{color:var(--copper);font-weight:500}
+.viewhead .u{color:var(--ink)}
+.stage{height:clamp(240px,52vh,560px);display:flex;align-items:center;justify-content:center}
+.stage svg{display:block;width:100%;height:100%}
+.ghost{width:100%;height:100%;border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink-ghost);font-size:var(--fs-sm);letter-spacing:.2em;text-transform:uppercase}
+.viewfoot{margin-top:9px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:9.5px;letter-spacing:.1em;color:var(--ink-faint)}
+.viewfoot span{white-space:nowrap}
+.viewctl{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap}
+.viewctl .btn{padding:6px 11px}
+.counter{font-size:9.5px;letter-spacing:.16em;color:var(--ink-dim);min-width:52px;text-align:center}
+input[type=range]{flex:1;min-width:90px;-webkit-appearance:none;appearance:none;height:3px;background:rgba(255,255,255,.14);border:0;padding:0;cursor:pointer}
+input[type=range]:focus{outline:none}
+input[type=range]:focus-visible{outline:1px solid var(--copper);outline-offset:6px}
+input[type=range]:disabled{opacity:.4;cursor:default}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:12px;height:12px;background:var(--copper);border:0;cursor:pointer}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;background:var(--copper);border:0;border-radius:0;cursor:pointer}
+
+/* ---------------- empty states ---------------- */
+.empty{display:grid;place-items:center;text-align:center;gap:6px;padding:26px 16px;color:var(--ink-faint);font-size:var(--fs-sm)}
+.empty .h{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.empty .h::before{content:"— "}
+.empty p{margin:0;max-width:34ch;line-height:1.6}
+
+footer{
+  margin-top:22px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+}
+footer b{color:var(--copper);font-weight:500}
+
+/* ---------------- narrow ---------------- */
+@media(max-width:1240px){
+  .cols{grid-template-columns:300px minmax(0,1fr);grid-template-areas:"inputs report" "inputs view" "inputs table"}
+}
+@media(max-width:900px){
+  .wrap{display:flex;flex-direction:column}
+  .filebar{order:1}.mast{order:2}.cols{order:3}.runbar{order:4;margin-top:14px}footer{order:5}
+  .cols{grid-template-columns:minmax(0,1fr);grid-template-areas:"report" "view" "table" "inputs"}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .projbar input[type=text]{width:150px}
+  .stage{height:clamp(220px,46vh,430px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <div class="filebar">File — <b>AMD·NSRI</b> / Nesting</div>
+
+  <header class="mast">
+    <div>
+      <p class="eyebrow">Sheet nesting optimiser</p>
+      <div class="markrow">
+        <h1>NEST<em>RI</em></h1>
+        <span class="markmeta">MaxRects · best-fit · units mm</span>
+      </div>
+    </div>
+    <div class="projbar">
+      <span class="plabel">Project</span>
+      <input type="text" id="projName" placeholder="untitled" maxlength="60">
+      <button class="btn" id="projSave" type="button">Save</button>
+      <button class="btn" id="projExport" type="button">↓ Export</button>
+      <button class="btn" id="projImport" type="button">↑ Import</button>
+      <input type="file" id="projFile" accept=".json,application/json" hidden>
+      <span class="status" id="projStatus">No project open</span>
+    </div>
+  </header>
+
+  <div class="runbar">
+    <button class="btn btn-primary" id="run" type="button">Run nest</button>
+    <button class="btn" id="resetAll" type="button">Reset</button>
+    <span class="vrule"></span>
+    <div class="field">
+      <label for="gap">Gap / kerf (mm)</label>
+      <input type="number" id="gap" value="0" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="margin">Edge trim (mm)</label>
+      <input type="number" id="margin" value="0" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="rotAll">Rotate</label>
+      <span class="tglwrap">
+        <input type="checkbox" class="tgl" id="rotAll" checked
+               title="Let the solver turn any pose 90° — untick for a directional or brushed finish">
+        <span id="rotState">Allowed</span>
+      </span>
+    </div>
+    <span class="runstat idle" id="runHint">Add poses, or paste a schedule, then run the nest</span>
+  </div>
+
+  <div class="cols">
+
+    <!-- ============ inputs ============ -->
+    <aside class="col-inputs">
+
+      <section class="card">
+        <div class="cardhead"><span class="num">{01}</span> Panels <span class="badge" id="panelCount">0 pcs</span></div>
+        <div class="tscroll rows">
+          <table>
+            <thead>
+              <tr>
+                <th class="idx">#</th>
+                <th class="col-lbl">Pose</th>
+                <th class="col-num">Width</th>
+                <th class="col-num">Length</th>
+                <th class="col-num">Qty</th>
+                <th class="col-act"></th>
+              </tr>
+            </thead>
+            <tbody id="panelBody"></tbody>
+          </table>
+          <div class="empty" id="panelsEmpty">
+            <span class="h">No poses yet</span>
+            <p>Paste the whole schedule straight out of Excel, however many rows it runs to. Typing a row is for the odd extra piece.</p>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="addPanel" type="button">+ Add panel</button>
+          <button class="btn" id="clearPanels" type="button">Clear</button>
+        </div>
+        <details open>
+          <summary>
+            Paste from Excel
+            <span class="tag" id="pasteTag">Start here</span>
+            <button class="zoom" id="pasteZoom" type="button" title="Enlarge the paste box">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M1 3.5V1h2.5M7.5 1H10v2.5M10 7.5V10H7.5M3.5 10H1V7.5"/>
+              </svg>
+            </button>
+          </summary>
+          <textarea id="pasteBox" placeholder="Pose&#9;Width&#9;Length&#9;Qty — tab, comma or space separated. The header line is ignored."></textarea>
+          <div class="btn-row">
+            <button class="btn" id="pasteReplace" type="button">Replace rows</button>
+            <button class="btn" id="pasteAdd" type="button">Add to list</button>
+            <span class="status" id="pasteStatus">Nothing loaded</span>
+          </div>
+        </details>
+      </section>
+
+      <section class="card">
+        <div class="cardhead"><span class="num">{02}</span> Metal sheets <span class="badge" id="sheetCount">0 in play</span></div>
+        <div class="tscroll rows short">
+          <table>
+            <thead>
+              <tr>
+                <th class="idx">#</th>
+                <th class="col-lbl">Type</th>
+                <th class="col-num">Width</th>
+                <th class="col-num">Length</th>
+                <th class="col-num">Qty</th>
+                <th class="col-unl">Unlimited</th>
+                <th class="col-act"></th>
+              </tr>
+            </thead>
+            <tbody id="sheetBody"></tbody>
+          </table>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="addSheet" type="button">+ Add sheet</button>
+          <button class="btn" id="allUnlimited" type="button">All unlimited</button>
+        </div>
+        <p class="status" style="margin:8px 0 0">Rows left at 0 are skipped</p>
+        <details open>
+          <summary>
+            Paste from Excel
+            <button class="zoom" id="sheetPasteZoom" type="button" title="Enlarge the paste box">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M1 3.5V1h2.5M7.5 1H10v2.5M10 7.5V10H7.5M3.5 10H1V7.5"/>
+              </svg>
+            </button>
+          </summary>
+          <textarea id="sheetPasteBox" placeholder="Type&#9;Width&#9;Length&#9;Qty — no qty means Unlimited, or write the word unlimited."></textarea>
+          <div class="btn-row">
+            <button class="btn" id="sheetPasteReplace" type="button">Replace rows</button>
+            <button class="btn" id="sheetPasteAdd" type="button">Add to list</button>
+            <span class="status" id="sheetPasteStatus">6 standard sizes preloaded</span>
+          </div>
+        </details>
+      </section>
+
+    </aside>
+
+    <!-- ============ report ============ -->
+    <section class="col-report">
+      <div class="sechead">
+        <span class="num">{03}</span><span class="title">Report</span>
+        <span class="note" id="reportNote">Not run</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat accent">
+          <span class="k">Sheets used</span>
+          <span class="v empty" id="sSheets">—</span>
+          <span class="sub" id="sSheetsSub">No nest yet</span>
+        </div>
+        <div class="stat">
+          <span class="k">Utilisation</span>
+          <span class="v empty" id="sUtil">—</span>
+          <div class="meter"><i id="sUtilBar" style="width:0%"></i></div>
+        </div>
+        <div class="stat">
+          <span class="k">Waste</span>
+          <span class="v empty" id="sWaste">—</span>
+          <span class="sub" id="sWasteSub">0.00 m² offcut</span>
+        </div>
+        <div class="stat">
+          <span class="k">Panels nested</span>
+          <span class="v empty" id="sPanels">—</span>
+          <span class="sub" id="sPanelsSub">of 0 requested</span>
+        </div>
+      </div>
+
+      <div class="band" id="band">
+        <span class="tagw" id="bandTag">Waiting</span>
+        <span class="txt" id="bandText">Paste a pose schedule into {01}, tick Unlimited or set a quantity on the metal sheets you hold, then run the nest. Gap / kerf and edge trim can be changed and the nest re-run without touching the schedule.</span>
+        <button class="btn" id="showShort" type="button" hidden>Show them</button>
+      </div>
+      <div class="shortlist" id="shortList" hidden></div>
+    </section>
+
+    <!-- ============ per sheet size ============ -->
+    <section class="col-table">
+      <div class="subhead">
+        <span class="title">Per sheet size</span>
+        <span class="note" id="sizesNote"></span>
+      </div>
+      <div class="repbox tscroll">
+        <table class="rep">
+          <thead>
+            <tr>
+              <th>Sheet size</th>
+              <th>Stock</th>
+              <th>Used</th>
+              <th>Panels</th>
+              <th>Panel m²</th>
+              <th>Waste m²</th>
+              <th>Util</th>
+            </tr>
+          </thead>
+          <tbody id="repBody"></tbody>
+          <tfoot id="repFoot"></tfoot>
+        </table>
+        <div class="empty" id="repEmpty">
+          <span class="h">Nothing to report</span>
+          <p>One row per sheet size appears here after the nest is run.</p>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="expXlsx" type="button">↓ Report (Excel)</button>
+        <button class="btn" id="expDxf" type="button">↓ All sheets (DXF)</button>
+        <span class="status" id="expStatus">Nothing to export</span>
+      </div>
+    </section>
+
+    <!-- ============ layout ============ -->
+    <section class="col-view">
+      <div class="sechead">
+        <span class="num">{04}</span><span class="title">Nesting layout</span>
+        <span class="note" id="layoutNote"></span>
+      </div>
+      <div class="viewer">
+        <div class="viewhead">
+          <span><b>Sheet <span id="vIndex">—</span></b> / <span id="vCount">—</span></span>
+          <span class="u" id="vUtil">— % used</span>
+        </div>
+        <div class="stage" id="vStage"><div class="ghost">No nest yet</div></div>
+        <div class="viewfoot">
+          <span id="vInfo">No sheet drawn</span>
+          <span id="vOffcuts">— offcuts</span>
+        </div>
+        <div class="viewctl">
+          <button class="btn" id="vPrev" type="button" disabled>‹ Prev</button>
+          <input type="range" id="vSlider" min="1" max="1" value="1" disabled aria-label="Sheet number">
+          <span class="counter" id="vCounter">— / —</span>
+          <button class="btn" id="vNext" type="button" disabled>Next ›</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <span>AMD·NSRI — <b>NESTRI</b></span>
+    <span>MaxRects · best-fit · 90° rotation</span>
+  </footer>
+</div>
+
+<script>
+/* ---------------------------- nesting engine --------------------------- */
+var ORDERS = [
+  function (a, b) { var am = Math.max(a.w, a.h), bm = Math.max(b.w, b.h); return bm !== am ? bm - am : b.area - a.area; },
+  function (a, b) { return b.area - a.area; },
+  function (a, b) { return (b.h - a.h) || (b.w - a.w); },
+  function (a, b) { return (b.w - a.w) || (b.h - a.h); },
+  function (a, b) { return (b.w + b.h) - (a.w + a.h); }
+];
+var HEURISTICS = ['bssf', 'blsf', 'baf'];
+
+function nest(panelSpecs, sheetSpecs, opts) {
+  opts = opts || {};
+  var gap = Math.max(0, opts.gap || 0);
+  var margin = Math.max(0, opts.margin || 0);
+  var MAX_SHEETS = opts.maxSheets || 2000;
+
+  var items = [], pid = 0;
+  panelSpecs.forEach(function (p, i) {
+    var w = +p.w, h = +p.h, q = Math.max(0, Math.floor(+p.qty || 0));
+    if (!(w > 0) || !(h > 0) || !q) return;
+    for (var k = 0; k < q; k++) {
+      items.push({ id: pid++, typeIndex: i, label: p.label || ('P' + (i + 1)),
+                   w: w, h: h, rotatable: p.rotatable !== false, area: w * h });
+    }
+  });
+
+  var stock = [];
+  sheetSpecs.forEach(function (s, i) {
+    var w = +s.w, h = +s.h;
+    if (!(w > 0) || !(h > 0)) return;
+    var unlimited = !!s.unlimited;
+    var q = unlimited ? Infinity : Math.max(0, Math.floor(+s.qty || 0));
+    if (!unlimited && !q) return;
+    stock.push({ typeIndex: i, label: s.label || ('S' + (i + 1)), w: w, h: h,
+                 remaining: q, unlimited: unlimited, used: 0 });
+  });
+
+  if (!items.length || !stock.length) {
+    return finish({ sheets: [], unplaced: items.slice(), stockOut: !stock.length && !!items.length,
+                    capped: false, totals: emptyTotals(), byPanelType: [], bySheetType: [] },
+                  panelSpecs, sheetSpecs, items);
+  }
+
+  // Big repetitive schedules gain almost nothing from the extra strategies but
+  // pay for every one of them, so trim the search when the batch is large.
+  var big = items.length > 400;
+  var orders = big ? ORDERS.slice(0, 2) : ORDERS;
+  var heurs = big ? HEURISTICS.slice(0, 2) : HEURISTICS;
+
+  var bestRun = null;
+  for (var o = 0; o < orders.length; o++) {
+    for (var h = 0; h < heurs.length; h++) {
+      var run = nestOnce(items, stock, gap, margin, MAX_SHEETS, orders[o], heurs[h]);
+      if (!bestRun || betterRun(run, bestRun)) bestRun = run;
+    }
+  }
+  return finish(bestRun, panelSpecs, sheetSpecs, items);
+}
+
+function betterRun(a, b) {
+  var pa = 0, pb = 0, aa = 0, ab = 0;
+  a.sheets.forEach(function (s) { pa += s.placements.length; aa += s.area; });
+  b.sheets.forEach(function (s) { pb += s.placements.length; ab += s.area; });
+  if (pa !== pb) return pa > pb;
+  if (Math.abs(aa - ab) > 1e-6) return aa < ab;
+  return a.sheets.length < b.sheets.length;
+}
+
+function nestOnce(items, stockTemplate, gap, margin, MAX_SHEETS, order, heuristic) {
+  var stock = stockTemplate.map(function (s) {
+    return { typeIndex: s.typeIndex, label: s.label, w: s.w, h: s.h,
+             remaining: s.remaining, unlimited: s.unlimited, used: 0 };
+  });
+  var result = { sheets: [], unplaced: [], stockOut: false, capped: false, totals: null, byPanelType: [], bySheetType: [] };
+  var remaining = items.slice().sort(order);
+  var guard = 0;
+
+  while (remaining.length && guard++ < MAX_SHEETS) {
+    var best = null;
+    for (var s = 0; s < stock.length; s++) {
+      var st = stock[s];
+      if (st.remaining <= 0) continue;
+      var trial = packSheet(st, remaining, gap, margin, heuristic);
+      if (!trial.placed.length) continue;
+      var sc = trial.usedArea / (st.w * st.h);
+      if (!best || sc > best.score + 1e-9 ||
+         (Math.abs(sc - best.score) < 1e-9 && trial.placed.length > best.trial.placed.length)) {
+        best = { stock: st, trial: trial, score: sc };
+      }
+    }
+    if (!best) { result.stockOut = true; break; }
+
+    var st2 = best.stock, tr = best.trial;
+    st2.remaining -= 1; st2.used += 1;
+    var sheetArea = st2.w * st2.h;
+    result.sheets.push({
+      index: result.sheets.length + 1, sheetTypeIndex: st2.typeIndex, label: st2.label,
+      w: st2.w, h: st2.h, area: sheetArea, usedArea: tr.usedArea,
+      wasteArea: sheetArea - tr.usedArea, utilization: tr.usedArea / sheetArea,
+      placements: tr.placed
+    });
+    var taken = {};
+    tr.placed.forEach(function (pl) { taken[pl.id] = true; });
+    remaining = remaining.filter(function (it) { return !taken[it.id]; });
+  }
+  result.unplaced = remaining;
+  result.capped = remaining.length > 0 && !result.stockOut;
+  return result;
+}
+
+function packSheet(st, items, gap, margin, heuristic) {
+  var W = st.w - 2 * margin, H = st.h - 2 * margin;
+  if (W <= 0 || H <= 0) return { placed: [], usedArea: 0 };
+
+  // Kerf trick: inflate bin and every part by one gap so the gap sits
+  // between neighbours and never runs past the outer edge.
+  var free = [{ x: 0, y: 0, w: W + gap, h: H + gap }];
+  var placed = [], usedArea = 0;
+  // Once a size fails on this sheet, no identical piece can fit either — free
+  // space only shrinks — so skip the rest of that size. Keeps schedules with
+  // hundreds of identical panels fast.
+  var failed = {};
+
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    var sig = it.w + 'x' + it.h + (it.rotatable ? 'r' : 'f');
+    if (failed[sig]) continue;
+    var choice = findPosition(free, it.w + gap, it.h + gap, it.rotatable, heuristic);
+    if (!choice) { failed[sig] = true; continue; }
+    var node = { x: choice.x, y: choice.y, w: choice.w, h: choice.h };
+    splitFree(free, node);
+    prune(free);
+    placed.push({
+      id: it.id, typeIndex: it.typeIndex, label: it.label,
+      x: node.x + margin, y: node.y + margin,
+      w: choice.rotated ? it.h : it.w,
+      h: choice.rotated ? it.w : it.h,
+      rotated: choice.rotated
+    });
+    usedArea += it.area;
+  }
+  return { placed: placed, usedArea: usedArea };
+}
+
+function fitScore(f, w, h, heuristic) {
+  var lh = f.w - w, lv = f.h - h;
+  var shortFit = Math.min(lh, lv), longFit = Math.max(lh, lv);
+  if (heuristic === 'blsf') return [longFit, shortFit];
+  if (heuristic === 'baf') return [f.w * f.h - w * h, shortFit];
+  return [shortFit, longFit];
+}
+
+function findPosition(free, pw, ph, rotatable, heuristic) {
+  var best = null, bestS = null;
+  for (var i = 0; i < free.length; i++) {
+    var f = free[i];
+    if (f.w >= pw - 1e-9 && f.h >= ph - 1e-9) {
+      var s1 = fitScore(f, pw, ph, heuristic);
+      if (!bestS || s1[0] < bestS[0] - 1e-9 ||
+         (Math.abs(s1[0] - bestS[0]) < 1e-9 && s1[1] < bestS[1] - 1e-9)) {
+        best = { x: f.x, y: f.y, w: pw, h: ph, rotated: false }; bestS = s1;
+      }
+    }
+    if (rotatable && f.w >= ph - 1e-9 && f.h >= pw - 1e-9) {
+      var s2 = fitScore(f, ph, pw, heuristic);
+      if (!bestS || s2[0] < bestS[0] - 1e-9 ||
+         (Math.abs(s2[0] - bestS[0]) < 1e-9 && s2[1] < bestS[1] - 1e-9)) {
+        best = { x: f.x, y: f.y, w: ph, h: pw, rotated: true }; bestS = s2;
+      }
+    }
+  }
+  return best;
+}
+
+function splitFree(free, used) {
+  for (var i = free.length - 1; i >= 0; i--) {
+    var f = free[i];
+    if (used.x >= f.x + f.w - 1e-9 || used.x + used.w <= f.x + 1e-9 ||
+        used.y >= f.y + f.h - 1e-9 || used.y + used.h <= f.y + 1e-9) continue;
+    if (used.x < f.x + f.w - 1e-9 && used.x + used.w > f.x + 1e-9) {
+      if (used.y > f.y + 1e-9 && used.y < f.y + f.h - 1e-9)
+        free.push({ x: f.x, y: f.y, w: f.w, h: used.y - f.y });
+      if (used.y + used.h < f.y + f.h - 1e-9)
+        free.push({ x: f.x, y: used.y + used.h, w: f.w, h: f.y + f.h - (used.y + used.h) });
+    }
+    if (used.y < f.y + f.h - 1e-9 && used.y + used.h > f.y + 1e-9) {
+      if (used.x > f.x + 1e-9 && used.x < f.x + f.w - 1e-9)
+        free.push({ x: f.x, y: f.y, w: used.x - f.x, h: f.h });
+      if (used.x + used.w < f.x + f.w - 1e-9)
+        free.push({ x: used.x + used.w, y: f.y, w: f.x + f.w - (used.x + used.w), h: f.h });
+    }
+    free.splice(i, 1);
+  }
+}
+
+function contains(a, b) {
+  return b.x >= a.x - 1e-9 && b.y >= a.y - 1e-9 &&
+         b.x + b.w <= a.x + a.w + 1e-9 && b.y + b.h <= a.y + a.h + 1e-9;
+}
+
+function prune(free) {
+  for (var i = 0; i < free.length; i++) {
+    if (free[i].w <= 1e-9 || free[i].h <= 1e-9) { free.splice(i, 1); i--; continue; }
+    for (var j = i + 1; j < free.length; j++) {
+      if (contains(free[j], free[i])) { free.splice(i, 1); i--; break; }
+      if (contains(free[i], free[j])) { free.splice(j, 1); j--; }
+    }
+  }
+}
+
+function emptyTotals() {
+  return { sheetsUsed: 0, sheetArea: 0, usedArea: 0, wasteArea: 0,
+           utilization: 0, wastePct: 0, panelsPlaced: 0, panelsRequested: 0 };
+}
+
+function finish(result, panelSpecs, sheetSpecs, allItems) {
+  var sheetArea = 0, usedArea = 0, placedCount = 0;
+  result.sheets.forEach(function (s) {
+    sheetArea += s.area; usedArea += s.usedArea; placedCount += s.placements.length;
+  });
+  result.totals = {
+    sheetsUsed: result.sheets.length, sheetArea: sheetArea, usedArea: usedArea,
+    wasteArea: sheetArea - usedArea,
+    utilization: sheetArea ? usedArea / sheetArea : 0,
+    wastePct: sheetArea ? (sheetArea - usedArea) / sheetArea : 0,
+    panelsPlaced: placedCount, panelsRequested: allItems.length
+  };
+  result.byPanelType = panelSpecs.map(function (p, i) {
+    var req = 0, got = 0;
+    allItems.forEach(function (it) { if (it.typeIndex === i) req++; });
+    result.sheets.forEach(function (s) {
+      s.placements.forEach(function (pl) { if (pl.typeIndex === i) got++; });
+    });
+    return { index: i, label: p.label || ('P' + (i + 1)), w: +p.w, h: +p.h,
+             requested: req, placed: got, missing: req - got };
+  });
+  result.bySheetType = sheetSpecs.map(function (s, i) {
+    var used = 0, area = 0, uarea = 0;
+    result.sheets.forEach(function (sh) {
+      if (sh.sheetTypeIndex === i) { used++; area += sh.area; uarea += sh.usedArea; }
+    });
+    return { index: i, label: s.label || ('S' + (i + 1)), w: +s.w, h: +s.h,
+             unlimited: !!s.unlimited, available: s.unlimited ? Infinity : Math.floor(+s.qty || 0),
+             used: used, sheetArea: area, usedArea: uarea, wasteArea: area - uarea,
+             utilization: area ? uarea / area : 0 };
+  });
+  return result;
+}
+
+/* ------------------------------ app state ------------------------------ */
+var PALETTE = ['#c08a5a','#8fa0a8','#b0a373','#a3705a','#7f8f7a','#cbb89a','#6e7f92','#94795f'];
+var panels = [], sheets = [], lastResult = null, panelsPerType = {};
+
+var $ = function (id) { return document.getElementById(id); };
+var m2 = function (mm2) { return mm2 / 1e6; };
+var fmt = function (n, d) { return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); };
+var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, function (c) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
+  });
+}
+
+/* The nest only runs when the Run button is pressed. Any edit after a run
+   marks the report stale so it is clear the numbers on screen are old. */
+var dirty = false;
+
+function markDirty(on, msg) {
+  dirty = on;
+  var hasNest = !!(lastResult && lastResult.res.sheets.length);
+  var btn = $('run');
+  if (btn) btn.classList.toggle('pending', on);
+  if (on) {
+    var hint = $('runHint');
+    hint.textContent = msg || (hasNest ? 'Inputs changed — run the nest' : 'Ready — run the nest');
+    hint.className = 'runstat warn';
+  }
+  var note = $('reportNote');
+  if (note) note.classList.toggle('stale', on && hasNest);
+}
+
+function touch() { markDirty(true); }
+
+function setStatus(id, msg, cls) {
+  var el = $(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'status' + (cls ? ' ' + cls : '');
+}
+
+/* ------------------------------ input rows ----------------------------- */
+function numCell(row, key, min, onDone) {
+  var td = document.createElement('td');
+  var input = document.createElement('input');
+  input.type = 'number'; input.min = min; input.step = '1';
+  input.value = row[key];
+  input.addEventListener('focus', function () { input.select(); });
+  input.addEventListener('input', function () {
+    row[key] = input.value === '' ? 0 : +input.value;
+    touch();
+    if (onDone) onDone();
+  });
+  td.appendChild(input);
+  return { td: td, input: input };
+}
+
+function renumber(bodyId) {
+  var rows = $(bodyId).querySelectorAll('tr');
+  for (var i = 0; i < rows.length; i++) {
+    var cell = rows[i].querySelector('.idx');
+    if (cell) cell.textContent = pad2(i + 1);
+  }
+}
+
+function addPanelRow(data) {
+  var row = data || { label: 'P' + (panels.length + 1), w: 1000, h: 500, qty: 1 };
+  panels.push(row);
+
+  var tr = document.createElement('tr');
+  var tdI = document.createElement('td');
+  tdI.className = 'idx';
+  tr.appendChild(tdI);
+
+  var tdL = document.createElement('td');
+  var lbl = document.createElement('input');
+  lbl.type = 'text'; lbl.value = row.label;
+  lbl.addEventListener('input', function () { row.label = lbl.value; touch(); });
+  tdL.appendChild(lbl); tr.appendChild(tdL);
+
+  tr.appendChild(numCell(row, 'w', 1).td);
+  tr.appendChild(numCell(row, 'h', 1).td);
+  tr.appendChild(numCell(row, 'qty', 0, updateCount).td);
+
+  var tdX = document.createElement('td');
+  var x = document.createElement('button');
+  x.className = 'xbtn'; x.type = 'button'; x.textContent = '×'; x.title = 'Remove row';
+  x.addEventListener('click', function () {
+    var i = panels.indexOf(row); if (i > -1) panels.splice(i, 1);
+    tr.remove(); renumber('panelBody'); updateCount(); touch();
+  });
+  tdX.appendChild(x); tr.appendChild(tdX);
+
+  $('panelBody').appendChild(tr);
+  renumber('panelBody');
+  updateCount();
+}
+
+function addSheetRow(data) {
+  var row = data || { label: '1000×2000', w: 1000, h: 2000, qty: 0, unlimited: true };
+  sheets.push(row);
+
+  var tr = document.createElement('tr');
+  var tdI = document.createElement('td');
+  tdI.className = 'idx';
+  tr.appendChild(tdI);
+
+  var tdL = document.createElement('td');
+  var lbl = document.createElement('input');
+  lbl.type = 'text'; lbl.value = row.label;
+  lbl.addEventListener('input', function () { row.label = lbl.value; touch(); });
+  tdL.appendChild(lbl); tr.appendChild(tdL);
+
+  // a label the user never renamed ("1250×2500") tracks the size it describes
+  function syncLabel() {
+    if (/^\s*\d+\s*[×xX*]\s*\d+\s*$/.test(row.label)) {
+      row.label = row.w + '×' + row.h;
+      lbl.value = row.label;
+    }
+  }
+  function syncActive() {
+    tr.classList.toggle('row-off', !row.unlimited && !(+row.qty > 0));
+    updateSheetCount();
+  }
+
+  tr.appendChild(numCell(row, 'w', 1, syncLabel).td);
+  tr.appendChild(numCell(row, 'h', 1, syncLabel).td);
+  var q = numCell(row, 'qty', 0, syncActive);
+  q.input.disabled = !!row.unlimited;
+  tr.appendChild(q.td);
+
+  var tdU = document.createElement('td');
+  var inf = document.createElement('input');
+  inf.type = 'checkbox'; inf.className = 'tgl'; inf.checked = !!row.unlimited;
+  inf.title = 'Unlimited stock of this sheet';
+  inf.addEventListener('change', function () {
+    row.unlimited = inf.checked;
+    q.input.disabled = inf.checked;
+    syncActive();
+    touch();
+  });
+  tdU.appendChild(inf); tr.appendChild(tdU);
+
+  var tdX = document.createElement('td');
+  var x = document.createElement('button');
+  x.className = 'xbtn'; x.type = 'button'; x.textContent = '×'; x.title = 'Remove row';
+  x.addEventListener('click', function () {
+    var i = sheets.indexOf(row); if (i > -1) sheets.splice(i, 1);
+    tr.remove(); renumber('sheetBody'); updateSheetCount(); touch();
+  });
+  tdX.appendChild(x); tr.appendChild(tdX);
+
+  $('sheetBody').appendChild(tr);
+  renumber('sheetBody');
+  syncActive();
+}
+
+function totalPieces() {
+  return panels.reduce(function (a, p) { return a + Math.max(0, Math.floor(+p.qty || 0)); }, 0);
+}
+
+function updateCount() {
+  var n = totalPieces();
+  $('panelCount').textContent = n.toLocaleString('en-US') + ' pcs';
+  $('panelsEmpty').hidden = panels.length > 0;
+  $('pasteTag').hidden = panels.length > 0;
+  $('clearPanels').disabled = !panels.length;
+}
+
+function updateSheetCount() {
+  var n = sheets.filter(function (s) { return s.unlimited || +s.qty > 0; }).length;
+  $('sheetCount').textContent = n + ' in play';
+}
+
+function clearPanels() {
+  panels.length = 0;
+  $('panelBody').innerHTML = '';
+  updateCount();
+}
+
+/* ------------------------------ paste ---------------------------------- */
+// A pasted line is read from the right: the run of numbers at the end carries
+// width / length / qty, everything before it is the name. That way "ALU 1" or
+// a leading row number stays part of the name instead of being read as a size.
+function isNumTok(t) {
+  return /^[\d.,]+$/.test(t) && isFinite(parseFloat(t.replace(',', '.')));
+}
+
+function splitLine(parts) {
+  var k = parts.length;
+  while (k > 0 && isNumTok(parts[k - 1])) k--;
+  var head = parts.slice(0, k);
+  var nums = parts.slice(k).map(function (t) { return parseFloat(t.replace(',', '.')); });
+
+  // a name followed by extra numbers ("ALU 1  400 300 5") keeps them in the name
+  while (head.length && nums.length > 3) head.push(String(nums.shift()));
+  // no name at all, but a leading mark ("1  400 300 5") — the mark becomes the name
+  if (!head.length && nums.length > 3) head.push(String(nums.shift()));
+
+  return { label: head.join(' '), nums: nums };
+}
+
+function applyPaste(mode) {
+  var raw = $('pasteBox').value.trim();
+  if (!raw) { setStatus('pasteStatus', 'Nothing pasted', 'err'); return; }
+
+  var rows = [], skipped = 0;
+  raw.split(/\r?\n/).forEach(function (line) {
+    if (!line.trim()) return;
+    var parts = line.trim().split(/[\t,;]+|\s{1,}/).filter(function (s) { return s !== ''; });
+    var cut = splitLine(parts);
+    var nums = cut.nums;
+    if (nums.length < 2) { skipped++; return; }
+    rows.push({ label: cut.label || ('P' + (rows.length + 1)), w: nums[0], h: nums[1],
+                qty: nums.length > 2 ? Math.max(0, Math.round(nums[2])) : 1 });
+  });
+
+  if (!rows.length) { setStatus('pasteStatus', 'No width/length pairs found', 'err'); return; }
+
+  var adding = mode === 'add' && panels.length > 0;
+  if (!adding) clearPanels();
+  rows.forEach(addPanelRow);
+  setStatus('pasteStatus',
+    rows.length + (adding ? ' rows added — ' + panels.length + ' total' : ' rows loaded') +
+    (skipped ? ' · ' + skipped + ' skipped' : ''), 'ok');
+  markDirty(true);
+}
+
+function applySheetPaste(mode) {
+  var raw = $('sheetPasteBox').value.trim();
+  if (!raw) { setStatus('sheetPasteStatus', 'Nothing pasted', 'err'); return; }
+
+  var rows = [], skipped = 0;
+  raw.split(/\r?\n/).forEach(function (line) {
+    if (!line.trim()) return;
+    var unlimited = false;
+    var parts = line.trim().split(/[\t,;]+|\s{1,}/).filter(function (x) {
+      if (x === '') return false;
+      if (/^(unlimited|unltd|infinite|inf|∞)$/i.test(x)) { unlimited = true; return false; }
+      return true;
+    });
+
+    var cut = splitLine(parts);
+    var nums = cut.nums, label = cut.label;
+    if (nums.length < 2) { skipped++; return; }
+
+    var hasQty = nums.length > 2;
+    rows.push({
+      label: label || (nums[0] + '×' + nums[1]),
+      w: nums[0], h: nums[1],
+      qty: hasQty ? Math.max(0, Math.round(nums[2])) : 0,
+      unlimited: unlimited || !hasQty
+    });
+  });
+
+  if (!rows.length) { setStatus('sheetPasteStatus', 'No width/length pairs found', 'err'); return; }
+
+  var adding = mode === 'add' && sheets.length > 0;
+  if (!adding) { sheets.length = 0; $('sheetBody').innerHTML = ''; }
+  rows.slice(0, 60).forEach(addSheetRow);
+  setStatus('sheetPasteStatus',
+    rows.length + (adding ? ' sheets added — ' + sheets.length + ' total' : ' sheets loaded') +
+    (skipped ? ' · ' + skipped + ' skipped' : ''), 'ok');
+  markDirty(true);
+}
+
+/* ------------------------------ run ------------------------------------ */
+function run() {
+  var pieces = totalPieces();
+  if (pieces > 20000) {
+    $('runHint').textContent = pieces.toLocaleString('en-US') + ' pieces is past this tool’s limit — split the schedule';
+    $('runHint').className = 'runstat err';
+    markDirty(true);
+    return;
+  }
+
+  var gap = Math.max(0, +$('gap').value || 0);
+  var margin = Math.max(0, +$('margin').value || 0);
+  var rotate = $('rotAll').checked;
+  $('rotState').textContent = rotate ? 'Allowed' : 'Locked';
+
+  // one rotation rule for the whole schedule, not per row
+  var specs = panels.map(function (p) {
+    return { label: p.label, w: p.w, h: p.h, qty: p.qty, rotatable: rotate };
+  });
+
+  var t0 = performance.now();
+  var res = nest(specs, sheets, { gap: gap, margin: margin });
+  var ms = Math.round(performance.now() - t0);
+  lastResult = { res: res, gap: gap, margin: margin, rotate: rotate };
+
+  renderReport(res, ms);
+  renderLayout(res);
+
+  markDirty(false);
+
+  var hint = $('runHint');
+  if (!pieces) {
+    hint.textContent = 'Add poses, or paste a schedule, then run the nest';
+    hint.className = 'runstat idle';
+  } else if (res.unplaced.length) {
+    hint.textContent = 'solved in ' + ms + ' ms · ' + res.unplaced.length + ' short';
+    hint.className = 'runstat err';
+  } else {
+    hint.textContent = 'solved in ' + ms + ' ms';
+    hint.className = 'runstat ok';
+  }
+}
+
+/* ------------------------------ report --------------------------------- */
+function sheetsUsedSub(res) {
+  var used = res.bySheetType.filter(function (s) { return s.used; });
+  if (!used.length) return 'No nest yet';
+  var allOut = used.every(function (s) { return !s.unlimited && s.used >= s.available; });
+  if (res.stockOut && allOut) return 'All stock consumed';
+  return used.slice(0, 3).map(function (s) { return s.used + ' × ' + s.w + '·' + s.h; }).join('   ');
+}
+
+function groupUnplaced(res) {
+  var by = {}, out = [];
+  res.unplaced.forEach(function (u) {
+    var k = u.label + '|' + u.w + '|' + u.h;
+    if (!by[k]) { by[k] = { label: u.label, w: u.w, h: u.h, n: 0, rot: u.rotatable }; out.push(by[k]); }
+    by[k].n++;
+  });
+  return out;
+}
+
+function allNestedText(res) {
+  var t = res.totals;
+  var used = res.bySheetType.filter(function (s) { return s.used; })
+                            .sort(function (a, b) { return b.used - a.used; });
+  var rot = 0;
+  res.sheets.forEach(function (s) { s.placements.forEach(function (p) { if (p.rotated) rot++; }); });
+
+  var txt = 'Every one of the <b>' + t.panelsPlaced + '</b> panels was placed. ';
+  if (used.length === 1) {
+    txt += 'One stock size carried the whole order: <b>' + used[0].w + ' × ' + used[0].h + '</b>. ';
+  } else if (used.length > 1) {
+    var top = used[0];
+    var share = t.panelsPlaced ? Math.round((panelsPerType[top.index] || 0) / t.panelsPlaced * 100) : 0;
+    txt += used.length + ' stock sizes were drawn on; <b>' + top.w + ' × ' + top.h + '</b> carried ' +
+           share + '% of the order. ';
+  }
+  txt += lastResult.rotate
+    ? (rot ? 'Rotation was allowed, so ' + rot + ' pieces were turned 90°.'
+           : 'Rotation was allowed, though no piece needed turning.')
+    : 'Rotation was locked, so every piece kept its orientation.';
+  return txt;
+}
+
+function shortText(res) {
+  if (res.capped) {
+    return 'The run stopped at the 2000-sheet safety limit. Use a larger sheet size, or split the schedule into batches.';
+  }
+  var margin = lastResult.margin;
+  var groups = groupUnplaced(res).sort(function (a, b) {
+    return Math.max(b.w, b.h) - Math.max(a.w, a.h);
+  });
+  var worst = groups[0];
+  var fits = function (g, s) {
+    var W = (+s.w) - 2 * margin, H = (+s.h) - 2 * margin;
+    return (g.w <= W && g.h <= H) || (g.rot && g.h <= W && g.w <= H);
+  };
+  var anyFits = sheets.some(function (s) { return fits(worst, s); });
+  var biggest = sheets.slice().sort(function (a, b) { return (+b.w * +b.h) - (+a.w * +a.h); })[0];
+  var who = '<b>' + esc(worst.label) + ' ×' + worst.n + '</b> at ' + worst.w + ' × ' + worst.h + ' mm';
+
+  if (!anyFits) {
+    return 'Too big for the stock. ' + who + ' does not fit any size on the list, even turned 90°. ' +
+           'Add a larger sheet, or split the pose.';
+  }
+  return 'Stock ran out. ' + who + ' fits a stocked size, but no size with quantity left can take it. ' +
+         'Tick <b>Unlimited</b> on ' + biggest.w + ' × ' + biggest.h + ', or raise its quantity, then run the nest again.';
+}
+
+function renderBand(res) {
+  var band = $('band'), tag = $('bandTag'), txt = $('bandText'), btn = $('showShort'), list = $('shortList');
+  list.hidden = true; list.innerHTML = '';
+  btn.hidden = true;
+
+  if (!res.totals.panelsRequested) {
+    band.className = 'band';
+    tag.textContent = 'Waiting';
+    txt.innerHTML = 'Paste a pose schedule into {01}, tick Unlimited or set a quantity on the metal sheets you hold, ' +
+      'then run the nest. Gap / kerf and edge trim can be changed and the nest re-run without touching the schedule.';
+    return;
+  }
+  if (!res.unplaced.length) {
+    band.className = 'band ok';
+    tag.textContent = 'All nested';
+    txt.innerHTML = allNestedText(res);
+    return;
+  }
+  band.className = 'band short';
+  tag.textContent = res.unplaced.length + ' not nested';
+  txt.innerHTML = shortText(res);
+  btn.hidden = false;
+  btn.textContent = 'Show the ' + res.unplaced.length;
+}
+
+function renderSizes(res) {
+  var body = $('repBody'), foot = $('repFoot');
+  body.innerHTML = ''; foot.innerHTML = '';
+
+  var used = res.bySheetType.filter(function (t) { return t.used > 0; });
+  $('repEmpty').hidden = used.length > 0;
+  if (!used.length) { $('sizesNote').textContent = ''; return; }
+
+  var exhausted = used.filter(function (t) { return !t.unlimited && t.used >= t.available; }).length;
+  $('sizesNote').textContent = used.length + (used.length === 1 ? ' size' : ' sizes') + ' in play' +
+    (exhausted && exhausted === used.length ? ' · every one exhausted' : '');
+
+  used.forEach(function (t) {
+    var out = !t.unlimited && t.used >= t.available;
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + t.w + ' × ' + t.h + '</td>' +
+      '<td>' + (t.unlimited ? 'Unlimited' : t.available) + '</td>' +
+      '<td>' + t.used + (out ? '<span class="out">out</span>' : '') + '</td>' +
+      '<td>' + (panelsPerType[t.index] || 0) + '</td>' +
+      '<td>' + fmt(m2(t.usedArea), 2) + '</td>' +
+      '<td>' + fmt(m2(t.wasteArea), 2) + '</td>' +
+      '<td>' + fmt(t.utilization * 100, 1) + '%<span class="bar"><i style="width:' +
+        (t.utilization * 100).toFixed(1) + '%"></i></span></td>';
+    body.appendChild(tr);
+  });
+
+  var t = res.totals;
+  foot.innerHTML =
+    '<tr><td>Total</td><td>—</td><td>' + t.sheetsUsed + '</td><td>' + t.panelsPlaced + '</td>' +
+    '<td>' + fmt(m2(t.usedArea), 2) + '</td><td>' + fmt(m2(t.wasteArea), 2) + '</td>' +
+    '<td>' + fmt(t.utilization * 100, 1) + '%</td></tr>';
+}
+
+function renderReport(res, ms) {
+  var t = res.totals;
+  var has = res.sheets.length > 0;
+  var short = res.unplaced.length;
+
+  panelsPerType = {};
+  res.sheets.forEach(function (s) {
+    panelsPerType[s.sheetTypeIndex] = (panelsPerType[s.sheetTypeIndex] || 0) + s.placements.length;
+  });
+  qtyByType = {};
+  res.byPanelType.forEach(function (p) { qtyByType[p.index] = p.requested; });
+
+  var name = $('projName').value.trim();
+  $('reportNote').textContent = has ? ((name ? name + ' · ' : '') + ms + ' ms') : 'Not run';
+
+  var v = $('sSheets');
+  v.textContent = has ? t.sheetsUsed : '—';
+  v.className = has ? 'v' : 'v empty';
+  $('sSheetsSub').textContent = sheetsUsedSub(res);
+
+  var u = $('sUtil');
+  u.innerHTML = has ? fmt(t.utilization * 100, 1) + '<small>%</small>' : '—';
+  u.className = has ? 'v' : 'v empty';
+  $('sUtilBar').style.width = (t.utilization * 100).toFixed(1) + '%';
+
+  var w = $('sWaste');
+  w.innerHTML = has ? fmt(t.wastePct * 100, 1) + '<small>%</small>' : '—';
+  w.className = has ? 'v' : 'v empty';
+  $('sWasteSub').textContent = fmt(m2(t.wasteArea), 2) + ' m² offcut';
+
+  var p = $('sPanels');
+  p.textContent = t.panelsRequested ? t.panelsPlaced : '—';
+  p.className = 'v' + (t.panelsRequested ? (short ? ' short' : '') : ' empty');
+  var sub = $('sPanelsSub');
+  sub.textContent = 'of ' + t.panelsRequested + ' requested' + (short ? ' — ' + short + ' short' : '');
+  sub.className = 'sub' + (short ? ' short' : '');
+
+  renderBand(res);
+  renderSizes(res);
+
+  if (!has) setStatus('expStatus', 'Nothing to export');
+  else if (short) setStatus('expStatus', 'Exports cover the ' + t.panelsPlaced + ' nested panels only', 'err');
+  else setStatus('expStatus', t.sheetsUsed + ' sheets · 1 file');
+}
+
+/* ------------------------------ layout --------------------------------- */
+function renderLayout(res) {
+  var n = res.sheets.length;
+  $('layoutNote').textContent = n ? n + (n === 1 ? ' sheet' : ' sheets') : '';
+
+  var slider = $('vSlider');
+  slider.min = 1;
+  slider.max = Math.max(1, n);
+  slider.value = 1;
+  slider.disabled = n < 2;
+  showSheet(0);
+}
+
+var viewIdx = 0;
+
+function showSheet(i) {
+  var res = lastResult && lastResult.res;
+  var n = res ? res.sheets.length : 0;
+
+  if (!n) {
+    viewIdx = 0;
+    $('vStage').innerHTML = '<div class="ghost">No nest yet</div>';
+    $('vStage').style.height = '';
+    $('vIndex').textContent = '—';
+    $('vCount').textContent = '—';
+    $('vUtil').textContent = '— % used';
+    $('vInfo').textContent = 'No sheet drawn';
+    $('vOffcuts').textContent = '— offcuts';
+    $('vCounter').textContent = '— / —';
+    $('vPrev').disabled = true;
+    $('vNext').disabled = true;
+    return;
+  }
+
+  viewIdx = Math.max(0, Math.min(n - 1, i));
+  var s = res.sheets[viewIdx];
+  var margin = lastResult.margin;
+  var bare = function (t) { return String(t).replace(/[\s×xX*]/g, ''); };
+  var size = s.w + ' × ' + s.h + ' mm';
+  var name = bare(s.label) === bare(s.w + '×' + s.h) ? size : esc(s.label) + ' · ' + size;
+  var cuts = wasteRects(s, margin, Math.max(Math.max(s.w, s.h) * 0.02, 30)).length;
+
+  $('vIndex').textContent = pad2(s.index);
+  $('vCount').textContent = pad2(n);
+  $('vUtil').textContent = fmt(s.utilization * 100, 1) + '% used';
+  // a portrait sheet gets a taller stage so it is not a thin strip on screen
+  $('vStage').style.height = s.h > s.w ? 'clamp(300px,64vh,700px)' : '';
+  $('vStage').innerHTML = sheetSvg(s, margin);
+  $('vInfo').innerHTML = name + ' · ' + s.placements.length + ' panels · ' + fmt(m2(s.wasteArea), 2) + ' m² waste';
+  $('vOffcuts').textContent = cuts + (cuts === 1 ? ' offcut' : ' offcuts');
+  $('vCounter').textContent = pad2(s.index) + ' / ' + pad2(n);
+  $('vSlider').value = String(viewIdx + 1);
+  $('vPrev').disabled = viewIdx === 0;
+  $('vNext').disabled = viewIdx === n - 1;
+}
+
+var qtyByType = {};
+
+function svgText(x, y, fs, fill, str, extra) {
+  return '<text x="' + x + '" y="' + y + '" fill="' + fill + '" font-family="IBM Plex Mono, monospace"' +
+         ' font-size="' + fs + '" text-anchor="middle" dominant-baseline="central"' + (extra || '') + '>' +
+         esc(str) + '</text>';
+}
+
+/* ---- fit a label inside a rectangle, turning it when the box is tall ---- */
+function fitLabel(cx, cy, w, h, fs, mark, markFill, dims, dimsFill) {
+  var acrossOk = function (t, size) { return w > t.length * size * 0.62; };
+  var downOk = function (t, size) { return h > t.length * size * 0.62; };
+  var rot = function (x, y) { return ' transform="rotate(-90 ' + x + ' ' + y + ')"'; };
+
+  if (dims && h > fs * 3 && acrossOk(mark, fs) && acrossOk(dims, fs * 0.85)) {
+    return svgText(cx, cy - fs * 0.62, fs, markFill, mark) +
+           svgText(cx, cy + fs * 0.74, fs * 0.85, dimsFill, dims);
+  }
+  if (h > fs * 1.4 && acrossOk(mark, fs)) {
+    return svgText(cx, cy, fs, markFill, mark);
+  }
+  if (dims && w > fs * 3 && downOk(mark, fs) && downOk(dims, fs * 0.85)) {
+    var x1 = cx - fs * 0.62, x2 = cx + fs * 0.74;
+    return svgText(x1, cy, fs, markFill, mark, rot(x1, cy)) +
+           svgText(x2, cy, fs * 0.85, dimsFill, dims, rot(x2, cy));
+  }
+  if (w > fs * 1.4 && downOk(mark, fs)) {
+    return svgText(cx, cy, fs, markFill, mark, rot(cx, cy));
+  }
+  return '';
+}
+
+/* ---- the leftover areas of one sheet, as measurable rectangles ----------
+   Slice the sheet on every panel edge, mark the covered cells, then merge
+   what is left into the largest rectangles possible. Slivers (kerf lines)
+   are dropped so the drawing stays readable.
+   ------------------------------------------------------------------------ */
+function wasteRects(sheet, margin, minSide) {
+  var x0 = margin, y0 = margin, x1 = sheet.w - margin, y1 = sheet.h - margin;
+  if (!(x1 > x0) || !(y1 > y0)) return [];
+
+  var xs = [x0, x1], ys = [y0, y1];
+  sheet.placements.forEach(function (p) {
+    xs.push(p.x, p.x + p.w);
+    ys.push(p.y, p.y + p.h);
+  });
+
+  var uniq = function (a, lo, hi) {
+    a = a.filter(function (v) { return v >= lo - 1e-6 && v <= hi + 1e-6; })
+         .sort(function (m, n) { return m - n; });
+    var o = [];
+    for (var i = 0; i < a.length; i++) if (!o.length || a[i] - o[o.length - 1] > 1e-6) o.push(a[i]);
+    return o;
+  };
+  xs = uniq(xs, x0, x1);
+  ys = uniq(ys, y0, y1);
+
+  var cols = xs.length - 1, rows = ys.length - 1;
+  if (cols < 1 || rows < 1 || cols * rows > 60000) return [];
+
+  var free = new Uint8Array(cols * rows);
+  free.fill(1);
+
+  var at = function (arr, v) {                    // first index with arr[i] >= v
+    var lo = 0, hi = arr.length - 1;
+    while (lo < hi) { var mid = (lo + hi) >> 1; if (arr[mid] < v - 1e-6) lo = mid + 1; else hi = mid; }
+    return lo;
+  };
+
+  sheet.placements.forEach(function (p) {
+    var c0 = at(xs, p.x), c1 = at(xs, p.x + p.w);
+    var r0 = at(ys, p.y), r1 = at(ys, p.y + p.h);
+    for (var r = r0; r < r1; r++) for (var c = c0; c < c1; c++) free[r * cols + c] = 0;
+  });
+
+  var out = [];
+  for (var r = 0; r < rows; r++) {
+    for (var c = 0; c < cols; c++) {
+      if (!free[r * cols + c]) continue;
+      var cc = c;
+      while (cc + 1 < cols && free[r * cols + cc + 1]) cc++;
+      var rr = r;
+      var spanFree = function (rowIdx) {
+        for (var k = c; k <= cc; k++) if (!free[rowIdx * cols + k]) return false;
+        return true;
+      };
+      while (rr + 1 < rows && spanFree(rr + 1)) rr++;
+      for (var a = r; a <= rr; a++) for (var b = c; b <= cc; b++) free[a * cols + b] = 0;
+      var rect = { x: xs[c], y: ys[r], w: xs[cc + 1] - xs[c], h: ys[rr + 1] - ys[r] };
+      if (rect.w >= minSide && rect.h >= minSide) out.push(rect);
+      c = cc;
+    }
+  }
+  return out;
+}
+
+function sheetSvg(s, margin) {
+  var maxDim = Math.max(s.w, s.h);
+  var padL = maxDim * 0.085, padB = maxDim * 0.085, padT = maxDim * 0.025, padR = maxDim * 0.025;
+  var vb = [-padL, -padT, s.w + padL + padR, s.h + padT + padB].join(' ');
+  var sw = maxDim * 0.0016;
+  var tick = maxDim * 0.012;
+  var out = '<svg viewBox="' + vb + '" role="img" aria-label="Nesting layout for sheet ' + s.index + '">';
+
+  // the sheet
+  out += '<rect x="0" y="0" width="' + s.w + '" height="' + s.h +
+         '" fill="#15140f" stroke="#6f675a" stroke-width="' + sw + '"/>';
+
+  if (margin > 0) {
+    out += '<rect x="' + margin + '" y="' + margin + '" width="' + (s.w - 2 * margin) +
+           '" height="' + (s.h - 2 * margin) + '" fill="none" stroke="#b8956a" stroke-opacity=".3"' +
+           ' stroke-width="' + (sw * 0.8) + '" stroke-dasharray="' + (maxDim * 0.012) + ' ' + (maxDim * 0.008) + '"/>';
+  }
+
+  // leftover areas, each with its own size
+  var minSide = Math.max(maxDim * 0.02, 30);
+  wasteRects(s, margin, minSide).forEach(function (r) {
+    out += '<rect x="' + r.x + '" y="' + r.y + '" width="' + r.w + '" height="' + r.h +
+           '" fill="#221e18" fill-opacity=".8" stroke="#4e483e" stroke-width="' + (sw * 0.7) +
+           '" stroke-dasharray="' + (maxDim * 0.008) + ' ' + (maxDim * 0.006) + '"/>';
+    var label = Math.round(r.w) + ' × ' + Math.round(r.h);
+    var fs = Math.min(Math.min(r.w, r.h) * 0.3, maxDim * 0.022);
+    out += fitLabel(r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, fs, label, '#8d8375', '', '');
+  });
+
+  // the panels
+  s.placements.forEach(function (p) {
+    var c = PALETTE[p.typeIndex % PALETTE.length];
+    var q = qtyByType[p.typeIndex] || 0;
+    var mark = String(p.label) + (q ? ' ' + q + ' Pcs' : '') + (p.rotated ? ' ↻' : '');
+    var dims = Math.round(p.w) + ' × ' + Math.round(p.h);
+    var cx = p.x + p.w / 2, cy = p.y + p.h / 2;
+
+    out += '<g><title>' + esc(p.label) + ' · ' + p.w + ' × ' + p.h + ' mm' +
+           (q > 1 ? ' · ' + q + ' ordered' : '') + (p.rotated ? ' · rotated 90°' : '') +
+           ' · X ' + Math.round(p.x) + ' Y ' + Math.round(p.y) + '</title>';
+    out += '<rect x="' + p.x + '" y="' + p.y + '" width="' + p.w + '" height="' + p.h +
+           '" fill="' + c + '" fill-opacity=".85" stroke="#0d0d0b" stroke-width="' + (sw * 0.8) + '"/>';
+
+    var fs = Math.min(Math.min(p.w, p.h) * 0.2, maxDim * 0.028);
+    out += fitLabel(cx, cy, p.w, p.h, fs, mark, '#14120f', dims, '#2a2319');
+    out += '</g>';
+  });
+
+  // sheet size: width under the drawing, length down the left
+  var dimFs = maxDim * 0.026;
+  var yb = s.h + padB * 0.55;
+  out += '<path d="M0 ' + yb + ' H' + s.w + ' M0 ' + (yb - tick) + ' V' + (yb + tick) +
+         ' M' + s.w + ' ' + (yb - tick) + ' V' + (yb + tick) +
+         '" stroke="#6f675a" stroke-width="' + sw + '" fill="none"/>';
+  out += svgText(s.w / 2, yb + dimFs * 1.15, dimFs, '#a79d8e', s.w + ' mm');
+
+  var xl = -padL * 0.55;
+  out += '<path d="M' + xl + ' 0 V' + s.h + ' M' + (xl - tick) + ' 0 H' + (xl + tick) +
+         ' M' + (xl - tick) + ' ' + s.h + ' H' + (xl + tick) +
+         '" stroke="#6f675a" stroke-width="' + sw + '" fill="none"/>';
+  var xt = xl - dimFs * 1.15;
+  out += svgText(xt, s.h / 2, dimFs, '#a79d8e', s.h + ' mm',
+                 ' transform="rotate(-90 ' + xt + ' ' + (s.h / 2) + ')"');
+
+  out += '</svg>';
+  return out;
+}
+
+/* ------------------------------ exports -------------------------------- */
+/* The report workbook: totals only — no per-panel rows. */
+
+var r2 = function (n) { return Math.round(n * 100) / 100; };
+var r3 = function (n) { return Math.round(n * 1000) / 1000; };
+function B(v) { return { v: v, b: 1 }; }          // bold cell
+
+function buildReportRows(res, gap, margin, rotate) {
+  var t = res.totals;
+  var rows = [];
+  var panelsPerType = {};
+  res.sheets.forEach(function (s) {
+    panelsPerType[s.sheetTypeIndex] = (panelsPerType[s.sheetTypeIndex] || 0) + s.placements.length;
+  });
+
+  rows.push([B('NESTRI — NESTING REPORT')]);
+  rows.push(['Generated', new Date().toISOString().slice(0, 10)]);
+  rows.push(['Units', 'mm']);
+  rows.push(['Gap / kerf (mm)', gap]);
+  rows.push(['Edge trim (mm)', margin]);
+  rows.push(['Rotate 90°', rotate ? 'Allowed' : 'Locked']);
+  rows.push([]);
+
+  rows.push([B('TOTALS')]);
+  rows.push(['Metal sheets used', t.sheetsUsed]);
+  rows.push(['Panels nested', t.panelsPlaced]);
+  rows.push(['Panels requested', t.panelsRequested]);
+  rows.push(['Panels not nested', t.panelsRequested - t.panelsPlaced]);
+  rows.push(['Total sheet area (m2)', r3(m2(t.sheetArea))]);
+  rows.push(['Panel area (m2)', r3(m2(t.usedArea))]);
+  rows.push(['Wastage area (m2)', r3(m2(t.wasteArea))]);
+  rows.push(['Utilisation (%)', r2(t.utilization * 100)]);
+  rows.push(['Wastage (%)', r2(t.wastePct * 100)]);
+  rows.push([]);
+
+  rows.push([B('METAL SHEETS USED')]);
+  rows.push([B('Width'), B('Length'), B('In stock'), B('Sheets used'), B('Panels cut'),
+             B('Sheet area (m2)'), B('Panel area (m2)'), B('Wastage (m2)'), B('Utilisation (%)')]);
+  res.bySheetType.forEach(function (st) {
+    if (!st.used) return;
+    rows.push([st.w, st.h, st.unlimited ? 'Unlimited' : st.available, st.used,
+               panelsPerType[st.index] || 0, r3(m2(st.sheetArea)), r3(m2(st.usedArea)),
+               r3(m2(st.wasteArea)), r2(st.utilization * 100)]);
+  });
+  rows.push([B('Total'), null, null, B(t.sheetsUsed), B(t.panelsPlaced), B(r3(m2(t.sheetArea))),
+             B(r3(m2(t.usedArea))), B(r3(m2(t.wasteArea))), B(r2(t.utilization * 100))]);
+  rows.push([]);
+
+  rows.push([B('PANELS')]);
+  rows.push([B('Pose'), B('Width'), B('Length'), B('Requested'), B('Nested'), B('Not nested'),
+             B('Nested area (m2)')]);
+  var reqTotal = 0, nestTotal = 0, missTotal = 0;
+  res.byPanelType.forEach(function (p) {
+    if (!p.requested) return;
+    reqTotal += p.requested; nestTotal += p.placed; missTotal += p.missing;
+    rows.push([p.label, p.w, p.h, p.requested, p.placed, p.missing, r3(m2(p.w * p.h * p.placed))]);
+  });
+  rows.push([B('Total'), null, null, B(reqTotal), B(nestTotal), B(missTotal), B(r3(m2(t.usedArea)))]);
+
+  return rows;
+}
+
+/* ---- minimal .xlsx writer: a zip of XML parts, no library, no CDN ---- */
+function xmlEsc(v) {
+  return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function colName(i) {
+  var s = '', n = i + 1;
+  while (n > 0) { var m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); }
+  return s;
+}
+
+function buildXlsx(rows) {
+  var sheetXml = '';
+  rows.forEach(function (cells, r) {
+    var cellXml = '';
+    (cells || []).forEach(function (cell, c) {
+      var v = cell, bold = 0;
+      if (cell && typeof cell === 'object') { v = cell.v; bold = cell.b ? 1 : 0; }
+      if (v === null || v === undefined || v === '') return;
+      var ref = colName(c) + (r + 1);
+      var st = bold ? ' s="1"' : '';
+      if (typeof v === 'number' && isFinite(v)) {
+        cellXml += '<c r="' + ref + '"' + st + '><v>' + v + '</v></c>';
+      } else {
+        cellXml += '<c r="' + ref + '"' + st + ' t="inlineStr"><is><t xml:space="preserve">' +
+                   xmlEsc(v) + '</t></is></c>';
+      }
+    });
+    sheetXml += '<row r="' + (r + 1) + '">' + cellXml + '</row>';
+  });
+
+  var X = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  var NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+  var REL = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+
+  var sheet = X + '<worksheet xmlns="' + NS + '"><cols>' +
+    '<col min="1" max="1" width="26" customWidth="1"/>' +
+    '<col min="2" max="9" width="15" customWidth="1"/></cols>' +
+    '<sheetData>' + sheetXml + '</sheetData></worksheet>';
+
+  var styles = X + '<styleSheet xmlns="' + NS + '">' +
+    '<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font>' +
+    '<font><b/><sz val="11"/><name val="Calibri"/></font></fonts>' +
+    '<fills count="2"><fill><patternFill patternType="none"/></fill>' +
+    '<fill><patternFill patternType="gray125"/></fill></fills>' +
+    '<borders count="1"><border/></borders>' +
+    '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
+    '<cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>' +
+    '<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs>' +
+    '</styleSheet>';
+
+  var workbook = X + '<workbook xmlns="' + NS + '" xmlns:r="' + REL + '">' +
+    '<sheets><sheet name="Report" sheetId="1" r:id="rId1"/></sheets></workbook>';
+
+  var wbRels = X + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '<Relationship Id="rId1" Type="' + REL + '/worksheet" Target="worksheets/sheet1.xml"/>' +
+    '<Relationship Id="rId2" Type="' + REL + '/styles" Target="styles.xml"/></Relationships>';
+
+  var rootRels = X + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '<Relationship Id="rId1" Type="' + REL + '/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+
+  var types = X + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+    '<Default Extension="xml" ContentType="application/xml"/>' +
+    '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>' +
+    '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>' +
+    '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>' +
+    '</Types>';
+
+  return zipFiles([
+    { name: '[Content_Types].xml', data: types },
+    { name: '_rels/.rels', data: rootRels },
+    { name: 'xl/workbook.xml', data: workbook },
+    { name: 'xl/_rels/workbook.xml.rels', data: wbRels },
+    { name: 'xl/styles.xml', data: styles },
+    { name: 'xl/worksheets/sheet1.xml', data: sheet }
+  ], 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
+
+/* ---- DXF (AutoCAD R12 ASCII: closed polylines + text) ---- */
+function dxfPair(code, val) { return code + '\n' + val + '\n'; }
+
+function dxfPolyline(layer, pts) {
+  var s = dxfPair(0, 'POLYLINE') + dxfPair(8, layer) + dxfPair(66, 1) + dxfPair(70, 1) +
+          dxfPair(10, '0.0') + dxfPair(20, '0.0') + dxfPair(30, '0.0');
+  pts.forEach(function (p) {
+    s += dxfPair(0, 'VERTEX') + dxfPair(8, layer) +
+         dxfPair(10, p[0].toFixed(3)) + dxfPair(20, p[1].toFixed(3)) + dxfPair(30, '0.0');
+  });
+  s += dxfPair(0, 'SEQEND') + dxfPair(8, layer);
+  return s;
+}
+
+function dxfRect(layer, x, y, w, h) {
+  return dxfPolyline(layer, [[x, y], [x + w, y], [x + w, y + h], [x, y + h]]);
+}
+
+// R12 DXF carries no unicode, so text is folded to plain ASCII for AutoCAD
+function dxfSafe(txt) {
+  return String(txt)
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/[×✕]/g, 'x').replace(/[–—]/g, '-').replace(/°/g, 'deg')
+    .replace(/[↻⟳]/g, ' R90').replace(/²/g, '2').replace(/·/g, '-')
+    .replace(/[^\x20-\x7E]/g, '');
+}
+
+function dxfText(layer, x, y, height, txt) {
+  return dxfPair(0, 'TEXT') + dxfPair(8, layer) +
+         dxfPair(10, x.toFixed(3)) + dxfPair(20, y.toFixed(3)) + dxfPair(30, '0.0') +
+         dxfPair(40, height.toFixed(3)) + dxfPair(1, dxfSafe(txt)) +
+         dxfPair(72, 1) + dxfPair(11, x.toFixed(3)) + dxfPair(21, y.toFixed(3)) + dxfPair(31, '0.0');
+}
+
+function dxfLayer(name, color) {
+  return dxfPair(0, 'LAYER') + dxfPair(2, name) + dxfPair(70, 0) +
+         dxfPair(62, color) + dxfPair(6, 'CONTINUOUS');
+}
+
+function buildDxf(res, margin) {
+  var LAYERS = [['SHEET', 7], ['PANEL', 30], ['TRIM', 8], ['TEXT', 2]];
+  var s = '';
+  s += dxfPair(0, 'SECTION') + dxfPair(2, 'HEADER') +
+       dxfPair(9, '$ACADVER') + dxfPair(1, 'AC1009') +
+       dxfPair(9, '$INSBASE') + dxfPair(10, '0.0') + dxfPair(20, '0.0') + dxfPair(30, '0.0') +
+       dxfPair(0, 'ENDSEC');
+
+  s += dxfPair(0, 'SECTION') + dxfPair(2, 'TABLES');
+  s += dxfPair(0, 'TABLE') + dxfPair(2, 'LTYPE') + dxfPair(70, 1) +
+       dxfPair(0, 'LTYPE') + dxfPair(2, 'CONTINUOUS') + dxfPair(70, 0) +
+       dxfPair(3, 'Solid line') + dxfPair(72, 65) + dxfPair(73, 0) + dxfPair(40, '0.0') +
+       dxfPair(0, 'ENDTAB');
+  s += dxfPair(0, 'TABLE') + dxfPair(2, 'LAYER') + dxfPair(70, LAYERS.length);
+  LAYERS.forEach(function (l) { s += dxfLayer(l[0], l[1]); });
+  s += dxfPair(0, 'ENDTAB') + dxfPair(0, 'ENDSEC');
+
+  s += dxfPair(0, 'SECTION') + dxfPair(2, 'ENTITIES');
+
+  // lay the sheets out on a grid, sheet 01 top-left, reading left to right
+  var n = res.sheets.length;
+  var cols = Math.max(1, Math.min(5, Math.ceil(Math.sqrt(n))));
+  var maxW = 0, maxH = 0;
+  res.sheets.forEach(function (sh) { maxW = Math.max(maxW, sh.w); maxH = Math.max(maxH, sh.h); });
+  var gx = maxW * 0.08, gy = maxH * 0.22;
+
+  res.sheets.forEach(function (sh, i) {
+    var col = i % cols, rowi = Math.floor(i / cols);
+    var ox = col * (maxW + gx);
+    var oy = -rowi * (maxH + gy);            // DXF Y up: later rows sit lower
+
+    s += dxfRect('SHEET', ox, oy, sh.w, sh.h);
+    if (margin > 0) {
+      s += dxfRect('TRIM', ox + margin, oy + margin, sh.w - 2 * margin, sh.h - 2 * margin);
+    }
+    var tag = dxfSafe(sh.label).replace(/[\sxX*]/g, '') === (sh.w + 'x' + sh.h).replace(/x/g, '')
+      ? '' : dxfSafe(sh.label) + '  ';
+    s += dxfText('TEXT', ox, oy + sh.h + maxH * 0.045, maxH * 0.035,
+      'SHEET ' + pad2(sh.index) + ' / ' + pad2(n) + '  ' + tag + sh.w + 'x' + sh.h +
+      '  ' + (sh.utilization * 100).toFixed(1) + '% USED');
+
+    sh.placements.forEach(function (p) {
+      // flip Y so the DXF reads the same way round as the on-screen preview
+      var px = ox + p.x;
+      var py = oy + (sh.h - p.y - p.h);
+      s += dxfRect('PANEL', px, py, p.w, p.h);
+      var th = Math.min(p.w, p.h) * 0.16;
+      if (th > maxH * 0.006) {
+        s += dxfText('TEXT', px + p.w / 2, py + p.h / 2 - th / 2, th,
+                     p.label + (p.rotated ? ' R90' : ''));
+      }
+    });
+  });
+
+  s += dxfPair(0, 'ENDSEC') + dxfPair(0, 'EOF');
+  return s;
+}
+
+/* ---- minimal store-only ZIP so the DXF can be handed over in the viewer ---- */
+var CRC_TABLE = null;
+function crc32(bytes) {
+  if (!CRC_TABLE) {
+    CRC_TABLE = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      CRC_TABLE[n] = c >>> 0;
+    }
+  }
+  var crc = 0xFFFFFFFF;
+  for (var i = 0; i < bytes.length; i++) crc = CRC_TABLE[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8);
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
+function zipFiles(entries, mime) {
+  var enc = new TextEncoder();
+  var chunks = [], central = [], offset = 0, centralSize = 0;
+
+  entries.forEach(function (e) {
+    var data = (e.data instanceof Uint8Array) ? e.data : enc.encode(e.data);
+    var nameB = enc.encode(e.name);
+    var crc = crc32(data);
+
+    var local = new Uint8Array(30 + nameB.length);
+    var lv = new DataView(local.buffer);
+    lv.setUint32(0, 0x04034b50, true);
+    lv.setUint16(4, 20, true); lv.setUint16(6, 0, true); lv.setUint16(8, 0, true);
+    lv.setUint16(10, 0, true); lv.setUint16(12, 0x2821, true);
+    lv.setUint32(14, crc, true); lv.setUint32(18, data.length, true); lv.setUint32(22, data.length, true);
+    lv.setUint16(26, nameB.length, true); lv.setUint16(28, 0, true);
+    local.set(nameB, 30);
+
+    var cd = new Uint8Array(46 + nameB.length);
+    var cv = new DataView(cd.buffer);
+    cv.setUint32(0, 0x02014b50, true);
+    cv.setUint16(4, 20, true); cv.setUint16(6, 20, true); cv.setUint16(8, 0, true);
+    cv.setUint16(10, 0, true); cv.setUint16(12, 0, true); cv.setUint16(14, 0x2821, true);
+    cv.setUint32(16, crc, true); cv.setUint32(20, data.length, true); cv.setUint32(24, data.length, true);
+    cv.setUint16(28, nameB.length, true); cv.setUint16(30, 0, true); cv.setUint16(32, 0, true);
+    cv.setUint16(34, 0, true); cv.setUint16(36, 0, true); cv.setUint32(38, 0, true);
+    cv.setUint32(42, offset, true);
+    cd.set(nameB, 46);
+
+    chunks.push(local, data);
+    central.push(cd);
+    offset += local.length + data.length;
+    centralSize += cd.length;
+  });
+
+  var eocd = new Uint8Array(22);
+  var ev = new DataView(eocd.buffer);
+  ev.setUint32(0, 0x06054b50, true);
+  ev.setUint16(4, 0, true); ev.setUint16(6, 0, true);
+  ev.setUint16(8, entries.length, true); ev.setUint16(10, entries.length, true);
+  ev.setUint32(12, centralSize, true); ev.setUint32(16, offset, true); ev.setUint16(20, 0, true);
+
+  return new Blob(chunks.concat(central, [eocd]), { type: mime || 'application/zip' });
+}
+
+/* ---- delivery: viewer save capability where present, plain download otherwise ---- */
+var downloadsCap;
+function getDownloads() {
+  if (downloadsCap !== undefined) return Promise.resolve(downloadsCap);
+  if (typeof window !== 'undefined' && window.claude && typeof window.claude.use === 'function') {
+    return window.claude.use('downloads').then(function (d) { downloadsCap = d; return d; })
+      .catch(function () { downloadsCap = null; return null; });
+  }
+  downloadsCap = null;
+  return Promise.resolve(null);
+}
+
+function plainSave(filename, data, mime) {
+  var blob = (data instanceof Blob) ? data : new Blob([data], { type: mime || 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+}
+
+function deliver(filename, data, mime) {
+  setStatus('expStatus', 'Preparing ' + filename + '…');
+  getDownloads().then(function (dl) {
+    if (!dl) { plainSave(filename, data, mime); setStatus('expStatus', filename + ' downloaded', 'ok'); return; }
+    dl.save({ filename: filename, data: data }).then(function () {
+      setStatus('expStatus', filename + ' saved', 'ok');
+    }).catch(function (e) {
+      var code = e && e.code;
+      if (code === 'declined') setStatus('expStatus', 'Save cancelled');
+      else setStatus('expStatus', 'Could not save (' + (code || 'error') + ')', 'err');
+    });
+  });
+}
+
+function exportXlsx() {
+  if (!lastResult || !lastResult.res.sheets.length) { setStatus('expStatus', 'Run the nest first', 'err'); return; }
+  var rows = buildReportRows(lastResult.res, lastResult.gap, lastResult.margin, lastResult.rotate);
+  deliver('nestri-report.xlsx', buildXlsx(rows),
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
+
+function exportDxf() {
+  if (!lastResult || !lastResult.res.sheets.length) { setStatus('expStatus', 'Run the nest first', 'err'); return; }
+  var txt = buildDxf(lastResult.res, lastResult.margin);
+  getDownloads().then(function (dl) {
+    if (!dl) { plainSave('nestri-nesting.dxf', txt, 'application/dxf');
+               setStatus('expStatus', 'nestri-nesting.dxf downloaded', 'ok'); return; }
+    // the viewer only accepts a known set of extensions, so the DXF travels in a zip
+    setStatus('expStatus', 'Packing DXF…');
+    var blob = zipFiles([{ name: 'nestri-nesting.dxf', data: txt }]);
+    dl.save({ filename: 'nestri-nesting.zip', data: blob }).then(function () {
+      setStatus('expStatus', 'nestri-nesting.zip saved — unzip for the DXF', 'ok');
+    }).catch(function (e) {
+      var code = e && e.code;
+      if (code === 'declined') setStatus('expStatus', 'Save cancelled');
+      else setStatus('expStatus', 'Could not save (' + (code || 'error') + ')', 'err');
+    });
+  });
+}
+
+/* ------------------------- project save & share ------------------------- */
+var PROJECT_KEY = 'nestri.project';
+
+function num(v) { var n = parseFloat(v); return isFinite(n) ? n : 0; }
+function text(v, max) { return String(v === null || v === undefined ? '' : v).slice(0, max || 40); }
+function slug(v) { return text(v, 40).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+
+function projectData() {
+  return {
+    app: 'NESTRI',
+    version: 1,
+    name: $('projName').value.trim() || 'untitled',
+    saved: new Date().toISOString(),
+    options: {
+      gap: Math.max(0, +$('gap').value || 0),
+      trim: Math.max(0, +$('margin').value || 0),
+      rotate: $('rotAll').checked
+    },
+    poses: panels.map(function (p) {
+      return { label: text(p.label), w: num(p.w), h: num(p.h), qty: Math.max(0, Math.floor(num(p.qty))) };
+    }),
+    sheets: sheets.map(function (s) {
+      return { label: text(s.label), w: num(s.w), h: num(s.h),
+               qty: Math.max(0, Math.floor(num(s.qty))), unlimited: !!s.unlimited };
+    })
+  };
+}
+
+// A project file comes from someone else, so every field is re-read and
+// re-clamped here rather than trusted.
+function applyProject(data) {
+  if (!data || typeof data !== 'object') throw new Error('not a project');
+  var poses = Array.isArray(data.poses) ? data.poses : [];
+  var stock = Array.isArray(data.sheets) ? data.sheets : [];
+  if (!poses.length && !stock.length) throw new Error('nothing in it');
+
+  clearPanels();
+  poses.slice(0, 500).forEach(function (p) {
+    addPanelRow({ label: text(p.label) || 'P', w: num(p.w), h: num(p.h),
+                  qty: Math.max(0, Math.floor(num(p.qty))) });
+  });
+
+  sheets.length = 0;
+  $('sheetBody').innerHTML = '';
+  (stock.length ? stock : DEFAULT_SHEETS).slice(0, 60).forEach(function (sh) {
+    addSheetRow({ label: text(sh.label), w: num(sh.w), h: num(sh.h),
+                  qty: Math.max(0, Math.floor(num(sh.qty))), unlimited: !!sh.unlimited });
+  });
+
+  var o = (data.options && typeof data.options === 'object') ? data.options : {};
+  $('gap').value = Math.max(0, num(o.gap));
+  $('margin').value = Math.max(0, num(o.trim));
+  $('rotAll').checked = o.rotate !== false;
+  $('rotState').textContent = $('rotAll').checked ? 'Allowed' : 'Locked';
+  $('projName').value = text(data.name, 60);
+  markDirty(true, 'Project loaded — run the nest');
+}
+
+function saveProject() {
+  try {
+    localStorage.setItem(PROJECT_KEY, JSON.stringify(projectData()));
+    setStatus('projStatus', 'Saved in this browser', 'ok');
+  } catch (e) {
+    setStatus('projStatus', 'This browser will not store it — use Export', 'err');
+  }
+}
+
+function exportProject() {
+  var data = projectData();
+  var name = slug(data.name) || 'project';
+  deliver('nestri-' + name + '.json', JSON.stringify(data, null, 2), 'application/json');
+  setStatus('projStatus', 'Exported — send the .json file on');
+}
+
+function importProject(file) {
+  var reader = new FileReader();
+  reader.onload = function () {
+    var data;
+    try { data = JSON.parse(String(reader.result)); }
+    catch (e) { setStatus('projStatus', 'That file is not readable JSON', 'err'); return; }
+    try {
+      applyProject(data);
+      setStatus('projStatus', 'Imported ' + (text(data.name, 60) || file.name), 'ok');
+    } catch (e) {
+      setStatus('projStatus', 'That file is not a NESTRI project', 'err');
+    }
+  };
+  reader.onerror = function () { setStatus('projStatus', 'Could not read that file', 'err'); };
+  reader.readAsText(file);
+}
+
+function restoreSaved() {
+  var raw = null;
+  try { raw = localStorage.getItem(PROJECT_KEY); } catch (e) { return false; }
+  if (!raw) return false;
+  try {
+    applyProject(JSON.parse(raw));
+    setStatus('projStatus', 'Saved project restored — Reset for a blank start');
+    return true;
+  } catch (e) { return false; }
+}
+
+/* --------------------------- defaults & reset --------------------------- */
+// standard aluminium sheet sizes — tick Unlimited or set a qty on what is in stock
+var DEFAULT_SHEETS = [
+  { label: '1000×2000', w: 1000, h: 2000, qty: 0, unlimited: false },
+  { label: '1200×2400', w: 1200, h: 2400, qty: 0, unlimited: false },
+  { label: '1250×2500', w: 1250, h: 2500, qty: 0, unlimited: false },
+  { label: '1500×3000', w: 1500, h: 3000, qty: 0, unlimited: true },
+  { label: '2000×4000', w: 2000, h: 4000, qty: 0, unlimited: false },
+  { label: '1500×4000', w: 1500, h: 4000, qty: 0, unlimited: false }
+];
+
+function loadDefaultSheets() {
+  sheets.length = 0;
+  $('sheetBody').innerHTML = '';
+  DEFAULT_SHEETS.forEach(function (d) {
+    addSheetRow({ label: d.label, w: d.w, h: d.h, qty: d.qty, unlimited: d.unlimited });
+  });
+}
+
+function resetAll() {
+  clearPanels();
+  loadDefaultSheets();
+  $('gap').value = 0;
+  $('margin').value = 0;
+  $('rotAll').checked = true;
+  $('rotState').textContent = 'Allowed';
+  $('pasteBox').value = '';
+  $('sheetPasteBox').value = '';
+  $('projName').value = '';
+  setStatus('pasteStatus', 'Nothing loaded');
+  setStatus('sheetPasteStatus', '6 standard sizes preloaded');
+  setStatus('expStatus', 'Nothing to export');
+  setStatus('projStatus', 'No project open');
+  run();
+}
+
+/* ------------------------------ wiring --------------------------------- */
+$('addPanel').addEventListener('click', function () { addPanelRow(); touch(); });
+$('clearPanels').addEventListener('click', function () { clearPanels(); touch(); });
+$('addSheet').addEventListener('click', function () { addSheetRow(); touch(); });
+$('allUnlimited').addEventListener('click', function () {
+  $('sheetBody').querySelectorAll('.tgl').forEach(function (box) {
+    if (!box.checked) { box.checked = true; box.dispatchEvent(new Event('change')); }
+  });
+  touch();
+});
+$('pasteReplace').addEventListener('click', function () { applyPaste('replace'); });
+$('pasteAdd').addEventListener('click', function () { applyPaste('add'); });
+$('sheetPasteReplace').addEventListener('click', function () { applySheetPaste('replace'); });
+$('sheetPasteAdd').addEventListener('click', function () { applySheetPaste('add'); });
+$('run').addEventListener('click', run);
+$('resetAll').addEventListener('click', resetAll);
+
+// the zoom buttons sit inside <summary>, so their clicks must not fold the panel
+function wireZoom(btnId, boxId) {
+  $(btnId).addEventListener('click', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    var box = $(boxId);
+    box.classList.toggle('tall');
+    var det = box.closest('details');
+    if (det) det.open = true;
+  });
+}
+wireZoom('pasteZoom', 'pasteBox');
+wireZoom('sheetPasteZoom', 'sheetPasteBox');
+
+$('showShort').addEventListener('click', function () {
+  var list = $('shortList');
+  if (!list.hidden) { list.hidden = true; this.textContent = 'Show the ' + lastResult.res.unplaced.length; return; }
+  var groups = groupUnplaced(lastResult.res).sort(function (a, b) {
+    return Math.max(b.w, b.h) - Math.max(a.w, a.h);
+  });
+  list.innerHTML = groups.map(function (g) {
+    return '<span><b style="color:var(--ink);font-weight:400">' + esc(g.label) + '</b> ' +
+           g.w + ' × ' + g.h + ' mm · ×' + g.n + '</span>';
+  }).join('');
+  list.hidden = false;
+  this.textContent = 'Hide';
+});
+
+$('projSave').addEventListener('click', saveProject);
+$('projExport').addEventListener('click', exportProject);
+$('projImport').addEventListener('click', function () { $('projFile').click(); });
+$('projFile').addEventListener('change', function () {
+  var f = this.files && this.files[0];
+  this.value = '';
+  if (f) importProject(f);
+});
+$('rotAll').addEventListener('change', function () {
+  $('rotState').textContent = this.checked ? 'Allowed' : 'Locked';
+  touch();
+});
+
+// gap / kerf and edge trim change the nest, so they mark it stale too
+$('gap').addEventListener('input', touch);
+$('margin').addEventListener('input', touch);
+$('vPrev').addEventListener('click', function () { showSheet(viewIdx - 1); });
+$('vNext').addEventListener('click', function () { showSheet(viewIdx + 1); });
+$('vSlider').addEventListener('input', function () { showSheet((+this.value || 1) - 1); });
+document.addEventListener('keydown', function (e) {
+  var t = e.target && e.target.tagName;
+  if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SUMMARY') return;
+  if (e.key === 'ArrowLeft') { showSheet(viewIdx - 1); }
+  else if (e.key === 'ArrowRight') { showSheet(viewIdx + 1); }
+});
+$('expXlsx').addEventListener('click', exportXlsx);
+$('expDxf').addEventListener('click', exportDxf);
+
+loadDefaultSheets();
+updateCount();
+if (!restoreSaved()) run();
+
+</script>
+</body>
+</html>
