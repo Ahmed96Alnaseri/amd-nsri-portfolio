@@ -125,6 +125,13 @@ tbody tr.row-off td{opacity:.42}
 .col-inputs input[type=text],.col-inputs input[type=number]{font-size:11px}
 .col-inputs thead th{padding:0 4px 7px;letter-spacing:.1em}
 .col-inputs tbody td{padding:3px 4px}
+/* {01} panels: fixed columns so header and rows share one grid */
+.ptable{table-layout:fixed;width:100%}
+.ptable .idx{width:24px;text-align:left}
+.ptable .col-lbl{width:60px;min-width:0;text-align:left}
+.ptable .col-w,.ptable .col-h{width:64px;min-width:0;text-align:right}
+.ptable .col-qty{width:44px;min-width:0;text-align:right}
+.ptable .col-del{width:20px;padding-inline:0;text-align:center}
 input[type=text],input[type=number]{
   width:100%;background:transparent;border:0;border-bottom:1px solid transparent;color:var(--ink);
   font:inherit;font-size:var(--fs-sm);padding:2px 2px;text-align:right;border-radius:0;font-variant-numeric:tabular-nums;
@@ -302,34 +309,34 @@ footer b{color:var(--copper);font-weight:500}
       </div>
     </div>
     <div class="projbar">
-      <span class="plabel">Project</span>
+      <span class="plabel" data-i18n="Project">Project</span>
       <input type="text" id="projName" placeholder="untitled" maxlength="60">
-      <button class="btn" id="projSave" type="button">Save</button>
-      <button class="btn" id="projExport" type="button">↓ Export</button>
-      <button class="btn" id="projImport" type="button">↑ Import</button>
+      <button class="btn" id="projSave" type="button" data-i18n="Save">Save</button>
+      <button class="btn" id="projExport" type="button" data-i18n="Export">↓ Export</button>
+      <button class="btn" id="projImport" type="button" data-i18n="Import">↑ Import</button>
       <input type="file" id="projFile" accept=".json,application/json" hidden>
-      <span class="status" id="projStatus">No project open</span>
+      <span class="status" id="projStatus" data-i18n="No project open">No project open</span>
     </div>
   </header>
 
   <div class="runbar">
     <button class="btn btn-primary" id="run" type="button" data-i18n="Run nest">Run nest</button>
-    <button class="btn" id="resetAll" type="button">Reset</button>
+    <button class="btn" id="resetAll" type="button" data-i18n="Reset">Reset</button>
     <span class="vrule"></span>
     <div class="field">
-      <label for="gap">Gap / kerf (mm)</label>
+      <label for="gap" data-i18n="Gap / kerf (mm)">Gap / kerf (mm)</label>
       <input type="number" id="gap" value="0" min="0" step="1">
     </div>
     <div class="field">
-      <label for="margin">Edge trim (mm)</label>
+      <label for="margin" data-i18n="Edge trim (mm)">Edge trim (mm)</label>
       <input type="number" id="margin" value="0" min="0" step="1">
     </div>
     <div class="field">
-      <label for="rotAll">Rotate</label>
+      <label for="rotAll" data-i18n="Rotate">Rotate</label>
       <span class="tglwrap">
         <input type="checkbox" class="tgl" id="rotAll" checked
                title="Let the solver turn any pose 90° — untick for a directional or brushed finish">
-        <span id="rotState">Allowed</span>
+        <span id="rotState" data-i18n="Allowed">Allowed</span>
       </span>
     </div>
   </div>
@@ -340,33 +347,33 @@ footer b{color:var(--copper);font-weight:500}
     <aside class="col-inputs">
 
       <section class="card">
-        <div class="cardhead"><span class="num">{01}</span> Panels <span class="badge" id="panelCount">0 pcs</span></div>
+        <div class="cardhead"><span class="num">{01}</span> <span data-i18n="Panels">Panels</span> <span class="badge" id="panelCount" data-i18n="Pcs" data-i18n-pre="0 ">0 pcs</span></div>
         <div class="tscroll rows">
-          <table>
+          <table class="ptable">
             <thead>
               <tr>
                 <th class="idx">#</th>
-                <th class="col-lbl">Pose</th>
-                <th class="col-num">Width</th>
-                <th class="col-num">Length</th>
-                <th class="col-num">Qty</th>
-                <th class="col-act"></th>
+                <th class="col-lbl" data-i18n="Pose">Pose</th>
+                <th class="col-num col-w" data-i18n="Width">Width</th>
+                <th class="col-num col-h" data-i18n="Length">Length</th>
+                <th class="col-num col-qty" data-i18n="Qty">Qty</th>
+                <th class="col-act col-del"></th>
               </tr>
             </thead>
             <tbody id="panelBody"></tbody>
           </table>
           <div class="empty" id="panelsEmpty">
-            <span class="h">No poses yet</span>
+            <span class="h" data-i18n="No poses yet">No poses yet</span>
           </div>
         </div>
         <div class="btn-row">
           <button class="btn" id="addPanel" type="button" data-i18n="Add panel">+ Add panel</button>
-          <button class="btn" id="clearPanels" type="button">Clear</button>
+          <button class="btn" id="clearPanels" type="button" data-i18n="Clear">Clear</button>
         </div>
         <details open>
           <summary>
             <span data-i18n="Paste from Excel">Paste from Excel</span>
-            <span class="tag" id="pasteTag">Start here</span>
+            <span class="tag" id="pasteTag" data-i18n="Start here">Start here</span>
             <button class="zoom" id="pasteZoom" type="button" title="Enlarge the paste box">
               <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1">
                 <path d="M1 3.5V1h2.5M7.5 1H10v2.5M10 7.5V10H7.5M3.5 10H1V7.5"/>
@@ -375,24 +382,24 @@ footer b{color:var(--copper);font-weight:500}
           </summary>
           <textarea id="pasteBox" placeholder="Pose&#9;Width&#9;Length&#9;Qty — tab, comma or space separated. The header line is ignored."></textarea>
           <div class="btn-row">
-            <button class="btn" id="pasteReplace" type="button">Replace rows</button>
-            <button class="btn" id="pasteAdd" type="button">Add to list</button>
-            <span class="status" id="pasteStatus">Nothing loaded</span>
+            <button class="btn" id="pasteReplace" type="button" data-i18n="Replace rows">Replace rows</button>
+            <button class="btn" id="pasteAdd" type="button" data-i18n="Add to list">Add to list</button>
+            <span class="status" id="pasteStatus" data-i18n="Nothing loaded">Nothing loaded</span>
           </div>
         </details>
       </section>
 
       <section class="card">
-        <div class="cardhead"><span class="num">{02}</span> <span data-i18n="Metal sheets">Metal sheets</span> <span class="badge" id="sheetCount">0 in play</span></div>
+        <div class="cardhead"><span class="num">{02}</span> <span data-i18n="Metal sheets">Metal sheets</span> <span class="badge" id="sheetCount" data-i18n="In play" data-i18n-pre="0 ">0 in play</span></div>
         <div class="tscroll rows short">
           <table>
             <thead>
               <tr>
                 <th class="idx">#</th>
-                <th class="col-num">Width</th>
-                <th class="col-num">Length</th>
-                <th class="col-num">Qty</th>
-                <th class="col-unl">Unlimited</th>
+                <th class="col-num" data-i18n="Width">Width</th>
+                <th class="col-num" data-i18n="Length">Length</th>
+                <th class="col-num" data-i18n="Qty">Qty</th>
+                <th class="col-unl" data-i18n="Unlimited">Unlimited</th>
                 <th class="col-act"></th>
               </tr>
             </thead>
@@ -400,10 +407,10 @@ footer b{color:var(--copper);font-weight:500}
           </table>
         </div>
         <div class="btn-row">
-          <button class="btn" id="addSheet" type="button">+ Add sheet</button>
+          <button class="btn" id="addSheet" type="button" data-i18n="Add sheet">+ Add sheet</button>
           <button class="btn" id="toggleAllLimit" type="button" data-i18n="Unlimited">Unlimited</button>
         </div>
-        <p class="status" style="margin:8px 0 0">Rows left at 0 are skipped</p>
+        <p class="status" style="margin:8px 0 0" data-i18n="Rows left at 0 are skipped">Rows left at 0 are skipped</p>
         <div class="btn-row" style="margin:12px 0 0">
           <button class="btn" id="uploadDwgSheets" type="button" data-i18n="Upload sheet DWG">↑ Upload sheet DWG</button>
           <span class="status" id="dwgUploadStatus" data-i18n="No DWG loaded">No DWG loaded</span>
@@ -420,9 +427,9 @@ footer b{color:var(--copper);font-weight:500}
           </summary>
           <textarea id="sheetPasteBox" placeholder="Width&#9;Length&#9;Qty — no qty means Unlimited, or write the word unlimited."></textarea>
           <div class="btn-row">
-            <button class="btn" id="sheetPasteReplace" type="button">Replace rows</button>
-            <button class="btn" id="sheetPasteAdd" type="button">Add to list</button>
-            <span class="status" id="sheetPasteStatus">6 standard sizes preloaded</span>
+            <button class="btn" id="sheetPasteReplace" type="button" data-i18n="Replace rows">Replace rows</button>
+            <button class="btn" id="sheetPasteAdd" type="button" data-i18n="Add to list">Add to list</button>
+            <span class="status" id="sheetPasteStatus" data-i18n="standard sizes preloaded" data-i18n-pre="6 ">6 standard sizes preloaded</span>
           </div>
         </details>
       </section>
@@ -432,36 +439,36 @@ footer b{color:var(--copper);font-weight:500}
     <!-- ============ report ============ -->
     <section class="col-report">
       <div class="sechead">
-        <span class="num">{03}</span><span class="title">Report</span>
-        <span class="note" id="reportNote">Not run</span>
+        <span class="num">{03}</span><span class="title" data-i18n="Report">Report</span>
+        <span class="note" id="reportNote" data-i18n="Not run">Not run</span>
       </div>
 
       <div class="stats">
         <div class="stat accent">
-          <span class="k">Sheets used</span>
+          <span class="k" data-i18n="Sheets used">Sheets used</span>
           <span class="v empty" id="sSheets">—</span>
-          <span class="sub" id="sSheetsSub">No nest yet</span>
+          <span class="sub" id="sSheetsSub" data-i18n="No nest yet">No nest yet</span>
         </div>
         <div class="stat">
-          <span class="k">Utilisation</span>
+          <span class="k" data-i18n="Utilisation">Utilisation</span>
           <span class="v empty" id="sUtil">—</span>
           <div class="meter"><i id="sUtilBar" style="width:0%"></i></div>
         </div>
         <div class="stat">
-          <span class="k">Waste</span>
+          <span class="k" data-i18n="Waste">Waste</span>
           <span class="v empty" id="sWaste">—</span>
           <span class="sub" id="sWasteSub">0.00 m² offcut</span>
         </div>
         <div class="stat">
-          <span class="k">Panels nested</span>
+          <span class="k" data-i18n="Panels nested">Panels nested</span>
           <span class="v empty" id="sPanels">—</span>
           <span class="sub" id="sPanelsSub">of 0 requested</span>
         </div>
       </div>
 
-      <div class="band" id="band">
-        <span class="tagw" id="bandTag">Waiting</span>
-        <span class="txt" id="bandText">Paste a pose schedule into {01}, tick Unlimited or set a quantity on the metal sheets you hold, then run the nest. Gap / kerf and edge trim can be changed and the nest re-run without touching the schedule.</span>
+      <div class="band" id="band" hidden>
+        <span class="tagw" id="bandTag"></span>
+        <span class="txt" id="bandText"></span>
         <button class="btn" id="showShort" type="button" hidden>Show them</button>
       </div>
       <div class="shortlist" id="shortList" hidden></div>
@@ -470,17 +477,17 @@ footer b{color:var(--copper);font-weight:500}
     <!-- ============ per sheet size ============ -->
     <section class="col-table">
       <div class="subhead">
-        <span class="title">Per sheet size</span>
+        <span class="title" data-i18n="Per sheet size">Per sheet size</span>
         <span class="note" id="sizesNote"></span>
       </div>
       <div class="repbox tscroll">
         <table class="rep">
           <thead>
             <tr>
-              <th>Sheet size</th>
-              <th>Stock</th>
-              <th>Used</th>
-              <th>Panels</th>
+              <th data-i18n="Sheet size">Sheet size</th>
+              <th data-i18n="Stock">Stock</th>
+              <th data-i18n="Used">Used</th>
+              <th data-i18n="Panels">Panels</th>
               <th>Panel m²</th>
               <th>Waste m²</th>
               <th>Util</th>
@@ -490,37 +497,37 @@ footer b{color:var(--copper);font-weight:500}
           <tfoot id="repFoot"></tfoot>
         </table>
         <div class="empty" id="repEmpty">
-          <span class="h">Nothing to report</span>
+          <span class="h" data-i18n="Nothing to report">Nothing to report</span>
         </div>
       </div>
       <div class="btn-row">
-        <button class="btn" id="expXlsx" type="button">↓ Report (Excel)</button>
-        <button class="btn" id="expDxf" type="button">↓ All sheets (DXF)</button>
-        <span class="status" id="expStatus">Nothing to export</span>
+        <button class="btn" id="expXlsx" type="button" data-i18n="Report (Excel)">↓ Report (Excel)</button>
+        <button class="btn" id="expDxf" type="button" data-i18n="All sheets (DXF)">↓ All sheets (DXF)</button>
+        <span class="status" id="expStatus" data-i18n="Nothing to export">Nothing to export</span>
       </div>
     </section>
 
     <!-- ============ layout ============ -->
     <section class="col-view">
       <div class="sechead">
-        <span class="num">{04}</span><span class="title">Nesting layout</span>
+        <span class="num">{04}</span><span class="title" data-i18n="Nesting layout">Nesting layout</span>
         <span class="note" id="layoutNote"></span>
       </div>
       <div class="viewer">
         <div class="viewhead">
-          <span><b>Sheet <span id="vIndex">—</span></b> / <span id="vCount">—</span></span>
-          <span class="u" id="vUtil">— % used</span>
+          <span><b><span data-i18n="Sheet">Sheet</span> <span id="vIndex">—</span></b> / <span id="vCount">—</span></span>
+          <span class="u" id="vUtil" data-i18n="% used" data-i18n-pre="— ">— % used</span>
         </div>
-        <div class="stage" id="vStage"><div class="ghost">No nest yet</div></div>
+        <div class="stage" id="vStage"><div class="ghost" data-i18n="No nest yet">No nest yet</div></div>
         <div class="viewfoot">
-          <span id="vInfo">No sheet drawn</span>
-          <span id="vOffcuts">— offcuts</span>
+          <span id="vInfo" data-i18n="No sheet drawn">No sheet drawn</span>
+          <span id="vOffcuts" data-i18n="offcuts" data-i18n-pre="— ">— offcuts</span>
         </div>
         <div class="viewctl">
-          <button class="btn" id="vPrev" type="button" disabled>‹ Prev</button>
+          <button class="btn" id="vPrev" type="button" disabled data-i18n="Prev">‹ Prev</button>
           <input type="range" id="vSlider" min="1" max="1" value="1" disabled aria-label="Sheet number">
           <span class="counter" id="vCounter">— / —</span>
-          <button class="btn" id="vNext" type="button" disabled>Next ›</button>
+          <button class="btn" id="vNext" type="button" disabled data-i18n="Next">Next ›</button>
         </div>
       </div>
     </section>
@@ -819,11 +826,28 @@ function markDirty(on, msg) {
 
 function touch() { markDirty(true); }
 
-function setStatus(id, msg, cls) {
+function setStatus(id, msg, cls, pre) {
   var el = $(id);
   if (!el) return;
-  el.textContent = msg;
+  setI18n(el, msg, pre);
   el.className = 'status' + (cls ? ' ' + cls : '');
+}
+
+// Idle labels are dictionary keys and stay tagged, so a language switch
+// re-translates them; pre is a live count or figure kept as-is. Anything
+// else is a one-off result message and loses its tag.
+function setI18n(el, key, pre) {
+  if (!el) return;
+  pre = pre || '';
+  if (isI18nKey(key)) {
+    el.setAttribute('data-i18n', key);
+    if (pre) el.setAttribute('data-i18n-pre', pre); else el.removeAttribute('data-i18n-pre');
+    el.textContent = pre + t(key);
+  } else {
+    el.removeAttribute('data-i18n');
+    el.removeAttribute('data-i18n-pre');
+    el.textContent = pre + key;
+  }
 }
 
 /* ------------------------------ input rows ----------------------------- */
@@ -860,16 +884,21 @@ function addPanelRow(data) {
   tr.appendChild(tdI);
 
   var tdL = document.createElement('td');
+  tdL.className = 'col-lbl';
   var lbl = document.createElement('input');
   lbl.type = 'text'; lbl.value = row.label;
   lbl.addEventListener('input', function () { row.label = lbl.value; touch(); });
   tdL.appendChild(lbl); tr.appendChild(tdL);
 
-  tr.appendChild(numCell(row, 'w', 1).td);
-  tr.appendChild(numCell(row, 'h', 1).td);
-  tr.appendChild(numCell(row, 'qty', 0, updateCount).td);
+  // same classes as the <th> above, so each column keeps one width
+  [['w', 1, null, 'col-w'], ['h', 1, null, 'col-h'], ['qty', 0, updateCount, 'col-qty']].forEach(function (c) {
+    var cell = numCell(row, c[0], c[1], c[2]).td;
+    cell.className = 'col-num ' + c[3];
+    tr.appendChild(cell);
+  });
 
   var tdX = document.createElement('td');
+  tdX.className = 'col-act col-del';
   var x = document.createElement('button');
   x.className = 'xbtn'; x.type = 'button'; x.textContent = '×'; x.title = 'Remove row';
   x.addEventListener('click', function () {
@@ -920,7 +949,7 @@ function addSheetRow(data) {
   });
   tdU.appendChild(inf); tr.appendChild(tdU);
 
-  // "All limited": keep any quantity already set, give empty rows a default.
+  // "All limited": keep any quantity already set, give empty rows the fallback.
   tr.limit = function (fallbackQty) {
     if (!(+row.qty > 0)) { row.qty = fallbackQty; q.input.value = fallbackQty; }
     if (inf.checked) { inf.checked = false; inf.dispatchEvent(new Event('change')); }
@@ -947,7 +976,7 @@ function totalPieces() {
 
 function updateCount() {
   var n = totalPieces();
-  $('panelCount').textContent = n.toLocaleString('en-US') + ' pcs';
+  setI18n($('panelCount'), 'Pcs', n.toLocaleString('en-US') + ' ');
   $('panelsEmpty').hidden = panels.length > 0;
   $('pasteTag').hidden = panels.length > 0;
   $('clearPanels').disabled = !panels.length;
@@ -955,7 +984,7 @@ function updateCount() {
 
 function updateSheetCount() {
   var n = sheets.filter(function (s) { return s.unlimited || +s.qty > 0; }).length;
-  $('sheetCount').textContent = n + ' in play';
+  setI18n($('sheetCount'), 'In play', n + ' ');
   syncLimitToggle();
 }
 
@@ -967,10 +996,7 @@ function allSheetsUnlimited() {
 function syncLimitToggle() {
   var btn = $('toggleAllLimit');
   if (!btn) return;
-  var key = allSheetsUnlimited() ? 'Unlimited' : 'Limited';
-  btn.setAttribute('data-i18n', key);
-  var dict = (typeof NESTRI_STRINGS === 'object' && NESTRI_STRINGS) || {};
-  btn.textContent = (dict[currentLang] || {})[key] || key;
+  setI18n(btn, allSheetsUnlimited() ? 'Unlimited' : 'Limited');
 }
 
 function clearPanels() {
@@ -1071,6 +1097,7 @@ function run() {
   if (pieces > 20000) {
     // no run-bar status line any more, so the limit warning goes in the report band
     $('band').className = 'band short';
+    $('band').hidden = false;
     $('bandTag').textContent = 'Too large';
     $('bandText').textContent = pieces.toLocaleString('en-US') + ' pieces is past this tool’s limit — split the schedule';
     markDirty(true);
@@ -1080,7 +1107,7 @@ function run() {
   var gap = Math.max(0, +$('gap').value || 0);
   var margin = Math.max(0, +$('margin').value || 0);
   var rotate = $('rotAll').checked;
-  $('rotState').textContent = rotate ? 'Allowed' : 'Locked';
+  setI18n($('rotState'), rotate ? 'Allowed' : 'Locked');
 
   // one rotation rule for the whole schedule, not per row
   var specs = panels.map(function (p) {
@@ -1183,13 +1210,9 @@ function renderBand(res) {
   list.hidden = true; list.innerHTML = '';
   btn.hidden = true;
 
-  if (!res.totals.panelsRequested) {
-    band.className = 'band';
-    tag.textContent = 'Waiting';
-    txt.innerHTML = 'Paste a pose schedule into {01}, tick Unlimited or set a quantity on the metal sheets you hold, ' +
-      'then run the nest. Gap / kerf and edge trim can be changed and the nest re-run without touching the schedule.';
-    return;
-  }
+  // nothing to say before there is a schedule, so the band stays out of the way
+  band.hidden = !res.totals.panelsRequested;
+  if (band.hidden) return;
   if (!res.unplaced.length) {
     band.className = 'band ok';
     tag.textContent = 'All nested';
@@ -1250,12 +1273,12 @@ function renderReport(res, ms) {
   res.byPanelType.forEach(function (p) { qtyByType[p.index] = p.requested; });
 
   var name = $('projName').value.trim();
-  $('reportNote').textContent = has ? ((name ? name + ' · ' : '') + ms + ' ms') : 'Not run';
+  setI18n($('reportNote'), has ? ((name ? name + ' · ' : '') + ms + ' ms') : 'Not run');
 
   var v = $('sSheets');
   v.textContent = has ? t.sheetsUsed : '—';
   v.className = has ? 'v' : 'v empty';
-  $('sSheetsSub').textContent = sheetsUsedSub(res);
+  setI18n($('sSheetsSub'), sheetsUsedSub(res));
 
   var u = $('sUtil');
   u.innerHTML = has ? fmt(t.utilization * 100, 1) + '<small>%</small>' : '—';
@@ -1303,13 +1326,13 @@ function showSheet(i) {
 
   if (!n) {
     viewIdx = 0;
-    $('vStage').innerHTML = '<div class="ghost">No nest yet</div>';
+    $('vStage').innerHTML = '<div class="ghost" data-i18n="No nest yet">' + esc(t('No nest yet')) + '</div>';
     $('vStage').style.height = '';
     $('vIndex').textContent = '—';
     $('vCount').textContent = '—';
-    $('vUtil').textContent = '— % used';
-    $('vInfo').textContent = 'No sheet drawn';
-    $('vOffcuts').textContent = '— offcuts';
+    setI18n($('vUtil'), '% used', '— ');
+    setI18n($('vInfo'), 'No sheet drawn');
+    setI18n($('vOffcuts'), 'offcuts', '— ');
     $('vCounter').textContent = '— / —';
     $('vPrev').disabled = true;
     $('vNext').disabled = true;
@@ -1326,12 +1349,13 @@ function showSheet(i) {
 
   $('vIndex').textContent = pad2(s.index);
   $('vCount').textContent = pad2(n);
-  $('vUtil').textContent = fmt(s.utilization * 100, 1) + '% used';
+  setI18n($('vUtil'), '% used', fmt(s.utilization * 100, 1));
   // a portrait sheet gets a taller stage so it is not a thin strip on screen
   $('vStage').style.height = s.h > s.w ? 'clamp(300px,64vh,700px)' : '';
   $('vStage').innerHTML = sheetSvg(s, margin);
+  $('vInfo').removeAttribute('data-i18n');
   $('vInfo').innerHTML = name + ' · ' + s.placements.length + ' panels · ' + fmt(m2(s.wasteArea), 2) + ' m² waste';
-  $('vOffcuts').textContent = cuts + (cuts === 1 ? ' offcut' : ' offcuts');
+  setI18n($('vOffcuts'), cuts === 1 ? 'offcut' : 'offcuts', cuts + ' ');
   $('vCounter').textContent = pad2(s.index) + ' / ' + pad2(n);
   $('vSlider').value = String(viewIdx + 1);
   $('vPrev').disabled = viewIdx === 0;
@@ -1915,7 +1939,7 @@ function applyProject(data) {
   $('gap').value = Math.max(0, num(o.gap));
   $('margin').value = Math.max(0, num(o.trim));
   $('rotAll').checked = o.rotate !== false;
-  $('rotState').textContent = $('rotAll').checked ? 'Allowed' : 'Locked';
+  setI18n($('rotState'), $('rotAll').checked ? 'Allowed' : 'Locked');
   $('projName').value = text(data.name, 60);
   markDirty(true, 'Project loaded — run the nest');
 }
@@ -1989,12 +2013,12 @@ function resetAll() {
   $('gap').value = 0;
   $('margin').value = 0;
   $('rotAll').checked = true;
-  $('rotState').textContent = 'Allowed';
+  setI18n($('rotState'), 'Allowed');
   $('pasteBox').value = '';
   $('sheetPasteBox').value = '';
   $('projName').value = '';
   setStatus('pasteStatus', 'Nothing loaded');
-  setStatus('sheetPasteStatus', '6 standard sizes preloaded');
+  setStatus('sheetPasteStatus', 'standard sizes preloaded', '', DEFAULT_SHEETS.length + ' ');
   setStatus('expStatus', 'Nothing to export');
   setStatus('projStatus', 'No project open');
   run();
@@ -2006,8 +2030,8 @@ $('clearPanels').addEventListener('click', function () { clearPanels(); touch();
 $('addSheet').addEventListener('click', function () { addSheetRow(); touch(); });
 $('toggleAllLimit').addEventListener('click', function () {
   if (allSheetsUnlimited()) {
-    // "All limited": keeps any quantity already set, empty rows get 10
-    $('sheetBody').querySelectorAll('tr').forEach(function (tr) { if (tr.limit) tr.limit(10); });
+    // "All limited": keeps any quantity already set, empty rows stay at 0 (skipped)
+    $('sheetBody').querySelectorAll('tr').forEach(function (tr) { if (tr.limit) tr.limit(0); });
   } else {
     $('sheetBody').querySelectorAll('.tgl').forEach(function (box) {
       if (!box.checked) { box.checked = true; box.dispatchEvent(new Event('change')); }
@@ -2081,53 +2105,168 @@ $('dwgFileInput').addEventListener('change', function () {
 });
 
 /* ------------------------------ language -------------------------------- */
+// en only lists labels whose English display differs from the key (arrows, +);
+// every other English label is its own key.
 var NESTRI_STRINGS = {
   en: {
-    'Sheet nesting optimiser': 'Sheet nesting optimiser',
-    'Run nest': 'Run nest',
     'Add panel': '+ Add panel',
-    'Metal sheets': 'Metal sheets',
-    'Paste from Excel': 'Paste from Excel',
-    'Unlimited': 'Unlimited',
-    'Limited': 'Limited',
+    'Add sheet': '+ Add sheet',
     'Upload sheet DWG': '↑ Upload sheet DWG',
-    'No DWG loaded': 'No DWG loaded'
+    'Export': '↓ Export',
+    'Import': '↑ Import',
+    'Report (Excel)': '↓ Report (Excel)',
+    'All sheets (DXF)': '↓ All sheets (DXF)',
+    'Prev': '‹ Prev',
+    'Next': 'Next ›',
+    'offcut': 'offcut'
   },
   tr: {
     'Sheet nesting optimiser': 'Sac yerleştirme optimizörü',
     'Run nest': 'Yerleştir',
+    'Reset': 'Sıfırla',
+    'Save': 'Kaydet',
+    'Export': '↓ Dışa Aktar',
+    'Import': '↑ İçe Aktar',
+    'No project open': 'Proje açık değil',
+    'Project': 'Proje',
     'Add panel': '+ Panel ekle',
-    'Metal sheets': 'Metal saclar',
+    'Clear': 'Temizle',
     'Paste from Excel': "Excel'den yapıştır",
+    'Start here': 'Buradan başla',
+    'Replace rows': 'Satırları değiştir',
+    'Add to list': 'Listeye ekle',
+    'Nothing loaded': 'Yüklenmedi',
+    'No poses yet': 'Henüz poz yok',
+    'Metal sheets': 'Metal saclar',
+    'Add sheet': '+ Sac ekle',
+    'All unlimited': 'Tümü sınırsız',
+    'All limited': 'Tümü sınırlı',
     'Unlimited': 'Sınırsız',
     'Limited': 'Sınırlı',
+    'Rows left at 0 are skipped': '0 kalan satırlar atlanır',
     'Upload sheet DWG': '↑ Sac DWG yükle',
-    'No DWG loaded': 'DWG yüklenmedi'
+    'No DWG loaded': 'DWG yüklenmedi',
+    'Report': 'Rapor',
+    'Not run': 'Çalıştırılmadı',
+    'Sheets used': 'Kullanılan saclar',
+    'Utilisation': 'Kullanım oranı',
+    'Waste': 'Fire',
+    'Panels nested': 'Yerleştirilen paneller',
+    'No nest yet': 'Henüz yerleştirme yok',
+    'Per sheet size': 'Sac boyutuna göre',
+    'Sheet size': 'Sac boyutu',
+    'Stock': 'Stok',
+    'Used': 'Kullanılan',
+    'Panels': 'Paneller',
+    'Nothing to report': 'Rapor yok',
+    'Nesting layout': 'Yerleştirme düzeni',
+    'No sheet drawn': 'Sac çizilmedi',
+    'Prev': '‹ Önceki',
+    'Next': 'Sonraki ›',
+    'Report (Excel)': '↓ Rapor (Excel)',
+    'All sheets (DXF)': '↓ Tüm saclar (DXF)',
+    'Nothing to export': 'Dışa aktarılacak bir şey yok',
+    'Gap / kerf (mm)': 'Aralık / kerf (mm)',
+    'Edge trim (mm)': 'Kenar kırpma (mm)',
+    'Rotate': 'Döndür',
+    'Allowed': 'İzinli',
+    'Locked': 'Kilitli',
+    'Pose': 'Poz',
+    'Width': 'Genişlik',
+    'Length': 'Uzunluk',
+    'Qty': 'Adet',
+    'Pcs': 'Adet',
+    'In play': 'Aktif',
+    'standard sizes preloaded': 'standart boyut yüklendi',
+    'offcut': 'Fire parça',
+    'offcuts': 'Fire parçalar',
+    '% used': '% kullanıldı',
+    'Sheet': 'Sac'
   },
   ar: {
     'Sheet nesting optimiser': 'محسّن تعشيش الألواح',
     'Run nest': 'تشغيل التعشيش',
+    'Reset': 'إعادة تعيين',
+    'Save': 'حفظ',
+    'Export': '↓ تصدير',
+    'Import': '↑ استيراد',
+    'No project open': 'لا يوجد مشروع مفتوح',
+    'Project': 'مشروع',
     'Add panel': '+ إضافة لوح',
-    'Metal sheets': 'الألواح المعدنية',
+    'Clear': 'مسح',
     'Paste from Excel': 'لصق من إكسل',
+    'Start here': 'ابدأ هنا',
+    'Replace rows': 'استبدال الصفوف',
+    'Add to list': 'إضافة إلى القائمة',
+    'Nothing loaded': 'لم يتم التحميل',
+    'No poses yet': 'لا توجد أوضاع بعد',
+    'Metal sheets': 'الألواح المعدنية',
+    'Add sheet': '+ إضافة لوح',
+    'All unlimited': 'الكل غير محدود',
+    'All limited': 'الكل محدود',
     'Unlimited': 'غير محدود',
     'Limited': 'محدود',
+    'Rows left at 0 are skipped': 'الصفوف بقيمة 0 تُتخطى',
     'Upload sheet DWG': '↑ رفع ملف DWG',
-    'No DWG loaded': 'لم يتم تحميل DWG'
+    'No DWG loaded': 'لم يتم تحميل DWG',
+    'Report': 'تقرير',
+    'Not run': 'لم يُشغَّل',
+    'Sheets used': 'الألواح المستخدمة',
+    'Utilisation': 'نسبة الاستخدام',
+    'Waste': 'الهدر',
+    'Panels nested': 'الألواح المعشَّشة',
+    'No nest yet': 'لا يوجد تعشيش بعد',
+    'Per sheet size': 'حسب حجم اللوح',
+    'Sheet size': 'حجم اللوح',
+    'Stock': 'المخزون',
+    'Used': 'المستخدم',
+    'Panels': 'الألواح',
+    'Nothing to report': 'لا شيء للإبلاغ عنه',
+    'Nesting layout': 'تخطيط التعشيش',
+    'No sheet drawn': 'لم يُرسم أي لوح',
+    'Prev': '‹ السابق',
+    'Next': 'التالي ›',
+    'Report (Excel)': '↓ تقرير (Excel)',
+    'All sheets (DXF)': '↓ جميع الألواح (DXF)',
+    'Nothing to export': 'لا شيء للتصدير',
+    'Gap / kerf (mm)': 'الفجوة / الكيرف (مم)',
+    'Edge trim (mm)': 'قص الحافة (مم)',
+    'Rotate': 'تدوير',
+    'Allowed': 'مسموح',
+    'Locked': 'مقفل',
+    'Pose': 'الوضعية',
+    'Width': 'العرض',
+    'Length': 'الطول',
+    'Qty': 'الكمية',
+    'Pcs': 'قطعة',
+    'In play': 'نشط',
+    'standard sizes preloaded': 'أحجام قياسية محمّلة مسبقاً',
+    'offcut': 'قصاصة',
+    'offcuts': 'قصاصات',
+    '% used': '% مستخدم',
+    'Sheet': 'لوح'
   }
 };
 
 var currentLang = 'en';
+function t(key) {
+  return (NESTRI_STRINGS[currentLang] || {})[key] || NESTRI_STRINGS.en[key] || key;
+}
+function isI18nKey(key) {
+  return typeof key === 'string' && (key in NESTRI_STRINGS.tr || key in NESTRI_STRINGS.en);
+}
+
 function applyLang(lang) {
   currentLang = NESTRI_STRINGS[lang] ? lang : 'en';
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-  document.querySelectorAll('[data-i18n]').forEach(function (el) {
-    var key = el.getAttribute('data-i18n');
-    el.textContent = NESTRI_STRINGS[currentLang][key] || NESTRI_STRINGS.en[key] || key;
-  });
-  document.querySelectorAll('.lang-btn').forEach(function (b) {
+  document.querySelectorAll('[data-lang]').forEach(function (b) {
     b.setAttribute('aria-pressed', String(b.dataset.lang === currentLang));
+  });
+  // every tagged element — static labels, and live ones (counts, the limit
+  // toggle, idle statuses) whose number sits in data-i18n-pre
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    el.textContent = (el.getAttribute('data-i18n-pre') || '') + t(el.getAttribute('data-i18n'));
   });
   try { localStorage.setItem('nestri-lang', currentLang); } catch (err) { /* private mode */ }
 }
@@ -2178,7 +2317,7 @@ $('projFile').addEventListener('change', function () {
   if (f) importProject(f);
 });
 $('rotAll').addEventListener('change', function () {
-  $('rotState').textContent = this.checked ? 'Allowed' : 'Locked';
+  setI18n($('rotState'), this.checked ? 'Allowed' : 'Locked');
   touch();
 });
 
