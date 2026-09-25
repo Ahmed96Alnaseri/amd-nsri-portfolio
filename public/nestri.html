@@ -30,6 +30,9 @@
   --fs-md:14px;
 }
 *{box-sizing:border-box}
+/* no visible scrollbars anywhere — every box still scrolls */
+*{scrollbar-width:none;-ms-overflow-style:none}
+*::-webkit-scrollbar{display:none}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{
@@ -80,7 +83,7 @@ h1 em{font-style:italic;color:var(--copper)}
 
 /* ---------------- three-column body ---------------- */
 .cols{
-  display:grid;gap:16px;margin-top:16px;align-items:start;
+  display:grid;gap:16px;margin-top:16px;align-items:start;overflow:hidden;
   grid-template-columns:320px minmax(0,1.08fr) minmax(0,1fr);
   grid-template-areas:"inputs report report" "inputs table view";
 }
@@ -226,7 +229,8 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 .subhead{display:flex;align-items:baseline;gap:12px;margin:16px 0 8px}
 .subhead .title{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 .subhead .note{margin-left:auto;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
-.repbox{position:relative;border:1px solid var(--line);min-height:220px;max-height:440px;overflow:auto;flex:1}
+.repbox{position:relative;border:1px solid var(--line);min-height:220px;max-height:440px;overflow:auto;overflow-x:auto;max-width:100%;flex:1;scrollbar-width:none;-ms-overflow-style:none}
+.repbox::-webkit-scrollbar{display:none;width:0;height:0}
 .repbox::after{content:"";position:absolute;bottom:-1px;right:-1px;width:9px;height:9px;border:solid var(--line-copper);border-width:0 1px 1px 0;pointer-events:none}
 .rep thead th{padding:9px 9px;background:#131210;letter-spacing:.1em}
 .rep tbody td{padding:7px 9px}
@@ -336,7 +340,6 @@ footer b{color:var(--copper);font-weight:500}
       <span class="tglwrap">
         <input type="checkbox" class="tgl" id="rotAll" checked
                title="Let the solver turn any pose 90° — untick for a directional or brushed finish">
-        <span id="rotState" data-i18n="Allowed">Allowed</span>
       </span>
     </div>
   </div>

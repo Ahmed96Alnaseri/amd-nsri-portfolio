@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>IPunch, image to perforation | AMD NSRI</title>
+<title>IPUNCH, image to perforation | AMD NSRI</title>
 <meta name="description" content="Turn an image into a punchable perforation pattern. Live preview, open-area readouts and DXF export for AutoCAD.">
 <meta name="theme-color" content="#0d0d0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,6 +111,16 @@ code { font: 400 .95em var(--mono); color: var(--text-2); }
 .sec-head:hover .sec-title { color: var(--copper-hi); }
 .sec-head[aria-expanded="true"] .sec-sum { visibility: hidden; }
 .sec-body { display: flex; flex-direction: column; gap: 12px; padding-inline-start: 34px; }
+.diam-fields { display: flex; flex-direction: column; gap: 12px; }
+.bend-group { display: flex; flex-direction: column; gap: 8px; }
+.bends { display: flex; flex-direction: column; gap: 8px; padding-inline-start: 12px; border-inline-start: 1px solid var(--line-2); }
+.bends:empty { display: none; }
+.bend-row { flex-wrap: nowrap; gap: 8px; }
+.bend-row .lbl { flex: 1; }
+.bend-x { width: 24px; height: 24px; padding: 0; border: 0; background: none; color: var(--text-3); font-size: 16px; line-height: 1; cursor: pointer; }
+.bend-x:hover { color: var(--text); }
+/* "No punching": hole settings stay on screen but out of play */
+.punch-off { opacity: .4; pointer-events: none; }
 #single-fields, #boundary-fields, #domain-fields, #angle-field { display: flex; flex-direction: column; gap: 12px; }
 @media (max-width: 420px) { .group { padding: 14px 16px 18px; } .sec-body { padding-inline-start: 0; } }
 .res-h { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
@@ -246,6 +256,7 @@ html[dir="rtl"] .punchset { flex-direction: row-reverse; }
 .chip .u { flex: none; font: 400 10px var(--mono); color: var(--text-3); }
 
 /* spacing diagram and tone curve */
+#btn-ratio { white-space: normal; line-height: 1.15; text-align: center; padding-inline: 8px; }
 .diagram { padding: 12px; border: 1px solid var(--line-2); border-radius: 4px; background: var(--stage); }
 .diagram svg { display: block; width: 100%; height: auto; }
 .diagram text { font: 400 14px var(--mono); fill: var(--text-2); }
@@ -435,13 +446,13 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
        style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#b8956a;text-decoration:none;padding:12px 0 0 0;opacity:0.7;">
       ← AMD NSRI
     </a>
-    <a class="brand" href="#" aria-label="IPunch">
+    <a class="brand" href="#" aria-label="IPUNCH">
       <svg class="mark" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="4" cy="4" r="1.1"/><circle cx="12" cy="4" r="1.7"/><circle cx="20" cy="4" r="2.3"/>
         <circle cx="4" cy="12" r="1.7"/><circle cx="12" cy="12" r="2.3"/><circle cx="20" cy="12" r="2.9"/>
         <circle cx="4" cy="20" r="2.3"/><circle cx="12" cy="20" r="2.9"/><circle cx="20" cy="20" r="3.4"/>
       </svg>
-      <span class="wordmark">IPunch</span>
+      <span class="wordmark">IPUNCH</span>
     </a>
     <p class="tagline">Image to Punch</p>
     <div class="crumb" id="crumb"></div>
@@ -695,6 +706,9 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
         <svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
       </button>
       <div class="sec-body" id="body-diam">
+        <label class="switch"><input type="checkbox" id="in-nopunch"><span class="tr"></span><span>No punching — panels only</span></label>
+        <p class="note" id="nopunch-note" hidden>Punching is off. The preview and exports show the panel layout only.</p>
+        <div class="diam-fields" id="diam-fields">
         <div class="row-h">
           <span class="lbl" id="lbl-count">Number of sizes</span>
           <div class="stepper" role="group" aria-labelledby="lbl-count">
@@ -711,6 +725,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
         <div class="row-h"><span class="sub-h">Punch set</span><span class="lbl mono">to scale · edit any value</span></div>
         <div class="punchset" id="punchset" aria-hidden="true"></div>
         <div class="chips" id="chips"></div>
+        </div>
       </div>
     </section>
 
@@ -825,6 +840,46 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
         </div>
       </div>
     </section>
+
+    <section class="group" id="sec-coat">
+      <button type="button" class="sec-head" data-toggle aria-expanded="true" aria-controls="body-coat">
+        <span class="sec-no">07</span><span class="sec-title">Powder coating</span>
+        <span class="sec-sum" id="sum-coat"></span>
+        <svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+      </button>
+      <div class="sec-body" id="body-coat">
+        <div class="seg wide" role="radiogroup" aria-label="Coated sides" data-key="coatSides">
+          <button type="button" role="radio" data-value="one">One side</button>
+          <button type="button" role="radio" data-value="both">Both sides</button>
+        </div>
+        <hr class="dash">
+        <span class="sub-h">Bends</span>
+        <div class="bend-group">
+          <div class="row-h">
+            <span class="lbl" id="lbl-bendsW">Width edge bends</span>
+            <div class="stepper" role="group" aria-labelledby="lbl-bendsW">
+              <button type="button" id="bendsW-dec" aria-label="Fewer bends">−</button>
+              <output id="out-bendsW" aria-live="polite">0</output>
+              <button type="button" id="bendsW-inc" aria-label="More bends">+</button>
+            </div>
+          </div>
+          <div class="bends" id="bendsW"></div>
+        </div>
+        <div class="bend-group">
+          <div class="row-h">
+            <span class="lbl" id="lbl-bendsL">Length edge bends</span>
+            <div class="stepper" role="group" aria-labelledby="lbl-bendsL">
+              <button type="button" id="bendsL-dec" aria-label="Fewer bends">−</button>
+              <output id="out-bendsL" aria-live="polite">0</output>
+              <button type="button" id="bendsL-inc" aria-label="More bends">+</button>
+            </div>
+          </div>
+          <div class="bends" id="bendsL"></div>
+        </div>
+        <p class="note" id="bend-note"></p>
+        <p class="note">Based on 0.12 kg/m² per coated face.</p>
+      </div>
+    </section>
   </aside>
 
   <aside class="outputs" aria-label="Results">
@@ -847,6 +902,8 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
             <div class="kv-row"><span class="k">Pitch</span><span class="v" id="r-pitch"></span></div>
           </div>
           <div class="kv-row full"><span class="k">Cut length</span><span class="v" id="r-cut"></span></div>
+          <div class="kv-row full"><span class="k">Coated area</span><span class="v" id="r-coat-area"></span></div>
+          <div class="kv-row full"><span class="k">Powder required</span><span class="v" id="r-powder"></span></div>
           <div class="kv-row full"><span class="k">Smallest bridge</span><span class="v bridge"><span id="r-bridge"></span><button type="button" class="link show-on" id="btn-bridge"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.5"/><path d="M8 1v3M8 12v3M1 8h3M12 8h3"/></svg><span>Show on panel</span></button></span></div>
         </div>
         <ul class="warns" id="warns"></ul>
@@ -913,7 +970,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<noscript><p style="padding:20px">IPunch needs JavaScript to run.</p></noscript>
+<noscript><p style="padding:20px">IPUNCH needs JavaScript to run.</p></noscript>
 <script>
 /* IPunch translations. Keys are the English strings themselves, with {name} placeholders. */
 (function () {
@@ -1008,7 +1065,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     Inputs: 'Girdiler',
     Preview: 'Önizleme',
     'Results and export': 'Sonuçlar ve dışa aktarma',
-    'IPunch needs JavaScript to run.': 'IPunch çalışmak için JavaScript gerektirir.',
+    'IPUNCH needs JavaScript to run.': 'IPUNCH çalışmak için JavaScript gerektirir.',
 
     /* preview */
     Sheet: 'Sac',
@@ -1030,7 +1087,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     'Perforated panel preview. Drag to move, pinch or scroll to zoom, double-click to fit.':
       'Delikli panel önizlemesi. Taşımak için sürükleyin, yakınlaştırmak için sıkıştırın veya tekerleği çevirin, sığdırmak için çift tıklayın.',
     holes: 'delik',
-    transparency: 'şeffaflık',
+    transparency: 'geçirgenlik',
     'solid area': 'dolu alan',
     'Drop an image, or a DWG or DXF drawing': 'Bir görsel ya da DWG veya DXF çizimi bırakın',
     Updating: 'Güncelleniyor',
@@ -1043,7 +1100,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     'Tap to upload an image': 'Görsel yüklemek için dokunun',
     Samples: 'Örnekler',
     Dune: 'Kumul',
-    'Wave study': 'Dalga çalışması',
+    'Wave study': 'Dalga',
     Folia: 'Folia',
     'Built-in sample': 'Hazır örnek',
 
@@ -1187,7 +1244,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     /* results */
     Results: 'Sonuçlar',
     Holes: 'Delikler',
-    Transparency: 'Şeffaflık',
+    Transparency: 'Geçirgenlik',
     'open area of the whole panel': 'panelin tamamındaki boşluk oranı',
     'open area of all panels': 'tüm panellerdeki boşluk oranı',
     'Solid area': 'Dolu alan',
@@ -1229,7 +1286,28 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
       'Genişlik ve uzunluk, her panelin sığdığı dikdörtgendir, milimetre cinsindendir. Ölçüsü, biçimi ve delik düzeni aynı olan paneller tek bir poz kodunu paylaşır; önizlemede ve DXF dosyasında görünen kod budur. İlk parçaya yakınlaşmak için bir satır seçin.',
     'Panels {ids}': 'Paneller {ids}',
     'and {n} more':'ve {n} panel daha',
-    'IPunch panel list': 'IPunch panel listesi',
+    'IPUNCH panel list': 'IPUNCH panel listesi',
+    'No punching — panels only': 'Delme yok — yalnızca paneller',
+    'Punching is off. The preview and exports show the panel layout only.': 'Delme kapalı. Önizleme ve dışa aktarımlar yalnızca panel yerleşimini gösterir.',
+    'Panels only': 'Yalnızca paneller',
+    'DXF downloaded: panel layout only.': 'DXF indirildi: yalnızca panel yerleşimi.',
+    'Powder coating': 'Toz boya',
+    'Coating': 'Boya',
+    'Coated sides': 'Boyanan yüzler',
+    'One side': 'Tek yüz',
+    'Both sides': 'Çift yüz',
+    'Based on 0.12 kg/m² per coated face.': 'Boyanan her yüz için 0.12 kg/m² esas alınır.',
+    'Bends': 'Bükümler',
+    'Width edge bends': 'Genişlik kenarı bükümleri',
+    'Length edge bends': 'Uzunluk kenarı bükümleri',
+    'Fewer bends': 'Daha az büküm',
+    'More bends': 'Daha fazla büküm',
+    'Bend {n}': 'Büküm {n}',
+    'Remove bend': 'Bükümü kaldır',
+    'Each bend is one folded strip along a {w} mm Width edge or a {h} mm Length edge.': 'Her büküm, {w} mm genişlik kenarı veya {h} mm uzunluk kenarı boyunca katlanan bir şerittir.',
+    'Bends add {a} per face.': 'Bükümler yüz başına {a} ekler.',
+    'Coated area': 'Boyalı alan',
+    'Powder required': 'Gereken toz boya',
     Drawing: 'Çizim',
     'Panel grid': 'Panel bölümü',
     'Distance between circles ': 'Daireler arası mesafe ',
@@ -1323,7 +1401,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
 
   const AR = {
     'Image to perforation': 'من الصورة إلى التثقيب',
-    'Image to Punch': 'من الصورة إلى الثقب',
+    'Image to Punch': 'من الصورة إلى التثقيب',
     'DWG or DXF · closed shapes become the facade boundary': 'DWG أو DXF · الأشكال المغلقة تصبح حدود الواجهة',
     'Closed shapes inside it are openings': 'الأشكال المغلقة داخله تُعد فتحات',
     'Upload a DWG or DXF drawing with the boundary drawn as a closed shape.': 'ارفع ملف DWG أو DXF تكون فيه الحدود شكلاً مغلقاً.',
@@ -1410,7 +1488,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     Inputs: 'المدخلات',
     Preview: 'المعاينة',
     'Results and export': 'النتائج والتصدير',
-    'IPunch needs JavaScript to run.': 'يحتاج IPunch إلى JavaScript ليعمل.',
+    'IPUNCH needs JavaScript to run.': 'يحتاج IPUNCH إلى JavaScript ليعمل.',
 
     Sheet: 'اللوح',
     Backlit: 'إضاءة خلفية',
@@ -1443,7 +1521,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     'Tap to upload an image': 'انقر لرفع صورة',
     Samples: 'أمثلة',
     Dune: 'كثبان',
-    'Wave study': 'دراسة الموج',
+    'Wave study': 'الموج',
     Folia: 'فوليا',
     'Built-in sample': 'عينة جاهزة',
 
@@ -1621,7 +1699,28 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
       'العرض والطول هما المستطيل الذي يسع كل لوح، بالمليمتر. الألواح المتطابقة في المقاس والشكل ونمط الثقوب تحمل رمز موضع واحداً، وهو الرمز الظاهر في المعاينة وفي ملف DXF. اختر صفاً للانتقال إلى أول قطعة.',
     'Panels {ids}': 'الألواح {ids}',
     'and {n} more': 'و{n} غيرها',
-    'IPunch panel list': 'قائمة ألواح IPunch',
+    'IPUNCH panel list': 'قائمة ألواح IPUNCH',
+    'No punching — panels only': 'بلا تثقيب — ألواح فقط',
+    'Punching is off. The preview and exports show the panel layout only.': 'التثقيب متوقف. تعرض المعاينة والملفات المصدَّرة تقسيم الألواح فقط.',
+    'Panels only': 'ألواح فقط',
+    'DXF downloaded: panel layout only.': 'تم تنزيل DXF: تقسيم الألواح فقط.',
+    'Powder coating': 'الطلاء بالمسحوق',
+    'Coating': 'الطلاء',
+    'Coated sides': 'الأوجه المطلية',
+    'One side': 'وجه واحد',
+    'Both sides': 'الوجهان',
+    'Based on 0.12 kg/m² per coated face.': 'على أساس 0.12 كغ/م² لكل وجه مطلي.',
+    'Bends': 'الثنيات',
+    'Width edge bends': 'ثنيات حافة العرض',
+    'Length edge bends': 'ثنيات حافة الطول',
+    'Fewer bends': 'ثنيات أقل',
+    'More bends': 'ثنيات أكثر',
+    'Bend {n}': 'الثنية {n}',
+    'Remove bend': 'حذف الثنية',
+    'Each bend is one folded strip along a {w} mm Width edge or a {h} mm Length edge.': 'كل ثنية شريط مطوي على امتداد حافة عرض طولها {w} مم أو حافة طول طولها {h} مم.',
+    'Bends add {a} per face.': 'تضيف الثنيات {a} لكل وجه.',
+    'Coated area': 'المساحة المطلية',
+    'Powder required': 'كمية المسحوق المطلوبة',
     Drawing: 'الرسم',
     'Panel grid': 'تقسيم الألواح',
     'Total panels': 'مجموع الألواح',
@@ -2551,6 +2650,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const first = m.region
       ? `IPUNCH  BOUNDARY ${num(m.W, 1)} x ${num(m.H, 1)} MM  ${m.grid.panels.length} PANELS ${num(m.grid.pw)} x ${num(m.grid.ph)} MM  GAP ${num(m.grid.gap)} MM  INNER OFFSET ${num(m.offset)} MM`
       : `IPUNCH  PANEL ${num(m.W)} x ${num(m.H)} MM  MARGIN ${num(m.margin)} MM`;
+    if (m.noPunch) return [first, 'PANEL LAYOUT ONLY  NO PERFORATION'];
     return [
       first,
       `${pattern}  PITCH ${num(m.pitch)} MM  HOLES ${fmtInt(st.holes)}`,
@@ -2585,7 +2685,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const layers = [{ name: '0', color: 7 }];
     if (opts.outline && R) layers.push({ name: 'BOUNDARY', color: 8 }, { name: 'PANELS', color: 7 }, { name: 'PANEL_ID', color: 2 });
     else if (opts.outline) layers.push({ name: 'OUTLINE', color: 7 });
-    m.diams.forEach((d, j) => layers.push({ name: layerName(d), color: ACI[j % ACI.length] }));
+    if (!m.noPunch) m.diams.forEach((d, j) => layers.push({ name: layerName(d), color: ACI[j % ACI.length] }));
     if (lines.length) layers.push({ name: 'IPUNCH_INFO', color: 8 });
 
     let s = '';
@@ -2682,7 +2782,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const H = dxfNum(m.H);
     const parts = [
       `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${W}mm" height="${H}mm" viewBox="0 0 ${W} ${H}">\n`,
-      `<title>IPunch ${num(m.W, 1)} x ${num(m.H, 1)} mm, ${fmtInt(m.stats.holes)} holes</title>\n`,
+      `<title>IPUNCH ${num(m.W, 1)} x ${num(m.H, 1)} mm, ${m.noPunch ? 'panel layout' : fmtInt(m.stats.holes) + ' holes'}</title>\n`,
     ];
     if (opts.outline && m.region) {
       let d = '';
@@ -2703,7 +2803,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     } else if (opts.outline) {
       parts.push(`<rect id="OUTLINE" x="0" y="0" width="${W}" height="${H}" fill="none" stroke="#000" stroke-width="0.5"/>\n`);
     }
-    m.diams.forEach((d, j0) => {
+    if (!m.noPunch) m.diams.forEach((d, j0) => {
       const j = j0 + 1;
       const r = dxfNum(d / 2);
       let s = `<g id="${layerName(d)}" fill="none" stroke="#000" stroke-width="0.25">\n`;
@@ -3974,6 +4074,8 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     spacingMode: 'cc', spacing: 36, pattern: 'angle', angle: 60,
     invert: false, contrast: 1, gamma: 1, cutoff: 0.05, autoLevels: true, dither: false,
     view: 'sheet', guides: true, tool: 'pan', outline: true, info: true, snapMeasure: true,
+    noPunch: false,
+    coatSides: 'one', bendsW: [], bendsL: [],
   };
 
   let image = null;
@@ -4079,10 +4181,13 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const pitch = state.spacingMode === 'cc' ? state.spacing : dmax + state.spacing;
     const heavy = allowHeavyOnce;
     allowHeavyOnce = false;
-    const lat = C.buildLattice({
-      W: state.W, H: state.H, margin: state.margin, pitch, dmax,
-      pattern: state.pattern, angle: state.angle, maxHoles: heavy ? MAX_HOLES_HEAVY : MAX_HOLES,
-    });
+    // with punching off there is no lattice at all: the panel is drawn and exported bare
+    const lat = state.noPunch
+      ? { count: 0, rows: 0, a: 1, b: 1, pitch, capped: false, estimate: 0 }
+      : C.buildLattice({
+        W: state.W, H: state.H, margin: state.margin, pitch, dmax,
+        pattern: state.pattern, angle: state.angle, maxHoles: heavy ? MAX_HOLES_HEAVY : MAX_HOLES,
+      });
     let lvl = new Uint8Array(0);
     if (lat.count) {
       const sampler = image
@@ -4098,14 +4203,14 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const stats = C.computeStats(lat, lvl, diams, {
       W: state.W, H: state.H, margin: state.margin, pitch,
     });
-    const warnings = C.checkWarnings({ lat, diams, pitch, thickness: 0, stats });
-    if (diams.length < state.diams.length) {
+    const warnings = state.noPunch ? [] : C.checkWarnings({ lat, diams, pitch, thickness: 0, stats });
+    if (!state.noPunch && diams.length < state.diams.length) {
       warnings.push({ level: 'warn', code: 'dup', text: 'Some diameter values are identical, so they were merged into one tool.' });
     }
     model = {
       lat, lvl, diams, pitch, stats, warnings,
       W: state.W, H: state.H, margin: state.margin, thickness: 0,
-      pattern: state.pattern, angle: state.angle, layout: 'single',
+      pattern: state.pattern, angle: state.angle, layout: 'single', noPunch: state.noPunch,
     };
     probe = null;
   }
@@ -5013,6 +5118,11 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
   });
   cv.addEventListener('auxclick', (e) => { if (e.button === 1) e.preventDefault(); });
 
+  /** The label is swapped by code, so the page-wide language pass can't reach it; set it here. */
+  function setPlaceLabel() {
+    $('btn-place-panel').querySelector('span').textContent = t(state.tool === 'place' ? 'Done placing' : 'Place on panel');
+  }
+
   function setTool(tool, force) {
     const next = !force && state.tool === tool ? 'pan' : tool;
     if (next === 'place' && !image) return;
@@ -5030,7 +5140,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     $('btn-place').setAttribute('aria-pressed', String(next === 'place'));
     const panelBtn = $('btn-place-panel');
     panelBtn.setAttribute('aria-pressed', String(next === 'place'));
-    panelBtn.textContent = t(next === 'place' ? 'Done placing' : 'Place on panel');
+    setPlaceLabel();
     updateTouchAction();
     if (!force && next === 'measure') {
       toast(t(state.snapMeasure
@@ -5140,7 +5250,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     let counts = null;
     const heavy = allowHeavyOnce;
     allowHeavyOnce = false;
-    if (region && grid && !grid.tooMany) {
+    if (!state.noPunch && region && grid && !grid.tooMany) {
       lat = C.buildLattice({
         W: region.W, H: region.H, margin: 0, pitch, dmax,
         pattern: state.pattern, angle: state.angle, maxHoles: heavy ? MAX_HOLES_HEAVY : MAX_HOLES_BOUNDARY,
@@ -5202,7 +5312,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const stats = C.computeStats(lat, lvl, diams, {
       W: state.W, H: state.H, margin: 0, pitch, area: grid && !grid.tooMany ? grid.panelArea : region ? region.area : 0,
     });
-    let warnings = C.checkWarnings({ lat, diams, pitch, thickness: 0, stats });
+    let warnings = state.noPunch ? [] : C.checkWarnings({ lat, diams, pitch, thickness: 0, stats });
     if (!drawing) {
       warnings = [{ level: 'info', code: 'nodrawing', text: 'Upload a DWG or DXF drawing with the boundary drawn as a closed shape.' }];
     } else if (!region) {
@@ -5233,7 +5343,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
         warnings.push({ level: 'warn', code: 'units', text: 'The boundary reads as only {w} × {h} mm. If the drawing is in metres or centimetres, change Drawing units.', params: { w: num(region.W, 1), h: num(region.H, 1) } });
       }
     }
-    if (diams.length < state.diams.length) {
+    if (!state.noPunch && diams.length < state.diams.length) {
       warnings.push({ level: 'warn', code: 'dup', text: 'Some diameter values are identical, so they were merged into one tool.' });
     }
     const cutTol = 0.999;
@@ -5242,7 +5352,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
       lat, lvl, diams, pitch, stats, warnings, layout: 'boundary',
       W: state.W, H: state.H, margin: 0, thickness: 0,
       pattern: state.pattern, angle: state.angle,
-      region, grid, counts, types, offset: state.offset, noSheet: !region,
+      region, grid, counts, types, offset: state.offset, noSheet: !region, noPunch: state.noPunch,
     };
     probe = null;
   }
@@ -5277,7 +5387,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     ctx.save();
     ctx.clip(outline, 'evenodd');
     const gap = G ? G.gap : 0;
-    if (state.guides && state.offset > 0) {
+    if (state.guides && state.offset > 0 && !state.noPunch) {
       // hole-free band along the boundary and openings, and on both sides of every gap
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
@@ -5520,12 +5630,12 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     txt('r-panel', area(R ? R.area : 0));
     txt('panels-count', G && model.types ? t('{m} positions · {n} pcs', { m: fmtInt(model.types.length), n: fmtInt(G.panels.length) }) : '');
 
-    const key = `${gridCache.key}|${model.stats.holes}|${model.pitch}|${model.stats.open}`;
+    const key = `${gridCache.key}|${model.stats.holes}|${model.pitch}|${model.stats.open}|${model.noPunch}`;
     if (key === panelTableKey) return;
     panelTableKey = key;
     const body = $('panels');
     body.textContent = '';
-    if (!G || !model.counts) return;
+    if (!G || (!model.counts && !model.noPunch)) return;
     const frag = document.createDocumentFragment();
     model.types.forEach((ty) => {
       const tr = document.createElement('tr');
@@ -5561,18 +5671,22 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const G = model.grid;
     const st = model.stats;
     const rows = [
-      [t('IPunch panel list')],
+      [t('IPUNCH panel list')],
       [t('Drawing'), drawing ? drawing.name : ''],
       [t('Boundary'), `${num(state.W, 1)} × ${num(state.H, 1)} mm`],
       [t('Boundary area'), +(R.area / 1e6).toFixed(3), 'm²'],
       [t('Panel grid'), `${num(state.panelW)} × ${num(state.panelH)} mm`],
       [t('Gap between panels'), state.gap, 'mm'],
       [t('Inner offset'), state.offset, 'mm'],
-      [t('Distance between circles'), model.pitch, 'mm'],
-      [t('Diameters'), model.diams.map((d) => 'Ø' + num(d)).join(', ')],
+      ...(model.noPunch ? [] : [
+        [t('Distance between circles'), model.pitch, 'mm'],
+        [t('Diameters'), model.diams.map((d) => 'Ø' + num(d)).join(', ')],
+      ]),
       [t('Total panels'), G.panels.length],
-      [t('Total holes'), st.holes],
-      [t('Open area'), +(st.transparency * 100).toFixed(2), '%'],
+      ...(model.noPunch ? [] : [
+        [t('Total holes'), st.holes],
+        [t('Open area'), +(st.transparency * 100).toFixed(2), '%'],
+      ]),
       [],
       [t('Pos'), t('Width (mm)'), t('Length (mm)'), t('Qty'), t('Panels on the drawing')],
     ];
@@ -5625,7 +5739,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const k = Math.min(130 / P, 60 / dmax);
     const cx1 = 48;
     const cx2 = cx1 + P * k;
-    const lx = 210;
+    const lx = document.documentElement.dir === 'rtl' ? 336 : 210;
     const rows = dmin === dmax ? [dmax] : [dmax, dmin];
     const rowH = 84;
     const H = 54 + rows.length * rowH;
@@ -5652,6 +5766,100 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     return s + '</svg>';
   }
 
+  const POWDER_KG_PER_M2 = 0.12; // per coated face
+
+  const MAX_BENDS = 20;
+
+  /** Each bend is one folded strip along an edge: a Width bend runs the panel Width, a Length
+   *  bend the panel Length, so it adds (edge length × depth). DWG panels use their own cut
+   *  sizes, so a panel trimmed by the boundary counts its shorter edges. Returns mm². */
+  function bendsArea() {
+    const sum = (list) => list.reduce((a, v) => a + (v > 0 ? v : 0), 0);
+    const dW = sum(state.bendsW);
+    const dL = sum(state.bendsL);
+    let mm2 = 0;
+    if (dW || dL) {
+      if (model.layout === 'boundary') {
+        if (model.grid && !model.grid.tooMany) {
+          for (const pn of model.grid.panels) mm2 += pn.w * dW + pn.h * dL;
+        }
+      } else mm2 = state.W * dW + state.H * dL;
+    }
+    return mm2;
+  }
+
+  /** Powder for the solid (unpunched) face area plus the bends. In the DWG path stats.solid
+   *  is already summed over every panel, so the panel count is in it; a single panel counts once. */
+  function updateCoating() {
+    if (!model) return;
+    const sides = state.coatSides === 'both' ? 2 : 1;
+    const bendMM2 = bendsArea();
+    const coatedM2 = ((model.stats.solid + bendMM2) / 1e6) * sides;
+    const kg = coatedM2 * POWDER_KG_PER_M2;
+    txt('r-coat-area', area(coatedM2 * 1e6));
+    txt('r-powder', mass(kg));
+    txt('sum-coat', t(sides === 2 ? 'Both sides' : 'One side'));
+    ['W', 'L'].forEach((k) => {
+      const list = state['bends' + k];
+      txt('out-bends' + k, String(list.length));
+      $('bends' + k + '-dec').disabled = !list.length;
+      $('bends' + k + '-inc').disabled = list.length >= MAX_BENDS;
+    });
+    const boundary = model.layout === 'boundary';
+    const note = t('Each bend is one folded strip along a {w} mm Width edge or a {h} mm Length edge.', {
+      w: num(boundary ? state.panelW : state.W), h: num(boundary ? state.panelH : state.H),
+    }) + (bendMM2 ? ' ' + t('Bends add {a} per face.', { a: area(bendMM2) }) : '');
+    txt('bend-note', note);
+  }
+
+  function renderBends() {
+    ['W', 'L'].forEach((k) => {
+      const list = state['bends' + k];
+      const box = $('bends' + k);
+      box.textContent = '';
+      list.forEach((v, i) => {
+        const row = document.createElement('div');
+        row.className = 'row-h bend-row';
+        const lbl = document.createElement('span');
+        lbl.className = 'lbl';
+        lbl.textContent = t('Bend {n}', { n: i + 1 });
+        const wrap = document.createElement('span');
+        wrap.className = 'num sm';
+        const inp = document.createElement('input');
+        inp.type = 'number';
+        inp.inputMode = 'decimal';
+        inp.min = '0';
+        inp.max = '1000';
+        inp.step = '1';
+        inp.placeholder = '0';
+        inp.value = v ? num(v) : '';
+        inp.setAttribute('aria-label', t(k === 'W' ? 'Width edge bends' : 'Length edge bends') + ' · ' + t('Bend {n}', { n: i + 1 }));
+        inp.addEventListener('input', () => {
+          const x = parseFloat(inp.value);
+          list[i] = Number.isFinite(x) ? clamp(x, 0, 1000) : 0;
+          updateCoating();
+        });
+        inp.addEventListener('change', () => { inp.value = list[i] ? num(list[i]) : ''; });
+        const u = document.createElement('span');
+        u.className = 'u';
+        u.textContent = 'mm';
+        wrap.append(inp, u);
+        const x = document.createElement('button');
+        x.type = 'button';
+        x.className = 'bend-x';
+        x.textContent = '×';
+        x.setAttribute('aria-label', t('Remove bend'));
+        x.addEventListener('click', () => {
+          list.splice(i, 1);
+          renderBends();
+          updateCoating();
+        });
+        row.append(lbl, wrap, x);
+        box.append(row);
+      });
+    });
+  }
+
   function updateReadouts() {
     const st = model.stats;
     const holes = fmtInt(st.holes);
@@ -5672,8 +5880,9 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     txt('r-open', area(st.open));
     txt('r-panel', area(st.panel));
     updateBoundaryUI();
-    txt('r-cut', lengthTxt(st.perimeter));
-    txt('r-pitch', model.pitch.toFixed(1) + ' mm');
+    txt('r-cut', model.noPunch ? '–' : lengthTxt(st.perimeter));
+    updateCoating();
+    txt('r-pitch', model.noPunch ? '–' : model.pitch.toFixed(1) + ' mm');
 
     const mb = st.minBridge;
     txt('r-bridge', mb ? mb.gap.toFixed(1) + ' mm' : '–');
@@ -5746,7 +5955,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
       list.append(li);
     });
     const isNoDrawing = model.warnings.some((w) => w.code === 'nodrawing');
-    const isNoImage = !image && !isNoDrawing;
+    const isNoImage = !image && !isNoDrawing && !state.noPunch;
     $('stage-empty').hidden = !isNoDrawing && !isNoImage;
     if (isNoDrawing) {
       txt('empty-title', t('No drawing yet'));
@@ -5761,7 +5970,15 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     alertEl.classList.toggle('info', !!fatal && fatal.level === 'info');
     if (fatal) txt('stage-alert', t(fatal.text, fatal.params));
     updateCapModal();
-    ['dl-dxf', 'dl-svg', 'dl-png'].forEach((id) => { $(id).disabled = !st.holes; });
+    ['dl-dxf', 'dl-svg', 'dl-png'].forEach((id) => { $(id).disabled = !canExport(); });
+    const off = !!state.noPunch;
+    $('nopunch-note').hidden = !off;
+    $('sec-schedule').hidden = off;
+    ['diam-fields', 'body-sizer', 'body-spacing', 'body-tone'].forEach((id) => {
+      const el = $(id);
+      el.classList.toggle('punch-off', off);
+      el.inert = off;
+    });
     updateCrumb();
     updateResultsCount();
     updateSectionSummaries();
@@ -5781,7 +5998,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
       parts.push(t('Single panel'));
       parts.push(`${num(state.W)} × ${num(state.H)} mm`);
     }
-    parts.push(`${fmtInt(model.stats.holes)} ${t('holes')}`);
+    parts.push(model.noPunch ? t('Panels only') : `${fmtInt(model.stats.holes)} ${t('holes')}`);
     el.textContent = '';
     parts.forEach((p, i) => {
       if (i) {
@@ -5813,7 +6030,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
       : `${num(state.W)} × ${num(state.H)} mm`);
     txt('sum-sizer', t(MAP_WORDS[state.map]));
     const diams = C.normalizeDiameters(state.diams);
-    txt('sum-diam', t('{n} sizes · Ø{a}–{b}', { n: diams.length, a: num(diams[0]), b: num(diams[diams.length - 1]) }));
+    txt('sum-diam', state.noPunch ? t('Panels only') : t('{n} sizes · Ø{a}–{b}', { n: diams.length, a: num(diams[0]), b: num(diams[diams.length - 1]) }));
     txt('sum-spacing', `${num(state.spacing)} ${state.spacingMode === 'cc' ? 'c/c' : t('gap')}` + (state.pattern === 'angle' ? ` · ${num(state.angle)}°` : ''));
     txt('sum-tone', t(state.invert ? 'large on light · γ {g}' : 'large on dark · γ {g}', { g: state.gamma.toFixed(2) }));
   }
@@ -5932,7 +6149,7 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
 
   const NAV_SECTIONS = [
     ['image', 'Image'], ['panel', 'Panel'], ['sizer', 'Sizer'], ['diam', 'Diameters'],
-    ['spacing', 'Spacing'], ['tone', 'Tone'], ['results', 'Results'], ['export', 'Export'],
+    ['spacing', 'Spacing'], ['tone', 'Tone'], ['coat', 'Coating'], ['results', 'Results'], ['export', 'Export'],
   ];
   function buildQuicknav() {
     const nav = $('quicknav');
@@ -5973,6 +6190,12 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
   function setSeg(key, raw) {
     const value = key === 'invert' ? raw === 'true' : raw;
     if (state[key] === value) return;
+    if (key === 'coatSides') {
+      state[key] = value;
+      syncSegs();
+      updateCoating();
+      return;
+    }
     if (key === 'spacingMode') {
       const dmax = C.normalizeDiameters(state.diams).slice(-1)[0];
       state.spacing = value === 'gap'
@@ -6368,12 +6591,22 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     setTimeout(() => URL.revokeObjectURL(url), 5000);
   }
 
+  /** Holes to cut, or with punching off, at least one panel to draw. */
+  function canExport() {
+    if (!model) return false;
+    if (!model.noPunch) return model.stats.holes > 0;
+    if (model.layout !== 'boundary') return true;
+    return !!(model.grid && !model.grid.tooMany && model.grid.panels.length);
+  }
+
   function baseName() {
     if (state.layout === 'boundary' && drawing) {
       const stem = drawing.name.replace(/\.[^.]+$/, '').replace(/[^A-Za-z0-9_-]+/g, '-').slice(0, 40);
+      if (model.noPunch) return `ipunch_${stem}_${num(state.panelW)}x${num(state.panelH)}_layout`.replace(/\./g, '-');
       const pat = state.pattern === 'angle' ? num(state.angle) + 'deg' : 'straight';
       return `ipunch_${stem}_${num(state.panelW)}x${num(state.panelH)}_p${num(model.pitch)}_${pat}`.replace(/\./g, '-');
     }
+    if (model.noPunch) return `ipunch_${num(state.W)}x${num(state.H)}_layout`.replace(/\./g, '-');
     const pattern = state.pattern === 'angle' ? num(state.angle) + 'deg' : 'straight';
     return `ipunch_${num(state.W)}x${num(state.H)}_p${num(model.pitch)}_${pattern}_${model.diams.length}d`.replace(/\./g, '-');
   }
@@ -6390,6 +6623,29 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     const im = cctx.createImageData(w, h);
     C.rasterize(new Uint32Array(im.data.buffer), w, h, model, { scale: k, tx: pad * k, ty: pad * k }, palette());
     cctx.putImageData(im, 0, 0);
+    if (model.noPunch && model.region && model.grid) {
+      const clip = new Path2D();
+      for (const L of model.region.loops) {
+        for (let i = 0; i < L.length; i += 2) {
+          const x = (L[i] + pad) * k;
+          const y = (L[i + 1] + pad) * k;
+          if (i) clip.lineTo(x, y);
+          else clip.moveTo(x, y);
+        }
+        clip.closePath();
+      }
+      cctx.save();
+      cctx.clip(clip, 'evenodd');
+      cctx.lineWidth = 2;
+      cctx.strokeStyle = state.view === 'sheet' ? 'rgba(80,58,34,.9)' : 'rgba(212,180,140,.75)';
+      cctx.beginPath();
+      for (const g of model.grid.segments) {
+        cctx.moveTo((g[0] + pad) * k, (g[1] + pad) * k);
+        cctx.lineTo((g[2] + pad) * k, (g[3] + pad) * k);
+      }
+      cctx.stroke();
+      cctx.restore();
+    }
     if (state.view === 'backlit') bloom(c, cctx, w, h);
     c.toBlob((blob) => {
       if (blob) download(baseName() + '.png', blob);
@@ -6432,6 +6688,24 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
 
     bindSwitch('in-auto', 'autoLevels', invalidate);
     bindSwitch('in-dither', 'dither', invalidate);
+    bindSwitch('in-nopunch', 'noPunch', invalidate);
+    ['W', 'L'].forEach((k) => {
+      const list = state['bends' + k];
+      $('bends' + k + '-inc').addEventListener('click', () => {
+        if (list.length >= MAX_BENDS) return;
+        list.push(0);
+        renderBends();
+        updateCoating();
+        const inputs = $('bends' + k).querySelectorAll('input');
+        inputs[inputs.length - 1].focus();
+      });
+      $('bends' + k + '-dec').addEventListener('click', () => {
+        if (!list.length) return;
+        list.pop();
+        renderBends();
+        updateCoating();
+      });
+    });
     bindSwitch('in-show', 'showImage', kick);
     bindSwitch('in-outline', 'outline', updateOptSum);
     bindSwitch('in-info', 'info', updateOptSum);
@@ -6639,21 +6913,24 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
       kick();
     });
 
+    // with punching off the outline is the whole drawing, so it always goes in
     $('dl-dxf').addEventListener('click', () => {
       ensureFresh();
-      if (!model.stats.holes) return;
-      download(baseName() + '.dxf', new Blob(C.toDXF(model, { outline: state.outline, info: state.info }), { type: 'application/dxf' }));
-      toast(t('DXF downloaded: {h} holes on {k} punch layers.', { h: fmtInt(model.stats.holes), k: model.stats.tools.filter((x) => x.count).length }));
+      if (!canExport()) return;
+      download(baseName() + '.dxf', new Blob(C.toDXF(model, { outline: state.outline || model.noPunch, info: state.info }), { type: 'application/dxf' }));
+      toast(model.noPunch
+        ? t('DXF downloaded: panel layout only.')
+        : t('DXF downloaded: {h} holes on {k} punch layers.', { h: fmtInt(model.stats.holes), k: model.stats.tools.filter((x) => x.count).length }));
     });
     $('dl-svg').addEventListener('click', () => {
       ensureFresh();
-      if (!model.stats.holes) return;
-      download(baseName() + '.svg', new Blob(C.toSVG(model, { outline: state.outline }), { type: 'image/svg+xml' }));
+      if (!canExport()) return;
+      download(baseName() + '.svg', new Blob(C.toSVG(model, { outline: state.outline || model.noPunch }), { type: 'image/svg+xml' }));
       toast(t('SVG downloaded.'));
     });
     $('dl-png').addEventListener('click', () => {
       ensureFresh();
-      if (!model.stats.holes) return;
+      if (!canExport()) return;
       exportPNG();
       toast(t('PNG downloaded.'));
     });
@@ -6664,6 +6941,8 @@ html[lang="ar"] .wordmark { font-family: "DM Serif Display", Georgia, serif; fon
     document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     renderChips();
     buildQuicknav();
+    setPlaceLabel();
+    renderBends();
     updateOptSum();
     panelTableKey = '';
     if (model) updateReadouts();
