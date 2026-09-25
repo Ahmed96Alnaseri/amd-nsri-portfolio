@@ -26,8 +26,8 @@
   --good:#7fa06a;
   --crit:#d4705a;
   --fs-xs:10px;
-  --fs-sm:11.5px;
-  --fs-md:13px;
+  --fs-sm:12px;
+  --fs-md:14px;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -283,7 +283,10 @@ footer b{color:var(--copper);font-weight:500}
 <div class="wrap">
 
   <div class="filebar">
-    <span>File — <b>AMD·NSRI</b> / Nesting</span>
+    <a href="https://amd-nsri-portfolio-alpha.vercel.app" target="_self"
+       style="display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#b8956a;text-decoration:none;opacity:0.8;">
+      ← AMD NSRI
+    </a>
     <div class="langs" role="group" aria-label="Language">
       <button type="button" class="lang-btn" data-lang="en" aria-pressed="true">EN</button>
       <button type="button" class="lang-btn" data-lang="tr" aria-pressed="false">TR</button>
@@ -296,7 +299,6 @@ footer b{color:var(--copper);font-weight:500}
       <p class="eyebrow" data-i18n="Sheet nesting optimiser">Sheet nesting optimiser</p>
       <div class="markrow">
         <h1>NEST<em>RI</em></h1>
-        <span class="markmeta">MaxRects · best-fit · units mm</span>
       </div>
     </div>
     <div class="projbar">
@@ -330,7 +332,6 @@ footer b{color:var(--copper);font-weight:500}
         <span id="rotState">Allowed</span>
       </span>
     </div>
-    <span class="runstat idle" id="runHint">Add poses, or paste a schedule, then run the nest</span>
   </div>
 
   <div class="cols">
@@ -356,7 +357,6 @@ footer b{color:var(--copper);font-weight:500}
           </table>
           <div class="empty" id="panelsEmpty">
             <span class="h">No poses yet</span>
-            <p>Paste the whole schedule straight out of Excel, however many rows it runs to. Typing a row is for the odd extra piece.</p>
           </div>
         </div>
         <div class="btn-row">
@@ -401,8 +401,7 @@ footer b{color:var(--copper);font-weight:500}
         </div>
         <div class="btn-row">
           <button class="btn" id="addSheet" type="button">+ Add sheet</button>
-          <button class="btn" id="allUnlimited" type="button" data-i18n="All unlimited">All unlimited</button>
-          <button class="btn" id="allLimited" type="button" data-i18n="All limited">All limited</button>
+          <button class="btn" id="toggleAllLimit" type="button" data-i18n="Unlimited">Unlimited</button>
         </div>
         <p class="status" style="margin:8px 0 0">Rows left at 0 are skipped</p>
         <div class="btn-row" style="margin:12px 0 0">
@@ -492,7 +491,6 @@ footer b{color:var(--copper);font-weight:500}
         </table>
         <div class="empty" id="repEmpty">
           <span class="h">Nothing to report</span>
-          <p>One row per sheet size appears here after the nest is run.</p>
         </div>
       </div>
       <div class="btn-row">
@@ -531,7 +529,6 @@ footer b{color:var(--copper);font-weight:500}
 
   <footer>
     <span>AMD·NSRI — <b>NESTRI</b></span>
-    <span>MaxRects · best-fit · 90° rotation</span>
   </footer>
 </div>
 
@@ -811,8 +808,10 @@ function markDirty(on, msg) {
   if (btn) btn.classList.toggle('pending', on);
   if (on) {
     var hint = $('runHint');
-    hint.textContent = msg || (hasNest ? 'Inputs changed — run the nest' : 'Ready — run the nest');
-    hint.className = 'runstat warn';
+    if (hint) {
+      hint.textContent = msg || (hasNest ? 'Inputs changed — run the nest' : 'Ready — run the nest');
+      hint.className = 'runstat warn';
+    }
   }
   var note = $('reportNote');
   if (note) note.classList.toggle('stale', on && hasNest);
@@ -957,6 +956,21 @@ function updateCount() {
 function updateSheetCount() {
   var n = sheets.filter(function (s) { return s.unlimited || +s.qty > 0; }).length;
   $('sheetCount').textContent = n + ' in play';
+  syncLimitToggle();
+}
+
+// One button for all rows: reads "Unlimited" when every sheet is unlimited,
+// otherwise "Limited". Pressing it flips every row to the other state.
+function allSheetsUnlimited() {
+  return sheets.length > 0 && sheets.every(function (s) { return s.unlimited; });
+}
+function syncLimitToggle() {
+  var btn = $('toggleAllLimit');
+  if (!btn) return;
+  var key = allSheetsUnlimited() ? 'Unlimited' : 'Limited';
+  btn.setAttribute('data-i18n', key);
+  var dict = (typeof NESTRI_STRINGS === 'object' && NESTRI_STRINGS) || {};
+  btn.textContent = (dict[currentLang] || {})[key] || key;
 }
 
 function clearPanels() {
@@ -1055,8 +1069,10 @@ function applySheetPaste(mode) {
 function run() {
   var pieces = totalPieces();
   if (pieces > 20000) {
-    $('runHint').textContent = pieces.toLocaleString('en-US') + ' pieces is past this tool’s limit — split the schedule';
-    $('runHint').className = 'runstat err';
+    // no run-bar status line any more, so the limit warning goes in the report band
+    $('band').className = 'band short';
+    $('bandTag').textContent = 'Too large';
+    $('bandText').textContent = pieces.toLocaleString('en-US') + ' pieces is past this tool’s limit — split the schedule';
     markDirty(true);
     return;
   }
@@ -1082,6 +1098,7 @@ function run() {
   markDirty(false);
 
   var hint = $('runHint');
+  if (!hint) return;
   if (!pieces) {
     hint.textContent = 'Add poses, or paste a schedule, then run the nest';
     hint.className = 'runstat idle';
@@ -1987,14 +2004,16 @@ function resetAll() {
 $('addPanel').addEventListener('click', function () { addPanelRow(); touch(); });
 $('clearPanels').addEventListener('click', function () { clearPanels(); touch(); });
 $('addSheet').addEventListener('click', function () { addSheetRow(); touch(); });
-$('allUnlimited').addEventListener('click', function () {
-  $('sheetBody').querySelectorAll('.tgl').forEach(function (box) {
-    if (!box.checked) { box.checked = true; box.dispatchEvent(new Event('change')); }
-  });
-  touch();
-});
-$('allLimited').addEventListener('click', function () {
-  $('sheetBody').querySelectorAll('tr').forEach(function (tr) { if (tr.limit) tr.limit(10); });
+$('toggleAllLimit').addEventListener('click', function () {
+  if (allSheetsUnlimited()) {
+    // "All limited": keeps any quantity already set, empty rows get 10
+    $('sheetBody').querySelectorAll('tr').forEach(function (tr) { if (tr.limit) tr.limit(10); });
+  } else {
+    $('sheetBody').querySelectorAll('.tgl').forEach(function (box) {
+      if (!box.checked) { box.checked = true; box.dispatchEvent(new Event('change')); }
+    });
+  }
+  syncLimitToggle();
   touch();
 });
 
@@ -2069,8 +2088,8 @@ var NESTRI_STRINGS = {
     'Add panel': '+ Add panel',
     'Metal sheets': 'Metal sheets',
     'Paste from Excel': 'Paste from Excel',
-    'All unlimited': 'All unlimited',
-    'All limited': 'All limited',
+    'Unlimited': 'Unlimited',
+    'Limited': 'Limited',
     'Upload sheet DWG': '↑ Upload sheet DWG',
     'No DWG loaded': 'No DWG loaded'
   },
@@ -2080,8 +2099,8 @@ var NESTRI_STRINGS = {
     'Add panel': '+ Panel ekle',
     'Metal sheets': 'Metal saclar',
     'Paste from Excel': "Excel'den yapıştır",
-    'All unlimited': 'Tümü sınırsız',
-    'All limited': 'Tümü sınırlı',
+    'Unlimited': 'Sınırsız',
+    'Limited': 'Sınırlı',
     'Upload sheet DWG': '↑ Sac DWG yükle',
     'No DWG loaded': 'DWG yüklenmedi'
   },
@@ -2091,8 +2110,8 @@ var NESTRI_STRINGS = {
     'Add panel': '+ إضافة لوح',
     'Metal sheets': 'الألواح المعدنية',
     'Paste from Excel': 'لصق من إكسل',
-    'All unlimited': 'الكل غير محدود',
-    'All limited': 'الكل محدود',
+    'Unlimited': 'غير محدود',
+    'Limited': 'محدود',
     'Upload sheet DWG': '↑ رفع ملف DWG',
     'No DWG loaded': 'لم يتم تحميل DWG'
   }
