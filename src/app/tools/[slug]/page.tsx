@@ -359,15 +359,18 @@ const baseCss = `
 
   /* side: spec + cta */
   .td-side { display: flex; flex-direction: column; gap: 28px; }
-  .td-spec { display: flex; flex-direction: column; }
-  .td-spec-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 13px 0; }
+  /* one grid for the whole list: the label column is as wide as the longest label,
+     every value starts at the same x, and a wrapped value stays in its own column */
+  .td-spec { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 24px; align-items: baseline; }
+  .td-spec-row { display: contents; }
+  .td-spec-lbl, .td-spec-val { padding: 13px 0; }
   .td-spec-lbl {
-    font-family: var(--font-body); font-size: 11px;
+    font-family: var(--font-body); font-size: 11px; white-space: nowrap;
     letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4);
   }
-  .td-spec-val { font-family: var(--font-body); font-size: 13px; letter-spacing: .03em; color: rgba(255,255,255,.9); }
+  .td-spec-val { font-family: var(--font-body); font-size: 13px; line-height: 1.5; letter-spacing: .03em; color: rgba(255,255,255,.9); text-align: start; overflow-wrap: anywhere; }
   .td-spec-val--price { color: var(--color-accent); font-weight: 500; font-size: 15px; }
-  .td-spec-sep { height: 1px; background: rgba(255,255,255,.07); }
+  .td-spec-sep { grid-column: 1 / -1; height: 1px; background: rgba(255,255,255,.07); }
 
   .td-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
