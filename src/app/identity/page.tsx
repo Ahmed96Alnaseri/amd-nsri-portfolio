@@ -4,155 +4,93 @@ import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 
 /**
- * /identity — a single editorial page telling the story of the practice.
- * Not a portfolio grid: long-form, architectural, restrained.
- *
- * Copy is grounded in the brief + CLAUDE.md brand content. A few sections
- * (The Name → NSRI, Approach, The Practice, Founder, closing) extend past the
- * brief, which was cut off mid-sentence — they follow the documented voice.
+ * /identity — a one-screen "about": hero and statement side by side, method and
+ * disciplines side by side, then the closing line and the two CTAs.
+ * The name origin folds into the statement; the founder bio is the statement body.
  * All visible copy is keyed via t('about.*') so it switches with EN/TR/AR.
  */
 export default function IdentityPage() {
   const { t } = useLanguage();
+  const flow = [
+    t('about.flowConcept'),
+    t('about.flowGeometry'),
+    t('about.flowSystem'),
+    t('about.flowTool'),
+    t('about.flowFabrication'),
+    t('about.flowBuilt'),
+  ];
+  const disciplines = [
+    [t('about.disc1Title'), t('about.disc1Body')],
+    [t('about.disc2Title'), t('about.disc2Body')],
+    [t('about.disc3Title'), t('about.disc3Body')],
+  ];
   return (
     <main className="id">
-      {/* ── 1. HERO ─────────────────────────────────────────────── */}
-      <header className="id-hero">
-        <div className="id-hero-glow" aria-hidden="true" />
-        <h1 className="id-wordmark">AMD NSRI</h1>
-        <p className="id-amad" dir="rtl" lang="ar">
-          أَمَد
-          <span className="id-amad-en" dir="ltr" lang="en">
-            {t('about.amadEn')}
-          </span>
-        </p>
-        <p className="id-subline">{t('common.istanbul')} · {t('common.est2026')}</p>
-      </header>
+      <div className="id-glow" aria-hidden="true" />
 
-      {/* ── 2. STATEMENT ────────────────────────────────────────── */}
-      <section className="id-section id-statement">
-        <p className="id-eyebrow">{t('about.stmtEyebrow')}</p>
-        <p className="id-lead">
-          {t('about.stmtLead')}
-        </p>
-        <p className="id-body">
-          {t('about.stmtBody')}
-        </p>
+      {/* ── HERO + STATEMENT ─────────────────────────────────────── */}
+      <section className="id-top">
+        <header className="id-hero">
+          <h1 className="id-wordmark">AMD NSRI</h1>
+          {/* only the word is Arabic: a lang="ar" wrapper would pull the gloss into RTL via the global [lang="ar"] span rule */}
+          <p className="id-amad">
+            <span className="id-amad-word" dir="rtl" lang="ar">أَمَد</span>
+            <span className="id-amad-en">{t('about.amadEn')}</span>
+          </p>
+          <p className="id-subline">{t('common.istanbul')} · {t('common.est2026')}</p>
+        </header>
+
+        <div className="id-statement">
+          <p className="id-eyebrow">{t('about.stmtEyebrow')}</p>
+          <p className="id-lead">{t('about.stmtLead')}</p>
+          <p className="id-body">{t('about.stmtBody')}</p>
+          <p className="id-body id-name">
+            <b>AMD</b> {t('about.nameAmdPre')}<span dir="rtl" lang="ar">أَمَد</span>{t('about.nameAmdPost')}{' '}
+            <b>NSRI</b> {t('about.nameNsri')}
+          </p>
+        </div>
       </section>
 
       <div className="id-rule" />
 
-      {/* ── 3. THE NAME ─────────────────────────────────────────── */}
-      <section className="id-section id-name">
-        <p className="id-eyebrow">{t('about.nameEyebrow')}</p>
-        <h2 className="id-h2">{t('about.nameTitle')}</h2>
+      {/* ── METHOD + DISCIPLINES ─────────────────────────────────── */}
+      <section className="id-mid">
+        <div className="id-approach">
+          <p className="id-eyebrow">{t('about.approachEyebrow')}</p>
+          <h2 className="id-h2">{t('about.approachTitle')}</h2>
+          <ol className="id-flow" aria-label={t('about.approachTitle')}>
+            {flow.map((stage, i) => (
+              <li key={i} className="id-flow-step">
+                <span className="id-flow-num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="id-flow-label">{stage}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
 
-        <div className="id-name-grid">
-          <div className="id-name-glyph" aria-hidden="true" dir="rtl" lang="ar">أَمَد</div>
-
-          <div className="id-name-blocks">
-            <div className="id-name-block">
-              <span className="id-mono-mark">AMD</span>
-              <p className="id-body">
-                {t('about.amdPre')}<em>Ahmed</em>{t('about.amdMid')}
-                <span dir="rtl" lang="ar">أَمَد</span>{t('about.amdParen')}<em>AMD</em>{t('about.amdPost')}
-              </p>
-            </div>
-
-            <div className="id-name-block">
-              <span className="id-mono-mark">NSRI</span>
-              <p className="id-body">
-                {t('about.nsriPre')}<em>Alnaseri</em>{t('about.nsriPost')}
-              </p>
-            </div>
+        <div className="id-practice">
+          <p className="id-eyebrow">{t('about.practiceEyebrow')}</p>
+          <h2 className="id-h2">{t('about.practiceTitle')}</h2>
+          <div className="id-disc-grid">
+            {disciplines.map(([title, body], i) => (
+              <div key={i} className="id-disc">
+                <h3 className="id-disc-title">
+                  <span className="id-disc-no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  {title}
+                </h3>
+                <p className="id-body">{body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       <div className="id-rule" />
 
-      {/* ── 4. APPROACH ─────────────────────────────────────────── */}
-      <section className="id-section id-approach">
-        <p className="id-eyebrow">{t('about.approachEyebrow')}</p>
-        <h2 className="id-h2">{t('about.approachTitle')}</h2>
-        <p className="id-body id-body--wide">
-          {t('about.approachBody')}
-        </p>
-
-        <ol className="id-flow" aria-label={t('about.approachTitle')}>
-          {[
-            t('about.flowConcept'),
-            t('about.flowGeometry'),
-            t('about.flowSystem'),
-            t('about.flowTool'),
-            t('about.flowFabrication'),
-            t('about.flowBuilt'),
-          ].map((stage, i, arr) => (
-            <li key={i} className="id-flow-step">
-              <span className="id-flow-num">{String(i + 1).padStart(2, '0')}</span>
-              <span className="id-flow-label">{stage}</span>
-              {i < arr.length - 1 && (
-                <span className="id-flow-arrow" aria-hidden="true">→</span>
-              )}
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <div className="id-rule" />
-
-      {/* ── 5. THE PRACTICE ─────────────────────────────────────── */}
-      <section className="id-section id-practice">
-        <p className="id-eyebrow">{t('about.practiceEyebrow')}</p>
-        <h2 className="id-h2">{t('about.practiceTitle')}</h2>
-
-        <div className="id-disc-grid">
-          <div className="id-disc">
-            <span className="id-disc-no" aria-hidden="true">01</span>
-            <h3 className="id-disc-title">{t('about.disc1Title')}</h3>
-            <p className="id-body">
-              {t('about.disc1Body')}
-            </p>
-          </div>
-          <div className="id-disc">
-            <span className="id-disc-no" aria-hidden="true">02</span>
-            <h3 className="id-disc-title">{t('about.disc2Title')}</h3>
-            <p className="id-body">
-              {t('about.disc2Body')}
-            </p>
-          </div>
-          <div className="id-disc">
-            <span className="id-disc-no" aria-hidden="true">03</span>
-            <h3 className="id-disc-title">{t('about.disc3Title')}</h3>
-            <p className="id-body">
-              {t('about.disc3Body')}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <div className="id-rule" />
-
-      {/* ── 6. FOUNDER ──────────────────────────────────────────── */}
-      <section className="id-section id-founder">
-        <p className="id-eyebrow">{t('about.founderEyebrow')}</p>
-        <div className="id-founder-grid">
-          <h2 className="id-h2 id-founder-name">Ahmed Alnaseri</h2>
-          <div className="id-founder-text">
-            <p className="id-body">
-              {t('about.founderBody1')}
-            </p>
-            <p className="id-body">
-              {t('about.founderBody2')}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 7. CLOSING / CTA ────────────────────────────────────── */}
+      {/* ── CLOSING / CTA ────────────────────────────────────────── */}
       <section className="id-cta">
         <p className="id-cta-line">
-          {t('about.ctaLine1')}<br />{t('about.ctaLine2')}
+          {t('about.ctaLine1')}<br />{' '}{t('about.ctaLine2')}
         </p>
         <div className="id-cta-actions">
           <Link href="/contact" className="id-btn id-btn--solid">{t('about.ctaSolid')}</Link>
@@ -168,19 +106,31 @@ export default function IdentityPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
+        /* one screen: gaps scale with viewport height so the three bands fit under the 72px nav.
+           The page is exactly a screen tall and any spare height is shared out between the bands
+           (space-between), so there is never one empty block above or below the strip. */
         .id {
+          position: relative;
+          display: flex; flex-direction: column; justify-content: space-between;
+          min-height: 100vh; min-height: 100svh;
           background: var(--color-bg);
           color: var(--color-text-primary);
           font-family: var(--font-body);
-          padding: 0 clamp(24px, 6vw, 120px) clamp(32px, 4vh, 56px);
-          min-height: 100vh;
+          padding: calc(72px + clamp(20px, 4vh, 48px)) clamp(24px, 6vw, 120px) 0;
         }
+        .id-glow {
+          position: absolute; inset: 0 0 auto 0; height: 60%; z-index: 0; pointer-events: none;
+          background:
+            radial-gradient(ellipse 70% 60% at 20% 20%, rgba(184,149,106,0.08) 0%, transparent 65%),
+            radial-gradient(ellipse 60% 50% at 85% 40%, rgba(26,32,48,0.12) 0%, transparent 60%);
+        }
+        .id > section, .id > .id-rule, .id > .id-strip { position: relative; z-index: 1; }
 
-        /* shared editorial primitives */
+        /* shared primitives */
         .id-eyebrow {
           display: flex; align-items: center; gap: 12px;
           font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-          color: var(--color-accent); margin: 0 0 26px;
+          color: var(--color-accent); margin: 0 0 clamp(10px, 1.6vh, 16px);
         }
         .id-eyebrow::before {
           content: ''; display: block; width: 28px; height: 1px;
@@ -188,148 +138,101 @@ export default function IdentityPage() {
         }
         .id-h2 {
           font-family: var(--font-title); font-weight: 400;
-          font-size: clamp(30px, 4.4vw, 56px);
-          letter-spacing: -0.025em; line-height: 1.05;
-          color: var(--color-text-primary); margin: 0 0 28px; max-width: 18ch;
+          font-size: clamp(20px, 1.9vw, 28px);
+          letter-spacing: -0.02em; line-height: 1.1;
+          color: var(--color-text-primary); margin: 0 0 clamp(12px, 2vh, 20px);
         }
         .id-body {
-          font-family: var(--font-body); font-size: clamp(14px, 1.4vw, 16px);
-          font-weight: 300; letter-spacing: .01em; line-height: 1.85;
-          color: var(--color-text-secondary); margin: 0 0 20px; max-width: 60ch;
+          font-family: var(--font-body); font-size: 13px;
+          font-weight: 300; letter-spacing: .01em; line-height: 1.7;
+          color: var(--color-text-secondary); margin: 0; max-width: 62ch;
         }
-        .id-body em { font-style: italic; color: var(--color-text-primary); }
-        .id-body--wide { max-width: 68ch; }
-        .id-rule {
-          height: 1px; background: var(--color-line);
-          margin: clamp(64px, 10vh, 120px) 0;
-        }
-        .id-section { position: relative; }
+        .id-rule { height: 1px; background: var(--color-line); margin: clamp(20px, 4vh, 44px) 0; flex: none; }
 
-        /* ── 1. hero ── */
-        .id-hero {
-          position: relative;
-          padding: clamp(140px, 22vh, 240px) 0 clamp(80px, 12vh, 140px);
-        }
-        .id-hero-glow {
-          position: absolute; inset: 0; z-index: 0; pointer-events: none;
-          background:
-            linear-gradient(to right, #0d0d0b 0%, transparent 20%),
-            radial-gradient(ellipse 70% 60% at 20% 20%, rgba(184,149,106,0.10) 0%, transparent 65%),
-            radial-gradient(ellipse 60% 50% at 85% 40%, rgba(26,32,48,0.14) 0%, transparent 60%);
+        /* ── hero + statement ── */
+        .id-top {
+          display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+          gap: clamp(32px, 5vw, 96px); align-items: end;
         }
         .id-wordmark {
-          position: relative; z-index: 1;
           font-family: var(--font-title); font-weight: 400;
-          font-size: clamp(64px, 14vw, 200px);
+          font-size: clamp(56px, min(8.4vw, 13vh), 132px);
           letter-spacing: -0.04em; line-height: .9;
-          color: var(--color-text-primary); margin: 0 0 32px;
+          color: var(--color-text-primary); margin: 0 0 clamp(14px, 2.4vh, 24px);
         }
         .id-amad {
-          position: relative; z-index: 1;
-          font-family: var(--font-body); font-size: clamp(13px, 1.5vw, 16px);
-          font-weight: 300; letter-spacing: .02em; line-height: 1.8;
-          color: var(--color-text-secondary); margin: 0 0 18px; max-width: 60ch;
+          font-family: var(--font-body); font-size: 13px;
+          font-weight: 300; letter-spacing: .02em; line-height: 1.7;
+          color: var(--color-text-secondary); margin: 0 0 10px;
           display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px;
         }
-        .id-amad-en { color: var(--color-text-secondary); }
+        .id-amad-word { font-family: var(--font-title), serif; font-size: 20px; color: var(--color-accent); }
         .id-subline {
-          position: relative; z-index: 1;
-          font-family: var(--font-body); font-size: 12px;
+          font-family: var(--font-body); font-size: 11px;
           letter-spacing: .18em; text-transform: uppercase;
           color: var(--color-accent); margin: 0;
         }
-
-        /* ── 2. statement ── */
+        .id-statement { display: flex; flex-direction: column; gap: clamp(8px, 1.4vh, 14px); }
+        .id-statement .id-eyebrow { margin-bottom: 0; }
         .id-lead {
           font-family: var(--font-title); font-style: italic; font-weight: 400;
-          font-size: clamp(22px, 2.8vw, 30px);
-          letter-spacing: -0.01em; line-height: 1.4;
-          color: var(--color-text-primary); margin: 0 0 clamp(32px, 5vh, 48px);
-          max-width: 26ch;
+          font-size: clamp(19px, min(1.9vw, 3vh), 27px);
+          letter-spacing: -0.01em; line-height: 1.35;
+          color: var(--color-text-primary); margin: 0; max-width: 34ch;
         }
+        .id-name b { font-weight: 500; letter-spacing: .2em; color: var(--color-accent); }
+        .id-name span[dir="rtl"] { color: var(--color-accent); padding: 0 2px; }
 
-        /* ── 3. the name ── */
-        .id-name-grid {
-          display: grid; grid-template-columns: clamp(180px, 22vw, 280px) 1fr;
-          gap: clamp(32px, 6vw, 88px); align-items: start;
+        /* ── method + disciplines ── */
+        .id-mid {
+          display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+          gap: clamp(32px, 5vw, 96px); align-items: stretch;
         }
-        .id-name-glyph {
-          font-family: var(--font-title), serif;
-          font-size: clamp(96px, 14vw, 200px); line-height: .9;
-          color: var(--color-accent); opacity: .85;
-          letter-spacing: 0;
-        }
-        .id-name-blocks { display: flex; flex-direction: column; gap: clamp(28px, 4vh, 44px); }
-        .id-name-block { display: flex; flex-direction: column; gap: 14px; }
-        .id-mono-mark {
-          font-family: var(--font-body); font-size: 13px; font-weight: 500;
-          letter-spacing: .28em; text-transform: uppercase; color: var(--color-accent);
-        }
-        .id-name-block .id-body { margin: 0; }
-        .id-name-block .id-body span[dir="rtl"] { color: var(--color-accent); padding: 0 2px; }
-
-        /* ── 4. approach ── */
+        /* both columns share the row height: the six steps (01–03, 04–06 down two columns)
+           spread down the left column so it ends on the same line as the disciplines */
+        .id-approach, .id-practice { display: flex; flex-direction: column; }
+        /* and when the steps are the taller side, the disciplines drop as one block to meet them */
+        .id-disc-grid { margin-top: auto; }
         .id-flow {
-          list-style: none; margin: clamp(32px, 5vh, 52px) 0 0; padding: 0;
-          display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px;
+          list-style: none; margin: 0; padding: 0; flex: 1;
+          display: grid; grid-template-columns: repeat(2, auto); grid-template-rows: repeat(3, auto);
+          grid-auto-flow: column; justify-content: start; align-content: space-between;
+          /* a small minimum row gap keeps this column the shorter one; space-between stretches it */
+          gap: 4px clamp(28px, 3.4vw, 56px);
         }
-        .id-flow-step { display: inline-flex; align-items: baseline; gap: 10px; }
-        .id-flow-num {
-          font-family: var(--font-body); font-size: 10px; letter-spacing: .12em;
-          color: var(--color-text-meta);
-        }
+        .id-flow-step { display: inline-flex; align-items: baseline; gap: 8px; }
+        .id-flow-num { font-size: 10px; letter-spacing: .12em; color: var(--color-accent); }
         .id-flow-label {
           font-family: var(--font-title); font-weight: 400;
-          font-size: clamp(18px, 2.2vw, 26px); letter-spacing: -.01em;
+          font-size: clamp(16px, 1.4vw, 20px); letter-spacing: -.01em;
           color: var(--color-text-primary);
         }
-        .id-flow-arrow {
-          font-family: var(--font-body); font-size: clamp(16px, 1.8vw, 20px);
-          color: var(--color-accent); margin-left: 8px;
-        }
-
-        /* ── 5. the practice ── */
-        .id-disc-grid {
-          display: grid; grid-template-columns: repeat(3, 1fr);
-          gap: clamp(28px, 4vw, 56px); margin-top: clamp(32px, 5vh, 52px);
-        }
-        .id-disc { display: flex; flex-direction: column; }
-        .id-disc-no {
-          font-family: var(--font-body); font-size: 11px; letter-spacing: .2em;
-          color: var(--color-accent-dim); margin-bottom: 18px;
-        }
+        .id-disc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 32px); }
         .id-disc-title {
+          display: flex; flex-direction: column; gap: 6px;
           font-family: var(--font-title); font-weight: 400;
-          font-size: clamp(20px, 2.2vw, 26px); letter-spacing: -.01em; line-height: 1.15;
-          color: var(--color-text-primary); margin: 0 0 16px;
-          padding-top: 18px; border-top: 1px solid var(--color-line);
+          font-size: clamp(15px, 1.25vw, 18px); letter-spacing: -.01em; line-height: 1.2;
+          color: var(--color-text-primary); margin: 0 0 8px;
+          padding-top: 10px; border-top: 1px solid var(--color-line);
         }
-        .id-disc .id-body { margin: 0; }
+        .id-disc-no { font-family: var(--font-body); font-size: 10px; letter-spacing: .2em; color: var(--color-accent-dim); }
+        .id-disc .id-body { font-size: 12px; line-height: 1.6; }
 
-        /* ── 6. founder ── */
-        .id-founder-grid {
-          display: grid; grid-template-columns: clamp(220px, 28vw, 360px) 1fr;
-          gap: clamp(32px, 6vw, 88px); align-items: start;
-        }
-        .id-founder-name { margin: 0; }
-        .id-founder-text { display: flex; flex-direction: column; }
-        .id-founder-text .id-body:last-child { margin-bottom: 0; }
-
-        /* ── 7. closing / cta ── */
+        /* ── closing / cta ── */
         .id-cta {
-          padding: clamp(80px, 14vh, 180px) 0 clamp(56px, 9vh, 120px);
-          display: flex; flex-direction: column; gap: clamp(36px, 5vh, 56px);
+          display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+          gap: 20px 40px; padding-bottom: clamp(20px, 4vh, 44px);
         }
         .id-cta-line {
           font-family: var(--font-title); font-weight: 400;
-          font-size: clamp(36px, 6vw, 84px);
+          font-size: clamp(28px, min(3.6vw, 5.6vh), 52px);
           letter-spacing: -0.03em; line-height: 1.02;
           color: var(--color-text-primary); margin: 0;
         }
-        .id-cta-actions { display: flex; flex-wrap: wrap; gap: 16px; }
+        .id-cta-actions { display: flex; flex-wrap: wrap; gap: 12px; }
         .id-btn {
           display: inline-flex; align-items: center; justify-content: center;
-          padding: 17px 30px;
+          padding: 15px 26px;
           font-family: var(--font-body); font-size: 12px;
           letter-spacing: .16em; text-transform: uppercase;
           color: var(--color-accent); text-decoration: none;
@@ -350,19 +253,36 @@ export default function IdentityPage() {
         }
         .id-strip > span {
           display: flex; align-items: center;
-          padding: 14px clamp(14px,2.5vw,36px);
-          border-right: 1px solid var(--color-line); white-space: nowrap;
+          padding: 12px clamp(14px,2.5vw,36px);
+          border-inline-end: 1px solid var(--color-line); white-space: nowrap;
         }
-        .id-strip > span:first-child { padding-left: 0; }
-        .id-strip-fill { flex: 1; border-right: none !important; }
+        .id-strip > span:first-child { padding-inline-start: 0; }
+        .id-strip-fill { flex: 1; border-inline-end: none !important; }
 
         @media (prefers-reduced-motion: reduce) {
           .id-btn { transition: none !important; }
         }
-        @media (max-width: 860px) {
-          .id-name-grid, .id-founder-grid { grid-template-columns: 1fr; gap: 32px; }
-          .id-disc-grid { grid-template-columns: 1fr; }
-          .id-name-glyph { font-size: clamp(80px, 24vw, 140px); }
+        /* short desktop windows (laptops): tighter rhythm, the statement runs wider, the closing
+           line sits on one line and the strip (which repeats the hero subline) steps aside */
+        @media (min-width: 961px) and (max-height: 920px) {
+          .id { padding-top: calc(72px + 2.5vh); }
+          .id-rule { margin: 2.4vh 0; }
+          .id-cta { padding-bottom: 2.5vh; }
+          .id-lead { max-width: 46ch; font-size: clamp(17px, 2.7vh, 22px); }
+          .id-statement { gap: 1vh; }
+          .id-cta-line { font-size: clamp(24px, 4.4vh, 36px); }
+          .id-cta-line br { display: none; }
+          .id-strip { display: none; }
+        }
+        /* narrow screens stack; one screen is a desktop goal, phones scroll a short page */
+        @media (max-width: 960px) {
+          .id-top, .id-mid { grid-template-columns: 1fr; gap: 28px; }
+          .id-flow { align-content: start; }
+          .id-wordmark { font-size: clamp(52px, 15vw, 96px); }
+        }
+        @media (max-width: 560px) {
+          .id-disc-grid { grid-template-columns: 1fr; gap: 14px; }
+          .id-strip > span:nth-child(2) { display: none; }
         }
       ` }} />
     </main>
