@@ -1120,8 +1120,8 @@ const VALUES: Record<Lang, ValueMap> = {
     'Request Pro Service': 'Pro Hizmet Talep Et',
     'Pro service: send your model, receive rationalized geometry + Excel panel schedule.':
       'Pro hizmet: modelinizi gönderin, rasyonalize edilmiş geometri + Excel panel listesi alın.',
-    'Reduce unique panel types across a complex facade. The free Grasshopper script handles basic tolerance-based grouping. The professional service covers full model rationalization — cleaned 3D geometry, reduced panel schedule, and Excel output with panel poses.':
-      'Karmaşık bir cephedeki benzersiz panel tiplerini azaltın. Ücretsiz Grasshopper script temel tolerans tabanlı gruplamayı yapar. Profesyonel hizmet ise tam model rasyonalizasyonunu kapsar — temizlenmiş 3B geometri, azaltılmış panel listesi ve panel pozlarını içeren Excel çıktısı.',
+    'Reduce unique panel types across a complex facade, with tolerance-based grouping.':
+      'Karmaşık bir cephedeki benzersiz panel tiplerini tolerans tabanlı gruplamayla azaltın.',
     'Groups panels by area similarity using a 3-value tolerance system':
       'Panelleri 3 değerli tolerans sistemiyle alan benzerliğine göre gruplar',
     'Minimizes unique fabrication types across the full panel set':
@@ -1604,8 +1604,8 @@ const VALUES: Record<Lang, ValueMap> = {
     'Request Pro Service': 'اطلب الخدمة الاحترافية',
     'Pro service: send your model, receive rationalized geometry + Excel panel schedule.':
       'الخدمة الاحترافية: أرسل نموذجك، واستلم هندسة مرشّدة + جدول ألواح بصيغة Excel.',
-    'Reduce unique panel types across a complex facade. The free Grasshopper script handles basic tolerance-based grouping. The professional service covers full model rationalization — cleaned 3D geometry, reduced panel schedule, and Excel output with panel poses.':
-      'قلّل أنواع الألواح الفريدة عبر واجهة معقّدة. يتولّى سكربت Grasshopper المجاني التجميع الأساسي القائم على التفاوت. أما الخدمة الاحترافية فتغطي ترشيد النموذج بالكامل — هندسة ثلاثية الأبعاد منقّاة، وجدول ألواح مختصر، ومخرجات Excel تتضمّن أوضاع الألواح.',
+    'Reduce unique panel types across a complex facade, with tolerance-based grouping.':
+      'قلّل أنواع الألواح الفريدة عبر واجهة معقّدة، بالتجميع القائم على التفاوت.',
     'Groups panels by area similarity using a 3-value tolerance system':
       'يجمّع الألواح حسب تشابه المساحة باستخدام نظام تفاوت ثلاثي القيم',
     'Minimizes unique fabrication types across the full panel set':

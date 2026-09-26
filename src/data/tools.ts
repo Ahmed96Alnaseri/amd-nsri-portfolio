@@ -186,8 +186,7 @@ const tools: Tool[] = [
   {
     slug: 'panel-type-optimizer',
     name: 'Panel Type Optimizer',
-    description:
-      'Reduce unique panel types across a complex facade. The free Grasshopper script handles basic tolerance-based grouping. The professional service covers full model rationalization — cleaned 3D geometry, reduced panel schedule, and Excel output with panel poses.',
+    description: 'Reduce unique panel types across a complex facade, with tolerance-based grouping.',
     detail:
       'A Grasshopper tool that analyzes all facade panels and groups similar geometries by configurable area tolerance. Reducing unique panel types cuts fabrication cost and shortens production lead time without compromising design intent.',
     features: [],
