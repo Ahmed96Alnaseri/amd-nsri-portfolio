@@ -232,6 +232,8 @@ mark {
 
 html {
   scroll-behavior: smooth;
+  /* the canvas under any page is dark too, so a short page or overscroll never shows white */
+  background-color: var(--color-bg);
 }
 
 body {
@@ -3687,6 +3689,11 @@ html[data-theme="white"] .nav-root.scrolled {
 /* ── Tablet + below ── */
 @media (max-width: 1023px) {
   html, body { overflow-x: hidden; }
+  /* clip trims the same sideways overflow without making body a scroll container,
+     which is what stops position: sticky from working at these widths */
+  @supports (overflow-x: clip) {
+    html, body { overflow-x: clip; }
+  }
   img { max-width: 100%; }
 
   /* spec card stacks under statement (was max-width: 1024px) */
