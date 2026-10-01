@@ -17,17 +17,15 @@
   --line-soft:rgba(255,255,255,.055);
   --line-copper:rgba(184,149,106,.28);
   --ink:#ece7dd;
-  --ink-dim:#9c948a;
-  --ink-faint:#6a645c;
-  --ink-ghost:#48433c;
+  /* text is white (--ink) or copper; there is no grey text tier */
   --copper:#b8956a;
   --copper-bright:#d8bb92;
   --copper-deep:#8c6b46;
   --good:#7fa06a;
   --crit:#d4705a;
-  --fs-xs:10px;
-  --fs-sm:12px;
-  --fs-md:14px;
+  --fs-xs:11.5px;
+  --fs-sm:13.5px;
+  --fs-md:15.5px;
 }
 *{box-sizing:border-box}
 /* no visible scrollbars anywhere — every box still scrolls */
@@ -45,12 +43,12 @@ body{
 /* ---------------- file stamp + masthead ---------------- */
 .filebar{
   padding-block:16px 12px;border-bottom:1px solid var(--line);
-  font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);
+  font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
 }
 .filebar b{color:var(--copper);font-weight:500}
 .filebar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .langs{display:flex;gap:2px;padding:2px;border:1px solid rgba(255,255,255,.09);border-radius:4px}
-.lang-btn{height:24px;min-width:30px;padding:0 7px;border:0;border-radius:2px;background:transparent;color:var(--ink-dim);font:500 11px "IBM Plex Mono",monospace;letter-spacing:.04em;cursor:pointer}
+.lang-btn{height:24px;min-width:30px;padding:0 7px;border:0;border-radius:2px;background:transparent;color:var(--ink);font:500 var(--fs-xs) "IBM Plex Mono",monospace;letter-spacing:.04em;cursor:pointer}
 .lang-btn:hover{color:var(--ink)}
 .lang-btn[aria-pressed="true"]{background:rgba(184,149,106,.14);color:var(--copper-bright);box-shadow:inset 0 0 0 1px rgba(184,149,106,.5)}
 .lang-btn:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
@@ -63,9 +61,9 @@ h1{
   font-size:clamp(34px,4.2vw,46px);line-height:.95;letter-spacing:.01em;
 }
 h1 em{font-style:italic;color:var(--copper)}
-.markmeta{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+.markmeta{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
 .projbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.projbar .plabel{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+.projbar .plabel{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
 .projbar input[type=text]{width:220px;border-bottom:1px solid var(--line)}
 
 /* ---------------- run bar ---------------- */
@@ -74,9 +72,13 @@ h1 em{font-style:italic;color:var(--copper)}
   border:1px solid var(--line);background:var(--card);padding:14px 16px;
 }
 .vrule{width:1px;height:34px;background:var(--line)}
-.runbar .field{min-width:104px}
+/* compact toolbar so all seven controls stay on one line down to 1024px */
+.runbar{gap:14px}
+.runbar .field{min-width:0}
+.runbar .field label{letter-spacing:.1em}
+.runbar .field input[type=number]{width:90px}
 .runstat{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--copper)}
-.runstat.idle{color:var(--ink-faint)}
+.runstat.idle{color:var(--ink)}
 .runstat.err{color:var(--crit)}
 .runstat.warn{color:var(--copper-bright)}
 .btn-primary.pending{box-shadow:0 0 0 1px var(--ground),0 0 0 3px rgba(184,149,106,.35)}
@@ -84,7 +86,7 @@ h1 em{font-style:italic;color:var(--copper)}
 /* ---------------- three-column body ---------------- */
 .cols{
   display:grid;gap:16px;margin-top:16px;align-items:start;overflow:hidden;
-  grid-template-columns:320px minmax(0,1.08fr) minmax(0,1fr);
+  grid-template-columns:320px minmax(0,1.4fr) minmax(0,1fr);
   grid-template-areas:"inputs report report" "inputs table view";
 }
 .cols>*{min-width:0}
@@ -98,9 +100,9 @@ h1 em{font-style:italic;color:var(--copper)}
 .card::before,.card::after{content:"";position:absolute;width:9px;height:9px;pointer-events:none;border-color:var(--line-copper);border-style:solid}
 .card::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
 .card::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
-.cardhead{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.cardhead{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
 .cardhead .num{color:var(--copper)}
-.badge{margin-left:auto;color:var(--copper);border:1px solid var(--line-copper);padding:2px 7px;letter-spacing:.14em;font-size:9px;white-space:nowrap}
+.badge{margin-left:auto;color:var(--copper);border:1px solid var(--line-copper);padding:2px 7px;letter-spacing:.14em;font-size:var(--fs-xs);white-space:nowrap}
 
 /* ---------------- tables ---------------- */
 .tscroll{overflow:auto}
@@ -108,7 +110,7 @@ h1 em{font-style:italic;color:var(--copper)}
 .rows.short{max-height:230px}
 table{border-collapse:collapse;width:100%;font-size:var(--fs-sm)}
 thead th{
-  text-align:right;font-weight:400;color:var(--ink-faint);font-size:9px;letter-spacing:.16em;
+  text-align:right;font-weight:400;color:var(--ink);font-size:var(--fs-xs);letter-spacing:.16em;
   text-transform:uppercase;padding:0 6px 7px;border-bottom:1px solid var(--line);white-space:nowrap;
   position:sticky;top:0;z-index:1;background:#141310;
 }
@@ -116,23 +118,24 @@ thead th:first-child{text-align:left}
 tbody td{padding:3px 6px;border-bottom:1px solid var(--line-soft);text-align:right;white-space:nowrap}
 tbody td:first-child{text-align:left}
 tbody tr:last-child td{border-bottom:0}
-tbody tr.row-off td{opacity:.42}
-.idx{width:26px;color:var(--ink-ghost);font-size:9.5px}
+/* skipped sheet rows (qty 0, not unlimited): struck through rather than greyed out */
+tbody tr.row-off td{text-decoration:line-through;text-decoration-color:var(--copper)}
+.idx{width:26px;color:var(--ink);font-size:var(--fs-xs)}
 .col-lbl{min-width:76px}
 .col-num{min-width:58px;width:16%}
 .col-act{width:26px}
 .col-inputs .idx{width:20px}
 .col-inputs .col-lbl{min-width:70px}
-.col-unl{width:48px;font-size:8px;letter-spacing:.04em}
+.col-unl{width:76px;font-size:var(--fs-xs);letter-spacing:.04em}
 .col-inputs .col-num{min-width:40px}
-.col-inputs input[type=text],.col-inputs input[type=number]{font-size:11px}
-.col-inputs thead th{padding:0 4px 7px;letter-spacing:.1em}
+.col-inputs input[type=text],.col-inputs input[type=number]{font-size:var(--fs-sm)}
+.col-inputs thead th{padding:0 4px 7px;letter-spacing:.04em}
 .col-inputs tbody td{padding:3px 4px}
 /* {01} panels: fixed columns so header and rows share one grid */
 .ptable{table-layout:fixed;width:100%}
 .ptable .idx{width:24px;text-align:left}
 .ptable .col-lbl{width:60px;min-width:0;text-align:left}
-.ptable .col-w,.ptable .col-h{width:64px;min-width:0;text-align:right}
+.ptable .col-w,.ptable .col-h{width:68px;min-width:0;text-align:right}
 .ptable .col-qty{width:44px;min-width:0;text-align:right}
 .ptable .col-del{width:20px;padding-inline:0;text-align:center}
 input[type=text],input[type=number]{
@@ -140,36 +143,55 @@ input[type=text],input[type=number]{
   font:inherit;font-size:var(--fs-sm);padding:2px 2px;text-align:right;border-radius:0;font-variant-numeric:tabular-nums;
 }
 input[type=text]{text-align:left}
+::placeholder{color:var(--copper);opacity:1}
+/* the paste boxes' instructions are hints, not content: they stay a muted grey (the old --ink-faint) */
+#pasteBox::placeholder,#sheetPasteBox::placeholder{color:#8a8278;opacity:1}
 input[type=text]:hover,input[type=number]:hover{border-bottom-color:var(--line)}
 input[type=text]:focus,input[type=number]:focus{outline:none;border-bottom-color:var(--copper);background:rgba(184,149,106,.06)}
-input[type=text]:disabled,input[type=number]:disabled{color:var(--ink-faint)}
+input[type=text]:disabled,input[type=number]:disabled{color:var(--ink)}
 input[type=number]{-moz-appearance:textfield;appearance:textfield}
 input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .tgl{appearance:none;-webkit-appearance:none;width:26px;height:15px;border:1px solid var(--line);background:rgba(255,255,255,.05);position:relative;cursor:pointer;vertical-align:middle;padding:0}
-.tgl::after{content:"";position:absolute;top:2px;left:2px;width:9px;height:9px;background:var(--ink-faint);transition:.14s}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:9px;height:9px;background:var(--ink);transition:.14s}
 .tgl:checked{border-color:var(--line-copper);background:rgba(184,149,106,.16)}
 .tgl:checked::after{left:13px;background:var(--copper)}
 .tgl:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
-.xbtn{background:none;border:0;color:var(--ink-ghost);cursor:pointer;font:inherit;font-size:13px;line-height:1;padding:2px 3px}
+.xbtn{background:none;border:0;color:var(--ink);cursor:pointer;font:inherit;font-size:13px;line-height:1;padding:2px 3px}
 .xbtn:hover{color:var(--crit)}
 
 /* ---------------- buttons + fields ---------------- */
 .btn{
   font:inherit;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;background:transparent;
-  color:var(--ink-dim);border:1px solid var(--line);padding:7px 12px;cursor:pointer;transition:.15s;
+  color:var(--ink);border:1px solid var(--line);padding:7px 12px;cursor:pointer;transition:.15s;
 }
 .btn:hover:not(:disabled){color:var(--copper-bright);border-color:var(--line-copper);background:rgba(184,149,106,.07)}
 .btn:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
-.btn:disabled{opacity:.3;cursor:default}
+/* disabled: white text kept, dashed border and a not-allowed cursor mark the state */
+.btn:disabled{border-style:dashed;cursor:not-allowed}
 .btn-primary{background:var(--copper);border-color:var(--copper);color:#14120f;font-weight:500;padding:11px 24px;letter-spacing:.2em}
 .btn-primary:hover:not(:disabled){background:var(--copper-bright);border-color:var(--copper-bright);color:#14120f}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
 .field{display:flex;flex-direction:column;gap:3px}
-.field label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.field label{font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
 .field input[type=number]{border-bottom:1px solid var(--line);text-align:left;font-size:var(--fs-md)}
+/* material picker: a bare underline like the number fields, copper chevron */
+.field select{
+  font:inherit;font-size:var(--fs-md);color:var(--ink);border:0;border-bottom:1px solid var(--line);border-radius:0;
+  padding:2px 20px 2px 2px;cursor:pointer;appearance:none;-webkit-appearance:none;
+  background:transparent linear-gradient(45deg,transparent 50%,var(--copper) 50%) no-repeat calc(100% - 9px) 55%/4px 4px,
+             linear-gradient(135deg,var(--copper) 50%,transparent 50%) no-repeat calc(100% - 5px) 55%/4px 4px;
+}
+.field select:hover{border-bottom-color:var(--line-copper)}
+.field select:focus{outline:none;border-bottom-color:var(--copper);background-color:rgba(184,149,106,.06)}
+.field select option{background:#141310;color:var(--ink)}
 .tglwrap{display:flex;align-items:center;gap:8px;padding-top:4px}
-.tglwrap span{font-size:var(--fs-sm);color:var(--ink-dim)}
-.status{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);min-height:14px}
+/* {02}: custom roll lengths switch + length allowance */
+.roll-row{display:flex;align-items:flex-end;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.roll-row .field{width:200px}
+.roll-row .tglwrap{cursor:pointer;padding-bottom:4px}
+.roll-row input:disabled{border-bottom-style:dashed}
+.tglwrap span{font-size:var(--fs-sm);color:var(--ink)}
+.status{font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);min-height:14px}
 .status.ok{color:var(--good)}
 .status.err{color:var(--crit)}
 
@@ -177,14 +199,14 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 details{margin-top:10px;border-top:1px solid var(--line);padding-top:9px}
 summary{
   display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;
-  font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
 }
 summary::-webkit-details-marker{display:none}
 summary::before{content:"+";color:var(--copper);margin-right:2px}
 details[open] summary::before{content:"–"}
 summary:hover{color:var(--copper)}
 .tag{margin-left:auto;color:var(--copper);letter-spacing:.16em}
-.zoom{border:1px solid var(--line);background:none;color:var(--ink-faint);cursor:pointer;padding:3px 5px;line-height:0}
+.zoom{border:1px solid var(--line);background:none;color:var(--ink);cursor:pointer;padding:3px 5px;line-height:0}
 .zoom:hover{color:var(--copper);border-color:var(--line-copper)}
 .zoom svg{display:block}
 textarea{
@@ -198,61 +220,65 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 .sechead{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
 .sechead .num{color:var(--copper);font-size:var(--fs-sm);letter-spacing:.1em}
 .sechead .title{font-size:var(--fs-sm);letter-spacing:.24em;text-transform:uppercase}
-.sechead .note{margin-left:auto;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.sechead .note{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
 .sechead .note.stale{color:var(--copper-bright)}
 .sechead .note.stale::after{content:" · out of date"}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
 .stat{padding:13px 15px;display:grid;gap:5px;align-content:start;border-left:1px solid var(--line)}
 .stat:first-child{border-left:0}
-.stat .k{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
+.stat .k{font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
 .stat .v{font-family:"DM Serif Display",Georgia,serif;font-size:34px;line-height:1;color:var(--ink)}
-.stat .v small{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-dim);margin-left:3px}
-.stat .v.empty{font-size:20px;color:var(--ink-ghost)}
+.stat .v small{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink);margin-left:3px}
+.stat .v.empty{font-size:20px;color:var(--ink)}
 .stat.accent .v{color:var(--copper-bright)}
 .stat .v.short{color:var(--crit)}
-.stat .sub{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.stat .sub{font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
 .stat .sub.short{color:var(--crit)}
 .meter{height:3px;background:rgba(255,255,255,.08);margin-top:2px}
 .meter i{display:block;height:100%;background:var(--copper)}
 
 .band{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--line);padding:12px 14px;margin-top:14px;font-size:var(--fs-sm);line-height:1.6}
-.band .tagw{flex:none;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);padding-top:2px}
+.band .tagw{flex:none;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding-top:2px}
 .band.ok{border-color:rgba(127,160,106,.35);background:rgba(127,160,106,.06)}
 .band.ok .tagw{color:var(--good)}
 .band.short{border-color:rgba(212,112,90,.4);background:rgba(212,112,90,.07)}
 .band.short .tagw{color:var(--crit)}
-.band .txt{color:var(--ink-dim)}
+.band .txt{color:var(--ink)}
 .band .txt b{color:var(--ink);font-weight:400}
 .band .btn{flex:none;margin-left:auto}
-.shortlist{margin-top:10px;border:1px solid var(--line);padding:10px 12px;font-size:var(--fs-sm);color:var(--ink-dim);display:flex;flex-wrap:wrap;gap:6px 18px}
+.shortlist{margin-top:10px;border:1px solid var(--line);padding:10px 12px;font-size:var(--fs-sm);color:var(--ink);display:flex;flex-wrap:wrap;gap:6px 18px}
 
 .subhead{display:flex;align-items:baseline;gap:12px;margin:16px 0 8px}
-.subhead .title{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
-.subhead .note{margin-left:auto;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.subhead .title{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.subhead .note{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
 .repbox{position:relative;border:1px solid var(--line);min-height:220px;max-height:440px;overflow:auto;overflow-x:auto;max-width:100%;flex:1;scrollbar-width:none;-ms-overflow-style:none}
+/* when the report box is tight, drop the mini bar and step the table text down a touch so all columns show */
+.repbox{container-type:inline-size}
+@container (max-width:640px){.repbox .rep{font-size:13px}.repbox .rep .bar{display:none}.repbox .rep thead th{letter-spacing:.04em;hyphens:auto;overflow-wrap:anywhere}.repbox .rep thead th,.repbox .rep tbody td,.repbox .rep tfoot td{padding-left:4px;padding-right:4px}}
 .repbox::-webkit-scrollbar{display:none;width:0;height:0}
 .repbox::after{content:"";position:absolute;bottom:-1px;right:-1px;width:9px;height:9px;border:solid var(--line-copper);border-width:0 1px 1px 0;pointer-events:none}
-.rep thead th{padding:9px 9px;background:#131210;letter-spacing:.1em}
-.rep tbody td{padding:7px 9px}
-.rep tfoot td{padding:9px 9px;border-top:1px solid var(--line-copper);text-align:right;color:var(--copper-bright)}
+/* header labels may wrap ("Panel / m²") so the table fits its box at the larger type size */
+.rep thead th{padding:9px 6px;background:#131210;letter-spacing:.08em;white-space:normal;vertical-align:bottom;line-height:1.3}
+.rep tbody td{padding:7px 6px}
+.rep tfoot td{padding:9px 6px;border-top:1px solid var(--line-copper);text-align:right;color:var(--copper-bright)}
 .rep tfoot td:first-child{text-align:left;letter-spacing:.14em;text-transform:uppercase;font-size:var(--fs-xs)}
-.out{color:var(--crit);font-size:9px;letter-spacing:.14em;margin-left:6px}
+.out{color:var(--crit);font-size:var(--fs-xs);letter-spacing:.14em;margin-left:6px}
 .bar{display:inline-block;width:34px;height:5px;background:rgba(255,255,255,.08);vertical-align:middle;margin-left:8px}
 .bar i{display:block;height:100%;background:var(--copper)}
 
 /* ---------------- viewer ---------------- */
 .viewer{border:1px solid var(--line);background:var(--ground-2);padding:12px}
-.viewhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.viewhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
 .viewhead b{color:var(--copper);font-weight:500}
 .viewhead .u{color:var(--ink)}
 .stage{height:clamp(240px,52vh,560px);display:flex;align-items:center;justify-content:center}
 .stage svg{display:block;width:100%;height:100%}
-.ghost{width:100%;height:100%;border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink-ghost);font-size:var(--fs-sm);letter-spacing:.2em;text-transform:uppercase}
-.viewfoot{margin-top:9px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:9.5px;letter-spacing:.1em;color:var(--ink-faint)}
+.ghost{width:100%;height:100%;border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink);font-size:var(--fs-sm);letter-spacing:.2em;text-transform:uppercase}
+.viewfoot{margin-top:9px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.1em;color:var(--ink)}
 .viewfoot span{white-space:nowrap}
 .viewctl{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap}
 .viewctl .btn{padding:6px 11px}
-.counter{font-size:9.5px;letter-spacing:.16em;color:var(--ink-dim);min-width:52px;text-align:center}
+.counter{font-size:var(--fs-xs);letter-spacing:.16em;color:var(--ink);min-width:52px;text-align:center}
 input[type=range]{flex:1;min-width:90px;-webkit-appearance:none;appearance:none;height:3px;background:rgba(255,255,255,.14);border:0;padding:0;cursor:pointer}
 input[type=range]:focus{outline:none}
 input[type=range]:focus-visible{outline:1px solid var(--copper);outline-offset:6px}
@@ -261,16 +287,53 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 input[type=range]::-moz-range-thumb{width:12px;height:12px;background:var(--copper);border:0;border-radius:0;cursor:pointer}
 
 /* ---------------- empty states ---------------- */
-.empty{display:grid;place-items:center;text-align:center;gap:6px;padding:26px 16px;color:var(--ink-faint);font-size:var(--fs-sm)}
-.empty .h{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.empty{display:grid;place-items:center;text-align:center;gap:6px;padding:26px 16px;color:var(--ink);font-size:var(--fs-sm)}
+.empty .h{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
 .empty .h::before{content:"— "}
 .empty p{margin:0;max-width:34ch;line-height:1.6}
 
 footer{
   margin-top:22px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;
-  gap:16px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  gap:16px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
 }
 footer b{color:var(--copper);font-weight:500}
+
+/* ---------------- app shell: one screen, only the panels scroll ----------------
+   The page is exactly the viewport; header rows keep their height and the panel grid takes
+   the rest. The inputs column, the report table and the layout drawing scroll or scale
+   inside their own boxes. Windows narrower than 1024px or shorter than 600px fall back to a normal scrolling page. */
+@media (min-width:1024px) and (min-height:600px){
+  html,body{height:100%;overflow:hidden}
+  .wrap{height:100vh;height:100dvh;display:flex;flex-direction:column;padding-block:0 10px}
+  .filebar,.mast,.runbar,footer{flex:none}
+  .filebar{padding-block:10px 8px}
+  .mast{padding-block:12px 10px}
+  footer{margin-top:10px;padding-top:8px}
+  /* the drawing gets the full height of the right column; report and its table share the middle one */
+  .cols{flex:1 1 auto;min-height:0;margin-top:12px;align-items:stretch;grid-template-rows:minmax(0,auto) minmax(260px,1fr);
+        grid-template-columns:320px minmax(0,1.3fr) minmax(0,1fr);grid-template-areas:"inputs report view" "inputs table view"}
+  .col-inputs{min-height:0;overflow-y:auto;scrollbar-width:none}
+  .col-inputs::-webkit-scrollbar{display:none}
+  /* the report keeps the table row at least 260px tall and scrolls inside itself if it cannot fit */
+  .col-report{min-height:0;overflow-y:auto;scrollbar-width:none}
+  .col-report::-webkit-scrollbar{display:none}
+  .stat{padding:10px 12px}
+  .stat .v{font-size:28px}
+  .band{margin-top:10px;padding:10px 12px}
+  .subhead{margin:10px 0 6px}
+  .col-table{min-height:0}
+  .col-table .repbox{min-height:0;max-height:none}
+  .col-view{min-height:0;display:flex;flex-direction:column}
+  .col-view .viewer{flex:1;min-height:0;display:flex;flex-direction:column}
+  /* the drawing scales to whatever height is left (the script's tall-sheet height is overridden) */
+  .col-view .stage{flex:1;min-height:0;height:auto!important}
+}
+@media (min-width:1024px) and (max-width:1240px) and (min-height:600px){
+  html .cols{grid-template-columns:268px minmax(0,1.6fr) minmax(0,1fr);grid-template-areas:"inputs report view" "inputs table view"}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+}
 
 /* ---------------- narrow ---------------- */
 @media(max-width:1240px){
@@ -295,7 +358,7 @@ footer b{color:var(--copper);font-weight:500}
 
   <div class="filebar">
     <a href="https://amd-nsri-portfolio-alpha.vercel.app" target="_self"
-       style="display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#b8956a;text-decoration:none;opacity:0.8;">
+       style="display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:var(--fs-xs);letter-spacing:0.18em;text-transform:uppercase;color:#b8956a;text-decoration:none;">
       ← AMD NSRI
     </a>
     <div class="langs" role="group" aria-label="Language">
@@ -341,6 +404,20 @@ footer b{color:var(--copper);font-weight:500}
         <input type="checkbox" class="tgl" id="rotAll" checked
                title="Let the solver turn any pose 90° — untick for a directional or brushed finish">
       </span>
+    </div>
+    <span class="vrule"></span>
+    <div class="field">
+      <label for="material" data-i18n="Material">Material</label>
+      <select id="material">
+        <option value="aluminum" data-i18n="Aluminum">Aluminum</option>
+        <option value="galvanized" data-i18n="Galvanized Sheet">Galvanized Sheet</option>
+        <option value="corten" data-i18n="Corten">Corten</option>
+        <option value="stainless" data-i18n="Stainless Steel">Stainless Steel</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="thick" data-i18n="Thickness (mm)">Thickness (mm)</label>
+      <input type="number" id="thick" value="1" min="0" step="0.1">
     </div>
   </div>
 
@@ -414,6 +491,17 @@ footer b{color:var(--copper);font-weight:500}
           <button class="btn" id="toggleAllLimit" type="button" data-i18n="Unlimited">Unlimited</button>
         </div>
         <p class="status" style="margin:8px 0 0" data-i18n="Rows left at 0 are skipped">Rows left at 0 are skipped</p>
+        <div class="roll-row">
+          <label class="tglwrap">
+            <input type="checkbox" class="tgl" id="customRoll">
+            <span data-i18n="Allow custom roll lengths">Allow custom roll lengths</span>
+          </label>
+          <div class="field">
+            <label for="lenAllow" data-i18n="Length allowance (mm)">Length allowance (mm)</label>
+            <input type="number" id="lenAllow" value="0" min="0" step="1" disabled>
+          </div>
+        </div>
+        <p class="status" id="customRollNote" style="margin:8px 0 0"></p>
         <div class="btn-row" style="margin:12px 0 0">
           <button class="btn" id="uploadDwgSheets" type="button" data-i18n="Upload sheet DWG">↑ Upload sheet DWG</button>
           <span class="status" id="dwgUploadStatus" data-i18n="No DWG loaded">No DWG loaded</span>
@@ -489,11 +577,11 @@ footer b{color:var(--copper);font-weight:500}
             <tr>
               <th data-i18n="Sheet size">Sheet size</th>
               <th data-i18n="Stock">Stock</th>
-              <th data-i18n="Used">Used</th>
-              <th data-i18n="Panels">Panels</th>
+              <th data-i18n="Sheets used">Sheets used</th>
+              <th data-i18n="Panels nested">Panels nested</th>
               <th>Panel m²</th>
-              <th>Waste m²</th>
               <th>Util</th>
+              <th data-i18n="kg">kg</th>
             </tr>
           </thead>
           <tbody id="repBody"></tbody>
@@ -797,6 +885,8 @@ var PALETTE = ['#c08a5a','#8fa0a8','#b0a373','#a3705a','#7f8f7a','#cbb89a','#6e7
 var panels = [], sheets = [], lastResult = null, panelsPerType = {};
 
 var $ = function (id) { return document.getElementById(id); };
+// sheet sizes are shown in whole millimetres; the values used for nesting keep full precision
+var whole = function (v) { return Math.round(+v); };
 var m2 = function (mm2) { return mm2 / 1e6; };
 var fmt = function (n, d) { return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); };
 var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
@@ -890,7 +980,10 @@ function addPanelRow(data) {
   tdL.className = 'col-lbl';
   var lbl = document.createElement('input');
   lbl.type = 'text'; lbl.value = row.label;
-  lbl.addEventListener('input', function () { row.label = lbl.value; touch(); });
+  lbl.addEventListener('input', function () {
+    row.label = lbl.value;
+    touch();
+  });
   tdL.appendChild(lbl); tr.appendChild(tdL);
 
   // same classes as the <th> above, so each column keeps one width
@@ -1095,6 +1188,79 @@ function applySheetPaste(mode) {
 }
 
 /* ------------------------------ run ------------------------------------ */
+/* Custom roll lengths (switch on): rolled aluminium can be cut to any length, so a panel that is
+   only too LONG for every sheet in play can get its own length for this run.
+   - a panel type that fits a sheet in play (either way round, if rotation is allowed) is left alone
+   - one that doesn't, but whose width does fit, is "too long": its long side is the length
+   - too-long types are grouped by exact length; each group gets one sheet:
+       width  = the narrowest sheet width in play that covers the group's widest panel
+       length = the group's length + the length allowance (+ both edge trims, so it still fits)
+   - a type wider than every sheet in play is left as not nested
+   Returns the indexes of the too-long types and the extra sheet sizes (unlimited, this run only). */
+function customRollStock(specs, margin, rotate, allowance) {
+  var stock = sheets.filter(function (sh) { return (sh.unlimited || +sh.qty > 0) && +sh.w > 0 && +sh.h > 0; });
+  var empty = { stock: [], longTypes: {} };
+  if (!stock.length) return empty;
+  var fits = function (w, h) {
+    return stock.some(function (sh) {
+      var W = +sh.w - 2 * margin, H = +sh.h - 2 * margin;
+      return (w <= W && h <= H) || (rotate && h <= W && w <= H);
+    });
+  };
+  var seen = {}, widths = [];
+  stock.forEach(function (sh) { var w = +sh.w; if (!seen[w]) { seen[w] = true; widths.push(w); } });
+  widths.sort(function (a, b) { return a - b; });
+  var widthFor = function (across) {
+    for (var i = 0; i < widths.length; i++) if (widths[i] - 2 * margin >= across) return widths[i];
+    return null;
+  };
+
+  var groups = [], byL = {}, longTypes = {};
+  specs.forEach(function (sp, i) {
+    var w = +sp.w, h = +sp.h;
+    if (!(w > 0) || !(h > 0) || !(Math.floor(+sp.qty || 0) > 0) || fits(w, h)) return;
+    var across = rotate ? Math.min(w, h) : w, along = rotate ? Math.max(w, h) : h;
+    if (widthFor(across) === null) return;          // too wide as well: stays not nested
+    longTypes[i] = true;
+    var g = byL[along];
+    if (!g) { g = byL[along] = { along: along, across: across }; groups.push(g); }
+    if (across > g.across) g.across = across;
+  });
+
+  var out = [];
+  groups.forEach(function (g) {
+    var w = widthFor(g.across);
+    var h = Math.round((g.along + allowance + 2 * margin) * 1000) / 1000;
+    out.push({ label: w + '×' + whole(h), w: w, h: h, qty: 0, unlimited: true, custom: true });
+  });
+  return { stock: out, longTypes: longTypes };
+}
+
+/* Two passes, merged into one result: panels that fit go on the sheets in play, the too-long ones
+   only on their custom lengths, so a custom sheet never takes work a standard sheet already covers.
+   Type indexes stay those of the full schedule, so colours and the report line up. */
+function nestWithCustomRolls(specs, custom, opts) {
+  var std = specs.map(function (sp, i) { return custom.longTypes[i] ? Object.assign({}, sp, { qty: 0 }) : sp; });
+  var lng = specs.map(function (sp, i) { return custom.longTypes[i] ? sp : Object.assign({}, sp, { qty: 0 }); });
+  var a = nest(std, sheets, opts);
+  var b = nest(lng, custom.stock, opts);
+  var offset = sheets.length;
+  var merged = {
+    sheets: a.sheets.concat(b.sheets.map(function (sh) { return Object.assign({}, sh, { sheetTypeIndex: sh.sheetTypeIndex + offset }); })),
+    unplaced: a.unplaced.concat(b.unplaced),
+    stockOut: a.stockOut || b.stockOut, capped: a.capped || b.capped
+  };
+  merged.sheets.forEach(function (sh, i) { sh.index = i + 1; });
+  var items = [];
+  specs.forEach(function (sp, i) {
+    var q = Math.max(0, Math.floor(+sp.qty || 0));
+    if (+sp.w > 0 && +sp.h > 0) for (var k = 0; k < q; k++) items.push({ typeIndex: i });
+  });
+  return finish(merged, specs, sheets.concat(custom.stock), items);
+}
+
+function syncCustomRoll() { $('lenAllow').disabled = !$('customRoll').checked; }
+
 function run() {
   var pieces = totalPieces();
   if (pieces > 20000) {
@@ -1118,7 +1284,23 @@ function run() {
   });
 
   var t0 = performance.now();
-  var res = nest(specs, sheets, { gap: gap, margin: margin });
+  var res, custom = null;
+  if ($('customRoll').checked) {
+    custom = customRollStock(specs, margin, rotate, Math.max(0, +$('lenAllow').value || 0));
+  }
+  if (custom && custom.stock.length) res = nestWithCustomRolls(specs, custom, { gap: gap, margin: margin });
+  else res = nest(specs, sheets, { gap: gap, margin: margin });
+  // which custom lengths this run made, and which of them it drew on
+  var note = '';
+  if (custom) {
+    note = custom.stock.length
+      ? 'Custom lengths: ' + custom.stock.map(function (cs, k) {
+          var used = res.bySheetType[sheets.length + k] ? res.bySheetType[sheets.length + k].used : 0;
+          return whole(cs.w) + '×' + whole(cs.h) + (used ? ' (' + used + ' used)' : '');
+        }).join(', ')
+      : 'No panel needed a custom length';
+  }
+  $('customRollNote').textContent = note;
   var ms = Math.round(performance.now() - t0);
   lastResult = { res: res, gap: gap, margin: margin, rotate: rotate };
 
@@ -1147,7 +1329,7 @@ function sheetsUsedSub(res) {
   if (!used.length) return 'No nest yet';
   var allOut = used.every(function (s) { return !s.unlimited && s.used >= s.available; });
   if (res.stockOut && allOut) return 'All stock consumed';
-  return used.slice(0, 3).map(function (s) { return s.used + ' × ' + s.w + '·' + s.h; }).join('   ');
+  return used.slice(0, 3).map(function (s) { return s.used + ' × ' + whole(s.w) + '·' + whole(s.h); }).join('   ');
 }
 
 function groupUnplaced(res) {
@@ -1169,11 +1351,11 @@ function allNestedText(res) {
 
   var txt = 'Every one of the <b>' + t.panelsPlaced + '</b> panels was placed. ';
   if (used.length === 1) {
-    txt += 'One stock size carried the whole order: <b>' + used[0].w + ' × ' + used[0].h + '</b>. ';
+    txt += 'One stock size carried the whole order: <b>' + whole(used[0].w) + ' × ' + whole(used[0].h) + '</b>. ';
   } else if (used.length > 1) {
     var top = used[0];
     var share = t.panelsPlaced ? Math.round((panelsPerType[top.index] || 0) / t.panelsPlaced * 100) : 0;
-    txt += used.length + ' stock sizes were drawn on; <b>' + top.w + ' × ' + top.h + '</b> carried ' +
+    txt += used.length + ' stock sizes were drawn on; <b>' + whole(top.w) + ' × ' + whole(top.h) + '</b> carried ' +
            share + '% of the order. ';
   }
   txt += lastResult.rotate
@@ -1205,7 +1387,7 @@ function shortText(res) {
            'Add a larger sheet, or split the pose.';
   }
   return 'Stock ran out. ' + who + ' fits a stocked size, but no size with quantity left can take it. ' +
-         'Tick <b>Unlimited</b> on ' + biggest.w + ' × ' + biggest.h + ', or raise its quantity, then run the nest again.';
+         'Tick <b>Unlimited</b> on ' + whole(biggest.w) + ' × ' + whole(biggest.h) + ', or raise its quantity, then run the nest again.';
 }
 
 function renderBand(res) {
@@ -1229,6 +1411,15 @@ function renderBand(res) {
   btn.textContent = 'Show the ' + res.unplaced.length;
 }
 
+/* Sheet weight: area (m²) × thickness (mm) × specific gravity (g/cm³) = kg, since 1 m² × 1 mm is one litre.
+   Uses the whole sheet area drawn on (panels + waste), the material actually consumed. */
+var MATERIAL_SG = { aluminum: 2.72, galvanized: 8, corten: 8, stainless: 8 };
+function sheetKg(areaMm2) {
+  var sg = MATERIAL_SG[$('material').value] || 0;
+  var t = Math.max(0, +$('thick').value || 0);
+  return m2(areaMm2) * t * sg;
+}
+
 function renderSizes(res) {
   var body = $('repBody'), foot = $('repFoot');
   body.innerHTML = ''; foot.innerHTML = '';
@@ -1245,22 +1436,22 @@ function renderSizes(res) {
     var out = !t.unlimited && t.used >= t.available;
     var tr = document.createElement('tr');
     tr.innerHTML =
-      '<td>' + t.w + ' × ' + t.h + '</td>' +
+      '<td>' + whole(t.w) + ' × ' + whole(t.h) + '</td>' +
       '<td>' + (t.unlimited ? 'Unlimited' : t.available) + '</td>' +
       '<td>' + t.used + (out ? '<span class="out">out</span>' : '') + '</td>' +
       '<td>' + (panelsPerType[t.index] || 0) + '</td>' +
       '<td>' + fmt(m2(t.usedArea), 2) + '</td>' +
-      '<td>' + fmt(m2(t.wasteArea), 2) + '</td>' +
       '<td>' + fmt(t.utilization * 100, 1) + '%<span class="bar"><i style="width:' +
-        (t.utilization * 100).toFixed(1) + '%"></i></span></td>';
+        (t.utilization * 100).toFixed(1) + '%"></i></span></td>' +
+      '<td>' + fmt(sheetKg(t.sheetArea), 1) + '</td>';
     body.appendChild(tr);
   });
 
   var t = res.totals;
   foot.innerHTML =
     '<tr><td>Total</td><td>—</td><td>' + t.sheetsUsed + '</td><td>' + t.panelsPlaced + '</td>' +
-    '<td>' + fmt(m2(t.usedArea), 2) + '</td><td>' + fmt(m2(t.wasteArea), 2) + '</td>' +
-    '<td>' + fmt(t.utilization * 100, 1) + '%</td></tr>';
+    '<td>' + fmt(m2(t.usedArea), 2) + '</td>' +
+    '<td>' + fmt(t.utilization * 100, 1) + '%</td><td>' + fmt(sheetKg(t.sheetArea), 1) + '</td></tr>';
 }
 
 function renderReport(res, ms) {
@@ -1346,8 +1537,8 @@ function showSheet(i) {
   var s = res.sheets[viewIdx];
   var margin = lastResult.margin;
   var bare = function (t) { return String(t).replace(/[\s×xX*]/g, ''); };
-  var size = s.w + ' × ' + s.h + ' mm';
-  var name = bare(s.label) === bare(s.w + '×' + s.h) ? size : esc(s.label) + ' · ' + size;
+  var size = whole(s.w) + ' × ' + whole(s.h) + ' mm';
+  var name = bare(s.label) === bare(whole(s.w) + '×' + whole(s.h)) ? size : esc(s.label) + ' · ' + size;
   var cuts = wasteRects(s, margin, Math.max(Math.max(s.w, s.h) * 0.02, 30)).length;
 
   $('vIndex').textContent = pad2(s.index);
@@ -1487,7 +1678,7 @@ function sheetSvg(s, margin) {
            '" stroke-dasharray="' + (maxDim * 0.008) + ' ' + (maxDim * 0.006) + '"/>';
     var label = Math.round(r.w) + ' × ' + Math.round(r.h);
     var fs = Math.min(Math.min(r.w, r.h) * 0.3, maxDim * 0.022);
-    out += fitLabel(r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, fs, label, '#8d8375', '', '');
+    out += fitLabel(r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, fs, label, '#ece7dd', '', '');
   });
 
   // the panels
@@ -1515,14 +1706,14 @@ function sheetSvg(s, margin) {
   out += '<path d="M0 ' + yb + ' H' + s.w + ' M0 ' + (yb - tick) + ' V' + (yb + tick) +
          ' M' + s.w + ' ' + (yb - tick) + ' V' + (yb + tick) +
          '" stroke="#6f675a" stroke-width="' + sw + '" fill="none"/>';
-  out += svgText(s.w / 2, yb + dimFs * 1.15, dimFs, '#a79d8e', s.w + ' mm');
+  out += svgText(s.w / 2, yb + dimFs * 1.15, dimFs, '#ece7dd', whole(s.w) + ' mm');
 
   var xl = -padL * 0.55;
   out += '<path d="M' + xl + ' 0 V' + s.h + ' M' + (xl - tick) + ' 0 H' + (xl + tick) +
          ' M' + (xl - tick) + ' ' + s.h + ' H' + (xl + tick) +
          '" stroke="#6f675a" stroke-width="' + sw + '" fill="none"/>';
   var xt = xl - dimFs * 1.15;
-  out += svgText(xt, s.h / 2, dimFs, '#a79d8e', s.h + ' mm',
+  out += svgText(xt, s.h / 2, dimFs, '#ece7dd', whole(s.h) + ' mm',
                  ' transform="rotate(-90 ' + xt + ' ' + (s.h / 2) + ')"');
 
   out += '</svg>';
@@ -1553,7 +1744,7 @@ function buildReportRows(res, gap, margin, rotate) {
   rows.push([]);
 
   rows.push([B('TOTALS')]);
-  rows.push(['Metal sheets used', t.sheetsUsed]);
+  rows.push(['Sheets used', t.sheetsUsed]);
   rows.push(['Panels nested', t.panelsPlaced]);
   rows.push(['Panels requested', t.panelsRequested]);
   rows.push(['Panels not nested', t.panelsRequested - t.panelsPlaced]);
@@ -1744,10 +1935,10 @@ function buildDxf(res, margin) {
     if (margin > 0) {
       s += dxfRect('TRIM', ox + margin, oy + margin, sh.w - 2 * margin, sh.h - 2 * margin);
     }
-    var tag = dxfSafe(sh.label).replace(/[\sxX*]/g, '') === (sh.w + 'x' + sh.h).replace(/x/g, '')
+    var tag = dxfSafe(sh.label).replace(/[\sxX*]/g, '') === (whole(sh.w) + 'x' + whole(sh.h)).replace(/x/g, '')
       ? '' : dxfSafe(sh.label) + '  ';
     s += dxfText('TEXT', ox, oy + sh.h + maxH * 0.045, maxH * 0.035,
-      'SHEET ' + pad2(sh.index) + ' / ' + pad2(n) + '  ' + tag + sh.w + 'x' + sh.h +
+      'SHEET ' + pad2(sh.index) + ' / ' + pad2(n) + '  ' + tag + whole(sh.w) + 'x' + whole(sh.h) +
       '  ' + (sh.utilization * 100).toFixed(1) + '% USED');
 
     sh.placements.forEach(function (p) {
@@ -1905,7 +2096,11 @@ function projectData() {
     options: {
       gap: Math.max(0, +$('gap').value || 0),
       trim: Math.max(0, +$('margin').value || 0),
-      rotate: $('rotAll').checked
+      rotate: $('rotAll').checked,
+      customRoll: $('customRoll').checked,
+      material: $('material').value,
+      thickness: Math.max(0, +$('thick').value || 0),
+      rollAllowance: Math.max(0, +$('lenAllow').value || 0)
     },
     poses: panels.map(function (p) {
       return { label: text(p.label), w: num(p.w), h: num(p.h), qty: Math.max(0, Math.floor(num(p.qty))) };
@@ -1943,6 +2138,11 @@ function applyProject(data) {
   $('margin').value = Math.max(0, num(o.trim));
   $('rotAll').checked = o.rotate !== false;
   setI18n($('rotState'), $('rotAll').checked ? 'Allowed' : 'Locked');
+  $('customRoll').checked = !!o.customRoll;
+  $('material').value = MATERIAL_SG[o.material] ? o.material : 'aluminum';
+  $('thick').value = o.thickness != null ? Math.max(0, num(o.thickness)) : 1;
+  $('lenAllow').value = Math.max(0, num(o.rollAllowance));
+  syncCustomRoll();
   $('projName').value = text(data.name, 60);
   markDirty(true, 'Project loaded — run the nest');
 }
@@ -2019,6 +2219,12 @@ function resetAll() {
   setI18n($('rotState'), 'Allowed');
   $('pasteBox').value = '';
   $('sheetPasteBox').value = '';
+  $('customRoll').checked = false;
+  $('material').value = 'aluminum';
+  $('thick').value = 1;
+  $('lenAllow').value = 0;
+  syncCustomRoll();
+  $('customRollNote').textContent = '';
   $('projName').value = '';
   setStatus('pasteStatus', 'Nothing loaded');
   setStatus('sheetPasteStatus', 'standard sizes preloaded', '', DEFAULT_SHEETS.length + ' ');
@@ -2147,6 +2353,15 @@ var NESTRI_STRINGS = {
     'Unlimited': 'Sınırsız',
     'Limited': 'Sınırlı',
     'Rows left at 0 are skipped': '0 kalan satırlar atlanır',
+    'Allow custom roll lengths': 'Özel rulo boylarına izin ver',
+    'Material': 'Malzeme',
+    'Thickness (mm)': 'Kalınlık (mm)',
+    'Aluminum': 'Alüminyum',
+    'Galvanized Sheet': 'Galvaniz sac',
+    'Corten': 'Corten',
+    'Stainless Steel': 'Paslanmaz çelik',
+    'kg': 'kg',
+    'Length allowance (mm)': 'Boy payı (mm)',
     'Upload sheet DWG': '↑ Sac DWG yükle',
     'No DWG loaded': 'DWG yüklenmedi',
     'Report': 'Rapor',
@@ -2159,7 +2374,6 @@ var NESTRI_STRINGS = {
     'Per sheet size': 'Sac boyutuna göre',
     'Sheet size': 'Sac boyutu',
     'Stock': 'Stok',
-    'Used': 'Kullanılan',
     'Panels': 'Paneller',
     'Nothing to report': 'Rapor yok',
     'Nesting layout': 'Yerleştirme düzeni',
@@ -2210,6 +2424,15 @@ var NESTRI_STRINGS = {
     'Unlimited': 'غير محدود',
     'Limited': 'محدود',
     'Rows left at 0 are skipped': 'الصفوف بقيمة 0 تُتخطى',
+    'Allow custom roll lengths': 'السماح بأطوال لفائف مخصصة',
+    'Material': 'المادة',
+    'Thickness (mm)': 'السماكة (مم)',
+    'Aluminum': 'ألومنيوم',
+    'Galvanized Sheet': 'صاج مجلفن',
+    'Corten': 'كورتن',
+    'Stainless Steel': 'فولاذ مقاوم للصدأ',
+    'kg': 'كغ',
+    'Length allowance (mm)': 'سماح الطول (مم)',
     'Upload sheet DWG': '↑ رفع ملف DWG',
     'No DWG loaded': 'لم يتم تحميل DWG',
     'Report': 'تقرير',
@@ -2222,7 +2445,6 @@ var NESTRI_STRINGS = {
     'Per sheet size': 'حسب حجم اللوح',
     'Sheet size': 'حجم اللوح',
     'Stock': 'المخزون',
-    'Used': 'المستخدم',
     'Panels': 'الألواح',
     'Nothing to report': 'لا شيء للإبلاغ عنه',
     'Nesting layout': 'تخطيط التعشيش',
@@ -2281,6 +2503,12 @@ $('pasteReplace').addEventListener('click', function () { applyPaste('replace');
 $('pasteAdd').addEventListener('click', function () { applyPaste('add'); });
 $('sheetPasteReplace').addEventListener('click', function () { applySheetPaste('replace'); });
 $('sheetPasteAdd').addEventListener('click', function () { applySheetPaste('add'); });
+$('lenAllow').addEventListener('input', touch);
+// material and thickness only change the weight column, so redraw that table from the last result
+function refreshWeights() { if (lastResult) renderSizes(lastResult.res); }
+$('material').addEventListener('change', refreshWeights);
+$('thick').addEventListener('input', refreshWeights);
+$('customRoll').addEventListener('change', function () { syncCustomRoll(); touch(); });
 $('run').addEventListener('click', run);
 $('resetAll').addEventListener('click', resetAll);
 
