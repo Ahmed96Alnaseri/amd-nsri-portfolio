@@ -263,13 +263,27 @@ export default function Navigation() {
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           height: '72px', flexShrink: 0,
         }}>
-          <span style={{
-            fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: '500',
-            letterSpacing: '0.16em', textTransform: 'uppercase',
-            color: 'var(--color-text-primary)',
-          }}>
+          {/* Wordmark → home. Padding grows the tap area to 44px+, the negative margin cancels it so
+              the text stays exactly where it was. Already home: just close the menu. */}
+          <Link
+            href="/"
+            className="mobile-nav-home"
+            aria-label="AMD NSRI homepage"
+            onClick={(e) => {
+              if (pathname === '/') e.preventDefault();
+              setMenuOpen(false);
+            }}
+            style={{
+              fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: '500',
+              letterSpacing: '0.16em', textTransform: 'uppercase',
+              color: 'var(--color-text-primary)',
+              textDecoration: 'none',
+              padding: '12px 16px 12px 12px', margin: '-12px -16px -12px -12px',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >
             {t('nav.menuLabel')}
-          </span>
+          </Link>
           <button
             onClick={() => setMenuOpen(false)}
             aria-label={t('nav.closeMenu')}
