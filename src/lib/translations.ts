@@ -213,7 +213,7 @@ export const translations = {
     tools: {
       eyebrow:     'Tools',
       title:       'Build. Automate. Deploy.',
-      desc:        'Computational tools and definitions — from Grasshopper logic to web apps that turn fabrication problems into repeatable, shippable systems.',
+      desc:        'Computational tools and definitions — from CAD logic to web apps that turn fabrication problems into repeatable, shippable systems.',
       whatItDoes:  'What it does',
       howItWorks:  'How it works',
       commission:  'Commission a Project',
@@ -519,7 +519,7 @@ export const translations = {
     tools: {
       eyebrow:     'Araçlar',
       title:       'Kur. Otomatikleştir. Yayınla.',
-      desc:        'Hesaplamalı araçlar ve tanımlar — Grasshopper mantığından, fabrikasyon problemlerini tekrarlanabilir ve yayınlanabilir sistemlere dönüştüren web uygulamalarına.',
+      desc:        'Hesaplamalı araçlar ve tanımlar — CAD mantığından, fabrikasyon problemlerini tekrarlanabilir ve yayınlanabilir sistemlere dönüştüren web uygulamalarına.',
       whatItDoes:  'Ne işe yarar',
       howItWorks:  'Nasıl çalışır',
       commission:  'Proje Talep Et',
@@ -825,7 +825,7 @@ export const translations = {
     tools: {
       eyebrow:     'الأدوات',
       title:       'ابنِ. أتمِت. انشُر.',
-      desc:        'أدوات وتعريفات حوسبية — من منطق Grasshopper إلى تطبيقات الويب التي تحوّل مشكلات التصنيع إلى أنظمة قابلة للتكرار والنشر.',
+      desc:        'أدوات وتعريفات حوسبية — من منطق CAD إلى تطبيقات الويب التي تحوّل مشكلات التصنيع إلى أنظمة قابلة للتكرار والنشر.',
       whatItDoes:  'ماذا يفعل',
       howItWorks:  'كيف تعمل الخدمة',
       commission:  'اطلب مشروعاً',
@@ -953,12 +953,8 @@ const VALUES: Record<Lang, ValueMap> = {
       'K-faktörü ve büküm yarıçapı kontrolüyle düz kesim desenleri',
     'Parametric perforation layouts — pitch, diameter, open area ratio':
       'Parametrik delik düzenleri — aralık, çap, açık alan oranı',
-    'Groups facade panels by tolerance to minimize unique fabrication types':
-      'Benzersiz fabrikasyon tiplerini azaltmak için cephe panellerini toleransa göre gruplar',
     'Location intelligence and site analysis — standalone software':
       'Konum zekası ve arsa analizi — bağımsız yazılım',
-    'Total aluminum sheets, powder coat, and profiles — web or Grasshopper':
-      'Toplam alüminyum sac, toz boya ve profiller — web veya Grasshopper',
     // shop card descriptions (src/data/shop-products.ts)
     'GHPython unfolding script, ready to embed in your definition':
       'GHPython açınım betiği, tanımınıza gömülmeye hazır',
@@ -1024,39 +1020,6 @@ const VALUES: Record<Lang, ValueMap> = {
     'Automatic nesting optimization to minimize sheet waste': 'Levha firesini en aza indiren otomatik yerleşim optimizasyonu',
     'Utilization and waste readout per sheet size': 'Levha ölçüsüne göre kullanım ve fire göstergesi',
     'Export nested layout as DXF for CNC cutting': 'CNC kesim için yerleşim planını DXF olarak dışa aktarın',
-    'What you get': 'Ne alırsınız',
-    'Grasshopper · Free + Pro Service': 'Grasshopper · Ücretsiz + Pro Hizmet',
-    'FREE + PRO SERVICE': 'ÜCRETSİZ + PRO HİZMET',
-    'Free — Grasshopper Script': 'Ücretsiz — Grasshopper Script',
-    'Professional Service': 'Profesyonel Hizmet',
-    'Free script · Pro on request': 'Ücretsiz script · Pro talep üzerine',
-    'Script free · Service on request': 'Script ücretsiz · Hizmet talep üzerine',
-    'Free output': 'Ücretsiz çıktı',
-    'Pro output': 'Pro çıktı',
-    'Grouped panel IDs · GH script': 'Gruplanmış panel kimlikleri · GH script',
-    '3D model · Excel with poses': '3B model · pozlu Excel',
-    'Download Free Script': 'Ücretsiz Script İndir',
-    'Request Pro Service': 'Pro Hizmet Talep Et',
-    'Pro service: send your model, receive rationalized geometry + Excel panel schedule.':
-      'Pro hizmet: modelinizi gönderin, rasyonalize edilmiş geometri + Excel panel listesi alın.',
-    'Reduce unique panel types across a complex facade, with tolerance-based grouping.':
-      'Karmaşık bir cephedeki benzersiz panel tiplerini tolerans tabanlı gruplamayla azaltın.',
-    'Groups panels by area similarity using a 3-value tolerance system':
-      'Panelleri 3 değerli tolerans sistemiyle alan benzerliğine göre gruplar',
-    'Minimizes unique fabrication types across the full panel set':
-      'Panel setinin tamamında benzersiz üretim tiplerini en aza indirir',
-    'Outputs grouped panel IDs ready for shop drawing annotation':
-      'İmalat çizimi notlandırmasına hazır gruplanmış panel kimlikleri üretir',
-    'Download and run on your own model in Grasshopper':
-      'İndirin ve Grasshopper içinde kendi modelinizde çalıştırın',
-    'Send your 3D facade model (Rhino · STEP · OBJ)':
-      '3B cephe modelinizi gönderin (Rhino · STEP · OBJ)',
-    'Full rationalization pass with custom tolerance tuning per project':
-      'Projeye özel tolerans ayarıyla tam rasyonalizasyon geçişi',
-    'Cleaned 3D model returned with rationalized panel geometry':
-      'Rasyonalize edilmiş panel geometrisiyle temizlenmiş 3B model teslim edilir',
-    'Excel schedule with panel type, dimensions, quantity, and poses':
-      'Panel tipi, ölçüler, adet ve pozları içeren Excel listesi',
     'Web — runs in browser': 'Web — tarayıcıda çalışır',
     'Free · Live': 'Ücretsiz · Yayında',
     'Any image (JPG · PNG · GIF)': 'Herhangi bir görsel (JPG · PNG · GIF)',
@@ -1074,6 +1037,15 @@ const VALUES: Record<Lang, ValueMap> = {
     'Submit a Project': 'Proje Gönder',
     'DWG flat pattern · STEP': 'DWG açınım deseni · STEP',
     'Sheet Metal Unfolding': 'Sac Metal Açınımı',
+    // AMAD + NESTRI PRO (coming soon)
+    'Arrange my plans. Turn your goals into a daily schedule that adapts to you.':
+      'Planlarımı düzenle. Hedeflerinizi size uyum sağlayan günlük bir programa dönüştürün.',
+    'A web app for personal planning. AMAD turns your goals into a daily schedule that adapts to you.':
+      'Kişisel planlama için bir web uygulaması. AMAD, hedeflerinizi size uyum sağlayan günlük bir programa dönüştürür.',
+    'The professional edition of NESTRI. More power for production nesting.':
+      'NESTRI\'nin profesyonel sürümü. Üretim yerleşimi için daha fazla güç.',
+    'NESTRI PRO is the professional edition of NESTRI, built for production nesting.':
+      'NESTRI PRO, üretim yerleşimi için geliştirilmiş NESTRI\'nin profesyonel sürümüdür.',
     'Send your file. Receive fabrication-ready flat patterns.':
       'Dosyanızı gönderin. Üretime hazır açınım desenlerini alın.',
     'An unfolding service for complex sheet metal panels. Submit your files — DWG, PDF, image, or any usable reference — and receive accurate flat cutting patterns with correct k-factor and bend allowance applied. Output is DWG-ready for laser cutting and press brake, plus STEP for CNC verification.':
@@ -1094,33 +1066,22 @@ const VALUES: Record<Lang, ValueMap> = {
     // tool names
     'Sheet Metal Unfolder': 'Sac Metal Açıcı',
     'Perforation Pattern Engine': 'Delik Deseni Motoru',
-    'Panel Type Optimizer': 'Panel Türü Optimize Edici',
-    'Material Quantity Estimator': 'Malzeme Miktarı Tahmincisi',
     // tool prices
     'Contact for pricing': 'Fiyat için iletişime geçin',
-    'Free (web) · Grasshopper on request': 'Ücretsiz (web) · Grasshopper talep üzerine',
     // tool descriptions (one-liners)
     'Unfolds 3D sheet metal geometry into flat cutting patterns with k-factor and bend radius control':
       'K-faktörü ve büküm yarıçapı kontrolüyle 3B sac metal geometrisini düz kesim desenlerine açar',
     'Generates production-ready perforation layouts from parametric inputs — pitch, diameter, open area ratio':
       'Parametrik girişlerden — aralık, çap, açık alan oranı — üretime hazır delik düzenleri oluşturur',
-    'Analyzes all facade panels and groups them by area tolerance — reduces unique panel types to minimize fabrication cost':
-      'Tüm cephe panellerini analiz eder ve alan toleransına göre gruplar — fabrikasyon maliyetini azaltmak için benzersiz panel tiplerini düşürür',
     'Location intelligence tool for site analysis and positioning — standalone desktop software':
       'Arsa analizi ve konumlandırma için konum zekası aracı — bağımsız masaüstü yazılımı',
-    'Calculates total aluminum sheets, powder coat area, and profile lengths required. Web version gives rough estimates; Grasshopper version reads drawings for precise quantities':
-      'Gerekli toplam alüminyum sacları, toz boya alanını ve profil uzunluklarını hesaplar. Web versiyonu tahmini değerler; Grasshopper versiyonu hassas miktarlar için çizimleri okur',
     // tool detail paragraphs
     'A GHPython definition that unfolds complex sheet metal geometry into accurate flat cutting patterns. Configurable k-factor and bend radius ensure each fold lands precisely where the model predicts — DXF-ready output for laser cutting and press brake.':
       'Karmaşık sac metal geometrisini doğru düz kesim desenlerine açan bir GHPython tanımı. Ayarlanabilir k-faktörü ve büküm yarıçapı her bükümün modelin öngördüğü yerde oluşmasını sağlar — lazer kesim ve abkant için DXF hazır çıktı.',
     'A Grasshopper definition that generates production-ready perforation layouts from parametric inputs. Control pitch, diameter, and open area ratio across panel fields — output is rationalized for CNC punching and laser cutting workflows.':
       'Parametrik girişlerden üretime hazır delik düzenleri oluşturan bir Grasshopper tanımı. Panel alanları boyunca aralığı, çapı ve açık alan oranını kontrol edin — çıktı CNC delme ve lazer kesim iş akışları için rasyonalize edilmiştir.',
-    'A Grasshopper tool that analyzes all facade panels and groups similar geometries by configurable area tolerance. Reducing unique panel types cuts fabrication cost and shortens production lead time without compromising design intent.':
-      'Tüm cephe panellerini analiz eden ve benzer geometrileri ayarlanabilir alan toleransına göre gruplandıran bir Grasshopper aracı. Benzersiz panel tiplerini azaltmak fabrikasyon maliyetini düşürür ve tasarım amacından ödün vermeden üretim süresini kısaltır.',
     'A location intelligence tool for site analysis and positioning. Pinact aggregates spatial data to help architects and developers evaluate sites, understand their surroundings, and communicate location potential — distributed as standalone desktop software.':
       'Arsa analizi ve konumlandırma için bir konum zekası aracı. Pinact mekansal verileri bir araya getirerek mimarların ve geliştiricilerin arsaları değerlendirmesine, çevrelerini anlamalarına ve konum potansiyelini iletmelerine yardımcı olur — bağımsız masaüstü yazılımı olarak dağıtılır.',
-    'A dual-platform quantity takeoff tool. The web version delivers fast rough estimates from basic inputs; the Grasshopper version reads model geometry directly for precise quantities. Calculates aluminum sheet counts, powder coat area, and profile lengths.':
-      'Çift platformlu bir metraj aracı. Web versiyonu temel girişlerden hızlı tahmini değerler sunar; Grasshopper versiyonu hassas miktarlar için doğrudan model geometrisini okur. Alüminyum sac sayılarını, toz boya alanını ve profil uzunluklarını hesaplar.',
     // tool features
     'Unfolds 3D sheet metal geometry into flat, fabrication-ready patterns':
       '3B sac metal geometrisini düz, fabrikasyona hazır desenlere açar',
@@ -1134,24 +1095,14 @@ const VALUES: Record<Lang, ValueMap> = {
       'CNC delme ve lazer kesim için rasyonalize düzenler oluşturur',
     'Panel-ready output with zone-by-zone fabrication documentation':
       'Bölge bazında fabrikasyon dokümantasyonu ile panele hazır çıktı',
-    'Groups panels by configurable area tolerance thresholds':
-      'Panelleri ayarlanabilir alan tolerans eşiklerine göre gruplar',
     'Visualizes unique type distribution across the facade':
       'Cephe boyunca benzersiz tip dağılımını görselleştirir',
-    'Outputs a rationalized panel schedule ready for fabrication':
-      'Fabrikasyona hazır rasyonalize panel programı üretir',
     'Aggregates spatial and environmental data for site intelligence':
       'Arsa zekası için mekansal ve çevresel verileri bir araya getirir',
     'Visualizes location context for architectural and development decisions':
       'Mimari ve geliştirme kararları için konum bağlamını görselleştirir',
     'Client-ready output for site presentation and feasibility reporting':
       'Arsa sunumu ve fizibilite raporlaması için müşteriye hazır çıktı',
-    'Calculates aluminum sheet counts, powder coat area, and profile lengths':
-      'Alüminyum sac sayılarını, toz boya alanını ve profil uzunluklarını hesaplar',
-    'Web version for fast rough estimates from basic project inputs':
-      'Temel proje girişlerinden hızlı tahmini değerler için web versiyonu',
-    'Grasshopper version reads model geometry for precise quantities':
-      'Hassas miktarlar için Grasshopper versiyonu model geometrisini okur',
     // shop — categories / price / product
     'Digital Tool': 'Dijital Araç',
     'Software': 'Yazılım',
@@ -1163,12 +1114,8 @@ const VALUES: Record<Lang, ValueMap> = {
       'Düz desen üretimi için Grasshopper tanımı',
     'Parametric perforation layout generator for Rhino':
       'Rhino için parametrik delik düzeni üreteci',
-    'Facade panel grouping and tolerance analysis tool':
-      'Cephe paneli gruplama ve tolerans analizi aracı',
     'Image-to-punch projection for 3D surfaces':
       '3B yüzeyler için görüntüden delgiye projeksiyon',
-    'Rough material takeoff — aluminum, powder coat, profiles':
-      'Kaba malzeme metrajı — alüminyum, toz boya, profiller',
     'Precise material quantities from Rhino drawings':
       'Rhino çizimlerinden hassas malzeme miktarları',
     'Interactive web-based facade panel configurator':
@@ -1180,12 +1127,6 @@ const VALUES: Record<Lang, ValueMap> = {
       'Karmaşık sac metal geometrisini doğru düz kesim desenlerine açan, üretimde test edilmiş bir Grasshopper tanımı. Ayarlanabilir k-faktörü ve büküm yarıçapı her bükümü modele sadık tutar; lazer ve abkant için DXF hazır çıktı sunar.',
     'A parametric perforation layout generator for Rhino and Grasshopper. Drive pitch, diameter, and open-area ratio across any panel field and export rationalized, fabrication-ready layouts for CNC punching and laser cutting.':
       'Rhino ve Grasshopper için parametrik bir delik düzeni üreteci. Herhangi bir panel alanında aralığı, çapı ve açık alan oranını yönetin ve CNC delme ile lazer kesim için rasyonalize, fabrikasyona hazır düzenler dışa aktarın.',
-    'A facade rationalization tool that groups similar panels by configurable area tolerance, cutting the number of unique fabrication types — and with it, cost and lead time — without compromising the design surface.':
-      'Benzer panelleri ayarlanabilir alan toleransına göre gruplandıran bir cephe rasyonalizasyon aracı; tasarım yüzeyinden ödün vermeden benzersiz fabrikasyon tiplerinin sayısını — ve böylece maliyeti ve teslim süresini — azaltır.',
-    'A free, browser-based takeoff tool for fast, rough material estimates. Enter basic project inputs and get instant figures for aluminum sheets, powder-coat area, and profile lengths — no installation, no account.':
-      'Hızlı, kaba malzeme tahminleri için ücretsiz, tarayıcı tabanlı bir metraj aracı. Temel proje girdilerini girin ve alüminyum sac, toz boya alanı ve profil uzunlukları için anında değerler alın — kurulum yok, hesap yok.',
-    'The precision counterpart to the web estimator. This Grasshopper definition reads your Rhino model geometry directly to produce exact material quantities — aluminum sheet counts, powder-coat area, and profile lengths — ready for procurement.':
-      'Web tahmincisinin hassas karşılığı. Bu Grasshopper tanımı, Rhino model geometrinizi doğrudan okuyarak tam malzeme miktarları üretir — alüminyum sac sayıları, toz boya alanı ve profil uzunlukları — tedariğe hazır.',
     'An interactive, web-based configurator that lets clients assemble a facade in real time — swapping panels, depth, and material in a live preview and exporting a specification ready for quoting. Deployed and branded for your studio.':
       'Müşterilerin bir cepheyi gerçek zamanlı kurmasına olanak tanıyan etkileşimli, web tabanlı bir yapılandırıcı — panelleri, derinliği ve malzemeyi canlı önizlemede değiştirir ve teklife hazır bir şartname dışa aktarır. Stüdyonuz için kurulur ve markalanır.',
     'Standalone location-intelligence software for site analysis and positioning. Pinact aggregates spatial data to help architects and developers evaluate sites, read their surroundings, and communicate location potential.':
@@ -1200,11 +1141,9 @@ const VALUES: Record<Lang, ValueMap> = {
     'Panel schedule template': 'Panel programı şablonu',
     'Sample image maps': 'Örnek görüntü haritaları',
     'Instant browser access': 'Anında tarayıcı erişimi',
-    'Aluminum sheet estimate': 'Alüminyum sac tahmini',
     'Powder-coat area estimate': 'Toz boya alanı tahmini',
     'Profile length estimate': 'Profil uzunluğu tahmini',
     'No installation required': 'Kurulum gerektirmez',
-    'Quantity schedule template': 'Miktar programı şablonu',
     'Custom-branded web deployment': 'Özel markalı web dağıtımı',
     'Real-time 3D configurator': 'Gerçek zamanlı 3B yapılandırıcı',
     'Specification export': 'Şartname dışa aktarımı',
@@ -1437,12 +1376,8 @@ const VALUES: Record<Lang, ValueMap> = {
       'أنماط قص مسطّحة مع التحكم بعامل K ونصف قطر الثني',
     'Parametric perforation layouts — pitch, diameter, open area ratio':
       'تخطيطات تثقيب بارامترية — المسافة، القطر، نسبة المساحة المفتوحة',
-    'Groups facade panels by tolerance to minimize unique fabrication types':
-      'يجمع ألواح الواجهة حسب التفاوت لتقليل أنواع التصنيع الفريدة',
     'Location intelligence and site analysis — standalone software':
       'ذكاء موقعي وتحليل المواقع — برنامج مستقل',
-    'Total aluminum sheets, powder coat, and profiles — web or Grasshopper':
-      'إجمالي ألواح الألمنيوم والطلاء البودري والمقاطع — ويب أو Grasshopper',
     // shop card descriptions (src/data/shop-products.ts)
     'GHPython unfolding script, ready to embed in your definition':
       'سكربت فرد بـ GHPython، جاهز للدمج في تعريفك',
@@ -1508,39 +1443,6 @@ const VALUES: Record<Lang, ValueMap> = {
     'Automatic nesting optimization to minimize sheet waste': 'تحسين ترصيص تلقائي لتقليل هدر الصفائح',
     'Utilization and waste readout per sheet size': 'قراءة الاستغلال والهدر لكل مقاس صفيحة',
     'Export nested layout as DXF for CNC cutting': 'تصدير مخطط الترصيص بصيغة DXF للقصّ على CNC',
-    'What you get': 'ما الذي تحصل عليه',
-    'Grasshopper · Free + Pro Service': 'Grasshopper · مجاني + خدمة احترافية',
-    'FREE + PRO SERVICE': 'مجاني + خدمة احترافية',
-    'Free — Grasshopper Script': 'مجاني — سكربت Grasshopper',
-    'Professional Service': 'الخدمة الاحترافية',
-    'Free script · Pro on request': 'سكربت مجاني · الاحترافي عند الطلب',
-    'Script free · Service on request': 'السكربت مجاني · الخدمة عند الطلب',
-    'Free output': 'المخرج المجاني',
-    'Pro output': 'المخرج الاحترافي',
-    'Grouped panel IDs · GH script': 'معرّفات ألواح مجمّعة · سكربت GH',
-    '3D model · Excel with poses': 'نموذج ثلاثي الأبعاد · Excel مع الأوضاع',
-    'Download Free Script': 'حمّل السكربت المجاني',
-    'Request Pro Service': 'اطلب الخدمة الاحترافية',
-    'Pro service: send your model, receive rationalized geometry + Excel panel schedule.':
-      'الخدمة الاحترافية: أرسل نموذجك، واستلم هندسة مرشّدة + جدول ألواح بصيغة Excel.',
-    'Reduce unique panel types across a complex facade, with tolerance-based grouping.':
-      'قلّل أنواع الألواح الفريدة عبر واجهة معقّدة، بالتجميع القائم على التفاوت.',
-    'Groups panels by area similarity using a 3-value tolerance system':
-      'يجمّع الألواح حسب تشابه المساحة باستخدام نظام تفاوت ثلاثي القيم',
-    'Minimizes unique fabrication types across the full panel set':
-      'يقلّل أنواع التصنيع الفريدة عبر مجموعة الألواح كاملة',
-    'Outputs grouped panel IDs ready for shop drawing annotation':
-      'يُخرج معرّفات ألواح مجمّعة جاهزة للتأشير على مخططات التنفيذ',
-    'Download and run on your own model in Grasshopper':
-      'حمّله وشغّله على نموذجك داخل Grasshopper',
-    'Send your 3D facade model (Rhino · STEP · OBJ)':
-      'أرسل نموذج واجهتك ثلاثي الأبعاد (Rhino · STEP · OBJ)',
-    'Full rationalization pass with custom tolerance tuning per project':
-      'مرحلة ترشيد كاملة مع ضبط تفاوت مخصّص لكل مشروع',
-    'Cleaned 3D model returned with rationalized panel geometry':
-      'يُعاد نموذج ثلاثي الأبعاد منقّى بهندسة ألواح مرشّدة',
-    'Excel schedule with panel type, dimensions, quantity, and poses':
-      'جدول Excel يتضمّن نوع اللوح والأبعاد والكمية والأوضاع',
     'Web — runs in browser': 'ويب — يعمل في المتصفّح',
     'Free · Live': 'مجاني · مباشر',
     'Any image (JPG · PNG · GIF)': 'أي صورة (JPG · PNG · GIF)',
@@ -1558,6 +1460,15 @@ const VALUES: Record<Lang, ValueMap> = {
     'Submit a Project': 'أرسل مشروعاً',
     'DWG flat pattern · STEP': 'نمط مفرود DWG · STEP',
     'Sheet Metal Unfolding': 'فرد الصفائح المعدنية',
+    // AMAD + NESTRI PRO (coming soon)
+    'Arrange my plans. Turn your goals into a daily schedule that adapts to you.':
+      'رتّب خططي. حوّل أهدافك إلى جدول يومي يتكيّف معك.',
+    'A web app for personal planning. AMAD turns your goals into a daily schedule that adapts to you.':
+      'تطبيق ويب للتخطيط الشخصي. يحوّل AMAD أهدافك إلى جدول يومي يتكيّف معك.',
+    'The professional edition of NESTRI. More power for production nesting.':
+      'الإصدار الاحترافي من NESTRI. قدرة أكبر لتوزيع القطع في الإنتاج.',
+    'NESTRI PRO is the professional edition of NESTRI, built for production nesting.':
+      'NESTRI PRO هو الإصدار الاحترافي من NESTRI، مصمَّم لتوزيع القطع في الإنتاج.',
     'Send your file. Receive fabrication-ready flat patterns.':
       'أرسل ملفك. استلم أنماطاً مفرودة جاهزة للتصنيع.',
     'An unfolding service for complex sheet metal panels. Submit your files — DWG, PDF, image, or any usable reference — and receive accurate flat cutting patterns with correct k-factor and bend allowance applied. Output is DWG-ready for laser cutting and press brake, plus STEP for CNC verification.':
@@ -1578,33 +1489,22 @@ const VALUES: Record<Lang, ValueMap> = {
     // tool names
     'Sheet Metal Unfolder': 'فارد الصفائح المعدنية',
     'Perforation Pattern Engine': 'محرّك أنماط التثقيب',
-    'Panel Type Optimizer': 'مُحسِّن أنواع الألواح',
-    'Material Quantity Estimator': 'مُقدِّر كميات المواد',
     // tool prices
     'Contact for pricing': 'تواصل للاستفسار عن السعر',
-    'Free (web) · Grasshopper on request': 'مجاني (ويب) · Grasshopper عند الطلب',
     // tool descriptions (one-liners)
     'Unfolds 3D sheet metal geometry into flat cutting patterns with k-factor and bend radius control':
       'يفرد هندسة الصفائح المعدنية ثلاثية الأبعاد إلى أنماط قصّ مسطّحة مع التحكم في معامل K ونصف قطر الثني',
     'Generates production-ready perforation layouts from parametric inputs — pitch, diameter, open area ratio':
       'يولّد تخطيطات تثقيب جاهزة للإنتاج من مدخلات بارامترية — الخطوة والقطر ونسبة المساحة المفتوحة',
-    'Analyzes all facade panels and groups them by area tolerance — reduces unique panel types to minimize fabrication cost':
-      'يحلّل جميع ألواح الواجهة ويجمّعها حسب تفاوت المساحة — يقلّل أنواع الألواح الفريدة للحدّ من تكاليف التصنيع',
     'Location intelligence tool for site analysis and positioning — standalone desktop software':
       'أداة ذكاء موقعي لتحليل المواقع والتموضع — برنامج مكتبي مستقل',
-    'Calculates total aluminum sheets, powder coat area, and profile lengths required. Web version gives rough estimates; Grasshopper version reads drawings for precise quantities':
-      'يحسب إجمالي صفائح الألمنيوم ومساحة الطلاء البودري وأطوال الأنظمة المطلوبة. الإصدار الإلكتروني يعطي تقديرات تقريبية؛ إصدار Grasshopper يقرأ الرسومات للكميات الدقيقة',
     // tool detail paragraphs
     'A GHPython definition that unfolds complex sheet metal geometry into accurate flat cutting patterns. Configurable k-factor and bend radius ensure each fold lands precisely where the model predicts — DXF-ready output for laser cutting and press brake.':
       'تعريف GHPython يفرد هندسة الصفائح المعدنية المعقّدة إلى أنماط قصّ مسطّحة دقيقة. معامل K ونصف قطر الثني القابلان للضبط يضمنان وقوع كل ثنية تماماً حيث يتوقّعه النموذج — إخراج جاهز بصيغة DXF للقصّ بالليزر والمكبس.',
     'A Grasshopper definition that generates production-ready perforation layouts from parametric inputs. Control pitch, diameter, and open area ratio across panel fields — output is rationalized for CNC punching and laser cutting workflows.':
       'تعريف Grasshopper يولّد تخطيطات تثقيب جاهزة للإنتاج من مدخلات بارامترية. تحكّم في الخطوة والقطر ونسبة المساحة المفتوحة عبر حقول الألواح — الإخراج مُرشَّد لسير عمل CNC والقصّ بالليزر.',
-    'A Grasshopper tool that analyzes all facade panels and groups similar geometries by configurable area tolerance. Reducing unique panel types cuts fabrication cost and shortens production lead time without compromising design intent.':
-      'أداة Grasshopper تحلّل جميع ألواح الواجهة وتجمّع الهندسات المتشابهة حسب تفاوت مساحة قابل للضبط. تقليل أنواع الألواح الفريدة يخفّض تكاليف التصنيع ويقصّر وقت الإنتاج دون المساس بالقصد التصميمي.',
     'A location intelligence tool for site analysis and positioning. Pinact aggregates spatial data to help architects and developers evaluate sites, understand their surroundings, and communicate location potential — distributed as standalone desktop software.':
       'أداة ذكاء موقعي لتحليل المواقع والتموضع. يجمع Pinact البيانات المكانية لمساعدة المعماريين والمطوّرين على تقييم المواقع وفهم محيطها وإيصال إمكانياتها الموقعية — يُوزَّع كبرنامج مكتبي مستقل.',
-    'A dual-platform quantity takeoff tool. The web version delivers fast rough estimates from basic inputs; the Grasshopper version reads model geometry directly for precise quantities. Calculates aluminum sheet counts, powder coat area, and profile lengths.':
-      'أداة حصر ثنائية المنصّة. الإصدار الإلكتروني يقدّم تقديرات تقريبية سريعة من مدخلات أساسية؛ إصدار Grasshopper يقرأ هندسة النموذج مباشرةً للحصول على كميات دقيقة. يحسب أعداد صفائح الألمنيوم ومساحة الطلاء البودري وأطوال الأنظمة.',
     // tool features
     'Unfolds 3D sheet metal geometry into flat, fabrication-ready patterns':
       'يفرد هندسة الصفائح المعدنية ثلاثية الأبعاد إلى أنماط مسطّحة جاهزة للتصنيع',
@@ -1618,24 +1518,14 @@ const VALUES: Record<Lang, ValueMap> = {
       'يولّد تخطيطات مُرشَّدة لـ CNC والقصّ بالليزر',
     'Panel-ready output with zone-by-zone fabrication documentation':
       'إخراج جاهز للألواح مع توثيق تصنيع منطقة بمنطقة',
-    'Groups panels by configurable area tolerance thresholds':
-      'يجمّع الألواح حسب عتبات تفاوت المساحة القابلة للضبط',
     'Visualizes unique type distribution across the facade':
       'يُصوّر توزيع الأنواع الفريدة عبر الواجهة',
-    'Outputs a rationalized panel schedule ready for fabrication':
-      'يخرج جدول ألواح مُرشَّد جاهز للتصنيع',
     'Aggregates spatial and environmental data for site intelligence':
       'يجمع البيانات المكانية والبيئية للذكاء الموقعي',
     'Visualizes location context for architectural and development decisions':
       'يُصوّر السياق الموقعي للقرارات المعمارية والتطويرية',
     'Client-ready output for site presentation and feasibility reporting':
       'إخراج جاهز للعميل لعرض الموقع وتقارير الجدوى',
-    'Calculates aluminum sheet counts, powder coat area, and profile lengths':
-      'يحسب أعداد صفائح الألمنيوم ومساحة الطلاء البودري وأطوال الأنظمة',
-    'Web version for fast rough estimates from basic project inputs':
-      'الإصدار الإلكتروني للتقديرات التقريبية السريعة من المدخلات الأساسية للمشروع',
-    'Grasshopper version reads model geometry for precise quantities':
-      'إصدار Grasshopper يقرأ هندسة النموذج للحصول على كميات دقيقة',
     // shop — categories / price / product
     'Digital Tool': 'أداة رقمية',
     'Software': 'برمجيات',
@@ -1647,12 +1537,8 @@ const VALUES: Record<Lang, ValueMap> = {
       'تعريف Grasshopper لتوليد الأنماط المسطّحة',
     'Parametric perforation layout generator for Rhino':
       'مولّد تخطيطات تثقيب بارامتري لـ Rhino',
-    'Facade panel grouping and tolerance analysis tool':
-      'أداة تجميع ألواح الواجهة وتحليل التفاوت',
     'Image-to-punch projection for 3D surfaces':
       'إسقاط من الصورة إلى التثقيب للأسطح ثلاثية الأبعاد',
-    'Rough material takeoff — aluminum, powder coat, profiles':
-      'حصر مواد تقريبي — ألمنيوم، طلاء بودري، أنظمة',
     'Precise material quantities from Rhino drawings':
       'كميات مواد دقيقة من رسومات Rhino',
     'Interactive web-based facade panel configurator':
@@ -1664,12 +1550,6 @@ const VALUES: Record<Lang, ValueMap> = {
       'تعريف Grasshopper مُختبَر في الإنتاج يفرد هندسة الصفائح المعدنية المعقّدة إلى أنماط قصّ مسطّحة دقيقة. معامل K ونصف قطر الثني القابلان للضبط يبقيان كل ثنية وفيّة للنموذج، مع إخراج جاهز بصيغة DXF لليزر والمكبس.',
     'A parametric perforation layout generator for Rhino and Grasshopper. Drive pitch, diameter, and open-area ratio across any panel field and export rationalized, fabrication-ready layouts for CNC punching and laser cutting.':
       'مولّد تخطيطات تثقيب بارامتري لـ Rhino وGrasshopper. تحكّم في الخطوة والقطر ونسبة المساحة المفتوحة عبر أي حقل ألواح، وصدّر تخطيطات مُرشَّدة جاهزة للتصنيع لـ CNC والقصّ بالليزر.',
-    'A facade rationalization tool that groups similar panels by configurable area tolerance, cutting the number of unique fabrication types — and with it, cost and lead time — without compromising the design surface.':
-      'أداة ترشيد واجهات تجمّع الألواح المتشابهة حسب تفاوت مساحة قابل للضبط، مقلّصةً عدد أنواع التصنيع الفريدة — ومعها التكلفة ووقت التسليم — دون المساس بسطح التصميم.',
-    'A free, browser-based takeoff tool for fast, rough material estimates. Enter basic project inputs and get instant figures for aluminum sheets, powder-coat area, and profile lengths — no installation, no account.':
-      'أداة حصر مجانية تعمل في المتصفح لتقديرات مواد سريعة وتقريبية. أدخل مدخلات المشروع الأساسية واحصل على أرقام فورية لصفائح الألمنيوم ومساحة الطلاء البودري وأطوال الأنظمة — دون تثبيت ودون حساب.',
-    'The precision counterpart to the web estimator. This Grasshopper definition reads your Rhino model geometry directly to produce exact material quantities — aluminum sheet counts, powder-coat area, and profile lengths — ready for procurement.':
-      'النظير الدقيق لمقدّر الويب. يقرأ تعريف Grasshopper هذا هندسة نموذج Rhino مباشرةً لإنتاج كميات مواد دقيقة — أعداد صفائح الألمنيوم ومساحة الطلاء البودري وأطوال الأنظمة — جاهزة للتوريد.',
     'An interactive, web-based configurator that lets clients assemble a facade in real time — swapping panels, depth, and material in a live preview and exporting a specification ready for quoting. Deployed and branded for your studio.':
       'مُهيّئ تفاعلي قائم على الويب يتيح للعملاء تجميع واجهة في الوقت الفعلي — تبديل الألواح والعمق والمادة في معاينة حيّة وتصدير مواصفات جاهزة للتسعير. يُنشَر ويُوسَم لعلامة استوديوك.',
     'Standalone location-intelligence software for site analysis and positioning. Pinact aggregates spatial data to help architects and developers evaluate sites, read their surroundings, and communicate location potential.':
@@ -1684,11 +1564,9 @@ const VALUES: Record<Lang, ValueMap> = {
     'Panel schedule template': 'قالب جدول الألواح',
     'Sample image maps': 'خرائط صور نموذجية',
     'Instant browser access': 'وصول فوري عبر المتصفح',
-    'Aluminum sheet estimate': 'تقدير صفائح الألمنيوم',
     'Powder-coat area estimate': 'تقدير مساحة الطلاء البودري',
     'Profile length estimate': 'تقدير أطوال الأنظمة',
     'No installation required': 'لا يتطلّب تثبيتاً',
-    'Quantity schedule template': 'قالب جدول الكميات',
     'Custom-branded web deployment': 'نشر ويب بعلامة مخصّصة',
     'Real-time 3D configurator': 'مُهيّئ ثلاثي الأبعاد فوري',
     'Specification export': 'تصدير المواصفات',

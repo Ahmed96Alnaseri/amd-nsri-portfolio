@@ -49,6 +49,10 @@ h1 span{display:block}
 #unfold-button:focus-visible{outline:2px solid #eae5d9;outline-offset:4px}
 #unfold-button:disabled{cursor:progress;background:#2f2c21;color:#d5b27c}
 #unfold-button .button-arrow{font-size:17px;line-height:12px}
+/* idle cue: the button glows on and off until it is first used, so it reads as clickable */
+@keyframes unfold-cue{0%,100%{background:#a98a5b;border-color:#b8975f;box-shadow:0 0 0 0 rgba(212,176,120,0)}50%{background:#e6c48e;border-color:#f0d29f;box-shadow:0 0 0 5px rgba(212,176,120,.16),0 0 30px rgba(212,176,120,.42)}}
+#unfold-button.cue{animation:unfold-cue 1.6s ease-in-out infinite}
+#unfold-button.cue:hover,#unfold-button.cue:focus-visible{animation:none}
 .status{font-size:10px;text-align:center;line-height:1.5;color:#a19d8f;margin:10px 0 0;min-height:30px;max-width:230px}
 .panel-label{position:absolute;bottom:5.5%;z-index:3;color:#c19b63;font-size:clamp(9px,.75cqw,11px);letter-spacing:.22em;text-align:center;pointer-events:none;margin:0}
 .label-3d{left:1%;width:26%}
@@ -114,7 +118,7 @@ h1 span{display:block}
      </svg>
     </div>
     <div class="unfold-control">
-     <button id="unfold-button" type="button" aria-controls="panel-canvas" aria-pressed="false"><span class="button-text">UNFOLD</span><span class="button-arrow" aria-hidden="true">→</span></button>
+     <button id="unfold-button" class="cue" type="button" aria-controls="panel-canvas" aria-pressed="false"><span class="button-text">UNFOLD</span><span class="button-arrow" aria-hidden="true">→</span></button>
      <p id="unfold-status" class="status" role="status" aria-live="polite">See your panel unfold</p>
     </div>
    </div>
@@ -263,6 +267,7 @@ h1 span{display:block}
   render();
  }
  button.addEventListener('click',()=>{
+  button.classList.remove('cue');
   if(busy)return;target=progress<.5?1:0;
   if(reduceMotion.matches){complete();return}
   busy=true;button.disabled=true;hero.classList.add('processing');hero.classList.remove('is-flat');

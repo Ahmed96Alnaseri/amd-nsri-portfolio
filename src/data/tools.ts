@@ -27,6 +27,12 @@ export interface Tool {
   type: ToolType;
   /** Background/hero image path. null = show default diamond placeholder. */
   image: string | null;
+  /** Finished artwork for the detail hero, composed on the page background: shown whole at its own
+      ratio — no crop, fade or diamond. Takes precedence over `image` there; the card keeps `image`. */
+  heroImage?: { src: string; width: number; height: number };
+  /** Static still of the detail hero for the /tools card, trimmed to the design. Shown whole beside the
+      card text, never cropped; tools without a hero design leave it unset and keep the diamond. */
+  cardImage?: string;
   /** Product price (e.g. "Contact for pricing"); null for showcase */
   price: string | null;
   /** Fine print under the price/CTA explaining how the price is arrived at. */
@@ -56,6 +62,8 @@ export interface Tool {
   quoteTemplates?: { match: string; template: string }[];
   /** Single badge replacing the card's price + status pair. */
   cardBadge?: string;
+  /** Card shows the status alone — no price or quote label (the detail page still lists the price). */
+  cardStatusOnly?: boolean;
   /** Drop the sidebar's status row (nothing to announce for a service or a live web tool). */
   hideStatus?: boolean;
   /** Overrides the sidebar's platform value (the bare `platform` still drives filtering). */
@@ -101,6 +109,8 @@ const tools: Tool[] = [
     status: 'Live',
     type: 'product',
     image: null,
+    heroImage: { src: '/tools/ipunch-hero.png', width: 1540, height: 480 },
+    cardImage: '/tools/ipunch-card.webp',
     price: 'Free',
     cardBadge: 'Free · Live',
     hideStatus: true,
@@ -131,6 +141,9 @@ const tools: Tool[] = [
     hideStatus: true,
     type: 'product',
     image: null,
+    heroImage: { src: '/tools/nestri-hero.png', width: 1540, height: 480 },
+    // card shows the two panels only; the hero's wordmark would repeat the card title
+    cardImage: '/tools/nestri-card-panels.webp',
     price: 'Free',
     cardBadge: 'FREE · LIVE',
     ctaLabel: 'Open NESTRI',
@@ -171,79 +184,46 @@ const tools: Tool[] = [
     type: 'quote',
     image: null,
     price: 'Quote on request',
+    cardStatusOnly: true,
     pricingNote: 'Priced per project scope — panel count, geometry complexity, and output format',
     ctaLabel: 'Submit a Project',
     ctaLink: '/contact?tool=sheet-metal-unfolding&subject=Sheet+Metal+Unfolding+Quote',
     quoteTemplate:
       "Hi, I'd like to submit a project for sheet metal unfolding.\n\nProject description:\nPanel count (approx):\nMaterial & thickness:\nRequired output format (DWG / STEP / other):\nDeadline (if any):",
     embed: '/sheet-metal-unfolder-hero.html',
+    // resting frame of the embed (1440×480), before Unfold is pressed
+    cardImage: '/tools/sheet-metal-unfolder-card.webp',
     embedHeight: 480,
     embedHeightMobile: 720,
     embedTitle: 'Sheet Metal Unfolder — interactive demo',
     output: 'DWG flat pattern · STEP',
     tags: ['unfolding', 'sheet metal', 'fabrication', 'DWG', 'grasshopper', 'service'],
   },
+  /* ── Coming soon: placeholder pages — replace name/description/detail and add content when the
+        real tool is ready. No features, price or CTA until then. ── */
   {
-    slug: 'panel-type-optimizer',
-    name: 'Panel Type Optimizer',
-    description: 'Reduce unique panel types across a complex facade, with tolerance-based grouping.',
-    detail:
-      'A Grasshopper tool that analyzes all facade panels and groups similar geometries by configurable area tolerance. Reducing unique panel types cuts fabrication cost and shortens production lead time without compromising design intent.',
+    slug: 'nestri-pro',
+    name: 'NESTRI PRO',
+    description: 'The professional edition of NESTRI. More power for production nesting.',
+    detail: 'NESTRI PRO is the professional edition of NESTRI, built for production nesting.',
     features: [],
-    featureGroups: [
-      {
-        label: 'Free — Grasshopper Script',
-        items: [
-          'Groups panels by area similarity using a 3-value tolerance system',
-          'Minimizes unique fabrication types across the full panel set',
-          'Outputs grouped panel IDs ready for shop drawing annotation',
-          'Download and run on your own model in Grasshopper',
-        ],
-      },
-      {
-        label: 'Professional Service',
-        items: [
-          'Send your 3D facade model (Rhino · STEP · OBJ)',
-          'Full rationalization pass with custom tolerance tuning per project',
-          'Cleaned 3D model returned with rationalized panel geometry',
-          'Excel schedule with panel type, dimensions, quantity, and poses',
-        ],
-      },
-    ],
-    featuresHeading: 'What you get',
-    platform: 'Grasshopper · Service',
-    platformLabel: 'Grasshopper',
-    eyebrowFull: 'Grasshopper · Free + Pro Service',
-    status: 'Beta',
-    hideStatus: true,
+    platform: 'Web',
+    status: 'Coming Soon',
     type: 'product',
     image: null,
-    price: 'Free script · Pro on request',
-    cardBadge: 'FREE + PRO SERVICE',
-    specRows: [
-      { label: 'Free output', value: 'Grouped panel IDs · GH script' },
-      { label: 'Pro output', value: '3D model · Excel with poses' },
-    ],
-    priceLabelOverride: 'Script free · Service on request',
-    ctaLabel: 'Download Free Script',
-    ctaLink: '/contact?tool=panel-type-optimizer&subject=Free+Script+Download',
-    ctaFilled: true,
-    ctaSecondaryLabel: 'Request Pro Service',
-    ctaSecondaryLink: '/contact?tool=panel-type-optimizer&subject=Panel+Optimizer+Pro+Service',
-    pricingNote:
-      'Pro service: send your model, receive rationalized geometry + Excel panel schedule.',
-    quoteTemplates: [
-      {
-        match: 'Free Script',
-        template:
-          "Hi, I'd like to download the Panel Type Optimizer Grasshopper script.\n\nProject context (optional):\nNumber of panels (approx):\nGrasshopper version:",
-      },
-      {
-        match: 'Pro Service',
-        template:
-          "Hi, I'd like to request the professional Panel Type Optimizer service.\n\nProject description:\nNumber of panels (approx):\nFile format available (Rhino / STEP / OBJ):\nDeadline (if any):",
-      },
-    ],
+    price: null,
+  },
+  {
+    slug: 'amad',
+    name: 'AMAD',
+    description: 'Arrange my plans. Turn your goals into a daily schedule that adapts to you.',
+    detail: 'A web app for personal planning. AMAD turns your goals into a daily schedule that adapts to you.',
+    features: [],
+    platform: 'Web',
+    status: 'Coming Soon',
+    type: 'product',
+    image: null,
+    price: null,
   },
   {
     slug: 'pinact',
@@ -257,27 +237,11 @@ const tools: Tool[] = [
       'Client-ready output for site presentation and feasibility reporting',
     ],
     platform: 'Software',
-    status: 'Live',
+    status: 'Coming Soon',
     type: 'product',
     image: null,
     price: 'Contact for pricing',
-  },
-  {
-    slug: 'material-quantity-estimator',
-    name: 'Material Quantity Estimator',
-    description: 'Total aluminum sheets, powder coat, and profiles — web or Grasshopper',
-    detail:
-      'A dual-platform quantity takeoff tool. The web version delivers fast rough estimates from basic inputs; the Grasshopper version reads model geometry directly for precise quantities. Calculates aluminum sheet counts, powder coat area, and profile lengths.',
-    features: [
-      'Calculates aluminum sheet counts, powder coat area, and profile lengths',
-      'Web version for fast rough estimates from basic project inputs',
-      'Grasshopper version reads model geometry for precise quantities',
-    ],
-    platform: 'Web + Grasshopper',
-    status: 'Beta',
-    type: 'product',
-    image: null,
-    price: 'Free (web) · Grasshopper on request',
+    cardStatusOnly: true,
   },
 ];
 

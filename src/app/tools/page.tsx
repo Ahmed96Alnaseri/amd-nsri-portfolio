@@ -27,10 +27,12 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
   return (
     <Link
       href={`/tools/${tool.slug}`}
-      className="tc"
+      className={`tc${tool.cardImage ? ' tc--art' : ''}`}
       aria-label={`${tool.name} — view details`}
     >
-      {tool.image
+      {tool.cardImage
+        ? <span className="tc-media tc-media--art" style={{ backgroundImage: `url(${tool.cardImage})` }} aria-hidden="true" />
+        : tool.image
         ? <span className="tc-media" style={{ backgroundImage: `url(${tool.image})` }} aria-hidden="true" />
         : <span className="tc-media tc-media--placeholder" aria-hidden="true"><span className="tc-diamond" aria-hidden="true">◆</span></span>
       }
@@ -44,10 +46,10 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
               <span className="tc-price">{tv(tool.cardBadge)}</span>
             ) : (
               <>
-                {tool.type === 'quote'
+                {tool.cardStatusOnly ? null : tool.type === 'quote'
                   ? <span className="tc-quote">{t('tools.quoteOnRequest')}</span>
-                  : tool.type === 'product' && tool.price
-                    ? <span className="tc-price">{tv(tool.price)}</span>
+                  : tool.type === 'product'
+                    ? tool.price && <span className="tc-price">{tv(tool.price)}</span>
                     : <span className="tc-showcase">{t('tools.showcase')}</span>}
                 <span className={`tc-status ${STATUS_MOD[tool.status]}`}>
                   <span className="tc-status-dot" aria-hidden="true" />
@@ -59,7 +61,8 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
         </span>
 
         <span className="tc-body">
-          <span className="tc-name">{tv(tool.name)}</span>
+          {/* untranslated names are brand names: cased as English, so TR doesn't dot the I (PİNACT) */}
+          <span className="tc-name" lang={tv(tool.name) === tool.name ? 'en' : undefined}>{tv(tool.name)}</span>
           <span className="tc-desc">{tv(tool.description)}</span>
         </span>
 
@@ -180,6 +183,29 @@ export default function ToolsPage() {
           background: linear-gradient(to right, #0d0d0b 0%, #0d0d0b 45%, transparent 100%);
         }
         .tc-media--placeholder { background-image: none; }
+
+        /* hero still: shown whole (contain), on the same #0d0d0b base — the stills are trimmed to
+           the design and feathered into that colour, so the box edges never show */
+        .tc { container-type: inline-size; }
+        .tc-media--art { background-size: contain; font-size: 14px; }
+        /* wide card: the still sits in the free space right of the 36ch description, between the
+           badge row and the foot, at full strength; nothing overlaps it, so no fade */
+        @container (min-width: 600px) {
+          .tc-media--art {
+            top: calc(clamp(28px, 3vw, 40px) + 36px);
+            bottom: calc(clamp(28px, 3vw, 40px) + 28px);
+            left: calc(clamp(28px, 3vw, 40px) + 36ch + 32px);
+            right: calc(clamp(28px, 3vw, 40px) - 14px);
+          }
+          .tc--art .tc-fade { display: none; }
+        }
+        /* narrow card: the description runs the full width, so the still drops behind it as a faint
+           texture — whole, but quiet enough to keep the text readable */
+        @container (max-width: 599.98px) {
+          .tc-media--art { opacity: .18; background-position: center; }
+          .tc:hover .tc-media--art { opacity: .26; }
+          .tc--art .tc-fade { display: none; }
+        }
         .tc-diamond {
           position: absolute; right: 22%; top: 50%; transform: translateY(-50%);
           font-size: 72px; line-height: 1;
@@ -230,7 +256,7 @@ export default function ToolsPage() {
         .tc-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
         .tc-status--live { color: var(--color-accent); }
         .tc-status--beta { color: rgba(255,255,255,.6); }
-        .tc-status--soon { color: var(--color-text-meta); }
+        .tc-status--soon { color: var(--color-text-primary); }
         .tc-status--soon .tc-status-dot { background: transparent; border: 1px solid currentColor; }
 
         /* body: name + description */
@@ -240,6 +266,7 @@ export default function ToolsPage() {
           font-size: clamp(21px, 2.2vw, 24px);
           letter-spacing: -.01em; line-height: 1.12;
           color: var(--color-text-primary); margin: 0; max-width: 16ch;
+          text-transform: uppercase;
         }
         .tc:hover .tc-name { color: #fff; }
         .tc-desc {
@@ -308,6 +335,8 @@ export default function ToolsPage() {
             const n = f === 'All'
               ? tools.length
               : tools.filter(tl => tl.platform.includes(f)).length;
+            // a platform with no tools right now gets no chip; it returns when one is added
+            if (!n) return null;
             return (
               <button
                 key={f}

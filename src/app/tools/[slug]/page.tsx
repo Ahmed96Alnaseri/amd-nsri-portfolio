@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { useLanguage } from '@/lib/LanguageContext';
 import { toolsBySlug, type ToolStatus } from '@/data/tools';
 
@@ -16,20 +18,13 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
   const { t, tv } = useLanguage();
   const tool = toolsBySlug[params.slug];
 
-  if (!tool) {
-    return (
-      <div className="td td--missing">
-        <p className="td-eyebrow">{t('tools.eyebrow')}</p>
-        <h1 className="td-title">404</h1>
-        <p className="td-lede">{t('common.noProjects')}</p>
-        <Link href="/tools" className="td-back">← {t('tools.back')}</Link>
-        <style dangerouslySetInnerHTML={{ __html: baseCss }} />
-      </div>
-    );
-  }
+  // removed or unknown tools are a real 404, not a page that still opens
+  if (!tool) notFound();
 
   const isProduct = tool.type === 'product';
   const isQuote = tool.type === 'quote';
+  const hasFeatures = !!(tool.featureGroups || tool.steps || tool.features.length);
+  const comingSoon = tool.status === 'Coming Soon';
 
   return (
     <div className="td">
@@ -40,7 +35,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
           ? tv(tool.eyebrowFull)
           : <>{tv(tool.eyebrow ?? tool.platform)} · {isQuote ? t('tools.quoteOnRequest') : isProduct ? t('tools.product') : t('tools.showcase')}</>}
       </p>
-      <h1 className="td-title">{tv(tool.name)}</h1>
+      <h1 className="td-title" lang={tv(tool.name) === tool.name ? 'en' : undefined}>{tv(tool.name)}</h1>
       <p className="td-lede">{tv(tool.detail)}</p>
 
       {tool.embed ? (
@@ -52,6 +47,21 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
           } as React.CSSProperties}
         >
           <iframe src={tool.embed} title={tool.embedTitle ?? tool.name} loading="lazy" />
+        </div>
+      ) : tool.heroImage ? (
+        <div className="td-hero td-hero--whole">
+          <Image
+            src={tool.heroImage.src}
+            alt={tool.name}
+            width={tool.heroImage.width}
+            height={tool.heroImage.height}
+            sizes="100vw"
+            priority
+          />
+          <span className={`td-status ${STATUS_MOD[tool.status]}`}>
+            <span className="td-status-dot" aria-hidden="true" />
+            {tv(tool.status)}
+          </span>
         </div>
       ) : (
         <div
@@ -72,6 +82,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
       <div className="td-grid">
         {/* What it does */}
         <div className="td-main">
+          {hasFeatures && <>
           <h2 className="td-h2">
             {tool.featuresHeading
               ? tv(tool.featuresHeading)
@@ -113,6 +124,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               ))}
             </ul>
           )}
+          </>}
         </div>
 
         {/* Spec + CTA */}
@@ -192,7 +204,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               )}
               {tool.pricingNote && <p className="td-cta-note">{tv(tool.pricingNote)}</p>}
             </div>
-          ) : isProduct ? (
+          ) : comingSoon ? null : isProduct ? (
             <Link href="/shop" className="td-btn">{t('tools.getTool')} →</Link>
           ) : (
             <Link href="/contact" className="td-btn">{t('tools.commission')} →</Link>
@@ -220,7 +232,6 @@ const baseCss = `
     padding: clamp(96px, 12vh, 140px) clamp(24px, 6vw, 120px) clamp(32px, 4vh, 56px);
     min-height: 100vh;
   }
-  .td--missing { display: flex; flex-direction: column; gap: 18px; }
 
   .td-back {
     display: inline-block;
@@ -246,6 +257,7 @@ const baseCss = `
     font-size: clamp(40px, 6.5vw, 92px);
     letter-spacing: -0.03em; line-height: 1.0;
     color: var(--color-text-primary); margin: 0 0 24px; max-width: 18ch;
+    text-transform: uppercase;
   }
   .td-lede {
     font-size: clamp(15px, 1.5vw, 19px); font-weight: 300;
@@ -270,6 +282,15 @@ const baseCss = `
                 radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184,149,106,0.06) 0%, transparent 70%);
   }
   .td-hero--placeholder { background-color: var(--color-surface); }
+  /* artwork shown whole: the box takes the image's own ratio, on the page background, unframed */
+  .td-hero.td-hero--whole { height: auto; border: none; background-color: var(--color-bg); }
+  .td-hero--whole img { display: block; width: 100%; height: auto; }
+  /* once the image's dark top band is shorter than the badge, lift the badge above the image
+     instead of letting it cover the artwork */
+  @media (max-width: 1000px) {
+    .td-hero--whole { display: flex; flex-direction: column; }
+    .td-hero--whole .td-status { position: static; order: -1; align-self: flex-end; margin-bottom: 12px; }
+  }
 
   /* full-bleed interactive hero — no frame, breaks out of the page padding */
   .td-hero-bleed {
@@ -309,7 +330,7 @@ const baseCss = `
   .td-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
   .td-status--live { color: var(--color-accent); }
   .td-status--beta { color: rgba(255,255,255,.7); }
-  .td-status--soon { color: var(--color-text-meta); }
+  .td-status--soon { color: var(--color-text-primary); }
   .td-status--soon .td-status-dot { background: transparent; border: 1px solid currentColor; }
 
   /* two-column body */
