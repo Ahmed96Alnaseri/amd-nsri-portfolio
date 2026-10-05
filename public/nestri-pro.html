@@ -154,20 +154,14 @@ tbody tr.row-off td{text-decoration:line-through;text-decoration-color:var(--cop
 .thumb path{fill:rgba(184,149,106,.14);stroke:var(--copper);stroke-width:1;vector-effect:non-scaling-stroke}
 .namecell{display:flex;align-items:center;min-width:90px}
 .namecell input{min-width:0}
-/* {02} has two more columns than NESTRI's sheet list (type, inventory ID): fixed column widths and tighter
-   cells keep it inside the card, and Type takes whatever is left so a label like 1500×3000 shows in full */
+/* {02}: #, Unlimited and delete keep fixed widths; Width, Length, Qty and Inv. share the rest evenly */
 .stable{table-layout:fixed}
-.stable thead th,.stable tbody td{padding-inline:2px}
-.stable th:nth-child(1){width:20px}
-.stable th:nth-child(3){width:46px}
-.stable th:nth-child(4){width:50px}
-.stable th:nth-child(5){width:34px}
-.stable th:nth-child(6){width:70px}
-.stable th:nth-child(7){width:56px}
-.stable th:nth-child(8){width:18px}
-/* a ROLL / SHAPE / OFFCUT tag sits above its label rather than squeezing it */
-.stable .namecell{min-width:0;flex-wrap:wrap;gap:2px 0}
-.rtag{font-size:var(--fs-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--copper);border:1px solid var(--line-copper);padding:0 4px;margin-inline-end:5px;flex:none}
+.stable thead th,.stable tbody td{padding-inline:4px}
+.stable th:nth-child(1){width:26px}
+.stable th:nth-child(5){width:76px}
+.stable th:nth-child(7){width:26px}
+/* a roll, a DXF-shaped sheet or a kept offcut shows its row number in copper; the kind is in the tooltip */
+.stable .idx.kind{color:var(--copper);cursor:help}
 input[type=text],input[type=number],select{
   width:100%;background:transparent;border:0;border-bottom:1px solid transparent;color:var(--ink);
   font:inherit;font-size:var(--fs-sm);padding:2px 2px;text-align:end;border-radius:0;font-variant-numeric:tabular-nums;
@@ -565,7 +559,6 @@ footer b{color:var(--copper);font-weight:500}
             <thead>
               <tr>
                 <th class="idx">#</th>
-                <th class="col-lbl" data-i18n="cType"></th>
                 <th class="col-num" data-i18n="cWidth"></th>
                 <th class="col-num" data-i18n="cLength"></th>
                 <th class="col-num" data-i18n="cQty"></th>
@@ -769,9 +762,9 @@ en: {
   errDwg: 'DWG not readable — save as DXF',
   errBinary: 'Binary DXF — save as ASCII DXF', errNotDxf: '{0} is not a readable DXF',
   errNoOutline: 'No closed outlines found in {0}', loaded: '{0} parts read from {1}', sampleLoaded: 'Sample loaded',
-  sheets: 'Metal sheets', inPlay: '{0} in play', cType: 'Type', cWidth: 'Width', cLength: 'Length', cUnl: 'Unlimited', cInv: 'Inv. ID',
+  sheets: 'Metal sheets', inPlay: '{0} in play', cWidth: 'Width', cLength: 'Length', cUnl: 'Unlimited', cInv: 'Inv. ID',
   addSheet: '+ Add sheet', allUnl: 'All unlimited', skip0: 'Rows left at 0 are skipped',
-  sheetPh: 'Type\tWidth\tLength\tQty — no qty means Unlimited, or write the word unlimited.',
+  sheetPh: 'Width\tLength\tQty — no qty means Unlimited, or write the word unlimited.',
   preloaded: '6 standard sizes preloaded', sheetsLoaded: '{0} sheets loaded', sheetsAdded: '{0} sheets added',
   noPairs: 'No width/length pairs found',
   special: 'Rolls and shaped sheets', rollW: 'Roll width', rollL: 'Roll length', allowance: 'Allowance (mm)',
@@ -835,9 +828,9 @@ tr: {
   errDwg: 'DWG okunamaz — DXF olarak kaydedin',
   errBinary: 'İkili DXF — ASCII DXF olarak kaydedin', errNotDxf: '{0} okunabilir bir DXF değil',
   errNoOutline: '{0} içinde kapalı kontur bulunamadı', loaded: '{1} dosyasından {0} parça okundu', sampleLoaded: 'Örnek yüklendi',
-  sheets: 'Saclar', inPlay: '{0} kullanımda', cType: 'Tip', cWidth: 'En', cLength: 'Boy', cUnl: 'Sınırsız', cInv: 'Stok no',
+  sheets: 'Saclar', inPlay: '{0} kullanımda', cWidth: 'En', cLength: 'Boy', cUnl: 'Sınırsız', cInv: 'Stok no',
   addSheet: '+ Sac ekle', allUnl: 'Hepsi sınırsız', skip0: '0 bırakılan satırlar atlanır',
-  sheetPh: 'Tip\tEn\tBoy\tAdet — adet yoksa Sınırsız sayılır, ya da unlimited yazın.',
+  sheetPh: 'En\tBoy\tAdet — adet yoksa Sınırsız sayılır, ya da unlimited yazın.',
   preloaded: '6 standart ölçü hazır', sheetsLoaded: '{0} sac yüklendi', sheetsAdded: '{0} sac eklendi',
   noPairs: 'En/boy çifti bulunamadı',
   special: 'Rulo ve şekilli saclar', rollW: 'Rulo eni', rollL: 'Rulo boyu', allowance: 'Pay (mm)',
@@ -901,9 +894,9 @@ ar: {
   errDwg: 'لا يمكن قراءة DWG — احفظه بصيغة DXF',
   errBinary: 'DXF ثنائي — احفظه بصيغة ASCII DXF', errNotDxf: '{0} ليس ملف DXF مقروءًا',
   errNoOutline: 'لا توجد محيطات مغلقة في {0}', loaded: 'قُرئت {0} قطعة من {1}', sampleLoaded: 'حُمّلت العيّنة',
-  sheets: 'الصفائح المعدنية', inPlay: '{0} مستخدمة', cType: 'النوع', cWidth: 'العرض', cLength: 'الطول', cUnl: 'غير محدود', cInv: 'رقم المخزون',
+  sheets: 'الصفائح المعدنية', inPlay: '{0} مستخدمة', cWidth: 'العرض', cLength: 'الطول', cUnl: 'غير محدود', cInv: 'رقم المخزون',
   addSheet: '+ إضافة صفيحة', allUnl: 'الكل غير محدود', skip0: 'الصفوف المتروكة على 0 تُتجاهل',
-  sheetPh: 'النوع\tالعرض\tالطول\tالكمية — بدون كمية تعني غير محدود، أو اكتب unlimited.',
+  sheetPh: 'العرض\tالطول\tالكمية — بدون كمية تعني غير محدود، أو اكتب unlimited.',
   preloaded: '6 مقاسات قياسية جاهزة', sheetsLoaded: 'حُمّلت {0} صفيحة', sheetsAdded: 'أُضيفت {0} صفيحة',
   noPairs: 'لم يُعثر على عرض وطول',
   special: 'لفائف وصفائح بأشكال خاصة', rollW: 'عرض اللفة', rollL: 'طول اللفة', allowance: 'السماح (مم)',
@@ -2960,9 +2953,7 @@ function stockOn(r) { return (r.unl || r.qty > 0) && r.w > 0 && r.l > 0; }
 function renderStock() {
   $('sheetBody').innerHTML = S.stock.map(function (r, i) {
     var tag = r.roll ? 'tRoll' : r.shape ? 'tShape' : r.off ? 'tOffcut' : '';
-    return '<tr data-i="' + i + '"' + (stockOn(r) ? '' : ' class="row-off"') + '><td class="idx">' + pad2(i + 1) + '</td>' +
-      '<td><div class="namecell">' + (tag ? '<span class="rtag">' + esc(t(tag)) + '</span>' : '') +
-      '<input type="text" data-k="label" maxlength="40" value="' + esc(r.label) + '" aria-label="' + esc(t('cType')) + '"></div></td>' +
+    return '<tr data-i="' + i + '"' + (stockOn(r) ? '' : ' class="row-off"') + '><td class="idx' + (tag ? ' kind" title="' + esc(t(tag)) : '') + '">' + pad2(i + 1) + '</td>' +
       '<td><input type="number" data-k="w" min="0" step="1" value="' + r.w + '"' + (r.shape ? ' disabled' : '') + ' aria-label="' + esc(t('cWidth')) + '"></td>' +
       '<td><input type="number" data-k="l" min="0" step="1" value="' + r.l + '"' + (r.shape ? ' disabled' : '') + ' aria-label="' + esc(t('cLength')) + '"></td>' +
       '<td><input type="number" data-k="qty" min="0" step="1" value="' + r.qty + '"' + (r.unl ? ' disabled' : '') + ' aria-label="' + esc(t('cQty')) + '"></td>' +
@@ -3305,9 +3296,7 @@ function showSheet(i) {
   var sh = L.res.sheets[viewIdx], row = L.rows[sh.stock], a = sheetArea(L, sh);
   // sizes are shown in whole millimetres, as in NESTRI; the stored sizes keep full precision
   var size = fmt(sh.w) + ' × ' + fmt(sh.l) + ' mm';
-  var bare = function (x) { return String(x).replace(/[\s×xX*]/g, ''); };
-  var same = bare(row.label) === bare(sh.w + '×' + sh.l) || bare(row.label) === bare(fmt(sh.w) + '×' + fmt(sh.l));
-  var name = same || !row.label ? size : row.label + ' · ' + size;
+  var name = size;
   $('vIndex').textContent = pad2(viewIdx + 1); $('vCount').textContent = pad2(n);
   $('vUtil').textContent = t('pctUsed', fmt(a ? sh.net / a * 100 : 0, 1));
   $('vStage').style.height = sh.l > sh.w ? 'clamp(300px,64vh,700px)' : '';
@@ -3701,7 +3690,7 @@ $('pasteAdd').addEventListener('click', function () { applyQtyPaste('add'); });
 $('sheetBody').addEventListener('input', function (e) {
   var el = e.target, tr = el.closest('tr'), r = tr && S.stock[+tr.getAttribute('data-i')], k = el.getAttribute('data-k');
   if (!r || !k || k === 'unl' || k === 'x') return;
-  if (k === 'label' || k === 'inv') r[k] = el.value;
+  if (k === 'inv') r.inv = el.value;
   else r[k] = k === 'qty' ? Math.max(0, Math.floor(+el.value || 0)) : Math.max(0, +el.value || 0);
   tr.classList.toggle('row-off', !stockOn(r));
   updateSheetCount(); touch();
