@@ -48,29 +48,30 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
         >
           <iframe src={tool.embed} title={tool.embedTitle ?? tool.name} loading="lazy" />
         </div>
-      ) : tool.heroImage ? (
+      ) : tool.heroImage || tool.image ? (
+        // hero artwork is shown whole on the page background, never cropped or faded
         <div className="td-hero td-hero--whole">
-          <Image
-            src={tool.heroImage.src}
-            alt={tool.name}
-            width={tool.heroImage.width}
-            height={tool.heroImage.height}
-            sizes="100vw"
-            priority
-          />
+          {tool.heroImage ? (
+            <Image
+              src={tool.heroImage.src}
+              alt={tool.name}
+              width={tool.heroImage.width}
+              height={tool.heroImage.height}
+              sizes="100vw"
+              priority
+            />
+          ) : (
+            // size not known up front: the image keeps its own ratio at full width
+            <Image src={tool.image as string} alt={tool.name} width={0} height={0} sizes="100vw" priority />
+          )}
           <span className={`td-status ${STATUS_MOD[tool.status]}`}>
             <span className="td-status-dot" aria-hidden="true" />
             {tv(tool.status)}
           </span>
         </div>
-      ) : (
-        <div
-          className={`td-hero${tool.image ? '' : ' td-hero--placeholder'}`}
-          style={tool.image ? { backgroundImage: `url(${tool.image})` } : undefined}
-          role="img"
-          aria-label={tool.name}
-        >
-          {!tool.image && <span className="td-hero-diamond" aria-hidden="true">◆</span>}
+      ) : tool.noHeroPlaceholder ? null : (
+        <div className="td-hero td-hero--placeholder" role="img" aria-label={tool.name}>
+          <span className="td-hero-diamond" aria-hidden="true">◆</span>
           <span className="td-hero-fade" aria-hidden="true" />
           <span className={`td-status ${STATUS_MOD[tool.status]}`}>
             <span className="td-status-dot" aria-hidden="true" />

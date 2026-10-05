@@ -1008,6 +1008,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Unfolding Service': 'Açınım Hizmeti',
     'Open Tool': 'Aracı Aç',
     'Open NESTRI': "NESTRI'yi Aç",
+    'Open NESTRI PRO': "NESTRI PRO'yu Aç",
     'Paste your panel schedule and get an optimized nesting layout. Minimizes sheet waste and exports DXF for CNC cutting.':
       'Panel listenizi yapıştırın ve optimize bir yerleşim planı alın. Levha firesini en aza indirir ve CNC kesim için DXF dışa aktarır.',
     'Web Tool · Free': 'Web Aracı · Ücretsiz',
@@ -1042,10 +1043,20 @@ const VALUES: Record<Lang, ValueMap> = {
       'Planlarımı düzenle. Hedeflerinizi size uyum sağlayan günlük bir programa dönüştürün.',
     'A web app for personal planning. AMAD turns your goals into a daily schedule that adapts to you.':
       'Kişisel planlama için bir web uygulaması. AMAD, hedeflerinizi size uyum sağlayan günlük bir programa dönüştürür.',
-    'The professional edition of NESTRI. More power for production nesting.':
-      'NESTRI\'nin profesyonel sürümü. Üretim yerleşimi için daha fazla güç.',
-    'NESTRI PRO is the professional edition of NESTRI, built for production nesting.':
-      'NESTRI PRO, üretim yerleşimi için geliştirilmiş NESTRI\'nin profesyonel sürümüdür.',
+    // NESTRI PRO
+    'True-shape nesting from DXF. Fills part cut-outs; exports DXF and Excel.':
+      'DXF\'ten gerçek şekilli yerleşim. Parça boşaltmalarını doldurur; DXF ve Excel aktarır.',
+    'True-shape sheet nesting for fabrication. Upload the DXF your parts are drawn in — outlines, cut-outs and bend lines are read from the drawing — and get a nesting layout of the real shapes, with small parts placed in the cut-outs of larger ones. Export the nested sheets as DXF, ready for CNC cutting.':
+      'Fabrikasyon için gerçek şekilli sac yerleşimi. Parçalarınızın çizili olduğu DXF dosyasını yükleyin — konturlar, boşaltmalar ve büküm çizgileri çizimden okunur — ve gerçek şekillerle bir yerleşim planı alın; küçük parçalar büyüklerin boşaltmalarına yerleştirilir. Yerleşen sacları CNC kesime hazır DXF olarak dışa aktarın.',
+    'Nests the real part outlines read from DXF': 'DXF\'ten okunan gerçek parça konturlarını yerleştirir',
+    'Places small parts in the cut-outs of larger ones': 'Küçük parçaları büyük parçaların boşaltmalarına yerleştirir',
+    'Rolls, offcuts and odd-shaped sheets as stock': 'Rulo, artık ve düzensiz sacları stok olarak kullanır',
+    'Layer mapping; quantities read from the drawing': 'Katman eşleme; adetler çizimden okunur',
+    'Utilization, waste and weight per sheet size': 'Sac ölçüsüne göre kullanım, fire ve ağırlık',
+    'DXF with cut, bend and marking layers, plus an Excel report': 'Kesim, büküm ve markalama katmanlı DXF, ayrıca Excel raporu',
+    'Web Tool · Pro Edition': 'Web Aracı · Pro Sürüm',
+    'DXF part drawings': 'DXF parça çizimleri',
+    'Nested sheets DXF · Excel report': 'Yerleşim DXF · Excel raporu',
     'Send your file. Receive fabrication-ready flat patterns.':
       'Dosyanızı gönderin. Üretime hazır açınım desenlerini alın.',
     'An unfolding service for complex sheet metal panels. Submit your files — DWG, PDF, image, or any usable reference — and receive accurate flat cutting patterns with correct k-factor and bend allowance applied. Output is DWG-ready for laser cutting and press brake, plus STEP for CNC verification.':
@@ -1431,6 +1442,7 @@ const VALUES: Record<Lang, ValueMap> = {
     'Unfolding Service': 'خدمة الفرد',
     'Open Tool': 'افتح الأداة',
     'Open NESTRI': 'افتح NESTRI',
+    'Open NESTRI PRO': 'افتح NESTRI PRO',
     'Paste your panel schedule and get an optimized nesting layout. Minimizes sheet waste and exports DXF for CNC cutting.':
       'الصق جدول ألواحك واحصل على مخطط ترصيص محسَّن. يقلّل هدر الصفائح ويصدّر DXF للقصّ على CNC.',
     'Web Tool · Free': 'أداة ويب · مجانية',
@@ -1465,10 +1477,20 @@ const VALUES: Record<Lang, ValueMap> = {
       'رتّب خططي. حوّل أهدافك إلى جدول يومي يتكيّف معك.',
     'A web app for personal planning. AMAD turns your goals into a daily schedule that adapts to you.':
       'تطبيق ويب للتخطيط الشخصي. يحوّل AMAD أهدافك إلى جدول يومي يتكيّف معك.',
-    'The professional edition of NESTRI. More power for production nesting.':
-      'الإصدار الاحترافي من NESTRI. قدرة أكبر لتوزيع القطع في الإنتاج.',
-    'NESTRI PRO is the professional edition of NESTRI, built for production nesting.':
-      'NESTRI PRO هو الإصدار الاحترافي من NESTRI، مصمَّم لتوزيع القطع في الإنتاج.',
+    // NESTRI PRO
+    'True-shape nesting from DXF. Fills part cut-outs; exports DXF and Excel.':
+      'ترصيص بالشكل الحقيقي من DXF. يملأ فتحات القطع ويصدّر DXF وExcel.',
+    'True-shape sheet nesting for fabrication. Upload the DXF your parts are drawn in — outlines, cut-outs and bend lines are read from the drawing — and get a nesting layout of the real shapes, with small parts placed in the cut-outs of larger ones. Export the nested sheets as DXF, ready for CNC cutting.':
+      'ترصيص صفائح بالشكل الحقيقي للتصنيع. ارفع ملف DXF المرسومة فيه قطعك — تُقرأ المحيطات والفتحات وخطوط الثني من الرسم — واحصل على مخطط ترصيص بالأشكال الحقيقية تُوضع فيه القطع الصغيرة داخل فتحات القطع الأكبر. صدّر الصفائح المرصوصة بصيغة DXF جاهزة للقصّ على CNC.',
+    'Nests the real part outlines read from DXF': 'يرصّ محيطات القطع الحقيقية المقروءة من DXF',
+    'Places small parts in the cut-outs of larger ones': 'يضع القطع الصغيرة داخل فتحات القطع الأكبر',
+    'Rolls, offcuts and odd-shaped sheets as stock': 'اللفائف والفضلات والصفائح غير المنتظمة كمخزون',
+    'Layer mapping; quantities read from the drawing': 'ربط الطبقات؛ وتُقرأ الكميات من الرسم',
+    'Utilization, waste and weight per sheet size': 'الاستغلال والهدر والوزن لكل مقاس صفيحة',
+    'DXF with cut, bend and marking layers, plus an Excel report': 'DXF بطبقات القصّ والثني والتعليم، مع تقرير Excel',
+    'Web Tool · Pro Edition': 'أداة ويب · الإصدار الاحترافي',
+    'DXF part drawings': 'رسومات القطع بصيغة DXF',
+    'Nested sheets DXF · Excel report': 'صفائح مرصوصة DXF · تقرير Excel',
     'Send your file. Receive fabrication-ready flat patterns.':
       'أرسل ملفك. استلم أنماطاً مفرودة جاهزة للتصنيع.',
     'An unfolding service for complex sheet metal panels. Submit your files — DWG, PDF, image, or any usable reference — and receive accurate flat cutting patterns with correct k-factor and bend allowance applied. Output is DWG-ready for laser cutting and press brake, plus STEP for CNC verification.':

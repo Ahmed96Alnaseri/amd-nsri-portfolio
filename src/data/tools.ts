@@ -25,8 +25,11 @@ export interface Tool {
   status: ToolStatus;
   /** showcase = portfolio piece (commission); product = purchasable; quote = priced per project */
   type: ToolType;
-  /** Background/hero image path. null = show default diamond placeholder. */
+  /** Hero image path (in public/): shown whole on the detail page, and behind the card.
+      null = the diamond placeholder (or no hero at all with noHeroPlaceholder). */
   image: string | null;
+  /** While image is null, show no hero box at all instead of the diamond placeholder. */
+  noHeroPlaceholder?: boolean;
   /** Finished artwork for the detail hero, composed on the page background: shown whole at its own
       ratio — no crop, fade or diamond. Takes precedence over `image` there; the card keeps `image`. */
   heroImage?: { src: string; width: number; height: number };
@@ -199,20 +202,39 @@ const tools: Tool[] = [
     output: 'DWG flat pattern · STEP',
     tags: ['unfolding', 'sheet metal', 'fabrication', 'DWG', 'grasshopper', 'service'],
   },
-  /* ── Coming soon: placeholder pages — replace name/description/detail and add content when the
-        real tool is ready. No features, price or CTA until then. ── */
   {
     slug: 'nestri-pro',
     name: 'NESTRI PRO',
-    description: 'The professional edition of NESTRI. More power for production nesting.',
-    detail: 'NESTRI PRO is the professional edition of NESTRI, built for production nesting.',
-    features: [],
+    description: 'True-shape nesting from DXF. Fills part cut-outs; exports DXF and Excel.',
+    detail:
+      'True-shape sheet nesting for fabrication. Upload the DXF your parts are drawn in — outlines, cut-outs and bend lines are read from the drawing — and get a nesting layout of the real shapes, with small parts placed in the cut-outs of larger ones. Export the nested sheets as DXF, ready for CNC cutting.',
+    // what PRO adds over NESTRI comes first
+    features: [
+      'Nests the real part outlines read from DXF',
+      'Places small parts in the cut-outs of larger ones',
+      'Rolls, offcuts and odd-shaped sheets as stock',
+      'Layer mapping; quantities read from the drawing',
+      'Utilization, waste and weight per sheet size',
+      'DXF with cut, bend and marking layers, plus an Excel report',
+    ],
     platform: 'Web',
-    status: 'Coming Soon',
+    platformLabel: 'Web — runs in browser',
+    eyebrowFull: 'Web Tool · Pro Edition',
+    status: 'Live',
+    hideStatus: true,
     type: 'product',
+    // set image to a file in public/ (e.g. '/tools/nestri-pro-hero.png') to show a hero; until then the page has none
     image: null,
+    noHeroPlaceholder: true,
     price: null,
+    input: 'DXF part drawings',
+    output: 'Nested sheets DXF · Excel report',
+    ctaLabel: 'Open NESTRI PRO',
+    ctaLink: '/nestri-pro.html',
+    ctaExternal: true,
   },
+  /* ── Coming soon: placeholder page — replace name/description/detail and add content when the
+        real tool is ready. No features, price or CTA until then. ── */
   {
     slug: 'amad',
     name: 'AMAD',
