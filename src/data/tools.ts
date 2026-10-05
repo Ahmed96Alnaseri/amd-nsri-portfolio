@@ -223,9 +223,10 @@ const tools: Tool[] = [
     status: 'Live',
     hideStatus: true,
     type: 'product',
-    // set image to a file in public/ (e.g. '/tools/nestri-pro-hero.png') to show a hero; until then the page has none
     image: null,
-    noHeroPlaceholder: true,
+    heroImage: { src: '/tools/nestri-pro-hero.png', width: 1540, height: 480 },
+    // card shows the two panels only; the hero's wordmark would repeat the card title
+    cardImage: '/tools/nestri-pro-card-panels.webp',
     price: null,
     input: 'DXF part drawings',
     output: 'Nested sheets DXF · Excel report',
