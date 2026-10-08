@@ -165,6 +165,8 @@ export default function ContactPage() {
   const [submitting, setSubmit] = useState(false);
   const [done, setDone]         = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+  // honeypot: a field people never see; bots that fill every input fill this too
+  const [website, setWebsite]   = useState('');
 
   // Arriving from a tool page (/contact?tool=…) seeds the enquiry with that
   // tool's name and the details a quote actually needs.
@@ -202,7 +204,7 @@ export default function ContactPage() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, website }),
       });
       if (!res.ok) throw new Error('request failed');
       setDone(true);
@@ -404,6 +406,13 @@ export default function ContactPage() {
           {/* RIGHT — form or success */}
           {done ? <SuccessState /> : (
             <form onSubmit={handleSubmit} noValidate>
+              {/* honeypot: clipped to nothing, skipped by keyboard and screen readers, ignored by autofill */}
+              <div aria-hidden="true" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clipPath: 'inset(50%)', opacity: 0, pointerEvents: 'none' }}>
+                <label>
+                  Website
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" value={website} onChange={e => setWebsite(e.target.value)} />
+                </label>
+              </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
 
                 {/* Name */}
