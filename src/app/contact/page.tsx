@@ -362,7 +362,7 @@ export default function ContactPage() {
                 marginBottom: '10px',
               }}>{t('contact.emailLabel')}</p>
               <a
-                href="mailto:ahmedhaitham114@gmail.com"
+                href="mailto:ahmed@amdnsri.com"
                 className="cpage-email-link"
                 style={{
                   fontFamily: 'var(--font-body)',
@@ -376,7 +376,7 @@ export default function ContactPage() {
                   transition: 'color 300ms ease',
                 }}
               >
-                ahmedhaitham114@gmail.com
+                ahmed@amdnsri.com
                 <span style={{ color: 'var(--color-accent)', opacity: 0.65, fontSize: '11px' }}>↗</span>
               </a>
             </div>
@@ -569,11 +569,11 @@ export default function ContactPage() {
                   lineHeight: 1.7,
                 }}>
                   {t('contact.orWrite')}{' '}
-                  <a href="mailto:ahmedhaitham114@gmail.com" className="cpage-email-link" style={{
+                  <a href="mailto:ahmed@amdnsri.com" className="cpage-email-link" style={{
                     color: 'rgba(232,228,220,0.85)',
                     textDecoration: 'none',
                     transition: 'color 300ms ease',
-                  }}>ahmedhaitham114@gmail.com</a>
+                  }}>ahmed@amdnsri.com</a>
                 </p>
 
               </div>

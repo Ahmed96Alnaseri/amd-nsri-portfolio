@@ -17,7 +17,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 const PORTRAIT = '/about/ahmed-alnaseri.png';
 const CAT = '/about/miki-cat.png';
 const MAP_IMG = '/about/beylikduzu-map-abstract.png';
-const EMAIL = 'ahmedhaitham114@gmail.com';
+const EMAIL = 'ahmed@amdnsri.com';
 const PHONE_DISPLAY = '+90 537 872 64 52';
 const PHONE_TEL = '+905378726452';
 const MAP_LINK = 'https://www.google.com/maps/search/?api=1&query=Beylikd%C3%BCz%C3%BC%2C%20Istanbul';
@@ -156,9 +156,20 @@ export default function IdentityPage() {
           border-right: 1px solid rgba(245,241,234,0.25); border-bottom: 1px solid rgba(245,241,234,0.25);
           transform: rotate(45deg);
         }
+        /* Miki hangs 18/420 of the frame below it. On a small frame the caption drops below the cat in the flow.
+           Once the frame is wide enough it keeps its old place in the flow, flush right under the frame, and is only
+           nudged down (position, not layout) until it clears the cat by 10px, so the page does not grow.
+           line-height 1.25 keeps the 12px line as tall as the old 10px one. */
+        .id-row--top .id-col-left { container-type: inline-size; }
         .id-caption {
-          margin: 0; padding-right: 6px; text-align: right; line-height: 1.5;
-          font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-text-meta);
+          margin: calc(var(--s) * 18 / 420) 0 0; padding-right: 6px; text-align: right; line-height: 1.25;
+          font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-text-primary);
+        }
+        @container (min-width: 360px) {
+          .id-caption {
+            margin-top: 0; position: relative;
+            top: max(0px, calc(100cqw * 18 / 420 + 10px - clamp(14px, 2.4vh, 26px)));
+          }
         }
 
         /* ── name + bio ── */
