@@ -6,7 +6,7 @@
 <title>NESTRI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
 
 <style>
 :root{
@@ -26,6 +26,8 @@
   --fs-xs:11.5px;
   --fs-sm:13.5px;
   --fs-md:15.5px;
+  /* Latin and Turkish in Space Grotesk; Arabic letters fall through to IBM Plex Sans Arabic, loaded only in AR */
+  --sans:"Space Grotesk","IBM Plex Sans Arabic",ui-sans-serif,system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 /* no visible scrollbars anywhere — every box still scrolls */
@@ -35,7 +37,7 @@
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--ground);color:var(--ink);
-  font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-family:var(--sans);font-weight:400;
   font-size:var(--fs-md);line-height:1.5;font-variant-numeric:tabular-nums;
 }
 .wrap{max-width:1720px;margin:0 auto;padding-inline:clamp(16px,2.2vw,34px);padding-block:0 28px}
@@ -43,27 +45,27 @@ body{
 /* ---------------- file stamp + masthead ---------------- */
 .filebar{
   padding-block:16px 12px;border-bottom:1px solid var(--line);
-  font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
+  font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);
 }
 .filebar b{color:var(--copper);font-weight:500}
 .filebar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .langs{display:flex;gap:2px;padding:2px;border:1px solid rgba(255,255,255,.09);border-radius:4px}
-.lang-btn{height:24px;min-width:30px;padding:0 7px;border:0;border-radius:2px;background:transparent;color:var(--ink);font:500 var(--fs-xs) "IBM Plex Mono",monospace;letter-spacing:.04em;cursor:pointer}
+.lang-btn{height:24px;min-width:30px;padding:0 7px;border:0;border-radius:2px;background:transparent;color:var(--ink);font:500 var(--fs-xs) var(--sans);letter-spacing:.04em;cursor:pointer}
 .lang-btn:hover{color:var(--ink)}
 .lang-btn[aria-pressed="true"]{background:rgba(184,149,106,.14);color:var(--copper-bright);box-shadow:inset 0 0 0 1px rgba(184,149,106,.5)}
 .lang-btn:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
 .mast{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-block:22px 18px}
-.eyebrow{margin:0 0 6px;font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:var(--copper)}
+.eyebrow{margin:0 0 6px;font-size:var(--fs-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--copper)}
 .eyebrow::before{content:"— ";color:var(--copper-deep)}
 .markrow{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
 h1{
-  font-family:"DM Serif Display",Georgia,serif;font-weight:400;margin:0;
-  font-size:clamp(34px,4.2vw,46px);line-height:.95;letter-spacing:.01em;
+  font-family:var(--sans);font-weight:600;margin:0;
+  font-size:clamp(34px,4.2vw,46px);line-height:.95;letter-spacing:-.03em;
 }
 h1 em{font-style:italic;color:var(--copper)}
-.markmeta{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.markmeta{font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .projbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.projbar .plabel{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.projbar .plabel{font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .projbar input[type=text]{width:220px;border-bottom:1px solid var(--line)}
 
 /* ---------------- run bar ---------------- */
@@ -75,9 +77,9 @@ h1 em{font-style:italic;color:var(--copper)}
 /* compact toolbar so all seven controls stay on one line down to 1024px */
 .runbar{gap:14px}
 .runbar .field{min-width:0}
-.runbar .field label{letter-spacing:.1em}
+.runbar .field label{letter-spacing:.04em}
 .runbar .field input[type=number]{width:90px}
-.runstat{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--copper)}
+.runstat{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--copper)}
 .runstat.idle{color:var(--ink)}
 .runstat.err{color:var(--crit)}
 .runstat.warn{color:var(--copper-bright)}
@@ -100,9 +102,9 @@ h1 em{font-style:italic;color:var(--copper)}
 .card::before,.card::after{content:"";position:absolute;width:9px;height:9px;pointer-events:none;border-color:var(--line-copper);border-style:solid}
 .card::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
 .card::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
-.cardhead{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.cardhead{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:var(--fs-xs);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .cardhead .num{color:var(--copper)}
-.badge{margin-left:auto;color:var(--copper);border:1px solid var(--line-copper);padding:2px 7px;letter-spacing:.14em;font-size:var(--fs-xs);white-space:nowrap}
+.badge{font-weight:400;margin-left:auto;color:var(--copper);border:1px solid var(--line-copper);padding:2px 7px;letter-spacing:.06em;font-size:var(--fs-xs);white-space:nowrap}
 
 /* ---------------- tables ---------------- */
 .tscroll{overflow:auto}
@@ -110,7 +112,7 @@ h1 em{font-style:italic;color:var(--copper)}
 .rows.short{max-height:230px}
 table{border-collapse:collapse;width:100%;font-size:var(--fs-sm)}
 thead th{
-  text-align:right;font-weight:400;color:var(--ink);font-size:var(--fs-xs);letter-spacing:.16em;
+  text-align:right;font-weight:400;color:var(--ink);font-size:var(--fs-xs);letter-spacing:.06em;
   text-transform:uppercase;padding:0 6px 7px;border-bottom:1px solid var(--line);white-space:nowrap;
   position:sticky;top:0;z-index:1;background:#141310;
 }
@@ -161,18 +163,18 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 
 /* ---------------- buttons + fields ---------------- */
 .btn{
-  font:inherit;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;background:transparent;
+  font:inherit;font-weight:500;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;background:transparent;
   color:var(--ink);border:1px solid var(--line);padding:7px 12px;cursor:pointer;transition:.15s;
 }
 .btn:hover:not(:disabled){color:var(--copper-bright);border-color:var(--line-copper);background:rgba(184,149,106,.07)}
 .btn:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
 /* disabled: white text kept, dashed border and a not-allowed cursor mark the state */
 .btn:disabled{border-style:dashed;cursor:not-allowed}
-.btn-primary{background:var(--copper);border-color:var(--copper);color:#14120f;font-weight:500;padding:11px 24px;letter-spacing:.2em}
+.btn-primary{background:var(--copper);border-color:var(--copper);color:#14120f;font-weight:500;padding:11px 24px;letter-spacing:.08em}
 .btn-primary:hover:not(:disabled){background:var(--copper-bright);border-color:var(--copper-bright);color:#14120f}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
 .field{display:flex;flex-direction:column;gap:3px}
-.field label{font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.field label{font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .field input[type=number]{border-bottom:1px solid var(--line);text-align:left;font-size:var(--fs-md)}
 /* material picker: a bare underline like the number fields, copper chevron */
 .field select{
@@ -191,7 +193,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .roll-row .tglwrap{cursor:pointer;padding-bottom:4px}
 .roll-row input:disabled{border-bottom-style:dashed}
 .tglwrap span{font-size:var(--fs-sm);color:var(--ink)}
-.status{font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);min-height:14px}
+.status{font-size:var(--fs-xs);letter-spacing:.05em;text-transform:uppercase;color:var(--ink);min-height:14px}
 .status.ok{color:var(--good)}
 .status.err{color:var(--crit)}
 
@@ -199,13 +201,13 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 details{margin-top:10px;border-top:1px solid var(--line);padding-top:9px}
 summary{
   display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;
-  font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
+  font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
 }
 summary::-webkit-details-marker{display:none}
 summary::before{content:"+";color:var(--copper);margin-right:2px}
 details[open] summary::before{content:"–"}
 summary:hover{color:var(--copper)}
-.tag{margin-left:auto;color:var(--copper);letter-spacing:.16em}
+.tag{margin-left:auto;color:var(--copper);letter-spacing:.06em}
 .zoom{border:1px solid var(--line);background:none;color:var(--ink);cursor:pointer;padding:3px 5px;line-height:0}
 .zoom:hover{color:var(--copper);border-color:var(--line-copper)}
 .zoom svg{display:block}
@@ -218,27 +220,27 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 
 /* ---------------- report ---------------- */
 .sechead{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
-.sechead .num{color:var(--copper);font-size:var(--fs-sm);letter-spacing:.1em}
-.sechead .title{font-size:var(--fs-sm);letter-spacing:.24em;text-transform:uppercase}
-.sechead .note{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.sechead .num{color:var(--copper);font-size:var(--fs-sm);letter-spacing:.04em}
+.sechead .title{font-weight:500;font-size:var(--fs-sm);letter-spacing:.1em;text-transform:uppercase}
+.sechead .note{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .sechead .note.stale{color:var(--copper-bright)}
 .sechead .note.stale::after{content:" · out of date"}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
 .stat{padding:13px 15px;display:grid;gap:5px;align-content:start;border-left:1px solid var(--line)}
 .stat:first-child{border-left:0}
-.stat .k{font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
-.stat .v{font-family:"DM Serif Display",Georgia,serif;font-size:34px;line-height:1;color:var(--ink)}
-.stat .v small{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink);margin-left:3px}
+.stat .k{font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.stat .v{font-family:var(--sans);font-weight:500;letter-spacing:-.02em;font-size:34px;line-height:1;color:var(--ink)}
+.stat .v small{font-family:var(--sans);font-weight:400;letter-spacing:0;font-size:12px;color:var(--ink);margin-left:3px}
 .stat .v.empty{font-size:20px;color:var(--ink)}
 .stat.accent .v{color:var(--copper-bright)}
 .stat .v.short{color:var(--crit)}
-.stat .sub{font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.stat .sub{font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .stat .sub.short{color:var(--crit)}
 .meter{height:3px;background:rgba(255,255,255,.08);margin-top:2px}
 .meter i{display:block;height:100%;background:var(--copper)}
 
 .band{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--line);padding:12px 14px;margin-top:14px;font-size:var(--fs-sm);line-height:1.6}
-.band .tagw{flex:none;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding-top:2px}
+.band .tagw{flex:none;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);padding-top:2px}
 .band.ok{border-color:rgba(127,160,106,.35);background:rgba(127,160,106,.06)}
 .band.ok .tagw{color:var(--good)}
 .band.short{border-color:rgba(212,112,90,.4);background:rgba(212,112,90,.07)}
@@ -249,8 +251,8 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 .shortlist{margin-top:10px;border:1px solid var(--line);padding:10px 12px;font-size:var(--fs-sm);color:var(--ink);display:flex;flex-wrap:wrap;gap:6px 18px}
 
 .subhead{display:flex;align-items:baseline;gap:12px;margin:16px 0 8px}
-.subhead .title{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
-.subhead .note{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.subhead .title{font-weight:500;font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.subhead .note{margin-left:auto;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .repbox{position:relative;border:1px solid var(--line);min-height:220px;max-height:440px;overflow:auto;overflow-x:auto;max-width:100%;flex:1;scrollbar-width:none;-ms-overflow-style:none}
 /* when the report box is tight, drop the mini bar and step the table text down a touch so all columns show */
 .repbox{container-type:inline-size}
@@ -258,27 +260,28 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 .repbox::-webkit-scrollbar{display:none;width:0;height:0}
 .repbox::after{content:"";position:absolute;bottom:-1px;right:-1px;width:9px;height:9px;border:solid var(--line-copper);border-width:0 1px 1px 0;pointer-events:none}
 /* header labels may wrap ("Panel / m²") so the table fits its box at the larger type size */
-.rep thead th{padding:9px 6px;background:#131210;letter-spacing:.08em;white-space:normal;vertical-align:bottom;line-height:1.3}
+.rep thead th{padding:9px 6px;background:#131210;letter-spacing:.04em;white-space:normal;vertical-align:bottom;line-height:1.3}
 .rep tbody td{padding:7px 6px}
 .rep tfoot td{padding:9px 6px;border-top:1px solid var(--line-copper);text-align:right;color:var(--copper-bright)}
-.rep tfoot td:first-child{text-align:left;letter-spacing:.14em;text-transform:uppercase;font-size:var(--fs-xs)}
-.out{color:var(--crit);font-size:var(--fs-xs);letter-spacing:.14em;margin-left:6px}
+.rep tfoot td:first-child{text-align:left;letter-spacing:.06em;text-transform:uppercase;font-size:var(--fs-xs)}
+.out{color:var(--crit);font-size:var(--fs-xs);letter-spacing:.06em;margin-left:6px}
 .bar{display:inline-block;width:34px;height:5px;background:rgba(255,255,255,.08);vertical-align:middle;margin-left:8px}
 .bar i{display:block;height:100%;background:var(--copper)}
 
 /* ---------------- viewer ---------------- */
 .viewer{border:1px solid var(--line);background:var(--ground-2);padding:12px}
-.viewhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.viewhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
 .viewhead b{color:var(--copper);font-weight:500}
 .viewhead .u{color:var(--ink)}
 .stage{height:clamp(240px,52vh,560px);display:flex;align-items:center;justify-content:center}
 .stage svg{display:block;width:100%;height:100%}
-.ghost{width:100%;height:100%;border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink);font-size:var(--fs-sm);letter-spacing:.2em;text-transform:uppercase}
-.viewfoot{margin-top:9px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.1em;color:var(--ink)}
-.viewfoot span{white-space:nowrap}
+.ghost{width:100%;height:100%;border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink);font-size:var(--fs-sm);letter-spacing:.08em;text-transform:uppercase}
+.viewfoot{margin-top:9px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.04em;color:var(--ink)}
+/* the sheet caption wraps only when it would not fit the viewer */
+.viewfoot span{white-space:normal}
 .viewctl{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap}
 .viewctl .btn{padding:6px 11px}
-.counter{font-size:var(--fs-xs);letter-spacing:.16em;color:var(--ink);min-width:52px;text-align:center}
+.counter{font-size:var(--fs-xs);letter-spacing:.06em;color:var(--ink);min-width:52px;text-align:center}
 input[type=range]{flex:1;min-width:90px;-webkit-appearance:none;appearance:none;height:3px;background:rgba(255,255,255,.14);border:0;padding:0;cursor:pointer}
 input[type=range]:focus{outline:none}
 input[type=range]:focus-visible{outline:1px solid var(--copper);outline-offset:6px}
@@ -288,13 +291,13 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;background:var(--copp
 
 /* ---------------- empty states ---------------- */
 .empty{display:grid;place-items:center;text-align:center;gap:6px;padding:26px 16px;color:var(--ink);font-size:var(--fs-sm)}
-.empty .h{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.empty .h{font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .empty .h::before{content:"— "}
 .empty p{margin:0;max-width:34ch;line-height:1.6}
 
 footer{
   margin-top:22px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;
-  gap:16px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
+  gap:16px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
 }
 footer b{color:var(--copper);font-weight:500}
 
@@ -330,6 +333,17 @@ footer b{color:var(--copper);font-weight:500}
 }
 @media (min-width:1024px) and (max-width:1240px) and (min-height:600px){
   html .cols{grid-template-columns:268px minmax(0,1.6fr) minmax(0,1fr);grid-template-areas:"inputs report view" "inputs table view"}
+  /* the 268px inputs column leaves 238px inside a card: tighter cells and narrower panel columns keep both tables inside it */
+  .col-inputs thead th,.col-inputs tbody td{padding-left:2px;padding-right:2px}
+  .ptable .idx{width:20px}
+  .ptable .col-lbl{width:50px}
+  .ptable .col-w{width:54px}
+  .ptable .col-h{width:56px}
+  .col-unl{width:66px}
+  /* the sheet Qty column only ever holds a short count */
+  .rows.short thead th:nth-child(4){min-width:30px}
+  .ptable .col-qty{width:40px}
+  .ptable .col-del{width:18px}
   .stats{grid-template-columns:repeat(2,1fr)}
   .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid var(--line)}
@@ -350,6 +364,8 @@ footer b{color:var(--copper);font-weight:500}
   .stage{height:clamp(220px,46vh,430px)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* Arabic: no letter-spacing, so the letters stay joined */
+html[lang=ar] body *{letter-spacing:0!important}
 </style>
 
 </head>
@@ -358,7 +374,7 @@ footer b{color:var(--copper);font-weight:500}
 
   <div class="filebar">
     <a href="https://amd-nsri-portfolio-alpha.vercel.app" target="_self"
-       style="display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:var(--fs-xs);letter-spacing:0.18em;text-transform:uppercase;color:#b8956a;text-decoration:none;">
+       style="display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-xs);letter-spacing:0.08em;text-transform:uppercase;color:#b8956a;text-decoration:none;">
       ← AMD NSRI
     </a>
     <div class="langs" role="group" aria-label="Language">
@@ -2485,6 +2501,12 @@ function applyLang(lang) {
   currentLang = NESTRI_STRINGS[lang] ? lang : 'en';
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+  if (currentLang === 'ar' && !document.getElementById('arFont')) {
+    var link = document.createElement('link');
+    link.id = 'arFont'; link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap';
+    document.head.appendChild(link);
+  }
   document.querySelectorAll('[data-lang]').forEach(function (b) {
     b.setAttribute('aria-pressed', String(b.dataset.lang === currentLang));
   });
