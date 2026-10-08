@@ -6,7 +6,7 @@
 <title>NESTRI PRO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
 <style>
 :root{
   color-scheme:dark;
@@ -27,8 +27,8 @@
   --fs-xs:11.5px;
   --fs-sm:13.5px;
   --fs-md:15.5px;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --serif:"DM Serif Display",Georgia,serif;
+  /* Latin and Turkish in Space Grotesk; Arabic letters fall through to IBM Plex Sans Arabic, loaded only in AR */
+  --sans:"Space Grotesk","IBM Plex Sans Arabic",ui-sans-serif,system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 /* no visible scrollbars anywhere — every box still scrolls */
@@ -38,10 +38,9 @@
 html{-webkit-text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--ground)}
 body{
   margin:0;background:var(--ground);color:var(--ink);
-  font-family:var(--mono);
+  font-family:var(--sans);font-weight:400;
   font-size:var(--fs-md);line-height:1.5;font-variant-numeric:tabular-nums;
 }
-html[lang=ar] body{--mono:"IBM Plex Sans Arabic","IBM Plex Mono",Tahoma,sans-serif}
 html[lang=ar] *{letter-spacing:0!important}
 .wrap{max-width:1720px;margin:0 auto;padding-inline:clamp(16px,2.2vw,34px);padding-block:0 28px}
 .ltr{direction:ltr;unicode-bidi:isolate}
@@ -50,28 +49,28 @@ html[lang=ar] *{letter-spacing:0!important}
 .filebar{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
   padding-block:16px 12px;border-bottom:1px solid var(--line);
-  font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
+  font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);
 }
 .filebar b{color:var(--copper);font-weight:500}
-.back{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--copper);text-decoration:none}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--copper);text-decoration:none}
 .back:focus-visible{outline:1px solid var(--copper);outline-offset:3px}
 [dir=rtl] .back .arr{transform:scaleX(-1)}
 .lang{display:flex;gap:2px;padding:2px;border:1px solid rgba(255,255,255,.09);border-radius:4px}
-.lang button{height:24px;min-width:30px;padding:0 7px;border:0;border-radius:2px;background:transparent;color:var(--ink);font:500 var(--fs-xs) "IBM Plex Mono",monospace;letter-spacing:.04em;cursor:pointer}
+.lang button{height:24px;min-width:30px;padding:0 7px;border:0;border-radius:2px;background:transparent;color:var(--ink);font:500 var(--fs-xs) var(--sans);letter-spacing:.04em;cursor:pointer}
 .lang button:hover{color:var(--ink)}
 .lang button[aria-pressed=true]{background:rgba(184,149,106,.14);color:var(--copper-bright);box-shadow:inset 0 0 0 1px rgba(184,149,106,.5)}
 .lang button:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
 .mast{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-block:22px 18px}
-.eyebrow{margin:0 0 6px;font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:var(--copper)}
+.eyebrow{margin:0 0 6px;font-size:var(--fs-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--copper)}
 .eyebrow::before{content:"— ";color:var(--copper-deep)}
 .markrow{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
 h1{
-  font-family:var(--serif);font-weight:400;margin:0;direction:ltr;
-  font-size:clamp(34px,4.2vw,46px);line-height:.95;letter-spacing:.01em;
+  font-family:var(--sans);font-weight:600;margin:0;direction:ltr;
+  font-size:clamp(34px,4.2vw,46px);line-height:.95;letter-spacing:-.03em;
 }
 h1 em{font-style:italic;color:var(--copper)}
 .projbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.projbar .plabel{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.projbar .plabel{font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .projbar input[type=text]{width:220px;border-bottom:1px solid var(--line)}
 
 /* ---------------- run bar ---------------- */
@@ -83,10 +82,10 @@ h1 em{font-style:italic;color:var(--copper)}
 /* compact toolbar so the controls stay on one line down to 1024px */
 .runbar{gap:14px}
 .runbar .field{min-width:0}
-.runbar .field label{letter-spacing:.1em}
+.runbar .field label{letter-spacing:.04em}
 .runbar .field input[type=number]{width:90px}
 /* only shows while a nest is solving or when Run cannot start; it never pushes the toolbar onto a second line */
-.runstat{flex:1 1 0;min-width:0;text-align:end;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--copper)}
+.runstat{flex:1 1 0;min-width:0;text-align:end;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--copper)}
 .runstat.idle{color:var(--ink)}
 .runstat.err{color:var(--crit)}
 .runstat.warn{color:var(--copper-bright)}
@@ -114,9 +113,9 @@ h1 em{font-style:italic;color:var(--copper)}
 .card::after{bottom:-1px;inset-inline-end:-1px;border-width:0 1px 1px 0}
 [dir=rtl] .card::before{border-width:1px 1px 0 0}
 [dir=rtl] .card::after{border-width:0 0 1px 1px}
-.cardhead{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.cardhead{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:var(--fs-xs);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .cardhead .num{color:var(--copper);direction:ltr}
-.badge{margin-inline-start:auto;color:var(--copper);border:1px solid var(--line-copper);padding:2px 7px;letter-spacing:.14em;font-size:var(--fs-xs);white-space:nowrap}
+.badge{font-weight:400;margin-inline-start:auto;color:var(--copper);border:1px solid var(--line-copper);padding:2px 7px;letter-spacing:.06em;font-size:var(--fs-xs);white-space:nowrap}
 
 /* ---------------- tables ---------------- */
 .tscroll{overflow:auto}
@@ -124,7 +123,7 @@ h1 em{font-style:italic;color:var(--copper)}
 .rows.short{max-height:230px}
 table{border-collapse:collapse;width:100%;font-size:var(--fs-sm)}
 thead th{
-  text-align:end;font-weight:400;color:var(--ink);font-size:var(--fs-xs);letter-spacing:.16em;
+  text-align:end;font-weight:400;color:var(--ink);font-size:var(--fs-xs);letter-spacing:.06em;
   text-transform:uppercase;padding:0 6px 7px;border-bottom:1px solid var(--line);white-space:nowrap;
   position:sticky;top:0;z-index:1;background:#141310;
 }
@@ -198,25 +197,25 @@ select option{background:#141310;color:var(--ink)}
 
 /* ---------------- buttons + fields ---------------- */
 .btn{
-  font:inherit;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;background:transparent;
+  font:inherit;font-weight:500;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;background:transparent;
   color:var(--ink);border:1px solid var(--line);padding:7px 12px;cursor:pointer;transition:.15s;border-radius:0;
 }
 .btn:hover:not(:disabled){color:var(--copper-bright);border-color:var(--line-copper);background:rgba(184,149,106,.07)}
 .btn:focus-visible{outline:1px solid var(--copper);outline-offset:2px}
 /* disabled: white text kept, dashed border and a not-allowed cursor mark the state */
 .btn:disabled{border-style:dashed;cursor:not-allowed}
-.btn-primary{background:var(--copper);border-color:var(--copper);color:#14120f;font-weight:500;padding:11px 24px;letter-spacing:.2em}
+.btn-primary{background:var(--copper);border-color:var(--copper);color:#14120f;font-weight:500;padding:11px 24px;letter-spacing:.08em}
 .btn-primary:hover:not(:disabled){background:var(--copper-bright);border-color:var(--copper-bright);color:#14120f}
 .btn-primary.busy{background:transparent;color:var(--copper-bright);border-color:var(--copper)}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
 .field{display:flex;flex-direction:column;gap:3px}
-.field label{font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.field label{font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .field input[type=number],.field input[type=text]{border-bottom:1px solid var(--line);text-align:start;font-size:var(--fs-md)}
 .field select{font-size:var(--fs-md)}
 .col-inputs .field select{font-size:var(--fs-sm)}
 .field #qtyCode{direction:ltr}
 .tglwrap{display:flex;align-items:center;gap:8px;padding-top:4px}
-.status{font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);min-height:14px}
+.status{font-size:var(--fs-xs);letter-spacing:.05em;text-transform:uppercase;color:var(--ink);min-height:14px}
 .status.ok{color:var(--good)}
 .status.err{color:var(--crit)}
 p.status{margin:8px 0 0;line-height:1.6}
@@ -224,13 +223,13 @@ p.status{margin:8px 0 0;line-height:1.6}
 /* ---------------- upload, files, layers ---------------- */
 .drop{border:1px dashed var(--line);padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .drop.over{border-color:var(--copper);background:rgba(184,149,106,.06)}
-.drop .hint{font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--ink);flex-basis:100%}
+.drop .hint{font-size:var(--fs-xs);letter-spacing:.05em;text-transform:uppercase;color:var(--ink);flex-basis:100%}
 .files{margin-top:10px;border-top:1px solid var(--line)}
 .file{padding:8px 0;border-bottom:1px solid var(--line-soft)}
 .file .top{display:flex;align-items:center;gap:8px}
 .file .fname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-sm);direction:ltr;text-align:start}
 [dir=rtl] .file .fname{text-align:right}
-.file .cnt{font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--copper);white-space:nowrap}
+.file .cnt{font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--copper);white-space:nowrap}
 .file .opts{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-top:6px}
 .file .opts .field{flex:none;min-width:92px}
 .file .opts .field input,.file .opts .field select{font-size:var(--fs-sm)}
@@ -249,14 +248,14 @@ p.status{margin:8px 0 0;line-height:1.6}
 details{margin-top:10px;border-top:1px solid var(--line);padding-top:9px}
 summary{
   display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;
-  font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
+  font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
 }
 summary::-webkit-details-marker{display:none}
 summary::before{content:"+";color:var(--copper);margin-inline-end:2px}
 details[open] summary::before{content:"–"}
 summary:hover{color:var(--copper)}
 summary:focus-visible{outline:1px solid var(--copper);outline-offset:3px}
-.tag{margin-inline-start:auto;color:var(--copper);letter-spacing:.16em}
+.tag{margin-inline-start:auto;color:var(--copper);letter-spacing:.06em}
 textarea{
   width:100%;margin-top:8px;min-height:74px;background:rgba(0,0,0,.28);border:1px solid var(--line);
   color:var(--ink);font:inherit;font-size:var(--fs-sm);padding:8px;resize:vertical;border-radius:0;
@@ -265,9 +264,9 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 
 /* ---------------- report ---------------- */
 .sechead{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
-.sechead .num{color:var(--copper);font-size:var(--fs-sm);letter-spacing:.1em;direction:ltr}
-.sechead .title{font-size:var(--fs-sm);letter-spacing:.24em;text-transform:uppercase}
-.sechead .note2{margin-inline-start:auto;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.sechead .num{color:var(--copper);font-size:var(--fs-sm);letter-spacing:.04em;direction:ltr}
+.sechead .title{font-weight:500;font-size:var(--fs-sm);letter-spacing:.1em;text-transform:uppercase}
+.sechead .note2{margin-inline-start:auto;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .sechead .note2.stale{color:var(--copper-bright)}
 .sechead .note2.stale::after{content:" · " attr(data-stale)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
@@ -275,20 +274,20 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 /* the four cards share their rows, so a label that wraps onto two lines never pushes its figure below the others */
 .stat{grid-row:span 3;grid-template-rows:subgrid}
 .stat:first-child{border-inline-start:0}
-.stat .k{font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
-.stat .v{font-family:var(--serif);font-size:34px;line-height:1;color:var(--ink);direction:ltr;text-align:start}
+.stat .k{font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.stat .v{font-family:var(--sans);font-weight:500;letter-spacing:-.02em;font-size:34px;line-height:1;color:var(--ink);direction:ltr;text-align:start}
 [dir=rtl] .stat .v{text-align:right}
-.stat .v small{font-family:var(--mono);font-size:12px;color:var(--ink);margin-left:3px}
+.stat .v small{font-family:var(--sans);font-weight:400;letter-spacing:0;font-size:12px;color:var(--ink);margin-left:3px}
 .stat .v.empty{font-size:20px;color:var(--ink)}
 .stat.accent .v{color:var(--copper-bright)}
 .stat .v.short{color:var(--crit)}
-.stat .sub{font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.stat .sub{font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .stat .sub.short{color:var(--crit)}
 .meter{height:3px;background:rgba(255,255,255,.08);margin-top:2px}
 .meter i{display:block;height:100%;background:var(--copper)}
 
 .band{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--line);padding:12px 14px;margin-top:14px;font-size:var(--fs-sm);line-height:1.6}
-.band .tagw{flex:none;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding-top:2px}
+.band .tagw{flex:none;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);padding-top:2px}
 .band.ok{border-color:rgba(127,160,106,.35);background:rgba(127,160,106,.06)}
 .band.ok .tagw{color:var(--good)}
 .band.short{border-color:rgba(212,112,90,.4);background:rgba(212,112,90,.07)}
@@ -301,32 +300,32 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 .shortlist i{font-style:normal;color:var(--crit)}
 
 .subhead{display:flex;align-items:baseline;gap:12px;margin:16px 0 8px}
-.subhead .title{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
-.subhead .note2{margin-inline-start:auto;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.subhead .title{font-weight:500;font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.subhead .note2{margin-inline-start:auto;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .repbox{position:relative;border:1px solid var(--line);min-height:220px;max-height:440px;overflow:auto;max-width:100%;flex:1}
 /* when the report box is tight, drop the mini bar and step the table text down a touch so all columns show */
 .repbox{container-type:inline-size}
 @container (max-width:640px){.repbox .rep{font-size:13px}.repbox .rep .bar{display:none}.repbox .rep thead th{letter-spacing:.04em;hyphens:auto;overflow-wrap:anywhere}.repbox .rep thead th,.repbox .rep tbody td,.repbox .rep tfoot td{padding-left:4px;padding-right:4px}}
 .repbox::after{content:"";position:sticky;display:block;bottom:0;inset-inline-end:0;margin-inline-start:auto;width:9px;height:9px;border:solid var(--line-copper);border-width:0 1px 1px 0;pointer-events:none;margin-top:-9px}
 /* header labels may wrap ("Part / m²") so the table fits its box at the larger type size */
-.rep thead th{padding:9px 6px;background:#131210;letter-spacing:.08em;white-space:normal;vertical-align:bottom;line-height:1.3}
+.rep thead th{padding:9px 6px;background:#131210;letter-spacing:.04em;white-space:normal;vertical-align:bottom;line-height:1.3}
 .rep tbody td{padding:7px 6px}
 .rep tfoot td{padding:9px 6px;border-top:1px solid var(--line-copper);text-align:end;color:var(--copper-bright)}
-.rep tfoot td:first-child{text-align:start;letter-spacing:.14em;text-transform:uppercase;font-size:var(--fs-xs)}
+.rep tfoot td:first-child{text-align:start;letter-spacing:.06em;text-transform:uppercase;font-size:var(--fs-xs)}
 .bar{display:inline-block;width:34px;height:5px;background:rgba(255,255,255,.08);vertical-align:middle;margin-inline-start:8px}
 .bar i{display:block;height:100%;background:var(--copper)}
 
 /* ---------------- viewer ---------------- */
 .viewer{border:1px solid var(--line);background:var(--ground-2);padding:12px}
-.viewhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.viewhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
 .viewhead b{color:var(--copper);font-weight:500}
 .viewhead .u{color:var(--ink)}
 .stage{height:clamp(240px,52vh,560px);display:flex;align-items:center;justify-content:center;direction:ltr}
 .stage svg{display:block;width:100%;height:100%}
 .stage .pt{cursor:pointer}
 .stage .pt:hover,.stage .pt.sel{fill-opacity:1}
-.ghost{width:100%;height:100%;border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink);font-size:var(--fs-sm);letter-spacing:.2em;text-transform:uppercase}
-.viewfoot{margin-top:9px;display:flex;justify-content:space-between;gap:6px 10px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.1em;color:var(--ink)}
+.ghost{width:100%;height:100%;border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink);font-size:var(--fs-sm);letter-spacing:.08em;text-transform:uppercase}
+.viewfoot{margin-top:9px;display:flex;justify-content:space-between;gap:6px 10px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.04em;color:var(--ink)}
 .viewfoot span{white-space:nowrap}
 .viewfoot .pick{flex-basis:100%;color:var(--copper-bright);unicode-bidi:plaintext;text-align:start;white-space:normal}
 .viewfoot .pick:empty{display:none}
@@ -339,7 +338,7 @@ textarea:focus{outline:none;border-color:var(--line-copper)}
 .legend em{font-style:normal;color:var(--ink);margin-inline-start:6px}
 .viewctl{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap}
 .viewctl .btn{padding:6px 11px}
-.counter{font-size:var(--fs-xs);letter-spacing:.16em;color:var(--ink);min-width:52px;text-align:center;direction:ltr}
+.counter{font-size:var(--fs-xs);letter-spacing:.06em;color:var(--ink);min-width:52px;text-align:center;direction:ltr}
 input[type=range]{flex:1;min-width:60px;-webkit-appearance:none;appearance:none;height:3px;background:rgba(255,255,255,.14);border:0;padding:0;cursor:pointer}
 input[type=range]:focus{outline:none}
 input[type=range]:focus-visible{outline:1px solid var(--copper);outline-offset:6px}
@@ -353,12 +352,12 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;background:var(--copp
 
 /* ---------------- empty states ---------------- */
 .empty{display:grid;place-items:center;text-align:center;gap:6px;padding:26px 16px;color:var(--ink);font-size:var(--fs-sm)}
-.empty .h{font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.empty .h{font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .empty .h::before{content:"— "}
 
 footer{
   margin-top:22px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;
-  gap:16px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);
+  gap:16px;flex-wrap:wrap;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
 }
 footer b{color:var(--copper);font-weight:500}
 
@@ -420,6 +419,15 @@ footer b{color:var(--copper);font-weight:500}
   .stage{height:clamp(220px,46vh,430px)}
   .runbar .vrule{display:none}
   .runstat{flex-basis:100%}
+}
+/* phone: the input tables size their columns to their content, so every column fits the card in EN, TR and AR */
+@media(max-width:600px){
+  .stable{table-layout:auto}
+  .stable th:nth-child(n){width:auto}
+  .col-inputs thead th,.col-inputs tbody td{padding-left:2px;padding-right:2px}
+  .namecell{min-width:60px}
+  .col-thumb{width:38px}
+  .col-size,.col-area,.col-qty{width:auto}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -2612,6 +2620,12 @@ function applyLang(l) {
   try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  if (lang === 'ar' && !document.getElementById('arFont')) {
+    var link = document.createElement('link');
+    link.id = 'arFont'; link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap';
+    document.head.appendChild(link);
+  }
   var i, els = document.querySelectorAll('[data-i18n]');
   for (i = 0; i < els.length; i++) els[i].textContent = t(els[i].getAttribute('data-i18n'));
   els = document.querySelectorAll('[data-i18n-ph]');
