@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import Navigation from '@/components/Navigation';
 import { LanguageProvider } from '@/lib/LanguageContext';
@@ -51,6 +52,9 @@ export default function RootLayout({
             </main>
           </LanguageProvider>
         </ThemeProvider>
+        {/* Vercel Web Analytics: cookieless page views for every Next.js page. The standalone tool pages
+            in public/ (nestri, nestri-pro, ipunch) carry their own copy of the script. */}
+        <Analytics />
       </body>
     </html>
   );
