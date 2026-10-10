@@ -10,8 +10,8 @@ import { SHOP_ENABLED, DESIGN_ENABLED } from '@/lib/features';
 const ALL_NAV_HREFS = [
   { href: '/architecture', key: 'architecture', descKey: 'archDesc'   },
   { href: '/design',       key: 'design',       descKey: 'designDesc' },
-  { href: '/tools',        key: 'tools',        descKey: 'toolsDesc'  },
   { href: '/fabrication',  key: 'fabrication',  descKey: 'fabDesc'    },
+  { href: '/tools',        key: 'tools',        descKey: 'toolsDesc'  },
   { href: '/shop',         key: 'shop',         descKey: 'shopDesc'   },
   { href: '/journal',      key: 'journal',      descKey: 'journalDesc'},
   { href: '/contact',      key: 'contact',      descKey: 'contactDesc'},
@@ -22,7 +22,12 @@ const ALL_NAV_HREFS = [
 const NAV_HREFS = ALL_NAV_HREFS.filter(item =>
   (SHOP_ENABLED || item.href !== '/shop') && (DESIGN_ENABLED || item.href !== '/design'));
 
-const MOBILE_NUMS = ['01', '02', '03', '04', '05', '06', '07', '08'] as const;
+// the Catalogue item (desktop popover / mobile link) sits between these two groups, just before Journal
+const CAT_AT = NAV_HREFS.findIndex(item => item.href === '/journal');
+const NAV_BEFORE_CAT = NAV_HREFS.slice(0, CAT_AT);
+const NAV_AFTER_CAT  = NAV_HREFS.slice(CAT_AT);
+
+const num = (i: number) => String(i + 1).padStart(2, '0');
 
 export default function Navigation() {
   const { lang, setLang, t } = useLanguage();
@@ -115,6 +120,17 @@ export default function Navigation() {
               <span style={{ color: '#b8956a' }}>{t('nav.wordmark')}</span>
             </Link>
 
+            {NAV_BEFORE_CAT.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link${pathname === item.href ? ' nav-link--active' : ''}`}
+                role="listitem"
+              >
+                {t(`nav.${item.key}`)}
+              </Link>
+            ))}
+
             {/* Catalogue hover popover */}
             <div
               className="nav-cat-wrap"
@@ -158,7 +174,7 @@ export default function Navigation() {
               )}
             </div>
 
-            {NAV_HREFS.map((item) => (
+            {NAV_AFTER_CAT.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -305,9 +321,23 @@ export default function Navigation() {
 
         {/* Nav items */}
         <nav aria-label="Mobile navigation links">
-          {/* Catalogue: the page holds the web preview and the PDF download */}
+          {/* same order as the desktop bar; Catalogue opens the page with the web preview and the PDF download */}
+          {NAV_BEFORE_CAT.map((item, i) => (
+            <div key={item.href} className="mobile-nav-item">
+              <span className="mobile-nav-num">{num(i)}</span>
+              <Link
+                href={item.href}
+                className={`mobile-nav-label${pathname === item.href ? ' mobile-nav-label--active' : ''}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {t(`nav.${item.key}`)}
+              </Link>
+              <span className="mobile-nav-desc">{t(`nav.${item.descKey}`)}</span>
+            </div>
+          ))}
+
           <div className="mobile-nav-item">
-            <span className="mobile-nav-num">00</span>
+            <span className="mobile-nav-num">{num(NAV_BEFORE_CAT.length)}</span>
             <Link
               href="/catalogue"
               className={`mobile-nav-label${pathname === '/catalogue' ? ' mobile-nav-label--active' : ''}`}
@@ -318,9 +348,9 @@ export default function Navigation() {
             <span className="mobile-nav-desc">{t('nav.catalogueDesc')}</span>
           </div>
 
-          {NAV_HREFS.map((item, i) => (
+          {NAV_AFTER_CAT.map((item, i) => (
             <div key={item.href} className="mobile-nav-item">
-              <span className="mobile-nav-num">{MOBILE_NUMS[i]}</span>
+              <span className="mobile-nav-num">{num(NAV_BEFORE_CAT.length + 1 + i)}</span>
               <Link
                 href={item.href}
                 className={`mobile-nav-label${pathname === item.href ? ' mobile-nav-label--active' : ''}`}
