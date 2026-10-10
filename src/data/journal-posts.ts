@@ -23,6 +23,8 @@ export interface JournalPost {
   year: string;
   /** Publication month, e.g. "12" */
   month: string;
+  /** Publication day of the month, e.g. "05" */
+  day: string;
   /** Estimated reading time in minutes */
   readingMins: number;
   /** One post is the large, full-width featured article at the top */
@@ -51,8 +53,9 @@ const posts: JournalPost[] = [
     excerpt:
       'The gap between what architects draw and what fabricators build is where most facade projects lose quality, budget, and time.',
     category: 'Process',
-    year: '2024',
-    month: '12',
+    year: '2026',
+    month: '10',
+    day: '10',
     readingMins: 6,
     featured: true,
     body: [
@@ -75,8 +78,9 @@ const posts: JournalPost[] = [
     excerpt:
       'A single panel-grouping algorithm collapsed hundreds of "unique" panels into a handful of types — and took the fabrication bill down with them.',
     category: 'Computational',
-    year: '2024',
-    month: '11',
+    year: '2026',
+    month: '10',
+    day: '10',
     readingMins: 5,
     body: [
       { type: 'p', text: 'On a freeform facade, almost every panel is technically unique. Technically. The differences between many of them are smaller than the fabrication tolerance — which means treating them as distinct is paying for precision no one can measure.' },
@@ -96,8 +100,9 @@ const posts: JournalPost[] = [
     excerpt:
       "Bend allowance isn't a fabrication footnote. It decides whether your folded geometry closes — or fails on the brake.",
     category: 'Fabrication',
-    year: '2024',
+    year: '2026',
     month: '10',
+    day: '10',
     readingMins: 4,
     body: [
       { type: 'p', text: 'When sheet metal is folded, the material on the outside of the bend stretches and the inside compresses. Somewhere between them sits a neutral axis that does neither. Where that axis sits — expressed as the k-factor — determines how much flat material a bend actually consumes.' },
@@ -117,8 +122,9 @@ const posts: JournalPost[] = [
     excerpt:
       'Building a sheet-metal unfolder from scratch in GHPython — geometry, k-factor, and DXF export, one decision at a time.',
     category: 'Tools',
-    year: '2024',
-    month: '09',
+    year: '2026',
+    month: '10',
+    day: '10',
     readingMins: 7,
     body: [
       { type: 'p', text: 'Commercial unfolding tools exist, but building your own teaches you exactly what the operation is — and lets you bend it to the way you actually work. This is the shape of the GHPython tool behind AMD NSRI.' },
@@ -140,8 +146,9 @@ const posts: JournalPost[] = [
     excerpt:
       'Following the Hasyl Canopy from parametric model to fabricated reality — every decision that made it buildable.',
     category: 'Process',
-    year: '2024',
-    month: '08',
+    year: '2026',
+    month: '10',
+    day: '10',
     readingMins: 8,
     body: [
       { type: 'p', text: 'The Hasyl Canopy began as a pattern and ended as a structure standing at a building entrance. Between those two points is a chain of decisions, each one narrowing the distance between intention and assembly.' },
@@ -163,8 +170,9 @@ const posts: JournalPost[] = [
     excerpt:
       'Why I left the comfort of pure architecture to build the bridge between design and fabrication.',
     category: 'Reflection',
-    year: '2024',
-    month: '07',
+    year: '2026',
+    month: '10',
+    day: '10',
     readingMins: 3,
     body: [
       { type: 'p', text: 'I trained as an architect, but I kept finding myself drawn to the parts of the work most architects hand off — the panel that has to fold, the joint that has to close, the file the workshop actually opens.' },

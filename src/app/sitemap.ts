@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
+import { SHOP_ENABLED, DESIGN_ENABLED } from '@/lib/features';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -11,10 +12,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }[] = [
     { path: '/',             changeFrequency: 'monthly', priority: 1 },
     { path: '/architecture', changeFrequency: 'monthly', priority: 0.9 },
-    { path: '/design',       changeFrequency: 'monthly', priority: 0.8 },
+    // the Design section is parked for now (src/lib/features.ts)
+    ...(DESIGN_ENABLED ? [{ path: '/design', changeFrequency: 'monthly' as const, priority: 0.8 }] : []),
     { path: '/fabrication',  changeFrequency: 'monthly', priority: 0.8 },
     { path: '/tools',        changeFrequency: 'monthly', priority: 0.8 },
-    { path: '/shop',         changeFrequency: 'weekly',  priority: 0.7 },
+    { path: '/catalogue',    changeFrequency: 'monthly', priority: 0.7 },
+    // the Shop is parked for now (src/lib/features.ts)
+    ...(SHOP_ENABLED ? [{ path: '/shop', changeFrequency: 'weekly' as const, priority: 0.7 }] : []),
     { path: '/journal',      changeFrequency: 'weekly',  priority: 0.7 },
     { path: '/identity',     changeFrequency: 'yearly',  priority: 0.6 },
     { path: '/contact',      changeFrequency: 'yearly',  priority: 0.5 },

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useLanguage } from '@/lib/LanguageContext';
+import { DESIGN_ENABLED } from '@/lib/features';
 
 /* ─── types & data ──────────────────────────────────────────────────── */
 type GalleryImage = { src: string; caption: string; w: number; h: number };
@@ -330,8 +331,12 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
 /* ─── page ──────────────────────────────────────────────────────────── */
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const { t, tv } = useLanguage();
-  const project = CASE_STUDIES[params.slug];
-  if (!project) notFound();
+  const found = CASE_STUDIES[params.slug];
+  if (!found) notFound();
+  // while Design is parked (src/lib/features.ts), a back link to /design returns to Architecture instead
+  const project = !DESIGN_ENABLED && found.backHref === '/design'
+    ? { ...found, backHref: undefined, backLabel: undefined }
+    : found;
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [scale, setScale]   = useState(1);

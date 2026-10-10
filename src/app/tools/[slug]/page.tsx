@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { useLanguage } from '@/lib/LanguageContext';
 import { toolsBySlug, type ToolStatus } from '@/data/tools';
+import { SHOP_ENABLED } from '@/lib/features';
 
 const STATUS_MOD: Record<ToolStatus, string> = {
   'Live': 'td-status--live',
@@ -205,7 +206,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               )}
               {tool.pricingNote && <p className="td-cta-note">{tv(tool.pricingNote)}</p>}
             </div>
-          ) : comingSoon ? null : isProduct ? (
+          ) : comingSoon ? null : isProduct && SHOP_ENABLED ? (
             <Link href="/shop" className="td-btn">{t('tools.getTool')} →</Link>
           ) : (
             <Link href="/contact" className="td-btn">{t('tools.commission')} →</Link>

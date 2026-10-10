@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/lib/LanguageContext';
 import { LANGS } from '@/lib/translations';
+import { SHOP_ENABLED, DESIGN_ENABLED } from '@/lib/features';
 
-const NAV_HREFS = [
+const ALL_NAV_HREFS = [
   { href: '/architecture', key: 'architecture', descKey: 'archDesc'   },
   { href: '/design',       key: 'design',       descKey: 'designDesc' },
   { href: '/tools',        key: 'tools',        descKey: 'toolsDesc'  },
@@ -16,6 +17,10 @@ const NAV_HREFS = [
   { href: '/contact',      key: 'contact',      descKey: 'contactDesc'},
   { href: '/identity',     key: 'identity',     descKey: 'identityDesc'},
 ] as const;
+
+// the Shop and Design are parked for now (src/lib/features.ts); the mobile numbering follows the visible items
+const NAV_HREFS = ALL_NAV_HREFS.filter(item =>
+  (SHOP_ENABLED || item.href !== '/shop') && (DESIGN_ENABLED || item.href !== '/design'));
 
 const MOBILE_NUMS = ['01', '02', '03', '04', '05', '06', '07', '08'] as const;
 
@@ -122,7 +127,7 @@ export default function Navigation() {
             >
               <button
                 type="button"
-                className="nav-link nav-cat-trigger"
+                className={`nav-link nav-cat-trigger${pathname === '/catalogue' ? ' nav-link--active' : ''}`}
                 onClick={openCat}
                 aria-haspopup="true"
                 aria-expanded={catOpen}
@@ -133,18 +138,17 @@ export default function Navigation() {
 
               {catOpen && (
                 <div id="nav-cat-pop" className="nav-cat-pop" role="dialog" aria-label={t('nav.catalogue')}>
-                  <a
-                    href="/catalogue/amd-nsri-catalogue.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/catalogue"
                     className="nav-cat-card"
                     style={{ animationDelay: '0ms' }}
+                    onClick={() => setCatOpen(false)}
                   >
                     {t('nav.catPreview')}
-                  </a>
+                  </Link>
                   <a
                     href="/catalogue/amd-nsri-catalogue.pdf"
-                    download
+                    download="AMD-NSRI-Catalogue.pdf"
                     className="nav-cat-card"
                     style={{ animationDelay: '60ms' }}
                   >
@@ -301,18 +305,17 @@ export default function Navigation() {
 
         {/* Nav items */}
         <nav aria-label="Mobile navigation links">
-          {/* Catalogue download item */}
+          {/* Catalogue: the page holds the web preview and the PDF download */}
           <div className="mobile-nav-item">
             <span className="mobile-nav-num">00</span>
-            <a
-              href="/catalogue/amd-nsri-catalogue.pdf"
-              className="mobile-nav-label"
-              download
+            <Link
+              href="/catalogue"
+              className={`mobile-nav-label${pathname === '/catalogue' ? ' mobile-nav-label--active' : ''}`}
               onClick={() => setMenuOpen(false)}
             >
               {t('nav.catalogue')}
-            </a>
-            <span className="mobile-nav-desc">{t('nav.downloadPdf')} →</span>
+            </Link>
+            <span className="mobile-nav-desc">{t('nav.catalogueDesc')}</span>
           </div>
 
           {NAV_HREFS.map((item, i) => (

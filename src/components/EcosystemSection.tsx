@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
+import { SHOP_ENABLED, DESIGN_ENABLED } from '@/lib/features';
 
-const CARDS = [
+const ALL_CARDS = [
   {
     num: '01',
     titleKey: 'eco.card1Title',
@@ -45,6 +46,11 @@ const CARDS = [
     link: '/shop',
   },
 ];
+
+// the AMD Shop and AMD Design cards are parked with their sections (src/lib/features.ts); the numbers follow the visible cards
+const CARDS = ALL_CARDS
+  .filter(card => (SHOP_ENABLED || card.link !== '/shop') && (DESIGN_ENABLED || card.link !== '/design'))
+  .map((card, i) => ({ ...card, num: String(i + 1).padStart(2, '0') }));
 
 export default function EcosystemSection() {
   const { t } = useLanguage();

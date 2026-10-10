@@ -16,7 +16,7 @@ function PostCard({ post }: { post: JournalPost }) {
   return (
     <Link href={`/journal/${post.slug}`} className="jc" aria-label={`${post.title} — read article`}>
       <span className="jc-top">
-        <span className="jc-date">{post.year} · {post.month}</span>
+        <span className="jc-date">{post.year} · {post.month} · {post.day}</span>
         <span className="jc-cat">{tv(post.category)}</span>
       </span>
 
@@ -42,7 +42,7 @@ function FeaturedCard({ post }: { post: JournalPost }) {
       <span className="jf-text">
         <span className="jf-top">
           <span className="jf-flag">{t('journal.featured')}</span>
-          <span className="jf-date">{post.year} · {post.month}</span>
+          <span className="jf-date">{post.year} · {post.month} · {post.day}</span>
           <span className="jf-cat">{tv(post.category)}</span>
         </span>
 

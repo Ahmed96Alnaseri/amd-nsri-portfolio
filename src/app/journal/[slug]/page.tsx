@@ -29,7 +29,7 @@ export default function JournalArticlePage({ params }: { params: { slug: string 
       <Link href="/journal" className="ja-back">← {t('journal.back')}</Link>
 
       <p className="ja-eyebrow">
-        {tv(post.category)} · {post.year} · {post.month}
+        {tv(post.category)} · {post.year} · {post.month} · {post.day}
         <span className="ja-eyebrow-read"> — {post.readingMins} {t('journal.minRead')}</span>
       </p>
 
@@ -53,7 +53,7 @@ export default function JournalArticlePage({ params }: { params: { slug: string 
             {related.map(r => (
               <Link key={r.slug} href={`/journal/${r.slug}`} className="ja-rel">
                 <span className="ja-rel-top">
-                  <span className="ja-rel-date">{r.year} · {r.month}</span>
+                  <span className="ja-rel-date">{r.year} · {r.month} · {r.day}</span>
                   <span className="ja-rel-cat">{tv(r.category)}</span>
                 </span>
                 <span className="ja-rel-title">{tv(r.title)}</span>

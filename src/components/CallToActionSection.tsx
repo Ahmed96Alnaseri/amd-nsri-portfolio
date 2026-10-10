@@ -3,13 +3,17 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
+import { DESIGN_ENABLED } from '@/lib/features';
 
-const WORKS = [
+const ALL_WORKS = [
   { nameKey: 'nav.architecture', href: '/architecture' },
   { nameKey: 'nav.design',       href: '/design' },
   { nameKey: 'nav.fabrication',  href: '/fabrication' },
   { nameKey: 'nav.tools',        href: '/tools' },
 ] as const;
+
+// Design is parked for now (src/lib/features.ts)
+const WORKS = ALL_WORKS.filter(w => DESIGN_ENABLED || w.href !== '/design');
 
 export default function CallToActionSection() {
   const { t } = useLanguage();
