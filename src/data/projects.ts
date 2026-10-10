@@ -1,6 +1,6 @@
-export type ProjectStatus = 'Completed' | 'In Production' | 'Released' | 'Concept' | 'Fabricated';
+export type ProjectStatus = 'Completed' | 'In Production' | 'Released' | 'Concept' | 'Fabricated' | 'Live';
 
-export type ProjectCategory = 'Architecture' | 'Fabrication' | 'Tools' | 'Design' | 'Facade';
+export type ProjectCategory = 'Architecture' | 'Fabrication' | 'Tools' | 'Design' | 'Facade' | 'Digital Tool';
 
 export interface Project {
   /** Zero-padded project number, e.g. "001" */
@@ -17,8 +17,14 @@ export interface Project {
   tags: string[];
   /** Production keywords revealed on hover over the image */
   overlayKeywords: string[];
-  /** URL for the case study page */
+  /** URL for the case study page (for a tool card: the tool itself) */
   caseStudyLink: string;
+  /** A tool card instead of a project: its own cover image, translated title and an "Open Tool" link */
+  tool?: {
+    coverImage: string;
+    /** English CTA label, translated through tv() */
+    ctaLabel: string;
+  };
 }
 
 const projects: Project[] = [
@@ -74,6 +80,22 @@ const projects: Project[] = [
     overlayKeywords: ['GRADIENT DENSITY', 'CNC PUNCHED', 'FLAT PANELS', 'NIGHT GLOW'],
     caseStudyLink: '/architecture/kerkuk-restaurant',
   },
+  {
+    num: '005',
+    title: 'IPunch — Image to Perforation',
+    slug: 'ipunch',
+    category: 'Digital Tool',
+    year: '2026',
+    status: 'Live',
+    concept:
+      'Converts grayscale imagery into variable-diameter perforation fields, translating pixel brightness into controlled hole sizes and density, with fabrication-ready DXF output.',
+    tags: ['Image Sampling', 'Variable Perforation', 'DXF Output'],
+    overlayKeywords: ['GRAYSCALE MAPPING', 'VARIABLE DIAMETERS', 'PUNCH SCHEDULE', 'CNC READY'],
+    caseStudyLink: '/ipunch.html',
+    tool: { coverImage: '/tools/ipunch-work.webp', ctaLabel: 'Open Tool' },
+  },
+  /* Taken out of Selected Works (its slot now shows IPunch) but kept here: put its slug back in
+     SELECTED_WORK_SLUGS (src/components/FeaturedWorksSection.tsx) to show it again. */
   {
     num: '005',
     title: 'Balıkesir Cumhuriyet Meydanı',

@@ -6,20 +6,23 @@ import curatedProjects from '@/data/projects';
 import { PROJECTS as ARCHITECTURE_PROJECTS, slugify } from '@/data/architectureProjects';
 import { useLanguage } from '@/lib/LanguageContext';
 
-/** Selected Works: exactly these projects, in this order — matched by slug against the architecture PROJECTS array. */
+/** Selected Works: exactly these entries of src/data/projects.ts, in this order. Projects take their cover from the
+    architecture PROJECTS array; a tool card (IPunch) carries its own. Slot 005 was 'balikesir-cumhuriyet-meydani'. */
 const SELECTED_WORK_SLUGS = [
   'hasyl-canopy',
   'lexus-toyota-showroom-slemani',
   'national-hospital-baghdad',
   'kerkuk-restaurant',
-  'balikesir-cumhuriyet-meydani',
+  'ipunch',
   'ppg-factory-facade',
 ];
 
 const projects = SELECTED_WORK_SLUGS.map((slug) => {
-  const arch = ARCHITECTURE_PROJECTS.find((p) => (p.slug ?? slugify(p.title)) === slug);
   const curated = curatedProjects.find((p) => p.slug === slug);
-  if (!arch || !curated) return null;
+  if (!curated) return null;
+  if (curated.tool) return { ...curated, coverImage: curated.tool.coverImage };
+  const arch = ARCHITECTURE_PROJECTS.find((p) => (p.slug ?? slugify(p.title)) === slug);
+  if (!arch) return null;
   return { ...curated, coverImage: arch.coverImage };
 }).filter((p): p is NonNullable<typeof p> => p !== null);
 
@@ -136,7 +139,8 @@ export default function FeaturedWorksSection() {
               </div>
 
               {/* Title */}
-              <h3 className="work-card-title">{project.title}</h3>
+              {/* project titles are names and stay as written; a tool title is translated */}
+              <h3 className="work-card-title">{project.tool ? tv(project.title) : project.title}</h3>
 
               {/* Concept */}
               <p className="work-card-concept">{tv(project.concept)}</p>
@@ -149,8 +153,12 @@ export default function FeaturedWorksSection() {
               </div>
 
               {/* CTA */}
-              <a href={project.caseStudyLink} className="work-card-cta" aria-label={`View case study for ${project.title}`}>
-                <span>{t('common.viewCaseStudy')}</span>
+              <a
+                href={project.caseStudyLink}
+                className="work-card-cta"
+                aria-label={project.tool ? `${tv(project.tool.ctaLabel)}: ${tv(project.title)}` : `View case study for ${project.title}`}
+              >
+                <span>{project.tool ? tv(project.tool.ctaLabel) : t('common.viewCaseStudy')}</span>
                 <span className="work-card-cta-arrow">→</span>
               </a>
             </div>

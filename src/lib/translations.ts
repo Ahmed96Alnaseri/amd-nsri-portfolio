@@ -1313,6 +1313,16 @@ const VALUES: Record<Lang, ValueMap> = {
     'RATIONALIZATION': 'RASYONALİZASYON',
     'SUBSTRUCTURE': 'ALT YAPI',
     'CNC READY': 'CNC HAZIR',
+    // Selected Works — IPunch tool card
+    'IPunch — Image to Perforation': 'IPunch — Görüntüden Perforasyona',
+    'Converts grayscale imagery into variable-diameter perforation fields, translating pixel brightness into controlled hole sizes and density, with fabrication-ready DXF output.':
+      'Gri tonlamalı görselleri değişken çaplı perforasyon alanlarına dönüştürür; piksel parlaklığını kontrollü delik boyutlarına ve yoğunluğuna çevirir, üretime hazır DXF çıktısı verir.',
+    'Image Sampling': 'Görüntü Örnekleme',
+    'Variable Perforation': 'Değişken Perforasyon',
+    'DXF Output': 'DXF Çıktısı',
+    'GRAYSCALE MAPPING': 'GRİ TON EŞLEME',
+    'VARIABLE DIAMETERS': 'DEĞİŞKEN ÇAPLAR',
+    'PUNCH SCHEDULE': 'ZIMBA LİSTESİ',
     'UNFOLDING': 'AÇINIM',
     'TOLERANCE STUDY': 'TOLERANS ÇALIŞMASI',
     'JOINT DETAIL': 'BİRLEŞİM DETAYI',
@@ -1747,6 +1757,16 @@ const VALUES: Record<Lang, ValueMap> = {
     'RATIONALIZATION': 'ترشيد',
     'SUBSTRUCTURE': 'بنية فرعية',
     'CNC READY': 'جاهز CNC',
+    // Selected Works — IPunch tool card
+    'IPunch — Image to Perforation': 'IPunch — من الصورة إلى التثقيب',
+    'Converts grayscale imagery into variable-diameter perforation fields, translating pixel brightness into controlled hole sizes and density, with fabrication-ready DXF output.':
+      'يحوّل الصور ذات التدرّج الرمادي إلى حقول تثقيب متغيّرة الأقطار، فيترجم سطوع البكسل إلى أحجام ثقوب وكثافة مضبوطة، مع مخرجات DXF جاهزة للتصنيع.',
+    'Image Sampling': 'أخذ عيّنات الصورة',
+    'Variable Perforation': 'تثقيب متغيّر',
+    'DXF Output': 'مخرجات DXF',
+    'GRAYSCALE MAPPING': 'مطابقة التدرّج الرمادي',
+    'VARIABLE DIAMETERS': 'أقطار متغيّرة',
+    'PUNCH SCHEDULE': 'جدول التثقيب',
     'UNFOLDING': 'فرد',
     'TOLERANCE STUDY': 'دراسة تفاوت',
     'JOINT DETAIL': 'تفصيل وصلة',
