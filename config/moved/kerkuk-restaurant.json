@@ -1,0 +1,45 @@
+{
+ "_comment": "Images of kerkuk-restaurant replaced by web-optimised WebP; originals in /_originals (git-ignored). Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/projects/kerkuk-restaurant/img-3259.jpg",
+   "to": "/projects/kerkuk-restaurant/img-3259.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/img-3260.jpg",
+   "to": "/projects/kerkuk-restaurant/img-3260.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/img-3261.jpg",
+   "to": "/projects/kerkuk-restaurant/img-3261.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/img-3262.jpg",
+   "to": "/projects/kerkuk-restaurant/img-3262.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/img-3264.jpg",
+   "to": "/projects/kerkuk-restaurant/img-3264.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/img-3265.jpg",
+   "to": "/projects/kerkuk-restaurant/img-3265.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/img-3266.jpg",
+   "to": "/projects/kerkuk-restaurant/img-3266.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/restaurant-facade.png",
+   "to": "/projects/kerkuk-restaurant/restaurant-facade.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/resturant-facade-part-1.png",
+   "to": "/projects/kerkuk-restaurant/resturant-facade-part-1.webp"
+  },
+  {
+   "from": "/projects/kerkuk-restaurant/resturant-facade-part-2.png",
+   "to": "/projects/kerkuk-restaurant/resturant-facade-part-2.webp"
+  }
+ ]
+}
