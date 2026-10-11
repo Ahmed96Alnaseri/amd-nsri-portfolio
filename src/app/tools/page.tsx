@@ -42,7 +42,9 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
         <span className="tc-top">
           <span className="tc-platform">{tool.platform}</span>
           <span className="tc-top-right">
-            {tool.cardBadge ? (
+            {tool.cardTag ? (
+              <span className="tc-platform">{tv(tool.cardTag)}</span>
+            ) : tool.cardBadge ? (
               <span className="tc-price">{tv(tool.cardBadge)}</span>
             ) : (
               <>
@@ -148,6 +150,8 @@ export default function ToolsPage() {
           gap: 24px;
           align-content: start;
         }
+        /* an odd card count would leave a hole in the last row: the last card takes the full width */
+        .tp-grid > .tc:last-child:nth-child(odd) { grid-column: 1 / -1; }
         .tp-empty {
           grid-column: 1/-1; padding: 80px 0; text-align: center;
           font-size: 13px; letter-spacing: .08em; color: var(--color-text-meta);

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
 import { SHOP_ENABLED, DESIGN_ENABLED } from '@/lib/features';
+import { PROJECTS, slugify } from '@/data/architectureProjects';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -23,6 +24,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/identity',     changeFrequency: 'yearly',  priority: 0.6 },
     { path: '/contact',      changeFrequency: 'yearly',  priority: 0.5 },
   ];
+
+  // each project in the Architecture listing has its own page
+  for (const p of PROJECTS) {
+    routes.push({ path: `/architecture/${p.slug ?? slugify(p.title)}`, changeFrequency: 'yearly', priority: 0.6 });
+  }
 
   return routes.map(({ path, changeFrequency, priority }) => ({
     url: `${SITE_URL}${path}`,

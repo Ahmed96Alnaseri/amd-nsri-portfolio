@@ -24,9 +24,11 @@ export interface PageMetaOptions {
    * page so it doesn't render as "AMD NSRI — AMD NSRI".
    */
   absoluteTitle?: string;
+  /** Link-preview image (path under public/, ideally 1200×630). Without it the site's default preview is used. */
+  image?: { url: string; width: number; height: number; alt: string };
 }
 
-export function pageMetadata({ name, path, description, absoluteTitle }: PageMetaOptions): Metadata {
+export function pageMetadata({ name, path, description, absoluteTitle, image }: PageMetaOptions): Metadata {
   const fullTitle = absoluteTitle ?? `${name} — ${SITE_NAME}`;
   const url = `${SITE_URL}${path}`;
 
@@ -40,11 +42,13 @@ export function pageMetadata({ name, path, description, absoluteTitle }: PageMet
       type: 'website',
       url,
       siteName: SITE_NAME,
+      ...(image ? { images: [image] } : {}),
     },
     twitter: {
       card: 'summary_large_image',
       title: fullTitle,
       description,
+      ...(image ? { images: [image.url] } : {}),
     },
   };
 }

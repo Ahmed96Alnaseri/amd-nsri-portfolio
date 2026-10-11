@@ -25,6 +25,8 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
   const isProduct = tool.type === 'product';
   const isQuote = tool.type === 'quote';
   const hasFeatures = !!(tool.featureGroups || tool.steps || tool.features.length);
+  // a service can list what it covers and then how it works: the feature list first, the steps below
+  const featuresAndSteps = !!(tool.steps && tool.features.length);
   const comingSoon = tool.status === 'Coming Soon';
 
   return (
@@ -88,7 +90,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
           <h2 className="td-h2">
             {tool.featuresHeading
               ? tv(tool.featuresHeading)
-              : tool.steps ? t('tools.howItWorks') : t('tools.whatItDoes')}
+              : tool.steps && !featuresAndSteps ? t('tools.howItWorks') : t('tools.whatItDoes')}
           </h2>
           {tool.featureGroups ? (
             tool.featureGroups.map(group => (
@@ -104,7 +106,7 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
                 </ul>
               </div>
             ))
-          ) : tool.steps ? (
+          ) : tool.steps && !featuresAndSteps ? (
             <ol className="td-features td-steps">
               {tool.steps.map((s, i) => (
                 <li key={s.label} className="td-feature td-step">
@@ -126,6 +128,20 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
               ))}
             </ul>
           )}
+          {featuresAndSteps && <>
+            <h2 className="td-h2 td-h2--next">{t('tools.howItWorks')}</h2>
+            <ol className="td-features td-steps">
+              {tool.steps!.map((s, i) => (
+                <li key={s.label} className="td-feature td-step">
+                  <span className="td-step-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="td-step-body">
+                    <span className="td-step-label">{tv(s.label)}</span>
+                    <span className="td-step-desc">{tv(s.description)}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </>}
           </>}
         </div>
 
@@ -348,6 +364,8 @@ const baseCss = `
     letter-spacing: -.01em; color: var(--color-text-primary);
     margin: 0 0 28px;
   }
+  /* a second list under the first (a service's "How it works" after "What I build") */
+  .td-h2--next { margin-top: clamp(48px, 6vw, 72px); }
   .td-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
   .td-feature {
     display: flex; align-items: baseline; gap: 16px;

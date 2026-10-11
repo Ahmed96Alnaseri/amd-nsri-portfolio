@@ -8,7 +8,8 @@ import { useLanguage } from '@/lib/LanguageContext';
 import { DESIGN_ENABLED } from '@/lib/features';
 
 /* ─── types & data ──────────────────────────────────────────────────── */
-type GalleryImage = { src: string; caption: string; w: number; h: number };
+/** alt: descriptive text (translated via tv()); falls back to the caption. */
+type GalleryImage = { src: string; caption: string; w: number; h: number; alt?: string };
 
 type CaseStudy = {
   title: string;
@@ -29,6 +30,8 @@ type CaseStudy = {
   contractor?: string;
   /** Empty string renders a placeholder hero (perforation pattern) */
   heroImage: string;
+  /** Descriptive alt text for the hero (translated via tv()); defaults to the title */
+  heroAlt?: string;
   /** CSS object-position for the hero image crop; defaults to 'center' */
   heroPosition?: string;
   /** CSS height for the hero section; defaults to 70vh (56vh on mobile) */
@@ -150,6 +153,42 @@ const BALIKESIR_MEYDANI: CaseStudy = {
     { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 2.jpg',         caption: 'Use Scenario 2',     w: 3508, h: 1967 },
     { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 3.jpg',         caption: 'Use Scenario 3',     w: 3508, h: 1971 },
     { src: '/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 4.jpg',         caption: 'Use Scenario 4',     w: 3508, h: 1963 },
+  ],
+};
+
+const MUGLA_SOSYAL_HIZMET: CaseStudy = {
+  title: 'Muğla Belediyesi Sosyal Hizmet Binası',
+  category: 'Architecture',
+  year: '2026',
+  location: 'Menteşe, Muğla, Türkiye',
+  client: 'Muğla Municipality',
+  architect: 'Furkan Kartekin, Ezgi Kartekin',
+  visualization: 'Ahmed Alnaseri',
+  heroImage: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/01-street-corner-view.webp',
+  heroAlt: 'Street-corner view of the white social services building with timber shading and a perforated brick screen, people crossing the paved plaza in front',
+  description:
+    'Muğla Belediyesi Sosyal Hizmet Binası is a competition proposal for a municipal social services building in Muğla\'s historic Menteşe district. Inspired by local streets, courtyards, and traditional shared living spaces, the design creates a public threshold where architecture and urban life meet through culture, learning, and everyday interaction.\n\nTwo public routes, Production Street and Art Street, connect workshops, exhibitions, and gathering spaces around a central courtyard. A pocket theatre forms the project\'s heart, opening toward an outdoor amphitheatre so one stage can serve both indoor and outdoor audiences. Libraries, study spaces, and administrative areas occupy the upper floors, while shared terraces provide places to pause, work, and socialise.\n\nWhite façades and adjustable timber shading reinterpret Muğla\'s architectural identity. Natural ventilation, daylight, solar energy, and rainwater drainage support environmental performance, shaping an accessible civic building that brings cultural activity and community life into the city\'s daily rhythm.',
+  program: 'Social Services Building',
+  area: '—',
+  status: 'Competition',
+  gallery: [
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/01-street-corner-view.webp', caption: 'Street Corner View', w: 2400, h: 1350, alt: 'Street-corner view of the white social services building with timber shading and a perforated brick screen, people crossing the paved plaza in front' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/02-entrance-courtyard.webp', caption: 'Entrance Courtyard', w: 2400, h: 1350, alt: 'Entrance courtyard beneath the bridge linking the two wings, with the pocket theatre\'s glazed stage visible below and the building name on the façade' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/03-timber-shading-facade.webp', caption: 'Timber Shading Façade', w: 2400, h: 1600, alt: 'Street-level façade of adjustable vertical timber shading panels, with a parent pushing a pram along the paved street' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/04-pocket-theatre.webp', caption: 'Pocket Theatre', w: 2400, h: 1598, alt: 'Pocket theatre interior with a grand piano on stage and the rear wall open to the stepped outdoor amphitheatre' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/05-interior-corridor.webp', caption: 'Interior Corridor', w: 2400, h: 1600, alt: 'Interior corridor lit through a perforated brick screen, with patterns of daylight falling across the timber floor' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/06-site-plan.webp', caption: 'Site Plan', w: 2088, h: 3200, alt: 'Site plan placing the building within the street fabric of the historic Menteşe district' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/07-first-floor-plan.webp', caption: 'First Floor Plan', w: 2990, h: 3200, alt: 'First floor plan showing the two wings arranged around the central courtyard' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/08-section.webp', caption: 'Section', w: 3200, h: 1283, alt: 'Section through the pocket theatre and the amphitheatre stepping down from street level' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/09-street-elevation.webp', caption: 'Street Elevation', w: 904, h: 288, alt: 'Street elevation of the building between its neighbours' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/10-public-routes-axonometric.webp', caption: 'Public Routes Axonometric', w: 2800, h: 1971, alt: 'Axonometric of the ground floor with the two public routes, Production Street and Art Street, highlighted in yellow' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/11-massing-formation.webp', caption: 'Massing Formation', w: 3200, h: 919, alt: 'Massing diagram in steps, showing the block divided by two routes and opened around a courtyard' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/12-theatre-amphitheatre-axonometric.webp', caption: 'Theatre & Amphitheatre Axonometric', w: 3200, h: 1661, alt: 'Axonometric of the pocket theatre with its stage opening onto the outdoor amphitheatre' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/13-amphitheatre-section.webp', caption: 'Amphitheatre Section', w: 3200, h: 1419, alt: 'Section perspective of the amphitheatre\'s planted, stepped seating' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/14-terrace-axonometric.webp', caption: 'Terrace Axonometric', w: 2989, h: 2244, alt: 'Axonometric of a shared terrace with folding timber shading panels and a central planter' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/15-courtyard-axonometric.webp', caption: 'Courtyard Axonometric', w: 2989, h: 2244, alt: 'Axonometric of a public courtyard with trees, benches and a long seating edge' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/16-enclosed-courtyard-axonometric.webp', caption: 'Enclosed Courtyard Axonometric', w: 2989, h: 2244, alt: 'Axonometric of an enclosed courtyard with a perforated brick wall and space for play' },
+    { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/17-facade-shading-diagram.webp', caption: 'Façade Shading Diagram', w: 3200, h: 2260, alt: 'Façade shading diagram tracing the sun path and how the timber panels adjust through the day' },
   ],
 };
 
@@ -316,6 +355,7 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
   'ppg-factory-facade': PPG_FACTORY_FACADE,
   'balıkesir-cumhuriyet-meydanı': BALIKESIR_MEYDANI,
   'balikesir-cumhuriyet-meydani': BALIKESIR_MEYDANI,
+  'mugla-belediyesi-sosyal-hizmet-binasi': MUGLA_SOSYAL_HIZMET,
   'kerkuk-restaurant': KERKUK_RESTAURANT,
   'national-hospital-facade': NATIONAL_HOSPITAL,
   'national-hospital-baghdad': NATIONAL_HOSPITAL,
@@ -818,7 +858,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           {project.heroImage ? (
             <Image
               src={project.heroImage}
-              alt={project.title}
+              alt={tv(project.heroAlt ?? project.title)}
               fill
               priority
               sizes="100vw"
@@ -891,12 +931,12 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                 onClick={() => setLightboxIndex(i)}
                 role="button"
                 tabIndex={0}
-                aria-label={`View ${img.caption} fullscreen`}
+                aria-label={`View ${tv(img.caption)} fullscreen`}
                 onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setLightboxIndex(i); }}
               >
                 <Image
                   src={img.src}
-                  alt={img.caption}
+                  alt={tv(img.alt ?? img.caption)}
                   width={img.w}
                   height={img.h}
                   sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
@@ -957,7 +997,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           >
             <Image
               src={project.gallery[lightboxIndex].src}
-              alt={project.gallery[lightboxIndex].caption}
+              alt={tv(project.gallery[lightboxIndex].alt ?? project.gallery[lightboxIndex].caption)}
               width={1600}
               height={1200}
               priority

@@ -19,10 +19,10 @@ function proj(lon: number, lat: number) {
 }
 
 const STAT_DEFS: { target: number; suffix: string; labelKey: string; id?: string }[] = [
-  { target: 48, suffix: '+', labelKey: 'stats.projects' },
-  { target: 12, suffix: '',  labelKey: 'stats.tools' },
+  { target: 50, suffix: '+', labelKey: 'stats.projects' },
+  { target: 7,  suffix: '',  labelKey: 'stats.tools' },
   { target: 0,  suffix: '',  labelKey: 'stats.countries', id: 'amdCountries' },
-  { target: 30, suffix: '+', labelKey: 'stats.clients' },
+  { target: 20, suffix: '+', labelKey: 'stats.clients' },
 ];
 
 export default function StatsSection() {

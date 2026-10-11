@@ -288,6 +288,8 @@ export const translations = {
       subjCollaboration: 'Collaboration',
       subjToolQuote:     'Tool Quote',
       subjOther:         'Other',
+      subjScript:        'Grasshopper Script Request',
+      scriptTemplate:    "Hi, I'd like to request a custom Grasshopper script.\n\nWhat the script should do:\nWorkflow (panelisation / unfolding / nesting / DXF export / other):\nRhino & Grasshopper version:\nDeadline (if any):",
       errRequired:       'Required',
       errInvalidEmail:   'Invalid address',
       errSend:           'Could not send — please try again or email directly.',
@@ -608,6 +610,8 @@ export const translations = {
       subjCollaboration: 'İş Birliği',
       subjToolQuote:     'Araç Fiyat Teklifi',
       subjOther:         'Diğer',
+      subjScript:        'Grasshopper Betik Talebi',
+      scriptTemplate:    'Merhaba, özel bir Grasshopper betiği talep etmek istiyorum.\n\nBetiğin yapması gerekenler:\nİş akışı (panelleştirme / açınım / yerleşim / DXF çıktısı / diğer):\nRhino ve Grasshopper sürümü:\nTeslim tarihi (varsa):',
       errRequired:       'Zorunlu',
       errSend:           'Gönderilemedi — lütfen tekrar deneyin veya doğrudan e-posta gönderin.',
       errInvalidEmail:   'Geçersiz adres',
@@ -928,6 +932,8 @@ export const translations = {
       subjCollaboration: 'تعاون',
       subjToolQuote:     'عرض سعر لأداة',
       subjOther:         'أخرى',
+      subjScript:        'طلب سكربت Grasshopper',
+      scriptTemplate:    'مرحباً، أودّ طلب سكربت Grasshopper مخصّص.\n\nما المطلوب من السكربت:\nسير العمل (تقسيم الألواح / الفرد / الترصيص / تصدير DXF / غير ذلك):\nإصدار Rhino وGrasshopper:\nالموعد النهائي (إن وُجد):',
       errRequired:       'مطلوب',
       errSend:           'تعذّر الإرسال — يرجى المحاولة مرة أخرى أو المراسلة مباشرة.',
       errInvalidEmail:   'عنوان غير صالح',
@@ -1042,6 +1048,104 @@ const VALUES: Record<Lang, ValueMap> = {
     'Live': 'Yayında',
     'Beta': 'Beta',
     'Coming Soon': 'Yakında',
+    // Architecture — Muğla Belediyesi Sosyal Hizmet Binası
+    'Muğla Belediyesi Sosyal Hizmet Binası is a competition proposal for a municipal social services building in Muğla\'s historic Menteşe district. Inspired by local streets, courtyards, and traditional shared living spaces, the design creates a public threshold where architecture and urban life meet through culture, learning, and everyday interaction.\n\nTwo public routes, Production Street and Art Street, connect workshops, exhibitions, and gathering spaces around a central courtyard. A pocket theatre forms the project\'s heart, opening toward an outdoor amphitheatre so one stage can serve both indoor and outdoor audiences. Libraries, study spaces, and administrative areas occupy the upper floors, while shared terraces provide places to pause, work, and socialise.\n\nWhite façades and adjustable timber shading reinterpret Muğla\'s architectural identity. Natural ventilation, daylight, solar energy, and rainwater drainage support environmental performance, shaping an accessible civic building that brings cultural activity and community life into the city\'s daily rhythm.':
+      'Muğla Belediyesi Sosyal Hizmet Binası, Muğla\'nın tarihi Menteşe ilçesinde bir belediye sosyal hizmet binası için hazırlanmış bir yarışma önerisidir. Yerel sokaklardan, avlulardan ve geleneksel ortak yaşam mekânlarından esinlenen tasarım, mimarinin ve kent yaşamının kültür, öğrenme ve gündelik etkileşim aracılığıyla buluştuğu kamusal bir eşik oluşturur.\n\nÜretim Sokağı ve Sanat Sokağı adlı iki kamusal güzergâh; atölyeleri, sergileri ve buluşma mekânlarını merkezi bir avlu çevresinde birbirine bağlar. Projenin kalbini oluşturan cep tiyatrosu açık hava amfisine doğru açılır; böylece tek bir sahne hem iç mekândaki hem de dışarıdaki izleyicilere hizmet edebilir. Kütüphaneler, çalışma alanları ve idari birimler üst katlarda yer alırken ortak teraslar durup dinlenmek, çalışmak ve sosyalleşmek için mekânlar sunar.\n\nBeyaz cepheler ve ayarlanabilir ahşap gölgeleme elemanları, Muğla\'nın mimari kimliğini yeniden yorumlar. Doğal havalandırma, gün ışığı, güneş enerjisi ve yağmur suyu drenajı çevresel performansı desteklerken; kültürel etkinlikleri ve toplumsal yaşamı kentin gündelik ritmine taşıyan, herkes için erişilebilir bir kamu binası ortaya çıkar.',
+    'Social Services Building':
+      'Sosyal Hizmet Binası',
+    'Menteşe, Muğla, Türkiye':
+      'Menteşe, Muğla, Türkiye',
+    'Muğla Municipality':
+      'Muğla Belediyesi',
+    'Street Corner View':
+      'Sokak Köşesi Görünüşü',
+    'Entrance Courtyard':
+      'Giriş Avlusu',
+    'Timber Shading Façade':
+      'Ahşap Gölgeleme Cephesi',
+    'Pocket Theatre':
+      'Cep Tiyatrosu',
+    'Interior Corridor':
+      'İç Koridor',
+    'Site Plan':
+      'Vaziyet Planı',
+    'First Floor Plan':
+      'Birinci Kat Planı',
+    'Section':
+      'Kesit',
+    'Street Elevation':
+      'Sokak Görünüşü',
+    'Public Routes Axonometric':
+      'Kamusal Güzergâhlar Aksonometrisi',
+    'Massing Formation':
+      'Kütle Oluşumu',
+    'Theatre & Amphitheatre Axonometric':
+      'Tiyatro ve Amfi Aksonometrisi',
+    'Amphitheatre Section':
+      'Amfi Kesiti',
+    'Terrace Axonometric':
+      'Teras Aksonometrisi',
+    'Courtyard Axonometric':
+      'Avlu Aksonometrisi',
+    'Enclosed Courtyard Axonometric':
+      'Kapalı Avlu Aksonometrisi',
+    'Façade Shading Diagram':
+      'Cephe Gölgeleme Diyagramı',
+    'Street-corner view of the white social services building with timber shading and a perforated brick screen, people crossing the paved plaza in front':
+      'Ahşap gölgeleme elemanları ve delikli tuğla perdesiyle beyaz sosyal hizmet binasının sokak köşesinden görünüşü; önündeki taş döşeli meydandan geçen insanlar',
+    'Entrance courtyard beneath the bridge linking the two wings, with the pocket theatre\'s glazed stage visible below and the building name on the façade':
+      'İki kanadı birleştiren köprünün altındaki giriş avlusu; aşağıda cep tiyatrosunun camlı sahnesi, cephede binanın adı',
+    'Street-level façade of adjustable vertical timber shading panels, with a parent pushing a pram along the paved street':
+      'Ayarlanabilir dikey ahşap gölgeleme panellerinden oluşan sokak cephesi; taş döşeli sokakta bebek arabası iten bir ebeveyn',
+    'Pocket theatre interior with a grand piano on stage and the rear wall open to the stepped outdoor amphitheatre':
+      'Sahnesinde kuyruklu piyano bulunan cep tiyatrosunun içi; arka duvar basamaklı açık hava amfisine açılıyor',
+    'Interior corridor lit through a perforated brick screen, with patterns of daylight falling across the timber floor':
+      'Delikli tuğla perdeden süzülen ışıkla aydınlanan iç koridor; ahşap zemine düşen gün ışığı desenleri',
+    'Site plan placing the building within the street fabric of the historic Menteşe district':
+      'Binayı tarihi Menteşe ilçesinin sokak dokusu içinde gösteren vaziyet planı',
+    'First floor plan showing the two wings arranged around the central courtyard':
+      'Merkezi avlu çevresinde konumlanan iki kanadı gösteren birinci kat planı',
+    'Section through the pocket theatre and the amphitheatre stepping down from street level':
+      'Cep tiyatrosundan ve sokak kotundan aşağı doğru basamaklanan amfiden geçen kesit',
+    'Street elevation of the building between its neighbours':
+      'Binanın komşu yapılar arasındaki sokak görünüşü',
+    'Axonometric of the ground floor with the two public routes, Production Street and Art Street, highlighted in yellow':
+      'Üretim Sokağı ve Sanat Sokağı adlı iki kamusal güzergâhın sarıyla vurgulandığı zemin kat aksonometrisi',
+    'Massing diagram in steps, showing the block divided by two routes and opened around a courtyard':
+      'Kütlenin iki güzergâhla bölünüp bir avlu çevresinde açılışını adım adım gösteren kütle diyagramı',
+    'Axonometric of the pocket theatre with its stage opening onto the outdoor amphitheatre':
+      'Sahnesi açık hava amfisine açılan cep tiyatrosunun aksonometrisi',
+    'Section perspective of the amphitheatre\'s planted, stepped seating':
+      'Amfinin bitkilendirilmiş basamaklı oturma alanının perspektif kesiti',
+    'Axonometric of a shared terrace with folding timber shading panels and a central planter':
+      'Katlanır ahşap gölgeleme panelleri ve ortada bir bitki saksısı bulunan ortak terasın aksonometrisi',
+    'Axonometric of a public courtyard with trees, benches and a long seating edge':
+      'Ağaçlar, banklar ve uzun bir oturma kenarıyla kamusal avlunun aksonometrisi',
+    'Axonometric of an enclosed courtyard with a perforated brick wall and space for play':
+      'Delikli tuğla duvarı ve oyun alanıyla kapalı avlunun aksonometrisi',
+    'Façade shading diagram tracing the sun path and how the timber panels adjust through the day':
+      'Güneşin gün boyunca izlediği yolu ve ahşap panellerin buna göre ayarlanışını gösteren cephe gölgeleme diyagramı',
+    'A façade material and colour preview tool.': 'Cephe malzemesi ve renk önizleme aracı.',
+    'Expanded Mesh Generator': 'Genişletilmiş Metal Ağ Üreteci',
+    'Generate expanded metal mesh patterns for façade and fabrication workflows.': 'Cephe ve fabrikasyon iş akışları için genişletilmiş metal ağ desenleri üretin.',
+    // Tools — Custom Grasshopper Scripts (service page)
+    'Custom Grasshopper Scripts': 'Özel Grasshopper Betikleri',
+    'Custom Grasshopper scripts for architecture, façade and fabrication workflows — panelisation, unfolding, nesting and DXF export for laser cutting.': 'Mimari, cephe ve fabrikasyon iş akışları için özel Grasshopper betikleri — panelleştirme, açınım, yerleşim (nesting) ve lazer kesim için DXF çıktısı.',
+    'Custom Grasshopper scripts for architecture, façade and fabrication workflows.': 'Mimari, cephe ve fabrikasyon iş akışları için özel Grasshopper betikleri.',
+    'What I build': 'Neler yapıyorum',
+    'Panelisation': 'Panelleştirme',
+    'Nesting': 'Yerleşim (nesting)',
+    'DXF export for laser cutting': 'Lazer kesim için DXF çıktısı',
+    'Brief': 'Brif',
+    'Send your brief or file.': 'Brifinizi ya da dosyanızı gönderin.',
+    'Review': 'İnceleme',
+    'I review it.': 'İnceliyorum.',
+    'You get a working script.': 'Çalışan bir betik alırsınız.',
+    'Grasshopper · Service': 'Grasshopper · Hizmet',
+    'Service': 'Hizmet',
+    'Brief or file': 'Brif ya da dosya',
+    'Working Grasshopper script': 'Çalışan Grasshopper betiği',
+    'Request a script': 'Betik talep et',
     'Available': 'Mevcut',
     'Custom': 'Özel',
     'Quote on request': 'Talep üzerine fiyat',
@@ -1486,6 +1590,104 @@ const VALUES: Record<Lang, ValueMap> = {
     'Live': 'مباشر',
     'Beta': 'بيتا',
     'Coming Soon': 'قريباً',
+    // Architecture — Muğla Belediyesi Sosyal Hizmet Binası
+    'Muğla Belediyesi Sosyal Hizmet Binası is a competition proposal for a municipal social services building in Muğla\'s historic Menteşe district. Inspired by local streets, courtyards, and traditional shared living spaces, the design creates a public threshold where architecture and urban life meet through culture, learning, and everyday interaction.\n\nTwo public routes, Production Street and Art Street, connect workshops, exhibitions, and gathering spaces around a central courtyard. A pocket theatre forms the project\'s heart, opening toward an outdoor amphitheatre so one stage can serve both indoor and outdoor audiences. Libraries, study spaces, and administrative areas occupy the upper floors, while shared terraces provide places to pause, work, and socialise.\n\nWhite façades and adjustable timber shading reinterpret Muğla\'s architectural identity. Natural ventilation, daylight, solar energy, and rainwater drainage support environmental performance, shaping an accessible civic building that brings cultural activity and community life into the city\'s daily rhythm.':
+      'مبنى الخدمات الاجتماعية لبلدية موغلا مقترحٌ قُدِّم في مسابقة لتصميم مبنى بلدي للخدمات الاجتماعية في حيّ منتشه التاريخي بمدينة موغلا. يستلهم التصميم الشوارعَ المحلية والأفنيةَ وفضاءاتِ العيش المشترك التقليدية، ليصنع عتبةً عامة تلتقي فيها العمارة بالحياة الحضرية عبر الثقافة والتعلّم والتفاعل اليومي.\n\nيربط مساران عامّان، شارع الإنتاج وشارع الفن، بين الورش والمعارض وفضاءات التجمّع حول فناء مركزي. ويشكّل مسرحٌ صغير قلبَ المشروع، إذ ينفتح على مدرّج خارجي بحيث تخدم خشبةٌ واحدة جمهورَي الداخل والخارج معاً. وتشغل المكتباتُ وفضاءاتُ الدراسة والمساحاتُ الإدارية الطوابقَ العليا، فيما توفّر الشرفاتُ المشتركة أماكن للتوقّف والعمل والتواصل الاجتماعي.\n\nتعيد الواجهاتُ البيضاء وعناصرُ التظليل الخشبية القابلة للتعديل قراءةَ الهوية المعمارية لموغلا. وتدعم التهويةُ الطبيعية وضوءُ النهار والطاقةُ الشمسية وتصريفُ مياه الأمطار الأداءَ البيئي، لتصوغ مبنىً مدنياً متاحاً للجميع يُدخل النشاطَ الثقافي والحياةَ المجتمعية في الإيقاع اليومي للمدينة.',
+    'Social Services Building':
+      'مبنى خدمات اجتماعية',
+    'Menteşe, Muğla, Türkiye':
+      'منتشه، موغلا، تركيا',
+    'Muğla Municipality':
+      'بلدية موغلا',
+    'Street Corner View':
+      'منظر من زاوية الشارع',
+    'Entrance Courtyard':
+      'فناء المدخل',
+    'Timber Shading Façade':
+      'واجهة التظليل الخشبي',
+    'Pocket Theatre':
+      'المسرح الصغير',
+    'Interior Corridor':
+      'الممر الداخلي',
+    'Site Plan':
+      'مخطط الموقع',
+    'First Floor Plan':
+      'مخطط الطابق الأول',
+    'Section':
+      'مقطع',
+    'Street Elevation':
+      'واجهة الشارع',
+    'Public Routes Axonometric':
+      'منظور أكسونومتري للمسارين العامّين',
+    'Massing Formation':
+      'تشكيل الكتلة',
+    'Theatre & Amphitheatre Axonometric':
+      'منظور أكسونومتري للمسرح والمدرّج',
+    'Amphitheatre Section':
+      'مقطع المدرّج',
+    'Terrace Axonometric':
+      'منظور أكسونومتري للشرفة',
+    'Courtyard Axonometric':
+      'منظور أكسونومتري للفناء',
+    'Enclosed Courtyard Axonometric':
+      'منظور أكسونومتري للفناء المغلق',
+    'Façade Shading Diagram':
+      'مخطط تظليل الواجهة',
+    'Street-corner view of the white social services building with timber shading and a perforated brick screen, people crossing the paved plaza in front':
+      'منظر من زاوية الشارع لمبنى الخدمات الاجتماعية الأبيض بعناصر تظليل خشبية وستارة من الطوب المثقّب، وأشخاص يعبرون الساحة المرصوفة أمامه',
+    'Entrance courtyard beneath the bridge linking the two wings, with the pocket theatre\'s glazed stage visible below and the building name on the façade':
+      'فناء المدخل أسفل الجسر الذي يصل الجناحين، وتظهر في الأسفل خشبة المسرح الصغير الزجاجية واسم المبنى على الواجهة',
+    'Street-level façade of adjustable vertical timber shading panels, with a parent pushing a pram along the paved street':
+      'واجهة على مستوى الشارع من ألواح تظليل خشبية عمودية قابلة للتعديل، وأحد الوالدين يدفع عربة طفل على الشارع المرصوف',
+    'Pocket theatre interior with a grand piano on stage and the rear wall open to the stepped outdoor amphitheatre':
+      'داخل المسرح الصغير وعلى خشبته بيانو كبير، وجداره الخلفي مفتوح على المدرّج الخارجي المتدرّج',
+    'Interior corridor lit through a perforated brick screen, with patterns of daylight falling across the timber floor':
+      'ممر داخلي يضيئه ضوءٌ ينفذ عبر ستارة من الطوب المثقّب، وأنماط من ضوء النهار على الأرضية الخشبية',
+    'Site plan placing the building within the street fabric of the historic Menteşe district':
+      'مخطط الموقع يبيّن موقع المبنى ضمن نسيج شوارع حيّ منتشه التاريخي',
+    'First floor plan showing the two wings arranged around the central courtyard':
+      'مخطط الطابق الأول يُظهر الجناحين حول الفناء المركزي',
+    'Section through the pocket theatre and the amphitheatre stepping down from street level':
+      'مقطع عبر المسرح الصغير والمدرّج النازل من مستوى الشارع',
+    'Street elevation of the building between its neighbours':
+      'واجهة المبنى على الشارع بين المباني المجاورة',
+    'Axonometric of the ground floor with the two public routes, Production Street and Art Street, highlighted in yellow':
+      'منظور أكسونومتري للطابق الأرضي يُبرز بالأصفر المسارين العامّين، شارع الإنتاج وشارع الفن',
+    'Massing diagram in steps, showing the block divided by two routes and opened around a courtyard':
+      'مخطط تشكيل الكتلة على مراحل، يُظهر تقسيمها بمسارين وانفتاحها حول فناء',
+    'Axonometric of the pocket theatre with its stage opening onto the outdoor amphitheatre':
+      'منظور أكسونومتري للمسرح الصغير وخشبته المنفتحة على المدرّج الخارجي',
+    'Section perspective of the amphitheatre\'s planted, stepped seating':
+      'مقطع منظوري لمقاعد المدرّج المتدرّجة المزروعة',
+    'Axonometric of a shared terrace with folding timber shading panels and a central planter':
+      'منظور أكسونومتري لشرفة مشتركة بألواح تظليل خشبية قابلة للطيّ وحوض نباتات في الوسط',
+    'Axonometric of a public courtyard with trees, benches and a long seating edge':
+      'منظور أكسونومتري لفناء عام بأشجار ومقاعد وحافة جلوس طويلة',
+    'Axonometric of an enclosed courtyard with a perforated brick wall and space for play':
+      'منظور أكسونومتري لفناء مغلق بجدار من الطوب المثقّب ومساحة للعب',
+    'Façade shading diagram tracing the sun path and how the timber panels adjust through the day':
+      'مخطط تظليل الواجهة يتتبّع مسار الشمس وكيفية ضبط الألواح الخشبية على مدار اليوم',
+    'A façade material and colour preview tool.': 'أداة لمعاينة مواد الواجهات وألوانها.',
+    'Expanded Mesh Generator': 'مولّد شبك المعدن الممدّد',
+    'Generate expanded metal mesh patterns for façade and fabrication workflows.': 'أنشئ أنماط شبك المعدن الممدّد لسير العمل في الواجهات والتصنيع.',
+    // Tools — Custom Grasshopper Scripts (service page)
+    'Custom Grasshopper Scripts': 'سكربتات Grasshopper مخصّصة',
+    'Custom Grasshopper scripts for architecture, façade and fabrication workflows — panelisation, unfolding, nesting and DXF export for laser cutting.': 'سكربتات Grasshopper مخصّصة لسير العمل في العمارة والواجهات والتصنيع — تقسيم الألواح، والفرد، والترصيص، وتصدير DXF للقصّ بالليزر.',
+    'Custom Grasshopper scripts for architecture, façade and fabrication workflows.': 'سكربتات Grasshopper مخصّصة لسير العمل في العمارة والواجهات والتصنيع.',
+    'What I build': 'ما أبنيه',
+    'Panelisation': 'تقسيم الألواح',
+    'Nesting': 'الترصيص',
+    'DXF export for laser cutting': 'تصدير DXF للقصّ بالليزر',
+    'Brief': 'الطلب',
+    'Send your brief or file.': 'أرسل وصف مشروعك أو ملفك.',
+    'Review': 'المراجعة',
+    'I review it.': 'أراجعه.',
+    'You get a working script.': 'تحصل على سكربت جاهز للعمل.',
+    'Grasshopper · Service': 'Grasshopper · خدمة',
+    'Service': 'خدمة',
+    'Brief or file': 'وصف المشروع أو ملف',
+    'Working Grasshopper script': 'سكربت Grasshopper جاهز للعمل',
+    'Request a script': 'اطلب سكربت',
     'Available': 'متاح',
     'Custom': 'مخصّص',
     'Quote on request': 'عرض سعر عند الطلب',

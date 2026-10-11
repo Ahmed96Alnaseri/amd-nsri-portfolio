@@ -89,6 +89,8 @@ export interface Tool {
   quoteTemplate?: string;
   /** Keywords for this tool. Not rendered yet. */
   tags?: string[];
+  /** Outlined tag on the card's right (styled like the platform badge), replacing the price and status. */
+  cardTag?: string;
 }
 
 /** Filter chips shown above the grid (in order). */
@@ -265,6 +267,60 @@ const tools: Tool[] = [
     image: null,
     price: 'Contact for pricing',
     cardStatusOnly: true,
+  },
+  /* ── Coming soon: placeholder page like AMAD and Pinact until the tool is ready ── */
+  {
+    slug: 'finsa',
+    name: 'FINSA',
+    description: 'A façade material and colour preview tool.',
+    detail: 'A façade material and colour preview tool.',
+    features: [],
+    platform: 'Web',
+    status: 'Coming Soon',
+    type: 'product',
+    image: null,
+    price: null,
+  },
+  {
+    slug: 'expanded-mesh-generator',
+    name: 'Expanded Mesh Generator',
+    description: 'Generate expanded metal mesh patterns for façade and fabrication workflows.',
+    detail: 'Generate expanded metal mesh patterns for façade and fabrication workflows.',
+    features: [],
+    platform: 'Web',
+    status: 'Coming Soon',
+    type: 'product',
+    image: null,
+    price: null,
+  },
+  /* ── A service, not a tool: custom Grasshopper scripts. Listed with the tools, not counted in the
+        homepage stats (src/components/StatsSection.tsx keeps 7). ── */
+  {
+    slug: 'grasshopper-scripts',
+    name: 'Custom Grasshopper Scripts',
+    description:
+      'Custom Grasshopper scripts for architecture, façade and fabrication workflows — panelisation, unfolding, nesting and DXF export for laser cutting.',
+    detail: 'Custom Grasshopper scripts for architecture, façade and fabrication workflows.',
+    featuresHeading: 'What I build',
+    features: ['Panelisation', 'Unfolding', 'Nesting', 'DXF export for laser cutting'],
+    steps: [
+      { label: 'Brief', description: 'Send your brief or file.' },
+      { label: 'Review', description: 'I review it.' },
+      { label: 'Delivery', description: 'You get a working script.' },
+    ],
+    platform: 'Grasshopper',
+    eyebrowFull: 'Grasshopper · Service',
+    status: 'Available',
+    hideStatus: true,
+    type: 'quote',
+    image: null,
+    price: 'Quote on request',
+    cardTag: 'Service',
+    input: 'Brief or file',
+    output: 'Working Grasshopper script',
+    ctaLabel: 'Request a script',
+    // the contact form picks the "Grasshopper Script Request" subject and drafts the message (src/app/contact/page.tsx)
+    ctaLink: '/contact?service=grasshopper-script',
   },
 ];
 

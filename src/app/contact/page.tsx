@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import { toolsBySlug } from '@/data/tools';
@@ -14,6 +14,7 @@ const SUBJECTS = [
   { value: 'Fabrication & Shop Drawings',  labelKey: 'contact.subjFabrication' },
   { value: 'Collaboration',                labelKey: 'contact.subjCollaboration' },
   { value: 'Tool Quote',                   labelKey: 'contact.subjToolQuote' },
+  { value: 'Grasshopper Script Request',   labelKey: 'contact.subjScript' },
   { value: 'Other',                        labelKey: 'contact.subjOther' },
 ] as const;
 
@@ -187,6 +188,21 @@ export default function ContactPage() {
       message: f.message || template,
     }));
   }, []);
+
+  // Arriving from the Custom Grasshopper Scripts page (/contact?service=grasshopper-script) picks the script
+  // subject and drafts the request. The draft is in the visitor's language and follows a language switch
+  // for as long as it has not been edited.
+  const scriptDraft = useRef<string | null>(null);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('service') !== 'grasshopper-script') return;
+    const draft = t('contact.scriptTemplate');
+    const previous = scriptDraft.current;
+    scriptDraft.current = draft;
+    setForm(f => {
+      const untouched = !f.message || f.message === previous;
+      return { ...f, subject: f.subject || 'Grasshopper Script Request', message: untouched ? draft : f.message };
+    });
+  }, [t]);
 
   const update = (k: keyof Fields) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

@@ -65,7 +65,7 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
   };
 
   const img = current === 0
-    ? { src: project.coverImage, subtitle: project.images[0]?.subtitle ?? project.title, position: project.images[0]?.position }
+    ? { src: project.coverImage, subtitle: project.images[0]?.subtitle ?? project.title, position: project.images[0]?.position, alt: project.images[0]?.alt }
     : project.images[current];
 
   return (
@@ -79,7 +79,7 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
             <div className="ac-img-wrap" style={{ opacity: fading ? 0 : 1, transition: 'opacity 160ms ease' }}>
               <Image
                 src={img.src}
-                alt={project.title}
+                alt={img.alt ? tv(img.alt) : project.title}
                 fill
                 style={{ objectFit: 'cover', objectPosition: img.position ?? 'center' }}
                 sizes="(max-width: 767px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -132,7 +132,7 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
                   aria-label={`View all ${project.images.length} images`}
                 >
                   {imgSrc && (
-                    <Image src={imgSrc.src} alt={imgSrc.subtitle} fill style={{ objectFit: 'cover', objectPosition: 'center' }} sizes="25vw" />
+                    <Image src={imgSrc.src} alt={tv(imgSrc.alt ?? imgSrc.subtitle)} fill style={{ objectFit: 'cover', objectPosition: 'center' }} sizes="25vw" />
                   )}
                   <span className="ac-thumb-n">+{overflowN}</span>
                 </Link>
@@ -148,7 +148,7 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
                 disabled={!hasImage}
               >
                 {imgSrc && (
-                  <Image src={imgSrc.src} alt={imgSrc.subtitle} fill style={{ objectFit: 'cover', objectPosition: 'center' }} sizes="25vw" />
+                  <Image src={imgSrc.src} alt={tv(imgSrc.alt ?? imgSrc.subtitle)} fill style={{ objectFit: 'cover', objectPosition: 'center' }} sizes="25vw" />
                 )}
               </button>
             );
@@ -197,7 +197,7 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
             <button className="ac-lb-arr ac-lb-arr--l" onClick={e => { e.stopPropagation(); go(-1); }}>‹</button>
           )}
           <div onClick={e => e.stopPropagation()}>
-            <Image src={img.src} alt={project.title} width={1600} height={1200}
+            <Image src={img.src} alt={img.alt ? tv(img.alt) : project.title} width={1600} height={1200}
               style={{ maxHeight: '90vh', maxWidth: '90vw', width: 'auto', height: 'auto', objectFit: 'contain' }} priority />
           </div>
           {project.images.length > 1 && (
