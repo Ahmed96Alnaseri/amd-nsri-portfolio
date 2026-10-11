@@ -1,0 +1,21 @@
+{
+ "_comment": "Images of baghdad-private-hospital replaced by web-optimised WebP; originals in /_originals (git-ignored). Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/projects/baghdad-private-hospital/renders/exterior-hospital-2.png",
+   "to": "/projects/baghdad-private-hospital/renders/exterior-hospital-2.webp"
+  },
+  {
+   "from": "/projects/baghdad-private-hospital/renders/facade-1.jpeg",
+   "to": "/projects/baghdad-private-hospital/renders/facade-1.webp"
+  },
+  {
+   "from": "/projects/baghdad-private-hospital/renders/model1.jpeg",
+   "to": "/projects/baghdad-private-hospital/renders/model1.webp"
+  },
+  {
+   "from": "/projects/baghdad-private-hospital/renders/scrpt.png",
+   "to": "/projects/baghdad-private-hospital/renders/scrpt.webp"
+  }
+ ]
+}

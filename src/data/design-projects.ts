@@ -59,11 +59,11 @@ const designProjects: DesignProject[] = [
     status: 'Concept Design',
     detailHref: '/architecture/baghdad-private-hospital',
     images: [
-      { src: '/projects/baghdad-private-hospital/renders/facade-1.jpeg',           subtitle: 'Main Entrance' },
-      { src: '/projects/baghdad-private-hospital/renders/exterior-hospital-2.png', subtitle: 'Facade Detail' },
-      { src: '/projects/baghdad-private-hospital/renders/scrpt.png',               subtitle: 'Parametric Definition' },
-      { src: '/projects/baghdad-private-hospital/renders/model1.jpeg',             subtitle: 'Panel Shop Drawing' },
-      { src: '/projects/baghdad-private-hospital/renders/facade-1.jpeg',           subtitle: 'Main Entrance' },
+      { src: '/projects/baghdad-private-hospital/renders/facade-1.webp',           subtitle: 'Main Entrance' },
+      { src: '/projects/baghdad-private-hospital/renders/exterior-hospital-2.webp', subtitle: 'Facade Detail' },
+      { src: '/projects/baghdad-private-hospital/renders/scrpt.webp',               subtitle: 'Parametric Definition' },
+      { src: '/projects/baghdad-private-hospital/renders/model1.webp',             subtitle: 'Panel Shop Drawing' },
+      { src: '/projects/baghdad-private-hospital/renders/facade-1.webp',           subtitle: 'Main Entrance' },
     ],
   },
   {

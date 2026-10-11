@@ -302,7 +302,7 @@ const BAGHDAD_HOSPITAL: CaseStudy = {
   location: 'Baghdad, Iraq',
   client: 'Dr. Saif Alshamarati',
   architect: 'Ahmed Alnaseri, Yassir Rawi',
-  heroImage: '/projects/baghdad-private-hospital/renders/facade-1.jpeg',
+  heroImage: '/projects/baghdad-private-hospital/renders/facade-1.webp',
   heroHeight: '56vh',
   heroPosition: 'center 27%',
   description:
@@ -311,10 +311,10 @@ const BAGHDAD_HOSPITAL: CaseStudy = {
   area: '800 m²',
   status: 'Concept',
   gallery: [
-    { src: '/projects/baghdad-private-hospital/renders/facade-1.jpeg',          caption: 'Main Entrance',        w: 1254, h: 1254 },
-    { src: '/projects/baghdad-private-hospital/renders/exterior-hospital-2.png', caption: 'Facade Detail',        w: 1254, h: 1254 },
-    { src: '/projects/baghdad-private-hospital/renders/scrpt.png',              caption: 'Parametric Definition', w: 1080, h: 1350 },
-    { src: '/projects/baghdad-private-hospital/renders/model1.jpeg',            caption: 'Panel Shop Drawing',    w: 877,  h: 1101 },
+    { src: '/projects/baghdad-private-hospital/renders/facade-1.webp',          caption: 'Main Entrance',        w: 1254, h: 1254 },
+    { src: '/projects/baghdad-private-hospital/renders/exterior-hospital-2.webp', caption: 'Facade Detail',        w: 1254, h: 1254 },
+    { src: '/projects/baghdad-private-hospital/renders/scrpt.webp',              caption: 'Parametric Definition', w: 1080, h: 1350 },
+    { src: '/projects/baghdad-private-hospital/renders/model1.webp',            caption: 'Panel Shop Drawing',    w: 877,  h: 1101 },
   ],
 };
 
