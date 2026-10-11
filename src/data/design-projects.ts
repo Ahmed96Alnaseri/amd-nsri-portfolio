@@ -164,11 +164,11 @@ const designProjects: DesignProject[] = [
     status: 'Concept Design',
     detailHref: '/architecture/ppg-factory-facade',
     images: [
-      { src: '/projects/ppg-factory-facade/renders/v3-2.png', subtitle: 'Exterior View' },
-      { src: '/projects/ppg-factory-facade/renders/v3-1.png', subtitle: 'Facade Detail' },
-      { src: '/projects/ppg-factory-facade/renders/v3-3.png', subtitle: 'Panel Study' },
-      { src: '/projects/ppg-factory-facade/renders/4.png',    subtitle: 'Close-up' },
-      { src: '/projects/ppg-factory-facade/renders/v4.png',   subtitle: 'Courtyard Detail' },
+      { src: '/projects/ppg-factory-facade/card/v3-2.webp', subtitle: 'Exterior View' },
+      { src: '/projects/ppg-factory-facade/renders/v3-1.webp', subtitle: 'Facade Detail' },
+      { src: '/projects/ppg-factory-facade/card/v3-3.webp', subtitle: 'Panel Study' },
+      { src: '/projects/ppg-factory-facade/card/4.webp',    subtitle: 'Close-up' },
+      { src: '/projects/ppg-factory-facade/renders/v4.webp',   subtitle: 'Courtyard Detail' },
     ],
   },
 ];

@@ -1,0 +1,25 @@
+{
+ "_comment": "Images of ppg-factory-facade replaced by web-optimised WebP; originals in /_originals (git-ignored). Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/projects/ppg-factory-facade/renders/4.png",
+   "to": "/projects/ppg-factory-facade/renders/4.webp"
+  },
+  {
+   "from": "/projects/ppg-factory-facade/renders/v3-1.png",
+   "to": "/projects/ppg-factory-facade/renders/v3-1.webp"
+  },
+  {
+   "from": "/projects/ppg-factory-facade/renders/v3-2.png",
+   "to": "/projects/ppg-factory-facade/renders/v3-2.webp"
+  },
+  {
+   "from": "/projects/ppg-factory-facade/renders/v3-3.png",
+   "to": "/projects/ppg-factory-facade/renders/v3-3.webp"
+  },
+  {
+   "from": "/projects/ppg-factory-facade/renders/v4.png",
+   "to": "/projects/ppg-factory-facade/renders/v4.webp"
+  }
+ ]
+}

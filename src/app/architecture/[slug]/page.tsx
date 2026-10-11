@@ -82,18 +82,18 @@ const PPG_FACTORY_FACADE: CaseStudy = {
   location: 'Bursa, Türkiye',
   client: 'PPG Industries',
   architect: 'Ahmed Alnaseri, Furkan Kartekin',
-  heroImage: '/projects/ppg-factory-facade/renders/v3-2.png',
+  heroImage: '/projects/ppg-factory-facade/renders/v3-2.webp',
   description:
     'A facade conceived not as decoration but as identity. PPG produces paint — substance that flows, layers, and transforms surfaces. The cladding system answers that logic directly: aluminum panels cut and folded into wave-derived geometries, each a frozen moment of pigment in motion. The surface shifts tone as light rakes across it through the day, from warm copper at dawn to cool silver by midday, without a single painted surface. The 1,371 m² system was developed parametrically, panel geometry driven by a sine-based attractor field so the whole facade behaves as one continuous form despite being fabricated as individual sheet metal components.',
   program: 'Facade Design',
   area: '1,371 m²',
   status: 'Concept Design',
   gallery: [
-    { src: '/projects/ppg-factory-facade/renders/v3-2.png', caption: 'Exterior View',    w: 1920, h: 1080 },
-    { src: '/projects/ppg-factory-facade/renders/v3-1.png', caption: 'Facade Detail',    w: 1920, h: 1080 },
-    { src: '/projects/ppg-factory-facade/renders/v3-3.png', caption: 'Panel Study',      w: 1920, h: 1080 },
-    { src: '/projects/ppg-factory-facade/renders/4.png',    caption: 'Close-up',         w: 1920, h: 1080 },
-    { src: '/projects/ppg-factory-facade/renders/v4.png',   caption: 'Courtyard Detail', w: 1448, h: 1086 },
+    { src: '/projects/ppg-factory-facade/renders/v3-2.webp', caption: 'Exterior View',    w: 1672, h: 941 },
+    { src: '/projects/ppg-factory-facade/renders/v3-1.webp', caption: 'Facade Detail',    w: 1448, h: 1086 },
+    { src: '/projects/ppg-factory-facade/renders/v3-3.webp', caption: 'Panel Study',      w: 2400, h: 1598 },
+    { src: '/projects/ppg-factory-facade/renders/4.webp',    caption: 'Close-up',         w: 1104, h: 1656 },
+    { src: '/projects/ppg-factory-facade/renders/v4.webp',   caption: 'Courtyard Detail', w: 1448, h: 1086 },
   ],
 };
 
