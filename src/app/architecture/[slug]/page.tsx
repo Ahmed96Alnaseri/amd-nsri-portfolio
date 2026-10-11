@@ -278,7 +278,7 @@ const CORTEN_FACADE_VILLA: CaseStudy = {
   location: 'Lamu, Kenya',
   client: 'Kaba',
   architect: 'Ahmed Alnaseri, Yassir Rawi',
-  heroImage: '/projects/corten-facade-villa/renders/image-11.png',
+  heroImage: '/projects/corten-facade-villa/renders/image-11.webp',
   heroPosition: 'center 55%',
   description:
     'A contemporary villa facade study exploring Corten steel as both a protective skin and an architectural expression. The design uses perforated and folded metal panels to create privacy, shading, and depth, while allowing light and shadow to animate the building throughout the day.\nThe warm weathered texture of Corten gives the project a natural, timeless character, blending modern geometry with an earthy material presence.',
@@ -286,12 +286,12 @@ const CORTEN_FACADE_VILLA: CaseStudy = {
   area: '140 m²',
   status: 'Concept',
   gallery: [
-    { src: '/projects/corten-facade-villa/renders/image-11.png', caption: 'Exterior View',        w: 1123, h: 1401 },
-    { src: '/projects/corten-facade-villa/renders/image-2.png', caption: 'Facade Detail',         w: 1920, h: 1080 },
-    { src: '/projects/corten-facade-villa/renders/interior.png', caption: 'Interior View',        w: 1122, h: 1402 },
-    { src: '/projects/corten-facade-villa/renders/image-3.png', caption: 'Corten Panel Close-up', w: 1350, h: 1080 },
-    { src: '/projects/corten-facade-villa/renders/image-4.png', caption: 'Living Room View',      w: 1122, h: 1402 },
-    { src: '/projects/corten-facade-villa/renders/model.png',   caption: 'Massing Model',         w: 1920, h: 1080 },
+    { src: '/projects/corten-facade-villa/renders/image-11.webp', caption: 'Exterior View',        w: 1123, h: 1401 },
+    { src: '/projects/corten-facade-villa/renders/image-2.webp', caption: 'Facade Detail',         w: 1350, h: 1080 },
+    { src: '/projects/corten-facade-villa/renders/interior.webp', caption: 'Interior View',        w: 1122, h: 1402 },
+    { src: '/projects/corten-facade-villa/renders/image-3.webp', caption: 'Corten Panel Close-up', w: 1350, h: 1080 },
+    { src: '/projects/corten-facade-villa/renders/image-4.webp', caption: 'Living Room View',      w: 1122, h: 1402 },
+    { src: '/projects/corten-facade-villa/renders/model.webp',   caption: 'Massing Model',         w: 1350, h: 1080 },
   ],
 };
 

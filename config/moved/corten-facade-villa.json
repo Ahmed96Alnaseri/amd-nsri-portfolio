@@ -1,0 +1,29 @@
+{
+ "_comment": "Images of corten-facade-villa replaced by web-optimised WebP; originals in /_originals (git-ignored). Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/projects/corten-facade-villa/renders/image-11.png",
+   "to": "/projects/corten-facade-villa/renders/image-11.webp"
+  },
+  {
+   "from": "/projects/corten-facade-villa/renders/image-2.png",
+   "to": "/projects/corten-facade-villa/renders/image-2.webp"
+  },
+  {
+   "from": "/projects/corten-facade-villa/renders/image-3.png",
+   "to": "/projects/corten-facade-villa/renders/image-3.webp"
+  },
+  {
+   "from": "/projects/corten-facade-villa/renders/image-4.png",
+   "to": "/projects/corten-facade-villa/renders/image-4.webp"
+  },
+  {
+   "from": "/projects/corten-facade-villa/renders/interior.png",
+   "to": "/projects/corten-facade-villa/renders/interior.webp"
+  },
+  {
+   "from": "/projects/corten-facade-villa/renders/model.png",
+   "to": "/projects/corten-facade-villa/renders/model.webp"
+  }
+ ]
+}
