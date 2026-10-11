@@ -1,0 +1,61 @@
+{
+ "_comment": "Images of balikesir-cumhuriyet-meydani replaced by web-optimised WebP; originals in /_originals (git-ignored). Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/1-kat-plani.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/1-kat-plani.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/gorunus-1.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/gorunus-1.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/gorunus-2.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/gorunus-2.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/kesit-detay.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/kesit-detay.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-1.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-1.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-2.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-2.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-3.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-3.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-4.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-4.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/vaziyet-plani.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/vaziyet-plani.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/drawings/zemin-kat-plani-2.png",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/zemin-kat-plani-2.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/renders/1.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/renders/1.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/renders/5.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/renders/5.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/renders/6.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/renders/6.webp"
+  },
+  {
+   "from": "/projects/balikesir-cumhuriyet-meydani/renders/7.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/renders/7.webp"
+  }
+ ]
+}
