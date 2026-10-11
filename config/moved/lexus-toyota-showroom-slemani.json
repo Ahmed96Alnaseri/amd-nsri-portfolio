@@ -1,0 +1,53 @@
+{
+ "_comment": "Images of lexus-toyota-showroom-slemani replaced by web-optimised WebP; originals in /_originals (git-ignored). Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/3d-model-mockup.jpg",
+   "to": "/projects/lexus-toyota-showroom-slemani/3d-model-mockup.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/complete-facade-3d.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/complete-facade-3d.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/facade-2.jpg",
+   "to": "/projects/lexus-toyota-showroom-slemani/facade-2.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/facade-3.jpg",
+   "to": "/projects/lexus-toyota-showroom-slemani/facade-3.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/facade-4.jpg",
+   "to": "/projects/lexus-toyota-showroom-slemani/facade-4.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/facade-5.jpg",
+   "to": "/projects/lexus-toyota-showroom-slemani/facade-5.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/lexus-facade.jpg",
+   "to": "/projects/lexus-toyota-showroom-slemani/lexus-facade.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/mockup.jpeg",
+   "to": "/projects/lexus-toyota-showroom-slemani/mockup.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/planar-script.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/planar-script.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/poses-3d-2.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/poses-3d-2.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/poses-3d-3.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/poses-3d-3.webp"
+  },
+  {
+   "from": "/projects/lexus-toyota-showroom-slemani/poses-3d.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/poses-3d.webp"
+  }
+ ]
+}
