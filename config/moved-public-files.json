@@ -1,0 +1,332 @@
+{
+ "_comment": "Files moved in the public/ clean-up. \"rewrite\" entries keep their old public URL; all others answer the old URL with a permanent redirect. Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/about/ahmed-alnaseri.png",
+   "to": "/site/about/ahmed-alnaseri.png"
+  },
+  {
+   "from": "/about/beylikduzu-map-abstract.png",
+   "to": "/site/about/beylikduzu-map-abstract.png"
+  },
+  {
+   "from": "/about/miki-cat.png",
+   "to": "/site/about/miki-cat.png"
+  },
+  {
+   "from": "/amd-nsri-facade.html",
+   "to": "/site/amd-nsri-facade.html"
+  },
+  {
+   "from": "/Baghdad Private Hospital/Render/Exterior hospital 2.png",
+   "to": "/projects/baghdad-private-hospital/renders/exterior-hospital-2.png"
+  },
+  {
+   "from": "/Baghdad Private Hospital/Render/facade 1.jpeg",
+   "to": "/projects/baghdad-private-hospital/renders/facade-1.jpeg"
+  },
+  {
+   "from": "/Baghdad Private Hospital/Render/model1.jpeg",
+   "to": "/projects/baghdad-private-hospital/renders/model1.jpeg"
+  },
+  {
+   "from": "/Baghdad Private Hospital/Render/scrpt.png",
+   "to": "/projects/baghdad-private-hospital/renders/scrpt.png"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/1. kat planı.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/1-kat-plani.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/GÖRÜNÜŞ 1.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/gorunus-1.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/GÖRÜNÜŞ 2.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/gorunus-2.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/KESİT DETAY.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/kesit-detay.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 1.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-1.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 2.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-2.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 3.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-3.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/senaryolar 4.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/senaryolar-4.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/VAZİYET PLANI.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/vaziyet-plani.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/diagram-plan-kesit görünüşler/ZEMİN KAT PLANI 2.png",
+   "to": "/projects/balikesir-cumhuriyet-meydani/drawings/zemin-kat-plani-2.png"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/Renderlar-usb/1.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/renders/1.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/Renderlar-usb/5.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/renders/5.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/Renderlar-usb/6.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/renders/6.jpg"
+  },
+  {
+   "from": "/Balıkesir Cumhuriyet meydanı/Renderlar-usb/7.jpg",
+   "to": "/projects/balikesir-cumhuriyet-meydani/renders/7.jpg"
+  },
+  {
+   "from": "/Hasyl/Diagram/ceiling türkmen.png",
+   "to": "/projects/hasyl-canopy/drawings/ceiling-turkmen.png"
+  },
+  {
+   "from": "/Hasyl/Diagram/kolon.png",
+   "to": "/projects/hasyl-canopy/drawings/kolon.png"
+  },
+  {
+   "from": "/Hasyl/Diagram/kolon4.png",
+   "to": "/projects/hasyl-canopy/drawings/kolon4.png"
+  },
+  {
+   "from": "/Hasyl/render/CANOPY_V1_1 - Photo.jpg",
+   "to": "/projects/hasyl-canopy/renders/canopy-v1-1-photo.jpg"
+  },
+  {
+   "from": "/Hasyl/render/CANOPY_V1_3 - Photo.jpg",
+   "to": "/projects/hasyl-canopy/renders/canopy-v1-3-photo.jpg"
+  },
+  {
+   "from": "/Hasyl/render/CANOPY_V1_4 - Photo.jpg",
+   "to": "/projects/hasyl-canopy/renders/canopy-v1-4-photo.jpg"
+  },
+  {
+   "from": "/hero-panel2.jpg",
+   "to": "/site/hero-panel.jpg"
+  },
+  {
+   "from": "/Hospital in mansoor/detail 1.png",
+   "to": "/projects/national-hospital-baghdad/detail-1.png"
+  },
+  {
+   "from": "/Hospital in mansoor/facade hospital.png",
+   "to": "/projects/national-hospital-baghdad/facade-hospital.png"
+  },
+  {
+   "from": "/Hospital in mansoor/hos 1.png",
+   "to": "/projects/national-hospital-baghdad/hos-1.png"
+  },
+  {
+   "from": "/Hospital in mansoor/hos3.png",
+   "to": "/projects/national-hospital-baghdad/hos3.png"
+  },
+  {
+   "from": "/Hospital in mansoor/hospital mansor gpt.png",
+   "to": "/projects/national-hospital-baghdad/hospital-mansor-gpt.png"
+  },
+  {
+   "from": "/Hospital in mansoor/hospital mansore.png",
+   "to": "/projects/national-hospital-baghdad/hospital-mansore.png"
+  },
+  {
+   "from": "/Hospital in mansoor/panel facade hos.png",
+   "to": "/projects/national-hospital-baghdad/panel-facade-hos.png"
+  },
+  {
+   "from": "/ipunch.html",
+   "to": "/tools/ipunch/ipunch.html",
+   "rewrite": true
+  },
+  {
+   "from": "/Kalilou Kaba/render/image 11.png",
+   "to": "/projects/corten-facade-villa/renders/image-11.png"
+  },
+  {
+   "from": "/Kalilou Kaba/render/image 4.png",
+   "to": "/projects/corten-facade-villa/renders/image-4.png"
+  },
+  {
+   "from": "/Kalilou Kaba/render/interior.png",
+   "to": "/projects/corten-facade-villa/renders/interior.png"
+  },
+  {
+   "from": "/Kalilou Kaba/render/model.png",
+   "to": "/projects/corten-facade-villa/renders/model.png"
+  },
+  {
+   "from": "/Kalilou Kaba/render/İmage 2.png",
+   "to": "/projects/corten-facade-villa/renders/image-2.png"
+  },
+  {
+   "from": "/Kalilou Kaba/render/İmage 3.png",
+   "to": "/projects/corten-facade-villa/renders/image-3.png"
+  },
+  {
+   "from": "/Lexus/3D model Mockup.JPG",
+   "to": "/projects/lexus-toyota-showroom-slemani/3d-model-mockup.jpg"
+  },
+  {
+   "from": "/Lexus/Complete facade 3D.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/complete-facade-3d.png"
+  },
+  {
+   "from": "/Lexus/Facade 2.JPG",
+   "to": "/projects/lexus-toyota-showroom-slemani/facade-2.jpg"
+  },
+  {
+   "from": "/Lexus/Facade 3.JPG",
+   "to": "/projects/lexus-toyota-showroom-slemani/facade-3.jpg"
+  },
+  {
+   "from": "/Lexus/Facade 4.JPG",
+   "to": "/projects/lexus-toyota-showroom-slemani/facade-4.jpg"
+  },
+  {
+   "from": "/Lexus/Facade 5.jpg",
+   "to": "/projects/lexus-toyota-showroom-slemani/facade-5.jpg"
+  },
+  {
+   "from": "/Lexus/Lexus Facade.jpg",
+   "to": "/projects/lexus-toyota-showroom-slemani/lexus-facade.jpg"
+  },
+  {
+   "from": "/Lexus/Mockup.jpeg",
+   "to": "/projects/lexus-toyota-showroom-slemani/mockup.jpeg"
+  },
+  {
+   "from": "/Lexus/Planar script.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/planar-script.png"
+  },
+  {
+   "from": "/Lexus/Poses 3D 2.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/poses-3d-2.png"
+  },
+  {
+   "from": "/Lexus/Poses 3D 3.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/poses-3d-3.png"
+  },
+  {
+   "from": "/Lexus/Poses 3D.png",
+   "to": "/projects/lexus-toyota-showroom-slemani/poses-3d.png"
+  },
+  {
+   "from": "/nestri-pro.html",
+   "to": "/tools/nestri-pro/nestri-pro.html",
+   "rewrite": true
+  },
+  {
+   "from": "/nestri.html",
+   "to": "/tools/nestri/nestri.html",
+   "rewrite": true
+  },
+  {
+   "from": "/PPG FACADE/RENDER/4.png",
+   "to": "/projects/ppg-factory-facade/renders/4.png"
+  },
+  {
+   "from": "/PPG FACADE/RENDER/V3_1.png",
+   "to": "/projects/ppg-factory-facade/renders/v3-1.png"
+  },
+  {
+   "from": "/PPG FACADE/RENDER/V3_2.png",
+   "to": "/projects/ppg-factory-facade/renders/v3-2.png"
+  },
+  {
+   "from": "/PPG FACADE/RENDER/V3_3.png",
+   "to": "/projects/ppg-factory-facade/renders/v3-3.png"
+  },
+  {
+   "from": "/PPG FACADE/RENDER/v4.png",
+   "to": "/projects/ppg-factory-facade/renders/v4.png"
+  },
+  {
+   "from": "/Restrant Kerkuk/IMG_3259.JPG",
+   "to": "/projects/kerkuk-restaurant/img-3259.jpg"
+  },
+  {
+   "from": "/Restrant Kerkuk/IMG_3260.JPG",
+   "to": "/projects/kerkuk-restaurant/img-3260.jpg"
+  },
+  {
+   "from": "/Restrant Kerkuk/IMG_3261.JPG",
+   "to": "/projects/kerkuk-restaurant/img-3261.jpg"
+  },
+  {
+   "from": "/Restrant Kerkuk/IMG_3262.JPG",
+   "to": "/projects/kerkuk-restaurant/img-3262.jpg"
+  },
+  {
+   "from": "/Restrant Kerkuk/IMG_3264.JPG",
+   "to": "/projects/kerkuk-restaurant/img-3264.jpg"
+  },
+  {
+   "from": "/Restrant Kerkuk/IMG_3265.JPG",
+   "to": "/projects/kerkuk-restaurant/img-3265.jpg"
+  },
+  {
+   "from": "/Restrant Kerkuk/IMG_3266.JPG",
+   "to": "/projects/kerkuk-restaurant/img-3266.jpg"
+  },
+  {
+   "from": "/Restrant Kerkuk/restaurant facade.png",
+   "to": "/projects/kerkuk-restaurant/restaurant-facade.png"
+  },
+  {
+   "from": "/Restrant Kerkuk/Resturant Facade part 1.png",
+   "to": "/projects/kerkuk-restaurant/resturant-facade-part-1.png"
+  },
+  {
+   "from": "/Restrant Kerkuk/Resturant Facade part 2.png",
+   "to": "/projects/kerkuk-restaurant/resturant-facade-part-2.png"
+  },
+  {
+   "from": "/sheet-metal-unfolder-hero.html",
+   "to": "/tools/sheet-metal-unfolder/hero.html"
+  },
+  {
+   "from": "/tools/ipunch-card.webp",
+   "to": "/tools/ipunch/card.webp"
+  },
+  {
+   "from": "/tools/ipunch-hero.png",
+   "to": "/tools/ipunch/hero.png"
+  },
+  {
+   "from": "/tools/ipunch-work.webp",
+   "to": "/tools/ipunch/work.webp"
+  },
+  {
+   "from": "/tools/nestri-card-panels.webp",
+   "to": "/tools/nestri/card.webp"
+  },
+  {
+   "from": "/tools/nestri-hero.png",
+   "to": "/tools/nestri/hero.png"
+  },
+  {
+   "from": "/tools/nestri-pro-card-panels.webp",
+   "to": "/tools/nestri-pro/card.webp"
+  },
+  {
+   "from": "/tools/nestri-pro-hero.png",
+   "to": "/tools/nestri-pro/hero.png"
+  },
+  {
+   "from": "/tools/sheet-metal-unfolder-card.webp",
+   "to": "/tools/sheet-metal-unfolder/card.webp"
+  }
+ ]
+}

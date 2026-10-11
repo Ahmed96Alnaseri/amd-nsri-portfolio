@@ -14,9 +14,9 @@ import { useLanguage } from '@/lib/LanguageContext';
  * All visible copy is keyed via t('about.*') so it switches with EN/TR/AR.
  */
 
-const PORTRAIT = '/about/ahmed-alnaseri.png';
-const CAT = '/about/miki-cat.png';
-const MAP_IMG = '/about/beylikduzu-map-abstract.png';
+const PORTRAIT = '/site/about/ahmed-alnaseri.png';
+const CAT = '/site/about/miki-cat.png';
+const MAP_IMG = '/site/about/beylikduzu-map-abstract.png';
 const EMAIL = 'ahmed@amdnsri.com';
 const PHONE_DISPLAY = '+90 537 872 64 52';
 const PHONE_TEL = '+905378726452';

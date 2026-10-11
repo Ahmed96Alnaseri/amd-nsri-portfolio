@@ -48,7 +48,7 @@ export default function HeroPanelImage({
       }}
     >
       <Image
-        src="/hero-panel2.jpg"
+        src="/site/hero-panel.jpg"
         alt=""
         fill
         priority

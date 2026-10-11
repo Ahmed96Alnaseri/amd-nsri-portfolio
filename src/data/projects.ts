@@ -92,7 +92,7 @@ const projects: Project[] = [
     tags: ['Image Sampling', 'Variable Perforation', 'DXF Output'],
     overlayKeywords: ['GRAYSCALE MAPPING', 'VARIABLE DIAMETERS', 'PUNCH SCHEDULE', 'CNC READY'],
     caseStudyLink: '/ipunch.html',
-    tool: { coverImage: '/tools/ipunch-work.webp', ctaLabel: 'Open Tool' },
+    tool: { coverImage: '/tools/ipunch/work.webp', ctaLabel: 'Open Tool' },
   },
   /* Taken out of Selected Works (its slot now shows IPunch) but kept here: put its slug back in
      SELECTED_WORK_SLUGS (src/components/FeaturedWorksSection.tsx) to show it again. */

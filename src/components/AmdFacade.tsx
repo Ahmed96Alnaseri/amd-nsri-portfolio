@@ -34,7 +34,7 @@ export default function AmdFacade() {
     // single source of truth; here only its script is lifted out and run.
     const define = async () => {
       if (customElements.get('amd-facade')) return;
-      const html = await fetch('/amd-nsri-facade.html').then((r) => r.text());
+      const html = await fetch('/site/amd-nsri-facade.html').then((r) => r.text());
       if (cancelled || customElements.get('amd-facade')) return;
       const doc = new DOMParser().parseFromString(html, 'text/html');
       doc.querySelectorAll('script').forEach((source) => {
