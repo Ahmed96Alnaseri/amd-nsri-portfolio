@@ -1,0 +1,29 @@
+{
+ "_comment": "Images of hasyl-canopy replaced by web-optimised WebP; originals in /_originals (git-ignored). Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/projects/hasyl-canopy/drawings/ceiling-turkmen.png",
+   "to": "/projects/hasyl-canopy/drawings/ceiling-turkmen.webp"
+  },
+  {
+   "from": "/projects/hasyl-canopy/drawings/kolon.png",
+   "to": "/projects/hasyl-canopy/drawings/kolon.webp"
+  },
+  {
+   "from": "/projects/hasyl-canopy/drawings/kolon4.png",
+   "to": "/projects/hasyl-canopy/drawings/kolon4.webp"
+  },
+  {
+   "from": "/projects/hasyl-canopy/renders/canopy-v1-1-photo.jpg",
+   "to": "/projects/hasyl-canopy/renders/canopy-v1-1-photo.webp"
+  },
+  {
+   "from": "/projects/hasyl-canopy/renders/canopy-v1-3-photo.jpg",
+   "to": "/projects/hasyl-canopy/renders/canopy-v1-3-photo.webp"
+  },
+  {
+   "from": "/projects/hasyl-canopy/renders/canopy-v1-4-photo.jpg",
+   "to": "/projects/hasyl-canopy/renders/canopy-v1-4-photo.webp"
+  }
+ ]
+}

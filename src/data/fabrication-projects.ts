@@ -42,12 +42,12 @@ const fabricationProjects: FabricationProject[] = [
     location: 'Awaza, Turkmenistan',
     detailHref: '/architecture/hasyl-canopy',
     images: [
-      { src: '/projects/hasyl-canopy/renders/canopy-v1-1-photo.jpg', subtitle: 'Exterior View' },
-      { src: '/projects/hasyl-canopy/drawings/ceiling-turkmen.png',    subtitle: 'Ceiling Pattern Detail' },
-      { src: '/projects/hasyl-canopy/drawings/kolon4.png',             subtitle: 'Column Drawing' },
-      { src: '/projects/hasyl-canopy/drawings/kolon.png',              subtitle: 'Column Detail' },
-      { src: '/projects/hasyl-canopy/renders/canopy-v1-3-photo.jpg', subtitle: 'Canopy View 3' },
-      { src: '/projects/hasyl-canopy/renders/canopy-v1-4-photo.jpg', subtitle: 'Canopy View 4' },
+      { src: '/projects/hasyl-canopy/card/canopy-v1-1-photo.webp', subtitle: 'Exterior View' },
+      { src: '/projects/hasyl-canopy/card/ceiling-turkmen.webp',    subtitle: 'Ceiling Pattern Detail' },
+      { src: '/projects/hasyl-canopy/drawings/kolon4.webp',             subtitle: 'Column Drawing' },
+      { src: '/projects/hasyl-canopy/card/kolon.webp',              subtitle: 'Column Detail' },
+      { src: '/projects/hasyl-canopy/card/canopy-v1-3-photo.webp', subtitle: 'Canopy View 3' },
+      { src: '/projects/hasyl-canopy/renders/canopy-v1-4-photo.webp', subtitle: 'Canopy View 4' },
     ],
   },
   {

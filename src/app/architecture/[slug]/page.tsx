@@ -199,7 +199,7 @@ const HASYL_CANOPY: CaseStudy = {
   location: 'Awaza, Turkmenistan',
   client: 'Mahli',
   architect: 'Ahmed Alnaseri, Furkan Kartekin',
-  heroImage: '/projects/hasyl-canopy/renders/canopy-v1-1-photo.jpg',
+  heroImage: '/projects/hasyl-canopy/renders/canopy-v1-1-photo.webp',
   description:
     'A parametric canopy designed for the entrance of the Hasyl Complex, creating a refined architectural gesture with a sense of movement and luxury. The column forms extend upward and continue into the ceiling, maintaining one continuous design language. The concept is translated into a contemporary fabrication logic through algorithmic design tools, allowing the form to be developed with precision, rhythm, and buildable geometry.',
   program: 'Canopy',
@@ -207,12 +207,12 @@ const HASYL_CANOPY: CaseStudy = {
   status: 'Built',
   manufacturers: 'Kasso Engineering',
   gallery: [
-    { src: '/projects/hasyl-canopy/renders/canopy-v1-1-photo.jpg', caption: 'Exterior View',            w: 1920, h: 1080 },
-    { src: '/projects/hasyl-canopy/drawings/ceiling-turkmen.png',    caption: 'Ceiling Pattern Detail',   w: 1200, h: 900  },
-    { src: '/projects/hasyl-canopy/drawings/kolon4.png',             caption: 'Column Technical Drawing', w: 900,  h: 1200 },
-    { src: '/projects/hasyl-canopy/drawings/kolon.png',              caption: 'Parametric Column Detail', w: 900,  h: 1200 },
-    { src: '/projects/hasyl-canopy/renders/canopy-v1-3-photo.jpg', caption: 'Canopy View 3',            w: 1920, h: 1080 },
-    { src: '/projects/hasyl-canopy/renders/canopy-v1-4-photo.jpg', caption: 'Canopy View 4',            w: 1920, h: 1080 },
+    { src: '/projects/hasyl-canopy/renders/canopy-v1-1-photo.webp', caption: 'Exterior View',            w: 2400, h: 1350 },
+    { src: '/projects/hasyl-canopy/drawings/ceiling-turkmen.webp',    caption: 'Ceiling Pattern Detail',   w: 1632, h: 891  },
+    { src: '/projects/hasyl-canopy/drawings/kolon4.webp',             caption: 'Column Technical Drawing', w: 900,  h: 1200 },
+    { src: '/projects/hasyl-canopy/drawings/kolon.webp',              caption: 'Parametric Column Detail', w: 900,  h: 1200 },
+    { src: '/projects/hasyl-canopy/renders/canopy-v1-3-photo.webp', caption: 'Canopy View 3',            w: 2400, h: 1350 },
+    { src: '/projects/hasyl-canopy/renders/canopy-v1-4-photo.webp', caption: 'Canopy View 4',            w: 2400, h: 1350 },
   ],
 };
 
