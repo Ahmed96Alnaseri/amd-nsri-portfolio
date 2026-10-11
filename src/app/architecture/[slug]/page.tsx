@@ -58,20 +58,20 @@ const NATIONAL_HOSPITAL: CaseStudy = {
   location: 'Baghdad, Iraq',
   client: 'National Hospital — Mansoor',
   architect: 'Ahmed Alnaseri',
-  heroImage: '/projects/national-hospital-baghdad/hospital-mansor-gpt.png',
+  heroImage: '/projects/national-hospital-baghdad/hospital-mansor-gpt.webp',
   description:
     "A facade for a cardiac hospital that wears its purpose on its surface. The design centers on a single, large perforated heart form cut into the aluminum cladding — not as symbol applied after the fact, but as the organizing geometry of the entire panel system. Light passes through the perforation from behind, so the facade reads differently by day and by night: a precise metal skin in daylight, a glowing heart after dark. The perforated pattern graduates in density outward from the heart's edge, giving the form weight at its center and dissolving it toward the boundary — a field of light that breathes. For a building where cardiac care happens daily, the architecture makes no attempt to hide what occurs inside. The heart is the facade.",
   program: 'Facade Design',
   area: '300 m²',
   status: 'Built',
   gallery: [
-    { src: '/projects/national-hospital-baghdad/hospital-mansor-gpt.png', caption: 'Exterior View', w: 1448, h: 1086 },
-    { src: '/projects/national-hospital-baghdad/hospital-mansore.png',    caption: 'Interior View', w: 1447, h: 1087 },
-    { src: '/projects/national-hospital-baghdad/facade-hospital.png',     caption: 'Massing Model', w: 3742, h: 4490 },
-    { src: '/projects/national-hospital-baghdad/detail-1.png',            caption: 'Facade Detail', w: 1448, h: 1086 },
-    { src: '/projects/national-hospital-baghdad/panel-facade-hos.png',    caption: 'Panel Study',        w: 5000, h: 5000 },
-    { src: '/projects/national-hospital-baghdad/hos-1.png',               caption: 'Night View — Red',   w: 1199, h: 1312 },
-    { src: '/projects/national-hospital-baghdad/hos3.png',                caption: 'Night View — Green', w: 1199, h: 1312 },
+    { src: '/projects/national-hospital-baghdad/hospital-mansor-gpt.webp', caption: 'Exterior View', w: 1448, h: 1086 },
+    { src: '/projects/national-hospital-baghdad/hospital-mansore.webp',    caption: 'Interior View', w: 1447, h: 1087 },
+    { src: '/projects/national-hospital-baghdad/facade-hospital.webp',     caption: 'Massing Model', w: 2334, h: 2800 },
+    { src: '/projects/national-hospital-baghdad/detail-1.webp',            caption: 'Facade Detail', w: 1448, h: 1086 },
+    { src: '/projects/national-hospital-baghdad/panel-facade-hos.webp',    caption: 'Panel Study',        w: 3200, h: 3200 },
+    { src: '/projects/national-hospital-baghdad/hos-1.webp',               caption: 'Night View — Red',   w: 1199, h: 1312 },
+    { src: '/projects/national-hospital-baghdad/hos3.webp',                caption: 'Night View — Green', w: 1199, h: 1312 },
   ],
 };
 

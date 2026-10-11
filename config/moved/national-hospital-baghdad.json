@@ -1,0 +1,33 @@
+{
+ "_comment": "Images of national-hospital-baghdad replaced by web-optimised WebP; originals in /_originals (git-ignored). Read by next.config.mjs.",
+ "moves": [
+  {
+   "from": "/projects/national-hospital-baghdad/detail-1.png",
+   "to": "/projects/national-hospital-baghdad/detail-1.webp"
+  },
+  {
+   "from": "/projects/national-hospital-baghdad/facade-hospital.png",
+   "to": "/projects/national-hospital-baghdad/facade-hospital.webp"
+  },
+  {
+   "from": "/projects/national-hospital-baghdad/hos-1.png",
+   "to": "/projects/national-hospital-baghdad/hos-1.webp"
+  },
+  {
+   "from": "/projects/national-hospital-baghdad/hos3.png",
+   "to": "/projects/national-hospital-baghdad/hos3.webp"
+  },
+  {
+   "from": "/projects/national-hospital-baghdad/hospital-mansor-gpt.png",
+   "to": "/projects/national-hospital-baghdad/hospital-mansor-gpt.webp"
+  },
+  {
+   "from": "/projects/national-hospital-baghdad/hospital-mansore.png",
+   "to": "/projects/national-hospital-baghdad/hospital-mansore.webp"
+  },
+  {
+   "from": "/projects/national-hospital-baghdad/panel-facade-hos.png",
+   "to": "/projects/national-hospital-baghdad/panel-facade-hos.webp"
+  }
+ ]
+}
