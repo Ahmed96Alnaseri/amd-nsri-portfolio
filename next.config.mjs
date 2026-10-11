@@ -1,8 +1,19 @@
 import fs from 'fs';
 
-/* Files moved in the public/ clean-up (config/moved-public-files.json). The standalone tool pages keep their
-   public URLs through rewrites; every other old file URL answers with a permanent redirect to its new home. */
-const { moves } = JSON.parse(fs.readFileSync(new URL('./config/moved-public-files.json', import.meta.url), 'utf8'));
+/* Files moved in the public/ clean-up (config/moved-public-files.json) and in later per-project image work
+   (config/moved/<project>.json, one file per project so each can be rolled back on its own). The standalone tool
+   pages keep their public URLs through rewrites; every other old file URL answers with a permanent redirect. */
+const readMoves = (url) => JSON.parse(fs.readFileSync(url, 'utf8')).moves;
+const movedDir = new URL('./config/moved/', import.meta.url);
+const moves = [
+  ...readMoves(new URL('./config/moved-public-files.json', import.meta.url)),
+  ...(fs.existsSync(movedDir)
+    ? fs.readdirSync(movedDir).filter((f) => f.endsWith('.json')).sort().flatMap((f) => readMoves(new URL(f, movedDir)))
+    : []),
+];
+// a file moved twice (renamed in the clean-up, then optimised) redirects straight to where it is now, in one hop
+const next = new Map(moves.filter((m) => !m.rewrite).map((m) => [m.from, m.to]));
+const finalPath = (p) => { const seen = new Set(); while (next.has(p) && !seen.has(p)) { seen.add(p); p = next.get(p); } return p; };
 // redirect sources are path patterns: characters with a meaning there are escaped
 const literal = (p) => p.replace(/[\\:()*+?{}[\]]/g, (c) => '\\' + c);
 // requests arrive percent-encoded (a space as %20, ı as %C4%B1), so each old path is matched in that form too
@@ -30,7 +41,7 @@ const nextConfig = {
   async redirects() {
     return moves
       .filter((m) => !m.rewrite)
-      .flatMap((m) => sources(m.from).map((source) => ({ source, destination: m.to, permanent: true })));
+      .flatMap((m) => sources(m.from).map((source) => ({ source, destination: finalPath(m.from), permanent: true })));
   },
 };
 
