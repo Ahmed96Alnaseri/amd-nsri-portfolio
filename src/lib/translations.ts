@@ -1428,6 +1428,19 @@ const VALUES: Record<Lang, ValueMap> = {
     'PEDESTRIAN SPINE': 'YAYA OMURGASI',
     'PUBLIC DECK': 'KAMUSAL GÜVERTE',
     'COMPETITION ENTRY': 'YARIŞMA KATILIMI',
+    // Selected Works — Muğla card (slot 001)
+    'Competition proposal for a municipal social services building in Muğla\'s historic Menteşe district, built around two public routes, a courtyard and a pocket theatre.':
+      'Muğla\'nın tarihi Menteşe ilçesinde bir belediye sosyal hizmet binası için yarışma önerisi; iki kamusal güzergâh, bir avlu ve bir cep tiyatrosu etrafında kurgulanır.',
+    'Civic':
+      'Kamusal',
+    'Public Building':
+      'Kamu Binası',
+    'TIMBER SHADING':
+      'AHŞAP GÖLGELEME',
+    'CENTRAL COURTYARD':
+      'MERKEZİ AVLU',
+    'POCKET THEATRE':
+      'CEP TİYATROSU',
     'SINE ATTRACTOR': 'SİNÜS ÇEKİCİ',
     'GRADIENT PERFORATION': 'GRADYAN DELİK',
     'PARAMETRIC PANELS': 'PARAMETRİK PANELLER',
@@ -1952,6 +1965,19 @@ const VALUES: Record<Lang, ValueMap> = {
     'PEDESTRIAN SPINE': 'عمود فقري للمشاة',
     'PUBLIC DECK': 'منصّة عامة',
     'COMPETITION ENTRY': 'مشاركة مسابقة',
+    // Selected Works — Muğla card (slot 001)
+    'Competition proposal for a municipal social services building in Muğla\'s historic Menteşe district, built around two public routes, a courtyard and a pocket theatre.':
+      'مقترح مسابقة لمبنى بلدي للخدمات الاجتماعية في حيّ منتشه التاريخي بموغلا، ينتظم حول مسارين عامّين وفناء ومسرح صغير.',
+    'Civic':
+      'مدني',
+    'Public Building':
+      'مبنى عام',
+    'TIMBER SHADING':
+      'تظليل خشبي',
+    'CENTRAL COURTYARD':
+      'فناء مركزي',
+    'POCKET THEATRE':
+      'مسرح صغير',
     'SINE ATTRACTOR': 'جاذب جيبي',
     'GRADIENT PERFORATION': 'تثقيب متدرّج',
     'PARAMETRIC PANELS': 'ألواح بارامترية',

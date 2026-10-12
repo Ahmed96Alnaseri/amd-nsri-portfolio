@@ -7,9 +7,10 @@ import { PROJECTS as ARCHITECTURE_PROJECTS, slugify } from '@/data/architectureP
 import { useLanguage } from '@/lib/LanguageContext';
 
 /** Selected Works: exactly these entries of src/data/projects.ts, in this order. Projects take their cover from the
-    architecture PROJECTS array; a tool card (IPunch) carries its own. Slot 005 was 'balikesir-cumhuriyet-meydani'. */
+    architecture PROJECTS array; a tool card (IPunch) carries its own. Slot 001 was 'hasyl-canopy',
+    slot 005 was 'balikesir-cumhuriyet-meydani'. */
 const SELECTED_WORK_SLUGS = [
-  'hasyl-canopy',
+  'mugla-belediyesi-sosyal-hizmet-binasi',
   'lexus-toyota-showroom-slemani',
   'national-hospital-baghdad',
   'kerkuk-restaurant',
@@ -85,7 +86,7 @@ export default function FeaturedWorksSection() {
                   alt={project.title}
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 680px) 50vw, 100vw"
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: project.coverFit ?? 'cover', objectPosition: project.coverPosition }}
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display = 'none';
                   }}

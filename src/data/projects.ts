@@ -1,4 +1,4 @@
-export type ProjectStatus = 'Completed' | 'In Production' | 'Released' | 'Concept' | 'Fabricated' | 'Live';
+export type ProjectStatus = 'Completed' | 'In Production' | 'Released' | 'Concept' | 'Fabricated' | 'Live' | 'Competition';
 
 export type ProjectCategory = 'Architecture' | 'Fabrication' | 'Tools' | 'Design' | 'Facade' | 'Digital Tool';
 
@@ -19,6 +19,10 @@ export interface Project {
   overlayKeywords: string[];
   /** URL for the case study page (for a tool card: the tool itself) */
   caseStudyLink: string;
+  /** Selected Works only: 'contain' shows the whole cover in the card's box instead of cropping it to fill */
+  coverFit?: 'contain';
+  /** Selected Works only: where the cover sits in its box (CSS object-position), e.g. 'center top' */
+  coverPosition?: string;
   /** A tool card instead of a project: its own cover image, translated title and an "Open Tool" link */
   tool?: {
     coverImage: string;
@@ -28,6 +32,25 @@ export interface Project {
 }
 
 const projects: Project[] = [
+  {
+    num: '001',
+    title: 'Muğla Belediyesi Sosyal Hizmet Binası',
+    slug: 'mugla-belediyesi-sosyal-hizmet-binasi',
+    category: 'Architecture',
+    year: '2026',
+    status: 'Competition',
+    concept:
+      'Competition proposal for a municipal social services building in Muğla\'s historic Menteşe district, built around two public routes, a courtyard and a pocket theatre.',
+    tags: ['Architecture', 'Competition', 'Civic', 'Public Building'],
+    overlayKeywords: ['TIMBER SHADING', 'CENTRAL COURTYARD', 'POCKET THEATRE', 'COMPETITION ENTRY'],
+    caseStudyLink: '/architecture/mugla-belediyesi-sosyal-hizmet-binasi',
+    // the 16:9 render at its full width, building at the top of the near-square box: cropping it to fill
+    // the box cut off the sides of the building
+    coverFit: 'contain',
+    coverPosition: 'center top',
+  },
+  /* Taken out of Selected Works (its slot now shows Muğla) but kept here: put its slug back in
+     SELECTED_WORK_SLUGS (src/components/FeaturedWorksSection.tsx) to show it again. */
   {
     num: '001',
     title: 'Hasyl Canopy',
