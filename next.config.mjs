@@ -39,9 +39,13 @@ const nextConfig = {
     return moves.filter((m) => m.rewrite).map((m) => ({ source: m.from, destination: m.to }));
   },
   async redirects() {
-    return moves
-      .filter((m) => !m.rewrite)
-      .flatMap((m) => sources(m.from).map((source) => ({ source, destination: finalPath(m.from), permanent: true })));
+    return [
+      // the Custom Grasshopper Scripts service was taken off the site; its page sends visitors to the Tools page
+      { source: '/tools/grasshopper-scripts', destination: '/tools', permanent: true },
+      ...moves
+        .filter((m) => !m.rewrite)
+        .flatMap((m) => sources(m.from).map((source) => ({ source, destination: finalPath(m.from), permanent: true }))),
+    ];
   },
 };
 

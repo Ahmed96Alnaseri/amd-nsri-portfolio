@@ -293,35 +293,6 @@ const tools: Tool[] = [
     image: null,
     price: null,
   },
-  /* ── A service, not a tool: custom Grasshopper scripts. Listed with the tools, not counted in the
-        homepage stats (src/components/StatsSection.tsx keeps 7). ── */
-  {
-    slug: 'grasshopper-scripts',
-    name: 'Custom Grasshopper Scripts',
-    description:
-      'Custom Grasshopper scripts for architecture, façade and fabrication workflows — panelisation, unfolding, nesting and DXF export for laser cutting.',
-    detail: 'Custom Grasshopper scripts for architecture, façade and fabrication workflows.',
-    featuresHeading: 'What I build',
-    features: ['Panelisation', 'Unfolding', 'Nesting', 'DXF export for laser cutting'],
-    steps: [
-      { label: 'Brief', description: 'Send your brief or file.' },
-      { label: 'Review', description: 'I review it.' },
-      { label: 'Delivery', description: 'You get a working script.' },
-    ],
-    platform: 'Grasshopper',
-    eyebrowFull: 'Grasshopper · Service',
-    status: 'Available',
-    hideStatus: true,
-    type: 'quote',
-    image: null,
-    price: 'Quote on request',
-    cardTag: 'Service',
-    input: 'Brief or file',
-    output: 'Working Grasshopper script',
-    ctaLabel: 'Request a script',
-    // the contact form picks the "Grasshopper Script Request" subject and drafts the message (src/app/contact/page.tsx)
-    ctaLink: '/contact?service=grasshopper-script',
-  },
 ];
 
 /** Lookup by slug for the /tools/[slug] detail route. */
