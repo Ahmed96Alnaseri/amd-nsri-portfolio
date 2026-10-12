@@ -33,7 +33,7 @@ export const PROJECTS: Project[] = [
     type: 'Villa',
     year: '2026',
     location: 'Lamu, Kenya',
-    architect: 'Ahmed Alnaseri, Yassir Rawi',
+    architect: 'Ahmed Alnaseri, Yasir Mahdi',
     area: '140 m²',
     coverImage: '/projects/corten-facade-villa/renders/image-11.webp',
     images: [
@@ -51,7 +51,7 @@ export const PROJECTS: Project[] = [
     type: 'Hospital',
     year: '2026',
     location: 'Baghdad, Iraq',
-    architect: 'Ahmed Alnaseri, Yassir Rawi',
+    architect: 'Ahmed Alnaseri, Yasir Mahdi',
     area: '800 m²',
     coverImage: '/projects/baghdad-private-hospital/renders/facade-1.webp',
     images: [

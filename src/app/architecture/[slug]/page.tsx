@@ -277,7 +277,7 @@ const CORTEN_FACADE_VILLA: CaseStudy = {
   year: '2026',
   location: 'Lamu, Kenya',
   client: 'Kaba',
-  architect: 'Ahmed Alnaseri, Yassir Rawi',
+  architect: 'Ahmed Alnaseri, Yasir Mahdi',
   heroImage: '/projects/corten-facade-villa/renders/image-11.webp',
   heroPosition: 'center 55%',
   description:
@@ -301,7 +301,7 @@ const BAGHDAD_HOSPITAL: CaseStudy = {
   year: '2026',
   location: 'Baghdad, Iraq',
   client: 'Dr. Saif Alshamarati',
-  architect: 'Ahmed Alnaseri, Yassir Rawi',
+  architect: 'Ahmed Alnaseri, Yasir Mahdi',
   heroImage: '/projects/baghdad-private-hospital/renders/facade-1.webp',
   heroHeight: '56vh',
   heroPosition: 'center 27%',
