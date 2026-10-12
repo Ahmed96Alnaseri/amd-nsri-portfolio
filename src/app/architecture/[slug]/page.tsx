@@ -18,6 +18,9 @@ type CaseStudy = {
   location: string;
   client: string;
   architect?: string;
+  /** Manufacturer credit (a company name, shown as written in every language), in the row after Architect.
+      Separate from `manufacturers`, which takes the place of the Tools Used row further down. */
+  manufacturer?: string;
   /** Separate visualization/rendering credit, distinct from the architect(s) */
   visualization?: string;
   /** For projects with no architect credit — e.g. "Computational Design & Fabrication" */
@@ -58,6 +61,7 @@ const NATIONAL_HOSPITAL: CaseStudy = {
   location: 'Baghdad, Iraq',
   client: 'National Hospital — Mansoor',
   architect: 'Ahmed Alnaseri',
+  manufacturer: 'Kasso Engineering',
   heroImage: '/projects/national-hospital-baghdad/hospital-mansor-gpt.webp',
   description:
     "A facade for a cardiac hospital that wears its purpose on its surface. The design centers on a single, large perforated heart form cut into the aluminum cladding — not as symbol applied after the fact, but as the organizing geometry of the entire panel system. Light passes through the perforation from behind, so the facade reads differently by day and by night: a precise metal skin in daylight, a glowing heart after dark. The perforated pattern graduates in density outward from the heart's edge, giving the form weight at its center and dissolving it toward the boundary — a field of light that breathes. For a building where cardiac care happens daily, the architecture makes no attempt to hide what occurs inside. The heart is the facade.",
@@ -104,6 +108,7 @@ const KERKUK_RESTAURANT: CaseStudy = {
   location: 'Kirkuk, Iraq',
   client: 'Kerkuk Restaurant',
   architect: 'Ahmed Alnaseri',
+  manufacturer: 'Kasso Engineering',
   heroImage: '/projects/kerkuk-restaurant/img-3260.webp',
   description:
     'A restaurant facade that turns perforation into atmosphere. The aluminum cladding system uses a gradient multi-perforation pattern — hole density shifts continuously across the surface, from dense and opaque at the base to open and luminous at the upper register. By day the facade reads as a textured metal skin, the gradient giving it depth and movement without ornament. After dark the logic reverses: interior light bleeds through the perforations and the gradient glows, the busiest tables casting the brightest wash onto the street. The system was fabricated as flat sheet metal panels with CNC-punched perforation fields, each panel a section of the continuous gradient. For a restaurant on a commercial street in Kirkuk, the facade does the work of drawing people in before they reach the door.',
@@ -469,6 +474,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
     { label: t('common.program'), value: tv(project.program) },
     ...(project.architect
       ? [{ label: t('common.architect'), value: tv(project.architect) }]
+      : []),
+    ...(project.manufacturer
+      ? [{ label: t('common.manufacturer'), value: project.manufacturer }]
       : []),
     ...(project.visualization
       ? [{ label: t('common.visualization'), value: tv(project.visualization) }]
