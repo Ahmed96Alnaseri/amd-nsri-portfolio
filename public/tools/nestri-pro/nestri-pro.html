@@ -741,13 +741,19 @@ footer b{color:var(--copper);font-weight:500}
 
   <footer>
     <span>AMD·NSRI — <b>NESTRI PRO</b></span>
+    <a id="toolUpdates" href="/updates?from=nestri-pro" data-i18n="toolUpdates" hidden style="color:var(--copper);text-decoration:none">Get tool updates →</a>
   </footer>
+  <script>
+  /* "Get tool updates": shown only while the AMD NSRI newsletter is on (this check answers 404 otherwise). No cookies, no tracking. */
+  fetch('/api/newsletter/status', { cache: 'no-store' }).then(function (r) { if (r.ok) document.getElementById('toolUpdates').hidden = false; }).catch(function () {});
+  </script>
 </div>
 <script>
 /* ------------------------------ interface text ------------------------------ */
 var I18N = {
 en: {
   eyebrow: 'True-shape sheet nesting',
+  toolUpdates: 'Get tool updates →',
   project: 'Project', untitled: 'untitled', save: 'Save', export: '↓ Export', import: '↑ Import',
   run: 'Run nest', cancel: 'Cancel', reset: 'Reset', gap: 'Gap / kerf (mm)', trim: 'Edge trim (mm)',
   rotate: 'Rotate',
@@ -814,6 +820,7 @@ en: {
 },
 tr: {
   eyebrow: 'Gerçek şekilli sac yerleşimi',
+  toolUpdates: 'Araç güncellemelerini al →',
   project: 'Proje', untitled: 'adsız', save: 'Kaydet', export: '↓ Dışa aktar', import: '↑ İçe aktar',
   run: 'Yerleştir', cancel: 'İptal', reset: 'Sıfırla', gap: 'Boşluk / kerf (mm)', trim: 'Kenar payı (mm)',
   rotate: 'Döndürme',
@@ -880,6 +887,7 @@ tr: {
 },
 ar: {
   eyebrow: 'تعشيش الصفائح بالشكل الحقيقي',
+  toolUpdates: 'احصل على تحديثات الأدوات ←',
   project: 'المشروع', untitled: 'بلا اسم', save: 'حفظ', export: '↓ تصدير', import: '↑ استيراد',
   run: 'شغّل التعشيش', cancel: 'إلغاء', reset: 'إعادة ضبط', gap: 'الفراغ / القطع (مم)', trim: 'هامش الحافة (مم)',
   rotate: 'التدوير',

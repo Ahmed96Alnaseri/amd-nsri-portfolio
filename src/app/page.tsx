@@ -8,6 +8,7 @@ import StatsSection from '@/components/StatsSection';
 import FeaturedWorksSection from '@/components/FeaturedWorksSection';
 import FabricationIntelligenceSection from '@/components/FabricationIntelligenceSection';
 import CallToActionSection from '@/components/CallToActionSection';
+import NewsletterSection from '@/components/NewsletterSection';
 import SiteFooter from '@/components/SiteFooter';
 
 export const metadata: Metadata = pageMetadata({
@@ -29,6 +30,8 @@ export default function HomePage() {
       <FeaturedWorksSection />
       <FabricationIntelligenceSection />
       <CallToActionSection />
+      {/* renders nothing while the newsletter is off (NEWSLETTER_MODE) */}
+      <NewsletterSection />
       <SiteFooter />
     </>
   );

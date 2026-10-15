@@ -142,7 +142,8 @@ export async function POST(req: Request) {
 
   const ip = clientIp(req);
   if (rateLimited(ip)) {
-    console.warn(`[contact] rate limit: more than ${RATE_MAX} messages in ${RATE_WINDOW_MS / 60000} min from ${ip}`);
+    // no IP address in the log: it is personal data
+    console.warn(`[contact] rate limit: more than ${RATE_MAX} messages in ${RATE_WINDOW_MS / 60000} min from one address`);
     return NextResponse.json({ error: 'Too many messages. Please try again later.' }, { status: 429 });
   }
 

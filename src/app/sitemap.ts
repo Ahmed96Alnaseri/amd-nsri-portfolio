@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
 import { SHOP_ENABLED, DESIGN_ENABLED } from '@/lib/features';
 import { PROJECTS, slugify } from '@/data/architectureProjects';
+import { newsletterEnabled, newsletterMode } from '@/lib/newsletter/config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -23,6 +24,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/journal',      changeFrequency: 'weekly',  priority: 0.7 },
     { path: '/identity',     changeFrequency: 'yearly',  priority: 0.6 },
     { path: '/contact',      changeFrequency: 'yearly',  priority: 0.5 },
+    // the newsletter page, once it is live (src/lib/newsletter/config.ts)
+    ...(newsletterMode() === 'live' && newsletterEnabled() ? [{ path: '/updates', changeFrequency: 'yearly' as const, priority: 0.4 }] : []),
   ];
 
   // each project in the Architecture listing has its own page
