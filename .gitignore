@@ -38,3 +38,7 @@ next-env.d.ts
 
 # full-size source images (kept locally, never committed or deployed)
 /_originals/
+
+# newsletter: local database credentials for the scripts in scripts/newsletter, and their CSV exports (personal data)
+.env.newsletter*
+newsletter-*.csv

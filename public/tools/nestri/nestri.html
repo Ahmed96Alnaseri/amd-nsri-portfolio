@@ -654,7 +654,12 @@ html[lang=ar] body *{letter-spacing:0!important}
 
   <footer>
     <span>AMD·NSRI — <b>NESTRI</b></span>
+    <a id="toolUpdates" href="/updates?from=nestri" data-i18n="Get tool updates →" hidden style="color:var(--copper);text-decoration:none">Get tool updates →</a>
   </footer>
+  <script>
+  /* "Get tool updates": shown only while the AMD NSRI newsletter is on (this check answers 404 otherwise). No cookies, no tracking. */
+  fetch('/api/newsletter/status', { cache: 'no-store' }).then(function (r) { if (r.ok) document.getElementById('toolUpdates').hidden = false; }).catch(function () {});
+  </script>
 </div>
 
 <script>
@@ -2358,6 +2363,7 @@ var NESTRI_STRINGS = {
   },
   tr: {
     'Sheet nesting optimiser': 'Sac yerleştirme optimizörü',
+    'Get tool updates →': 'Araç güncellemelerini al →',
     'Run nest': 'Yerleştir',
     'Reset': 'Sıfırla',
     'Save': 'Kaydet',
@@ -2429,6 +2435,7 @@ var NESTRI_STRINGS = {
   },
   ar: {
     'Sheet nesting optimiser': 'محسّن تعشيش الألواح',
+    'Get tool updates →': 'احصل على تحديثات الأدوات ←',
     'Run nest': 'تشغيل التعشيش',
     'Reset': 'إعادة تعيين',
     'Save': 'حفظ',

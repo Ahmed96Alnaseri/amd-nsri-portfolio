@@ -97,6 +97,8 @@ code { font: 400 .95em var(--mono); color: var(--text-2); }
 .by { color: var(--text-2); font: 400 11px var(--mono); letter-spacing: .04em; white-space: nowrap; }
 @media (max-width: 560px) { .tagline { display: none; } .top { padding: 0 14px; gap: 10px; } .wordmark { font-size: 21px; } }
 @media (max-width: 380px) { .by { display: none; } }
+/* the newsletter link (#toolUpdates) leaves the header as it was on phones */
+@media (max-width: 560px) { #toolUpdates { display: none; } }
 
 /* ================= sections ================= */
 .group { padding: 16px 20px 20px; border-top: 1px solid var(--line); }
@@ -455,6 +457,12 @@ html[lang="ar"] body * { letter-spacing: 0 !important; }
        style="display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#b8956a;text-decoration:none;padding:12px 0 0 0;opacity:0.7;">
       ← AMD NSRI
     </a>
+    <a id="toolUpdates" href="/updates?from=ipunch" hidden
+       style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#b8956a;text-decoration:none;padding:12px 0 0 0;opacity:0.7;white-space:nowrap;">Get tool updates →</a>
+    <script>
+    /* "Get tool updates": shown only while the AMD NSRI newsletter is on (this check answers 404 otherwise). No cookies, no tracking. */
+    fetch('/api/newsletter/status', { cache: 'no-store' }).then(function (r) { if (r.ok) document.getElementById('toolUpdates').hidden = false; }).catch(function () {});
+    </script>
     <a class="brand" href="#" aria-label="IPUNCH">
       <svg class="mark" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="4" cy="4" r="1.1"/><circle cx="12" cy="4" r="1.7"/><circle cx="20" cy="4" r="2.3"/>
@@ -988,6 +996,7 @@ html[lang="ar"] body * { letter-spacing: 0 !important; }
   const TR = {
     'Image to perforation': 'Görselden delikli panele',
     'Image to Punch': 'Görselden Delikliye',
+    'Get tool updates →': 'Araç güncellemelerini al →',
     'DWG or DXF · closed shapes become the facade boundary': 'DWG veya DXF · kapalı şekiller cephe sınırı olur',
     'Closed shapes inside it are openings': 'İçindeki kapalı şekiller boşluk sayılır',
     'Upload a DWG or DXF drawing with the boundary drawn as a closed shape.': 'Sınırı kapalı bir şekil olarak çizilmiş bir DWG veya DXF yükleyin.',
@@ -1411,6 +1420,7 @@ html[lang="ar"] body * { letter-spacing: 0 !important; }
   const AR = {
     'Image to perforation': 'من الصورة إلى التثقيب',
     'Image to Punch': 'من الصورة إلى التثقيب',
+    'Get tool updates →': 'احصل على تحديثات الأدوات ←',
     'DWG or DXF · closed shapes become the facade boundary': 'DWG أو DXF · الأشكال المغلقة تصبح حدود الواجهة',
     'Closed shapes inside it are openings': 'الأشكال المغلقة داخله تُعد فتحات',
     'Upload a DWG or DXF drawing with the boundary drawn as a closed shape.': 'ارفع ملف DWG أو DXF تكون فيه الحدود شكلاً مغلقاً.',

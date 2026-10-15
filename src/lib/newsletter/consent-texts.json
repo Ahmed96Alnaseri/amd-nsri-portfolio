@@ -1,0 +1,11 @@
+{
+  "_comment": "Exact newsletter consent checkbox text per version and language. Never edit a published version: add a new one, point CURRENT at it, and every subscriber keeps the version they agreed to (stored with their record). v1 is deliberately silent about services; add a version that mentions them only after the Vercel plan and the lawyer review allow it. TR and AR v1 are translations by Claude, awaiting review.",
+  "current": "v1-2026-10",
+  "versions": {
+    "v1-2026-10": {
+      "EN": "I agree to receive emails from AMD NSRI about new projects, journal articles and updates to its digital tools. I can unsubscribe at any time.",
+      "TR": "AMD NSRI'dan yeni projeler, günlük yazıları ve dijital araçlarındaki güncellemeler hakkında e-posta almayı kabul ediyorum. Aboneliğimden istediğim zaman çıkabilirim.",
+      "AR": "أوافق على تلقّي رسائل بريد إلكتروني من AMD NSRI حول المشاريع الجديدة ومقالات المدونة وتحديثات أدواتها الرقمية. ويمكنني إلغاء الاشتراك في أي وقت."
+    }
+  }
+}
