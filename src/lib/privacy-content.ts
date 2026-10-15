@@ -1,293 +1,306 @@
 import type { Lang } from '@/lib/translations';
 
 /**
- * DRAFT privacy notice (/privacy), awaiting a lawyer's review. Square brackets mark what still has to be confirmed;
- * nothing here states a provider region, retention period or legal basis that has not been confirmed. Written by
- * Claude in all three languages (TR and AR included), for review.
- * A block is a paragraph (string) or a bullet list (string[]).
+ * DRAFT privacy notice (/privacy) under Article 10 of Law No. 6698 (KVKK), following the structure and wording of the
+ * notice the site owner's lawyer provided, narrowed to what this site really does (newsletter sign-up, browser storage).
+ * Turkish is the source text; EN and AR are Claude's translations, for review. Square brackets mark everything still
+ * to be confirmed. A block is a paragraph (string) or a bullet list (string[]); [[text|/path]] is a link.
  */
-export interface PrivacyContent {
+export interface LegalDoc {
   draft: string;
   title: string;
   status: string;
+  intro: string[];
   sections: { heading: string; blocks: (string | string[])[] }[];
 }
 
-export const PRIVACY: Record<Lang, PrivacyContent> = {
-  EN: {
-    draft: 'DRAFT: awaiting review by a lawyer, not in force. Text in [square brackets] is a placeholder to confirm before publishing.',
-    title: 'Privacy notice',
-    status: 'Draft prepared in October 2026. Not yet in force.',
+export const PRIVACY: Record<Lang, LegalDoc> = {
+  TR: {
+    draft: 'TASLAK: avukat incelemesini bekliyor, yürürlükte değil. [Köşeli parantez] içindeki ifadeler yayından önce teyit edilecektir.',
+    title: 'AMD NSRI Aydınlatma Metni',
+    status: 'Ekim 2026\'da hazırlanan taslak; henüz yürürlükte değil. Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir [AVUKAT TEYİT EDECEK].',
+    intro: [
+      'AMD NSRI olarak kişisel verilerinizin güvenliğinin sağlanmasına önem veriyoruz. Bu amaçla, kişisel verilerin korunması için gerekli önlemleri alan ve azami hassasiyet gösteren AMD NSRI olarak, web sitemizdeki bülten aboneliği kapsamında kişisel verilerinizin işlenmesi hususunda sizleri 6698 sayılı Kişisel Verilerin Korunması Kanunu\'nun ("Kanun") 10. maddesi uyarınca bilgilendirmek isteriz.',
+    ],
     sections: [
       {
-        heading: 'Who is responsible',
+        heading: '1. Veri Sorumlusu',
         blocks: [
-          'The data controller is Ahmed Alnaseri, who runs AMD NSRI [TO CONFIRM: legal status, for example private individual or sole proprietorship, and postal address]. For any privacy question or request, write to contact@amdnsri.com.',
-          'This notice covers the newsletter sign-up, the contact form and the basic operation of this website. It is meant to meet the duty to inform under Turkey\'s Personal Data Protection Law No. 6698 (KVKK) and, where it applies, the EU General Data Protection Regulation (GDPR).',
+          'Kişisel verileriniz, Kanun\'un 3. maddesinde tanımlı "Veri Sorumlusu" sıfatıyla Ahmed Alnaseri tarafından işlenmektedir.',
+          'Ahmed Alnaseri — Adresi: [posta adresi sağlanacak], E-posta adresi: contact@amdnsri.com [AVUKAT TEYİT EDECEK: hukuki statü ile başka kimlik bilgilerinin, örneğin vergi kimlik numarasının, yer alması gerekip gerekmediği].',
         ],
       },
       {
-        heading: 'Newsletter',
+        heading: '2. Kişisel Verilerin İşlenme Amaçları ve Hukuki Sebepleri',
         blocks: [
-          'If you subscribe, we store:',
+          'Web sitemizdeki bülten abonelik formu ve onay e-postası aracılığıyla sizlerden toplanan kimlik (isteğe bağlı olarak paylaştığınız adınız), iletişim (e-posta adresiniz), pazarlama (bülten onay tercihiniz, aboneliğinizin durumu ve İleti Yönetim Sistemi kayıt durumu) ve işlem güvenliği (onay zamanı, onay metninin sürümü ve gösterildiği dil, abone olunan sayfa, onaylama ve abonelikten çıkma zamanları) kategorilerindeki kişisel verileriniz aşağıda belirtilen amaç ve hukuki sebeplerle işlenmektedir.',
+          'Açık rızanızın bulunması (Kanun m. 5/1) sebebine dayanılarak [AVUKAT TEYİT EDECEK]; kimlik, iletişim ve pazarlama kategorilerindeki verileriniz aşağıdaki amaçla işlenir:',
           [
-            'your email address, and your name if you give it;',
-            'the status of your subscription: waiting for confirmation, confirmed or unsubscribed;',
-            'when you agreed, the version of the exact wording you agreed to, and the language it was shown in;',
-            'the page you subscribed from;',
-            'when you confirmed and, if it happens, when you unsubscribed;',
-            'whether your consent has been registered with Turkey\'s commercial electronic message system (İYS).',
+            'İletişim Faaliyetlerinin Yürütülmesi (yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderilmesi ve aboneliğin onaylanması için tek bir onay e-postası gönderilmesi)',
           ],
-          'We do not store your IP address or details of your browser or device. To stop abuse, sign-up attempts are counted per network address and per email address for a short time; these counters hold only a one-way scrambled code, not the address itself, and are deleted within two days.',
-          'Purpose: to send you the emails you asked for, about new projects, journal articles and updates to the digital tools. You first receive one confirmation email; nothing else is sent unless you confirm.',
-          'Legal basis: your explicit consent (KVKK Article 5(1); GDPR Article 6(1)(a)) and your approval for commercial electronic messages under Law No. 6563 [LAWYER TO CONFIRM].',
+          'Veri sorumlusunun hukuki yükümlülüğünü yerine getirebilmesi için zorunlu olması (Kanun m. 5/2-ç) sebebine dayanılarak [AVUKAT TEYİT EDECEK]; iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz aşağıdaki amaçlarla işlenir:',
+          [
+            'Faaliyetlerin Mevzuata Uygun Yürütülmesi (ticari elektronik ileti onayının ve ret talebinin ispatı, abonelikten çıkan adreslerin yeniden e-posta almaması için e-posta gönderilmeyecekler listesinin tutulması ve uygulanması hâlinde İleti Yönetim Sistemi\'ne (İYS) kayıt [AVUKAT TEYİT EDECEK: İYS kaydının uygulanıp uygulanmadığı])',
+            'Saklama ve Arşiv Faaliyetlerinin Yürütülmesi',
+            'Talep / Şikayetlerin Takibi (Kanun\'un 11. maddesi kapsamındaki başvuruların yanıtlanması)',
+            'Yetkili Kişi, Kurum ve Kuruluşlara Bilgi Verilmesi',
+          ],
+          'İlgili kişinin temel hak ve özgürlüklerine zarar vermemek kaydıyla, veri sorumlusunun meşru menfaatleri için veri işlenmesinin zorunlu olması (Kanun m. 5/2-f) sebebine dayanılarak [AVUKAT TEYİT EDECEK]; iletişim ve işlem güvenliği kategorilerindeki verileriniz aşağıdaki amaçlarla işlenir:',
+          [
+            'Bilgi Güvenliği Süreçlerinin Yürütülmesi (otomatik ve kötüye kullanım amaçlı kayıtların engellenmesi)',
+            'Veri Sorumlusu Operasyonlarının Güvenliğinin Temini',
+          ],
+          'IP adresiniz ile tarayıcınıza ve cihazınıza ilişkin bilgiler saklanmaz. Kötüye kullanımı önlemek için kayıt denemeleri kısa bir süre boyunca ağ adresi ve e-posta adresi başına sayılır; bu sayaçlar adresin kendisini değil, yalnızca tek yönlü bir kodu tutar ve iki gün içinde silinir.',
+          '[AVUKAT TEYİT EDECEK: web sitesindeki iletişim formunun bu metne mi yoksa ayrı bir metne mi alınacağı.]',
         ],
       },
       {
-        heading: 'Unsubscribing and withdrawing consent',
+        heading: '3. İşlenen Kişisel Verilerin Kimlere ve Hangi Amaçla Aktarılabileceği',
         blocks: [
-          'Every newsletter email contains an unsubscribe link that works in one click, without logging in. You can also write to contact@amdnsri.com. Withdrawing consent does not affect emails sent before.',
-          'After you unsubscribe we keep a minimal record (your address marked as unsubscribed, and a one-way code of it) only so that you are not added again by mistake. You can ask for this record to be deleted as well.',
+          'İşlediğimiz kişisel verilerinizi, yalnızca yukarıdaki amaçlarla ve bu amaçlar için gerekli olduğu ölçüde aşağıdaki taraflara aktarabilmekteyiz:',
+          'Hizmet aldığımız Özel Hukuk Tüzel Kişilerine; kimlik, iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz, web sitesinin ve bültenin teknik olarak çalıştırılması (Bilgi Güvenliği Süreçlerinin Yürütülmesi, İletişim Faaliyetlerinin Yürütülmesi, Saklama ve Arşiv Faaliyetlerinin Yürütülmesi) amacıyla aktarılır [YAYINDAN ÖNCE TEYİT EDİLECEK: sağlayıcılar, bölgeler ve sözleşme koşulları]:',
+          [
+            'Vercel (Amerika Birleşik Devletleri): web sitesinin ve abonelik formunun barındırılması [TEYİT EDİLECEK: sunucu bölgesi].',
+            'Neon: bülten veri tabanı; sunucu bölgesi Frankfurt, Almanya [TEYİT EDİLECEK: kurulumda seçilen bölge ve şirketin bulunduğu ülke].',
+            'Resend (Amerika Birleşik Devletleri): onay e-postasının iletilmesi. Resend, e-posta kayıtları dahil hesap verilerini Amerika Birleşik Devletleri\'nde sakladığını belirtmektedir.',
+            'Google (Google Fonts): web sitesinin ve araç sayfalarının yazı tiplerinin yüklenmesi; bir sayfa açıldığında IP adresiniz Google\'a iletilir [AVUKAT TEYİT EDECEK].',
+          ],
+          'Bu sağlayıcıların tamamı Türkiye dışında bulunduğundan kişisel verileriniz yurt dışına aktarılmaktadır. Bu aktarımın Kanun\'un 9. maddesi kapsamındaki dayanağı: [AVUKAT TEYİT EDECEK].',
+          'Yetkili Kamu Kurum ve Kuruluşlarına; kimlik, iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz, yalnızca mevzuatın gerektirdiği hâllerde aşağıdaki amaçlarla aktarılır:',
+          [
+            'Faaliyetlerin Mevzuata Uygun Yürütülmesi',
+            'Hukuk İşlerinin Takibi ve Yürütülmesi',
+            'Yetkili Kişi, Kurum ve Kuruluşlara Bilgi Verilmesi',
+          ],
+          'Kişisel verileriniz, üçüncü kişilere kendi reklam veya pazarlama amaçları için aktarılmaz. Yukarıda sayılan aktarımlar, Kanun\'da belirtilen kişisel veri işleme şartları çerçevesinde gerçekleştirilmektedir.',
         ],
       },
       {
-        heading: 'How long we keep data',
+        heading: '4. Kişisel Verileri Toplama Yöntemlerimiz',
+        blocks: [
+          'Otomatik ya da kısmen otomatik yöntemlerle:',
+          [
+            'Kimlik, iletişim ve pazarlama kategorilerindeki kişisel verileriniz, web sitemizdeki bülten abonelik formunu doldurduğunuzda doğrudan sizden toplanmaktadır.',
+            'İşlem güvenliği kategorisindeki kişisel verileriniz, formu gönderdiğinizde, onay e-postasındaki bağlantıya tıkladığınızda ve abonelikten çıktığınızda sistem tarafından kaydedilmektedir.',
+          ],
+          'Kişisel verileriniz üçüncü kişilerden toplanmamaktadır. Topladığımız kişisel verileriniz yasal yollardan elde edilmektedir.',
+        ],
+      },
+      {
+        heading: '5. İlgili Kişi Olarak Haklarınız',
+        blocks: [
+          'Kanun\'un "ilgili kişinin hakları"nı düzenleyen 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmiş olması hâlinde düzeltilmesini isteme, Kanun\'un 7. maddesinde öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme, bu işlemlerin kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme, işlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme ve kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.',
+          'Bu haklarınıza ve Kanun\'un uygulamasına ilişkin taleplerinizi yazılı olarak veya kayıtlı elektronik posta (KEP) adresi ya da sistemimizde kayıtlı bulunan e-posta adresinizi kullanmak suretiyle ya da Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ\'de öngörülen diğer başvuru usullerine uygun olarak contact@amdnsri.com adresine iletebilirsiniz [AVUKAT TEYİT EDECEK: yazılı başvurular için posta adresi]. Talebinizi niteliğine göre en kısa sürede ve en geç 30 (otuz) gün içinde ücretsiz olarak sonuçlandıracağız.',
+        ],
+      },
+      {
+        heading: '6. Kişisel Verilerin Saklanma Süresi',
         blocks: [[
-          'Sign-ups that are not confirmed: deleted automatically 7 days after the request.',
-          'Confirmed subscriptions: until you unsubscribe or ask for deletion.',
-          'Unsubscribed addresses: the minimal record described above, until you ask for deletion.',
-          'Contact form messages: [TO CONFIRM: how long messages are kept in the inbox].',
+          'Onaylanmayan abonelik talepleri, talepten 7 gün sonra otomatik olarak silinir.',
+          'Onaylanmış abonelikler, abonelikten çıkana veya silinmesini talep edene kadar saklanır.',
+          'Abonelikten çıktığınızda kaydınız "abonelikten çıktı" olarak işaretlenir ve onay ile ret işlemlerinin ispatı için saklanır; ayrıca adresinizin tek yönlü kodu, yanlışlıkla yeniden eklenmemeniz için e-posta gönderilmeyecekler listesinde tutulur. Silme talebinizde kaydınız silinir; isterseniz yalnızca bu tek yönlü kod tutulur [AVUKAT TEYİT EDECEK: onay ve ret kayıtları için yasal saklama süresi].',
+          'Kötüye kullanımı önlemeye yönelik sayaçlar iki gün içinde silinir.',
         ]],
       },
       {
-        heading: 'Contact form',
+        heading: '7. Tarayıcınızda Saklanan Bilgiler',
         blocks: [
-          'When you use the contact form, your name, email address, subject and message are sent to us by email so that we can reply. The website does not store them in a database.',
-          'Legal basis: [LAWYER TO CONFIRM: for example steps before a contract or legitimate interest, KVKK Article 5(2)(c) or (f); GDPR Article 6(1)(b) or (f)].',
-        ],
-      },
-      {
-        heading: 'Service providers and transfers abroad',
-        blocks: [
-          'The website relies on these providers [TO CONFIRM before publishing: providers, regions and contract terms]:',
-          [
-            'Vercel: hosting of the website, including the sign-up form [TO CONFIRM: region].',
-            'Neon: the newsletter database [TO CONFIRM: region; planned Frankfurt, Germany].',
-            'Resend: delivery of the confirmation email and of contact form messages. Resend states that it stores account data, including email logs, in the United States.',
-          ],
-          'Your data is therefore transferred outside Turkey [TO CONFIRM: countries]. [LAWYER TO CONFIRM: the basis for these transfers under KVKK Article 9 and, where relevant, Chapter V of the GDPR.]',
-        ],
-      },
-      {
-        heading: 'Analytics, cookies and your browser',
-        blocks: [
-          'The website counts page views with Vercel Web Analytics, which works without cookies [TO CONFIRM]. The website does not set cookies. Your language choice, and on the tool pages your work in progress, are saved in your own browser and are not sent to us.',
-        ],
-      },
-      {
-        heading: 'Your rights',
-        blocks: [
-          'Under Article 11 of the KVKK you can ask whether your data is processed and for information about it; learn the purpose and whether it is used accordingly; learn who it is shared with in Turkey or abroad; have it corrected, deleted or destroyed and have those it was shared with informed; object to a result against you produced solely by automated processing; and claim compensation for damage caused by unlawful processing.',
-          'Where the GDPR applies you also have the rights of access, rectification, erasure, restriction, data portability and objection, and you can withdraw consent at any time.',
-          'Write to contact@amdnsri.com. Requests are answered within 30 days [LAWYER TO CONFIRM]. You can also complain to the Personal Data Protection Board (Kişisel Verileri Koruma Kurulu) in Turkey or to a data protection authority in the EU.',
-        ],
-      },
-      {
-        heading: 'Commercial electronic messages (İYS)',
-        blocks: [
-          '[LAWYER TO CONFIRM: whether registration with İYS applies, and how consents are registered there.] Registration with İYS is tracked separately from your email confirmation and is never marked as done automatically.',
-        ],
-      },
-      {
-        heading: 'Changes to this notice',
-        blocks: [
-          'If this notice changes, the new version is published on this page with its date. If the purpose of the newsletter changes, your consent will be asked for again.',
+          'Web sitemiz ve araç sayfalarımız çerez kullanmaz. Tarayıcınızın yerel depolama alanında yalnızca şunlar tutulur: web sitesinde seçtiğiniz dil ve değiştirdiyseniz açık/koyu tema tercihi; NESTRI, NESTRI PRO ve IPunch araç sayfalarında seçtiğiniz dil; NESTRI ve NESTRI PRO\'da kaydedilen, üzerinde çalıştığınız proje. Bu bilgiler yalnızca kendi cihazınızda kalır, bize gönderilmez ve tarayıcı ayarlarınızdan silinebilir.',
+          'Sayfa görüntülemeleri Vercel Web Analytics ile çerez kullanılmadan sayılır [TEYİT EDİLECEK]. Yazı tipleri Google Fonts\'tan yüklenir (bkz. 3. bölüm).',
         ],
       },
     ],
   },
 
-  TR: {
-    draft: 'TASLAK: hukuki incelemeyi bekliyor, yürürlükte değil. [Köşeli parantez] içindeki ifadeler yayından önce teyit edilecek yer tutuculardır.',
-    title: 'Gizlilik ve aydınlatma metni',
-    status: 'Ekim 2026\'da hazırlanan taslak. Henüz yürürlükte değil.',
+  EN: {
+    draft: 'DRAFT: awaiting review by a lawyer, not in force. Text in [square brackets] is to be confirmed before publishing.',
+    title: 'AMD NSRI Privacy Notice',
+    status: 'Draft prepared in October 2026; not yet in force. The Turkish text is the authoritative version; the English and Arabic texts are translations [LAWYER TO CONFIRM].',
+    intro: [
+      'At AMD NSRI we care about keeping your personal data secure. As AMD NSRI, taking the necessary measures and the utmost care to protect personal data, we would like to inform you, under Article 10 of Personal Data Protection Law No. 6698 (the "Law"), about how your personal data is processed in connection with the newsletter sign-up on our website.',
+    ],
     sections: [
       {
-        heading: 'Veri sorumlusu',
+        heading: '1. Data Controller',
         blocks: [
-          'Veri sorumlusu, AMD NSRI\'ı yürüten Ahmed Alnaseri\'dir [TEYİT EDİLECEK: hukuki statü, örneğin gerçek kişi veya şahıs şirketi, ve posta adresi]. Gizlilikle ilgili her soru ve talep için contact@amdnsri.com adresine yazabilirsiniz.',
-          'Bu metin bülten aboneliğini, iletişim formunu ve web sitesinin temel işleyişini kapsar. 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamındaki aydınlatma yükümlülüğünü ve uygulandığı ölçüde AB Genel Veri Koruma Tüzüğü\'nü (GDPR) karşılamak amacıyla hazırlanmıştır.',
+          'Your personal data is processed by Ahmed Alnaseri in the capacity of "Data Controller" as defined in Article 3 of the Law.',
+          'Ahmed Alnaseri — Address: [postal address to be provided], Email: contact@amdnsri.com [LAWYER TO CONFIRM: legal status, and whether other identifying details such as a tax identification number must be listed].',
         ],
       },
       {
-        heading: 'Bülten',
+        heading: '2. Purposes and Legal Grounds for Processing',
         blocks: [
-          'Abone olursanız şunları saklarız:',
+          'Your personal data in the categories of identity (your name, if you choose to give it), contact (your email address), marketing (your newsletter consent preference, the status of your subscription and its Message Management System registration status) and transaction security (time of consent, version and language of the consent text, the page you subscribed from, and the times you confirmed and unsubscribed), collected from you through the newsletter sign-up form on our website and the confirmation email, is processed for the purposes and on the legal grounds set out below.',
+          'On the ground of your explicit consent (Law, Art. 5/1) [LAWYER TO CONFIRM], your data in the identity, contact and marketing categories is processed for the following purpose:',
           [
-            'e-posta adresiniz ve verirseniz adınız;',
-            'aboneliğinizin durumu: onay bekliyor, onaylandı veya abonelikten çıkıldı;',
-            'onay verdiğiniz zaman, kabul ettiğiniz metnin sürümü ve metnin gösterildiği dil;',
-            'abone olduğunuz sayfa;',
-            'onayladığınız zaman ve gerçekleşirse abonelikten çıktığınız zaman;',
-            'onayınızın Ticari Elektronik İleti Yönetim Sistemi\'ne (İYS) kaydedilip kaydedilmediği.',
+            'Carrying out communication activities (sending the newsletter about new projects, journal articles and digital tool updates, and one confirmation email to confirm the subscription)',
           ],
-          'IP adresinizi veya tarayıcınıza ve cihazınıza ilişkin bilgileri saklamayız. Kötüye kullanımı önlemek için kayıt denemeleri kısa bir süre boyunca ağ adresi ve e-posta adresi başına sayılır; bu sayaçlar adresin kendisini değil, yalnızca tek yönlü şifrelenmiş bir kodu tutar ve iki gün içinde silinir.',
-          'Amaç: talep ettiğiniz, yeni projeler, günlük yazıları ve dijital araçlardaki güncellemeler hakkındaki e-postaları size göndermek. Önce tek bir onay e-postası alırsınız; onaylamadığınız sürece başka bir şey gönderilmez.',
-          'Hukuki sebep: açık rızanız (KVKK m. 5/1; GDPR m. 6/1-a) ve 6563 sayılı Kanun kapsamında ticari elektronik iletiler için verdiğiniz onay [AVUKAT TEYİT EDECEK].',
+          'On the ground that processing is necessary for the data controller to comply with a legal obligation (Law, Art. 5/2-ç) [LAWYER TO CONFIRM], your data in the contact, marketing and transaction security categories is processed for the following purposes:',
+          [
+            'Carrying out activities in compliance with the legislation (proof of consent to commercial electronic messages and of opt-out requests, keeping a do-not-email list so that unsubscribed addresses receive no further emails, and, where applicable, registration with the Message Management System (İYS) [LAWYER TO CONFIRM: whether İYS registration applies])',
+            'Carrying out storage and archiving activities',
+            'Following up requests and complaints (answering applications under Article 11 of the Law)',
+            'Providing information to authorised persons, institutions and organisations',
+          ],
+          'On the ground that processing is necessary for the legitimate interests of the data controller, provided that it does not harm your fundamental rights and freedoms (Law, Art. 5/2-f) [LAWYER TO CONFIRM], your data in the contact and transaction security categories is processed for the following purposes:',
+          [
+            'Carrying out information security processes (preventing automated and abusive sign-ups)',
+            'Ensuring the security of the data controller\'s operations',
+          ],
+          'Your IP address and details of your browser or device are not stored. To prevent abuse, sign-up attempts are counted for a short time per network address and per email address; these counters hold only a one-way code, not the address itself, and are deleted within two days.',
+          '[LAWYER TO CONFIRM: whether the contact form on the website belongs in this notice or in a separate one.]',
         ],
       },
       {
-        heading: 'Abonelikten çıkma ve rızanın geri alınması',
+        heading: '3. To Whom and for What Purpose Personal Data May Be Transferred',
         blocks: [
-          'Her bülten e-postasında, oturum açmadan tek tıkla çalışan bir abonelikten çıkma bağlantısı bulunur. contact@amdnsri.com adresine de yazabilirsiniz. Rızanın geri alınması, daha önce gönderilmiş e-postaları etkilemez.',
-          'Abonelikten çıktıktan sonra, yalnızca yanlışlıkla yeniden eklenmemeniz için asgari bir kayıt (abonelikten çıktı olarak işaretlenen adresiniz ve adresin tek yönlü kodu) tutarız. Bu kaydın da silinmesini talep edebilirsiniz.',
+          'We may transfer your personal data to the parties below, only for the purposes above and only as far as these purposes require:',
+          'To private-law legal entities that provide services to us, your data in the identity, contact, marketing and transaction security categories is transferred for running the website and the newsletter technically (carrying out information security processes, communication activities, and storage and archiving activities) [TO CONFIRM before publishing: providers, regions and contract terms]:',
+          [
+            'Vercel (United States): hosting of the website and the sign-up form [TO CONFIRM: server region].',
+            'Neon: the newsletter database; server region Frankfurt, Germany [TO CONFIRM: region chosen at setup, and the company\'s country].',
+            'Resend (United States): delivery of the confirmation email. Resend states that it stores account data, including email logs, in the United States.',
+            'Google (Google Fonts): loading the typefaces of the website and the tool pages; when a page opens, your IP address is sent to Google [LAWYER TO CONFIRM].',
+          ],
+          'Since all of these providers are located outside Turkey, your personal data is transferred abroad. Basis for this transfer under Article 9 of the Law: [LAWYER TO CONFIRM].',
+          'To authorised public institutions and organisations, your data in the identity, contact, marketing and transaction security categories is transferred only where the legislation requires it, for the following purposes:',
+          [
+            'Carrying out activities in compliance with the legislation',
+            'Following up and conducting legal affairs',
+            'Providing information to authorised persons, institutions and organisations',
+          ],
+          'Your personal data is not transferred to third parties for their own advertising or marketing. The transfers listed above are carried out within the conditions for processing personal data set out in the Law.',
         ],
       },
       {
-        heading: 'Saklama süreleri',
+        heading: '4. How We Collect Personal Data',
+        blocks: [
+          'By automated or partly automated means:',
+          [
+            'Your personal data in the identity, contact and marketing categories is collected directly from you when you fill in the newsletter sign-up form on our website.',
+            'Your personal data in the transaction security category is recorded by the system when you send the form, when you click the link in the confirmation email and when you unsubscribe.',
+          ],
+          'Your personal data is not collected from third parties. The personal data we collect is obtained lawfully.',
+        ],
+      },
+      {
+        heading: '5. Your Rights as a Data Subject',
+        blocks: [
+          'Under Article 11 of the Law on "the rights of the data subject", you have the right to learn whether your personal data is processed; to request information if it has been processed; to learn the purpose of processing and whether the data is used in line with that purpose; to know the third parties in Turkey or abroad to whom it has been transferred; to request its correction if it is incomplete or inaccurate; to request its erasure or destruction under the conditions in Article 7 of the Law; to request that these actions be notified to the third parties to whom the data has been transferred; to object to a result against you arising from analysis of the data exclusively by automated systems; and to claim compensation for damage suffered because of unlawful processing.',
+          'You can send your requests regarding these rights and the application of the Law to contact@amdnsri.com in writing, or by using a registered electronic mail (KEP) address or the email address registered in our system, or by other methods provided for in the Communiqué on the Procedures and Principles of Application to the Data Controller [LAWYER TO CONFIRM: postal address for written applications]. We will conclude your request free of charge as soon as possible, according to its nature, and within 30 (thirty) days at the latest.',
+        ],
+      },
+      {
+        heading: '6. How Long Personal Data Is Kept',
         blocks: [[
-          'Onaylanmayan kayıtlar: talepten 7 gün sonra otomatik olarak silinir.',
-          'Onaylanmış abonelikler: abonelikten çıkana veya silinmesini talep edene kadar.',
-          'Abonelikten çıkılan adresler: yukarıda açıklanan asgari kayıt, silinmesini talep edene kadar.',
-          'İletişim formu mesajları: [TEYİT EDİLECEK: mesajların gelen kutusunda ne kadar süre saklandığı].',
+          'Sign-ups that are not confirmed are deleted automatically 7 days after the request.',
+          'Confirmed subscriptions are kept until you unsubscribe or ask for deletion.',
+          'When you unsubscribe, your record is marked as unsubscribed and kept as proof of the consent and the opt-out; in addition, a one-way code of your address is kept on the do-not-email list so that you are not added again by mistake. On a deletion request your record is deleted; if you wish, only that one-way code is kept [LAWYER TO CONFIRM: legal retention period for consent and opt-out records].',
+          'Counters used to prevent abuse are deleted within two days.',
         ]],
       },
       {
-        heading: 'İletişim formu',
+        heading: '7. Information Stored in Your Browser',
         blocks: [
-          'İletişim formunu kullandığınızda adınız, e-posta adresiniz, konu ve mesajınız size yanıt verebilmemiz için bize e-posta ile iletilir. Web sitesi bunları bir veri tabanında saklamaz.',
-          'Hukuki sebep: [AVUKAT TEYİT EDECEK: örneğin sözleşmenin kurulmasıyla doğrudan ilgili olması veya meşru menfaat, KVKK m. 5/2-c veya f; GDPR m. 6/1-b veya f].',
-        ],
-      },
-      {
-        heading: 'Hizmet sağlayıcılar ve yurt dışına aktarım',
-        blocks: [
-          'Web sitesi şu hizmet sağlayıcılardan yararlanır [YAYINDAN ÖNCE TEYİT EDİLECEK: sağlayıcılar, bölgeler ve sözleşme koşulları]:',
-          [
-            'Vercel: abonelik formu dahil web sitesinin barındırılması [TEYİT EDİLECEK: bölge].',
-            'Neon: bülten veri tabanı [TEYİT EDİLECEK: bölge; planlanan Frankfurt, Almanya].',
-            'Resend: onay e-postasının ve iletişim formu mesajlarının iletilmesi. Resend, e-posta kayıtları dahil hesap verilerini Amerika Birleşik Devletleri\'nde sakladığını belirtmektedir.',
-          ],
-          'Bu nedenle verileriniz Türkiye dışına aktarılır [TEYİT EDİLECEK: ülkeler]. [AVUKAT TEYİT EDECEK: bu aktarımların KVKK m. 9 ve ilgili olduğu ölçüde GDPR V. Bölüm kapsamındaki dayanağı.]',
-        ],
-      },
-      {
-        heading: 'Analitik, çerezler ve tarayıcınız',
-        blocks: [
-          'Web sitesi sayfa görüntülemelerini çerez kullanmadan çalışan Vercel Web Analytics ile sayar [TEYİT EDİLECEK]. Web sitesi çerez yerleştirmez. Dil tercihiniz ve araç sayfalarında devam eden çalışmanız kendi tarayıcınızda saklanır ve bize gönderilmez.',
-        ],
-      },
-      {
-        heading: 'Haklarınız',
-        blocks: [
-          'KVKK\'nın 11. maddesi uyarınca kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme; işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme; yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme; eksik veya yanlış işlenmişse düzeltilmesini, silinmesini veya yok edilmesini ve bu işlemlerin aktarıldığı üçüncü kişilere bildirilmesini isteme; münhasıran otomatik sistemlerle analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme ve kanuna aykırı işleme nedeniyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.',
-          'GDPR\'ın uygulandığı durumlarda ayrıca erişim, düzeltme, silme, işlemeyi kısıtlama, veri taşınabilirliği ve itiraz haklarına sahipsiniz ve rızanızı her zaman geri alabilirsiniz.',
-          'Taleplerinizi contact@amdnsri.com adresine iletebilirsiniz. Talepler en geç 30 gün içinde yanıtlanır [AVUKAT TEYİT EDECEK]. Türkiye\'de Kişisel Verileri Koruma Kurulu\'na veya AB\'de bir veri koruma otoritesine de şikâyette bulunabilirsiniz.',
-        ],
-      },
-      {
-        heading: 'Ticari elektronik iletiler (İYS)',
-        blocks: [
-          '[AVUKAT TEYİT EDECEK: İYS kaydının uygulanıp uygulanmadığı ve onayların İYS\'ye nasıl kaydedileceği.] İYS kaydı, e-posta onayınızdan ayrı olarak takip edilir ve hiçbir zaman otomatik olarak tamamlandı olarak işaretlenmez.',
-        ],
-      },
-      {
-        heading: 'Bu metindeki değişiklikler',
-        blocks: [
-          'Bu metin değişirse yeni sürümü tarihiyle birlikte bu sayfada yayımlanır. Bültenin amacı değişirse rızanız yeniden istenir.',
+          'Our website and tool pages do not use cookies. Only the following is kept in your browser\'s local storage: the language you choose on the website and, if you change it, the light/dark theme; the language you choose on the NESTRI, NESTRI PRO and IPunch tool pages; and, on NESTRI and NESTRI PRO, the project you are working on, when saved. This information stays on your own device, is not sent to us, and can be deleted in your browser settings.',
+          'Page views are counted with Vercel Web Analytics without cookies [TO CONFIRM]. Typefaces are loaded from Google Fonts (see section 3).',
         ],
       },
     ],
   },
 
   AR: {
-    draft: 'مسودة: بانتظار مراجعة محامٍ، وغير سارية. ما بين [معقوفين] نصوص مؤقتة يجب التحقق منها قبل النشر.',
-    title: 'إشعار الخصوصية',
-    status: 'مسودة أُعدّت في أكتوبر 2026. غير سارية بعد.',
+    draft: 'مسودة: بانتظار مراجعة محامٍ، وغير سارية. ما بين [معقوفين] يجب التحقق منه قبل النشر.',
+    title: 'إشعار الخصوصية لدى AMD NSRI',
+    status: 'مسودة أُعدّت في أكتوبر 2026، وهي غير سارية بعد. النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان [يؤكّده المحامي].',
+    intro: [
+      'نحرص في AMD NSRI على ضمان أمن بياناتك الشخصية. ولهذا الغرض، وبصفتنا AMD NSRI التي تتخذ التدابير اللازمة وتولي أقصى درجات العناية لحماية البيانات الشخصية، نودّ إعلامك، وفقاً للمادة 10 من قانون حماية البيانات الشخصية رقم 6698 ("القانون")، بكيفية معالجة بياناتك الشخصية في إطار الاشتراك في النشرة البريدية على موقعنا.',
+    ],
     sections: [
       {
-        heading: 'الجهة المسؤولة',
+        heading: '1. المسؤول عن البيانات',
         blocks: [
-          'المسؤول عن البيانات هو أحمد الناصري، الذي يدير AMD NSRI [يُستكمَل: الصفة القانونية، كأن يكون فرداً أو مؤسسة فردية، والعنوان البريدي]. لأي سؤال أو طلب يتعلق بالخصوصية، راسلنا على contact@amdnsri.com.',
-          'يغطي هذا الإشعار الاشتراك في النشرة البريدية ونموذج التواصل والتشغيل الأساسي لهذا الموقع. وقد أُعدّ للوفاء بواجب الإعلام بموجب قانون حماية البيانات الشخصية التركي رقم 6698 (KVKK)، وبموجب اللائحة العامة لحماية البيانات في الاتحاد الأوروبي (GDPR) حيثما تنطبق.',
+          'يعالج أحمد الناصري بياناتك الشخصية بصفته "المسؤول عن البيانات" وفق التعريف الوارد في المادة 3 من القانون.',
+          'أحمد الناصري — العنوان: [يُقدَّم العنوان البريدي لاحقاً]، البريد الإلكتروني: contact@amdnsri.com [يؤكّده المحامي: الصفة القانونية، ومدى لزوم ذكر بيانات تعريفية أخرى مثل الرقم الضريبي].',
         ],
       },
       {
-        heading: 'النشرة البريدية',
+        heading: '2. أغراض معالجة البيانات الشخصية وأسسها القانونية',
         blocks: [
-          'إذا اشتركت، فإننا نحفظ ما يلي:',
+          'تُعالَج بياناتك الشخصية التي نجمعها منك عبر نموذج الاشتراك في النشرة على موقعنا وعبر رسالة التأكيد، ضمن فئات الهوية (اسمك إن اخترت إدخاله)، والاتصال (عنوان بريدك الإلكتروني)، والتسويق (تفضيل موافقتك على النشرة، وحالة اشتراكك، وحالة تسجيله في نظام إدارة الرسائل)، وأمن المعاملات (وقت الموافقة، وإصدار نص الموافقة ولغته، والصفحة التي اشتركت منها، ووقتا التأكيد وإلغاء الاشتراك)، للأغراض وعلى الأسس القانونية المبيّنة أدناه.',
+          'استناداً إلى موافقتك الصريحة (المادة 5/1 من القانون) [يؤكّده المحامي]، تُعالَج بياناتك ضمن فئات الهوية والاتصال والتسويق للغرض التالي:',
           [
-            'عنوان بريدك الإلكتروني، واسمك إن أدخلته؛',
-            'حالة اشتراكك: بانتظار التأكيد، أو مؤكَّد، أو ملغى؛',
-            'وقت موافقتك، وإصدار النص الذي وافقت عليه، واللغة التي عُرض بها؛',
-            'الصفحة التي اشتركت منها؛',
-            'وقت تأكيدك، ووقت إلغاء اشتراكك إن حدث ذلك؛',
-            'ما إذا كانت موافقتك قد سُجّلت في نظام إدارة الرسائل التجارية الإلكترونية في تركيا (İYS).',
+            'تنفيذ أنشطة التواصل (إرسال النشرة حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية، وإرسال رسالة تأكيد واحدة لتأكيد الاشتراك)',
           ],
-          'لا نحفظ عنوان IP الخاص بك ولا بيانات متصفحك أو جهازك. ولمنع إساءة الاستخدام، تُحصى محاولات الاشتراك لفترة قصيرة لكل عنوان شبكة ولكل عنوان بريد إلكتروني؛ ولا تحتفظ هذه العدّادات إلا برمز مُشفَّر باتجاه واحد لا بالعنوان نفسه، وتُحذف خلال يومين.',
-          'الغرض: إرسال الرسائل التي طلبتها حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية. تصلك أولاً رسالة تأكيد واحدة، ولا يُرسَل إليك شيء آخر ما لم تؤكّد.',
-          'الأساس القانوني: موافقتك الصريحة (المادة 5/1 من KVKK؛ المادة 6/1/أ من GDPR) وموافقتك على الرسائل التجارية الإلكترونية بموجب القانون رقم 6563 [يؤكّده المحامي].',
+          'استناداً إلى كون المعالجة ضرورية لوفاء المسؤول عن البيانات بالتزامه القانوني (المادة 5/2-ç من القانون) [يؤكّده المحامي]، تُعالَج بياناتك ضمن فئات الاتصال والتسويق وأمن المعاملات للأغراض التالية:',
+          [
+            'تنفيذ الأنشطة وفق التشريعات (إثبات الموافقة على الرسائل التجارية الإلكترونية وطلبات إلغاء الاشتراك، والاحتفاظ بقائمة عدم المراسلة كي لا تتلقى العناوين الملغى اشتراكها رسائل أخرى، والتسجيل في نظام إدارة الرسائل (İYS) إن كان ذلك منطبقاً [يؤكّده المحامي: مدى انطباق التسجيل في İYS])',
+            'تنفيذ أنشطة الحفظ والأرشفة',
+            'متابعة الطلبات والشكاوى (الردّ على الطلبات المقدَّمة بموجب المادة 11 من القانون)',
+            'تقديم المعلومات إلى الأشخاص والمؤسسات والهيئات المخوَّلة',
+          ],
+          'استناداً إلى كون المعالجة ضرورية للمصالح المشروعة للمسؤول عن البيانات، بشرط ألّا تضرّ بحقوقك وحرياتك الأساسية (المادة 5/2-f من القانون) [يؤكّده المحامي]، تُعالَج بياناتك ضمن فئتي الاتصال وأمن المعاملات للأغراض التالية:',
+          [
+            'تنفيذ عمليات أمن المعلومات (منع الاشتراكات الآلية والمسيئة)',
+            'ضمان أمن عمليات المسؤول عن البيانات',
+          ],
+          'لا يُحفَظ عنوان IP الخاص بك ولا بيانات متصفحك أو جهازك. ولمنع إساءة الاستخدام، تُحصى محاولات الاشتراك لفترة قصيرة لكل عنوان شبكة ولكل عنوان بريد إلكتروني؛ ولا تحتفظ هذه العدّادات إلا برمز باتجاه واحد لا بالعنوان نفسه، وتُحذف خلال يومين.',
+          '[يؤكّده المحامي: ما إذا كان نموذج التواصل على الموقع يدخل في هذا الإشعار أم في إشعار مستقل.]',
         ],
       },
       {
-        heading: 'إلغاء الاشتراك وسحب الموافقة',
+        heading: '3. الجهات التي يجوز نقل البيانات الشخصية إليها والغرض من ذلك',
         blocks: [
-          'تحتوي كل رسالة من النشرة على رابط لإلغاء الاشتراك يعمل بنقرة واحدة ودون تسجيل دخول. ويمكنك أيضاً مراسلتنا على contact@amdnsri.com. ولا يؤثر سحب الموافقة في الرسائل المرسَلة قبله.',
-          'بعد إلغاء اشتراكك نحتفظ بسجلّ أدنى (عنوانك موسوماً بأنه ملغى، ورمز مشفَّر باتجاه واحد له) لغرض وحيد هو ألّا يُضاف عنوانك مجدداً عن طريق الخطأ. ويمكنك طلب حذف هذا السجل أيضاً.',
+          'يجوز لنا نقل بياناتك الشخصية إلى الجهات التالية، للأغراض المذكورة أعلاه فقط وبالقدر الذي تقتضيه:',
+          'إلى أشخاص اعتباريين من القانون الخاص نتلقى منهم خدمات؛ تُنقَل بياناتك ضمن فئات الهوية والاتصال والتسويق وأمن المعاملات لتشغيل الموقع والنشرة تقنياً (تنفيذ عمليات أمن المعلومات، وأنشطة التواصل، وأنشطة الحفظ والأرشفة) [يُتحقَّق منه قبل النشر: المزوّدون والمناطق وشروط التعاقد]:',
+          [
+            'Vercel (الولايات المتحدة): استضافة الموقع ونموذج الاشتراك [يُستكمَل: منطقة الخادم].',
+            'Neon: قاعدة بيانات النشرة؛ منطقة الخادم فرانكفورت، ألمانيا [يُستكمَل: المنطقة المختارة عند الإعداد، وبلد الشركة].',
+            'Resend (الولايات المتحدة): إيصال رسالة التأكيد. وتذكر Resend أنها تحفظ بيانات الحساب، بما فيها سجلات البريد، في الولايات المتحدة.',
+            'Google (Google Fonts): تحميل خطوط الموقع وصفحات الأدوات؛ وعند فتح أي صفحة يُرسَل عنوان IP الخاص بك إلى Google [يؤكّده المحامي].',
+          ],
+          'ولأن جميع هؤلاء المزوّدين يقعون خارج تركيا، تُنقَل بياناتك الشخصية إلى الخارج. الأساس القانوني لهذا النقل بموجب المادة 9 من القانون: [يؤكّده المحامي].',
+          'إلى المؤسسات والهيئات العامة المخوَّلة؛ تُنقَل بياناتك ضمن فئات الهوية والاتصال والتسويق وأمن المعاملات فقط حيثما تقتضي التشريعات ذلك، للأغراض التالية:',
+          [
+            'تنفيذ الأنشطة وفق التشريعات',
+            'متابعة الشؤون القانونية وتسييرها',
+            'تقديم المعلومات إلى الأشخاص والمؤسسات والهيئات المخوَّلة',
+          ],
+          'لا تُنقَل بياناتك الشخصية إلى أطراف ثالثة لأغراض الإعلان أو التسويق الخاصة بها. وتجري عمليات النقل المذكورة أعلاه في إطار شروط معالجة البيانات الشخصية المنصوص عليها في القانون.',
         ],
       },
       {
-        heading: 'مدة الاحتفاظ بالبيانات',
+        heading: '4. طرق جمع البيانات الشخصية',
+        blocks: [
+          'بوسائل آلية أو شبه آلية:',
+          [
+            'تُجمَع بياناتك الشخصية ضمن فئات الهوية والاتصال والتسويق منك مباشرةً عند تعبئة نموذج الاشتراك في النشرة على موقعنا.',
+            'تُسجَّل بياناتك الشخصية ضمن فئة أمن المعاملات تلقائياً عند إرسال النموذج، وعند النقر على الرابط في رسالة التأكيد، وعند إلغاء الاشتراك.',
+          ],
+          'لا تُجمَع بياناتك الشخصية من أطراف ثالثة، وتُحصَّل البيانات التي نجمعها بطرق مشروعة.',
+        ],
+      },
+      {
+        heading: '5. حقوقك بصفتك صاحب البيانات',
+        blocks: [
+          'بموجب المادة 11 من القانون الخاصة بـ"حقوق صاحب البيانات"، يحق لك أن تعرف ما إذا كانت بياناتك الشخصية تُعالَج؛ وأن تطلب معلومات عنها إن كانت قد عولجت؛ وأن تعرف غرض المعالجة وما إذا كانت تُستخدم وفقاً له؛ وأن تعرف الأطراف الثالثة التي نُقلت إليها داخل تركيا أو خارجها؛ وأن تطلب تصحيحها إن كانت ناقصة أو غير صحيحة؛ وأن تطلب محوها أو إتلافها وفق الشروط الواردة في المادة 7 من القانون؛ وأن تطلب إبلاغ الأطراف الثالثة التي نُقلت إليها بهذه الإجراءات؛ وأن تعترض على أي نتيجة ضدك ناتجة عن تحليل البيانات حصراً بواسطة أنظمة آلية؛ وأن تطالب بالتعويض عن الضرر الناجم عن معالجتها بصورة مخالفة للقانون.',
+          'يمكنك إرسال طلباتك المتعلقة بهذه الحقوق وبتطبيق القانون إلى contact@amdnsri.com كتابةً، أو باستخدام عنوان بريد إلكتروني مسجَّل (KEP) أو عنوان البريد الإلكتروني المسجَّل لدينا، أو وفق طرق التقديم الأخرى المنصوص عليها في البلاغ الخاص بإجراءات ومبادئ تقديم الطلبات إلى المسؤول عن البيانات [يؤكّده المحامي: العنوان البريدي للطلبات الكتابية]. وسنبتّ في طلبك مجاناً في أقرب وقت ممكن بحسب طبيعته، وخلال 30 (ثلاثين) يوماً على الأكثر.',
+        ],
+      },
+      {
+        heading: '6. مدة الاحتفاظ بالبيانات الشخصية',
         blocks: [[
-          'طلبات الاشتراك غير المؤكَّدة: تُحذف تلقائياً بعد 7 أيام من الطلب.',
-          'الاشتراكات المؤكَّدة: إلى أن تلغي اشتراكك أو تطلب الحذف.',
-          'العناوين الملغى اشتراكها: السجلّ الأدنى الموصوف أعلاه، إلى أن تطلب حذفه.',
-          'رسائل نموذج التواصل: [يُستكمَل: مدة الاحتفاظ بالرسائل في صندوق البريد].',
+          'تُحذف طلبات الاشتراك غير المؤكَّدة تلقائياً بعد 7 أيام من الطلب.',
+          'يُحتفَظ بالاشتراكات المؤكَّدة إلى أن تلغي اشتراكك أو تطلب الحذف.',
+          'عند إلغاء اشتراكك يُوسَم سجلك بأنه ملغى، ويُحتفَظ به لإثبات الموافقة وإلغاء الاشتراك؛ كما يُحتفَظ برمز باتجاه واحد لعنوانك في قائمة عدم المراسلة حتى لا يُضاف مجدداً عن طريق الخطأ. وعند طلبك الحذف يُحذف سجلك، ويمكن بناءً على رغبتك الاحتفاظ بهذا الرمز وحده [يؤكّده المحامي: مدة الحفظ القانونية لسجلات الموافقة وإلغاء الاشتراك].',
+          'تُحذف العدّادات المستخدمة لمنع إساءة الاستخدام خلال يومين.',
         ]],
       },
       {
-        heading: 'نموذج التواصل',
+        heading: '7. المعلومات المحفوظة في متصفحك',
         blocks: [
-          'عند استخدامك نموذج التواصل، يُرسَل إلينا اسمك وبريدك الإلكتروني والموضوع ورسالتك عبر البريد الإلكتروني لنتمكن من الرد عليك. ولا يحفظها الموقع في قاعدة بيانات.',
-          'الأساس القانوني: [يؤكّده المحامي: مثلاً اتخاذ خطوات تسبق إبرام عقد أو المصلحة المشروعة، المادة 5/2/ج أو و من KVKK؛ المادة 6/1/ب أو و من GDPR].',
-        ],
-      },
-      {
-        heading: 'مزوّدو الخدمات والنقل إلى الخارج',
-        blocks: [
-          'يعتمد الموقع على مزوّدي الخدمات التالين [يُتحقَّق منه قبل النشر: المزوّدون والمناطق وشروط التعاقد]:',
-          [
-            'Vercel: استضافة الموقع، بما في ذلك نموذج الاشتراك [يُستكمَل: المنطقة].',
-            'Neon: قاعدة بيانات النشرة البريدية [يُستكمَل: المنطقة؛ المخطَّط لها فرانكفورت، ألمانيا].',
-            'Resend: إيصال رسالة التأكيد ورسائل نموذج التواصل. وتذكر Resend أنها تحفظ بيانات الحساب، بما فيها سجلات البريد، في الولايات المتحدة.',
-          ],
-          'لذلك تُنقَل بياناتك إلى خارج تركيا [يُستكمَل: الدول]. [يؤكّده المحامي: الأساس القانوني لهذا النقل بموجب المادة 9 من KVKK، وبموجب الفصل الخامس من GDPR حيثما ينطبق.]',
-        ],
-      },
-      {
-        heading: 'التحليلات وملفات تعريف الارتباط ومتصفحك',
-        blocks: [
-          'يُحصي الموقع مشاهدات الصفحات باستخدام Vercel Web Analytics الذي يعمل دون ملفات تعريف الارتباط [يُتحقَّق منه]. ولا يضع الموقع ملفات تعريف ارتباط. وتُحفَظ لغتك المختارة، وعملك الجاري في صفحات الأدوات، في متصفحك أنت ولا تُرسَل إلينا.',
-        ],
-      },
-      {
-        heading: 'حقوقك',
-        blocks: [
-          'بموجب المادة 11 من KVKK يحق لك أن تعرف ما إذا كانت بياناتك تُعالَج وأن تطلب معلومات عنها؛ وأن تعرف غرض المعالجة وما إذا كانت تُستخدم وفقاً له؛ وأن تعرف الجهات التي نُقلت إليها داخل تركيا أو خارجها؛ وأن تطلب تصحيحها أو حذفها أو إتلافها وإبلاغ تلك الجهات بذلك؛ وأن تعترض على أي نتيجة ضدك ناتجة حصراً عن معالجة آلية؛ وأن تطالب بالتعويض عن الضرر الناجم عن معالجة غير مشروعة.',
-          'وحيثما تنطبق GDPR، يحق لك أيضاً الوصول إلى بياناتك وتصحيحها ومحوها وتقييد معالجتها ونقلها والاعتراض على معالجتها، ولك أن تسحب موافقتك في أي وقت.',
-          'راسلنا على contact@amdnsri.com، ويُردّ على الطلبات خلال 30 يوماً [يؤكّده المحامي]. ويمكنك أيضاً تقديم شكوى إلى مجلس حماية البيانات الشخصية (Kişisel Verileri Koruma Kurulu) في تركيا، أو إلى سلطة لحماية البيانات في الاتحاد الأوروبي.',
-        ],
-      },
-      {
-        heading: 'الرسائل التجارية الإلكترونية (İYS)',
-        blocks: [
-          '[يؤكّده المحامي: ما إذا كان التسجيل في İYS لازماً، وكيفية تسجيل الموافقات فيه.] يُتابَع التسجيل في İYS بمعزل عن تأكيد بريدك الإلكتروني، ولا يُعلَّم مطلقاً على أنه مُنجَز تلقائياً.',
-        ],
-      },
-      {
-        heading: 'التغييرات على هذا الإشعار',
-        blocks: [
-          'إذا تغيّر هذا الإشعار، تُنشر النسخة الجديدة في هذه الصفحة مع تاريخها. وإذا تغيّر غرض النشرة البريدية، فستُطلب موافقتك من جديد.',
+          'لا يستخدم موقعنا ولا صفحات أدواتنا ملفات تعريف الارتباط. ولا يُحفَظ في التخزين المحلي لمتصفحك إلا ما يلي: اللغة التي تختارها على الموقع، وتفضيل السمة الفاتحة أو الداكنة إن غيّرته؛ واللغة التي تختارها في صفحات أدوات NESTRI وNESTRI PRO وIPunch؛ وفي NESTRI وNESTRI PRO، المشروع الذي تعمل عليه عند حفظه. تبقى هذه المعلومات على جهازك وحده، ولا تُرسَل إلينا، ويمكن حذفها من إعدادات المتصفح.',
+          'تُحصى مشاهدات الصفحات باستخدام Vercel Web Analytics دون ملفات تعريف الارتباط [يُتحقَّق منه]. وتُحمَّل الخطوط من Google Fonts (انظر القسم 3).',
         ],
       },
     ],

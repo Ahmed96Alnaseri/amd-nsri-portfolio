@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { newsletterEnabled } from '@/lib/newsletter/config';
-import PrivacyNotice from './PrivacyNotice';
+import { PRIVACY } from '@/lib/privacy-content';
+import LegalDocument from '@/components/LegalDocument';
 
 /**
- * DRAFT privacy notice, awaiting a lawyer's review: never indexed, and only reachable while the newsletter is in
- * preview or live mode (it is linked from the sign-up form). Text: src/lib/privacy-content.ts.
+ * DRAFT privacy notice (KVKK Art. 10), awaiting a lawyer's review: never indexed, and only reachable while the
+ * newsletter is in preview or live mode (it is linked from the sign-up form). Text: src/lib/privacy-content.ts.
  */
 export const metadata: Metadata = {
   title: 'Privacy notice (draft)',
@@ -14,5 +15,5 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   if (!newsletterEnabled()) notFound();
-  return <PrivacyNotice />;
+  return <LegalDocument content={PRIVACY} />;
 }
