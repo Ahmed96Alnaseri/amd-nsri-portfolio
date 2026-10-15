@@ -6,7 +6,8 @@ it; there is no account or login. It is **off** until you switch it on.
 ## What it does
 
 - **Form**: on the homepage above the footer, and on `/updates`. It asks for an email (required), a name (optional) and
-  a separate, unticked consent box. The privacy notice is linked beside the form, not inside the consent.
+  a separate, unticked consent box. The box's label links the explicit consent statement (`/consent`); the privacy
+  notice (`/privacy`) is linked right below it, outside the consent wording. Both open in a new tab.
 - **Tool pages**: NESTRI, NESTRI PRO and IPunch show a small "Get tool updates →" link (desktop only on IPunch) while the
   newsletter is on. It goes to `/updates` and records which tool the person came from.
 - **Double opt-in**: the only email ever sent is the confirmation, in the language the form was shown in, with no
@@ -33,14 +34,37 @@ keyed one-way hash of the network address or email, deleted after two days.
 created automatically on first use.
 
 The exact consent wording per version and language is in `src/lib/newsletter/consent-texts.json`. Never edit a version
-that has been used: add a new one and point `current` at it. Version `v1-2026-10` deliberately says nothing about
-services; add one that does only after moving to Vercel Pro and the lawyer's review.
+that has been used: add a new one and point `current` at it. `[[text|/path]]` marks the link to the consent statement;
+the stored and exported wording is the text without it. History: `v1-2026-10` (first wording), `v2-2026-10` (current:
+single opt-in to the newsletter that links the explicit consent statement). No version mentions services; add one that
+does only after moving to Vercel Pro and the lawyer's review.
+
+## Privacy notice and consent statement (DRAFT)
+
+Both pages are drafts for the lawyer, `noindex`, and 404 while the newsletter is off. Turkish is the source text; the
+English and Arabic texts are Claude's translations, for review. Everything unconfirmed is in [square brackets].
+
+- `/privacy` (`src/lib/privacy-content.ts`): KVKK Article 10 notice in the lawyer's structure: data controller,
+  purposes and legal grounds, recipients and transfer abroad, collection method, Article 11 rights, plus retention and
+  browser storage.
+- `/consent` (`src/lib/consent-content.ts`): the explicit consent statement for this newsletter only.
+
+Facts behind the text (checked October 2026 on amdnsri.com and the code):
+
+- **Recipients**: Vercel (hosting), Neon (database, Frankfurt), Resend (confirmation email; stores account data in the
+  US), Google Fonts (typefaces load from fonts.googleapis.com / fonts.gstatic.com, so Google receives the visitor's IP).
+  All are outside Turkey. Self-hosting the fonts would remove Google from the list (planned as a separate change).
+- **Browser storage**: no cookies on the site, the tool pages or the analytics script. Local storage only:
+  `amd-nsri-lang`, `amd-nsri-theme` (site); `nestri-lang`, `nestripro.lang`, `ipunch-lang` (tools); `nestri.project`,
+  `nestripro.project` (saved work in progress on NESTRI and NESTRI PRO). Vercel Web Analytics wrote nothing during
+  the check; its script has storage code, so the notice says "without cookies [to confirm]".
+- **Not covered yet**: the contact form (left as a question for the lawyer in the notice).
 
 ## Modes (`NEWSLETTER_MODE`)
 
 | Value | Where it works | What happens |
 |---|---|---|
-| unset / `off` | everywhere (default) | No form, `/updates` `/updates/*` `/privacy` are 404, every newsletter API answers 404 |
+| unset / `off` | everywhere (default) | No form, `/updates` `/updates/*` `/privacy` `/consent` are 404, every newsletter API answers 404 |
 | `preview` | `next dev` and Vercel **Preview** deployments only; on Production it counts as `off` | No email is sent: the confirmation email is shown on screen, its link points at the preview itself. Data goes to the Preview `DATABASE_URL` if set, otherwise to a throwaway in-memory store |
 | `live` | anywhere it is set explicitly (meant for Production) | Real database, real confirmation emails. If any required variable is missing, it stays off and logs which one |
 
@@ -82,6 +106,9 @@ Generate a secret, for example: `node -e "console.log(require('crypto').randomBy
    email would be sent).
 8. **Languages**: switch EN / TR / AR in the navigation and repeat; the confirmation email follows the form's language.
 9. **Tool pages**: open `/nestri.html`, `/nestri-pro.html`, `/ipunch.html` and find "Get tool updates →".
+10. **Legal pages**: the consent box's label links "Açık Rıza Beyanı / Explicit Consent Statement" (`/consent`), and
+    "Aydınlatma Metni / Privacy notice" (`/privacy`) sits below it; both open in a new tab and switch language with the
+    site.
 
 ## Go live (Production)
 
@@ -90,7 +117,9 @@ Generate a secret, for example: `node -e "console.log(require('crypto').randomBy
    if you like, Preview branches). It sets `DATABASE_URL`.
 3. Add `NEWSLETTER_SECRET`, `SITE_URL=https://amdnsri.com`, `CRON_SECRET` for Production. `RESEND_API_KEY`,
    `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL` are already there.
-4. Have the privacy notice (`src/lib/privacy-content.ts`) reviewed and completed, and remove its DRAFT banner.
+4. Have the privacy notice (`src/lib/privacy-content.ts`) and the consent statement (`src/lib/consent-content.ts`)
+   reviewed and completed, and remove their DRAFT banners. If the reviewed wording changes the checkbox text, add a
+   new consent version.
 5. Set `NEWSLETTER_MODE=live` for Production and redeploy. Subscribe with your own address, confirm, then unsubscribe.
 
 To switch off again: remove `NEWSLETTER_MODE` (or set `off`) and redeploy. Unsubscribe links keep working.
@@ -136,5 +165,6 @@ addresses that are not in `newsletter_suppressions`.
   unsubscribe helpers, request handling
 - `src/app/api/newsletter/[action]/route.ts`: `subscribe`, `confirm`, `unsubscribe`, `status`, `cleanup` in one route (one server function, so the preview in-memory store is shared)
 - `src/components/NewsletterSection.tsx`, `NewsletterForm.tsx`, `NewsletterResult.tsx`
-- `src/app/updates/`, `src/app/privacy/` (draft notice; text in `src/lib/privacy-content.ts`)
+- `src/app/updates/`, `src/app/privacy/`, `src/app/consent/` (draft legal pages, rendered by
+  `src/components/LegalDocument.tsx`; text in `src/lib/privacy-content.ts` and `src/lib/consent-content.ts`)
 - `scripts/newsletter/`: `export-confirmed.mjs`, `delete-subscriber.mjs`
