@@ -29,7 +29,8 @@ const cell = (v) => {
   return `"${(/^[=+\-@]/.test(s) ? `'${s}` : s).replace(/"/g, '""')}"`;
 };
 const lines = rows.map((r) => {
-  const text = consent.versions[r.consent_version]?.[r.consent_lang] ?? '';
+  // the wording as agreed, without the form's [[text|/path]] link markers
+  const text = (consent.versions[r.consent_version]?.[r.consent_lang] ?? '').replace(/\[\[([^\]|]+)\|[^\]]+\]\]/g, '$1');
   return cols.map((c) => cell(c === 'consent_text' ? text : r[c])).join(',');
 });
 // BOM so Excel opens Turkish and Arabic text correctly

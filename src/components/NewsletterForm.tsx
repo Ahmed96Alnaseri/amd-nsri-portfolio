@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
-import { consentText } from '@/lib/newsletter/consent';
+import { consentMarkup } from '@/lib/newsletter/consent';
+import { withLinks } from '@/components/LegalDocument';
 
 type FieldError = { email?: string; name?: string; consent?: string };
 type Preview = { subject?: string; text?: string; confirmUrl?: string; note?: string };
@@ -11,8 +11,9 @@ type Preview = { subject?: string; text?: string; confirmUrl?: string; note?: st
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * Email (required), name (optional) and a separate, unticked consent box, with the privacy notice linked beside the
- * form rather than inside the consent. Errors are announced (role="alert") and focus moves to the first invalid field;
+ * Email (required), name (optional) and a separate, unticked consent box whose label links the explicit consent
+ * statement (/consent); the privacy notice (/privacy) is linked right below it, outside the consent wording. Both open
+ * in a new tab so nothing typed is lost. Errors are announced (role="alert") and focus moves to the first invalid field;
  * success replaces the form and takes focus. Text, labels and the name field follow Arabic right-to-left; the email
  * field keeps left-to-right typing (addresses are Latin) but aligns right. In preview mode the confirmation email
  * comes back from the API and is shown below the success message instead of being sent.
@@ -99,9 +100,6 @@ export default function NewsletterForm({ variant, preview }: { variant: 'section
             ? <h1 id="nl-heading" className="nl-heading">{t('newsletter.heading')}</h1>
             : <h2 id="nl-heading" className="nl-heading">{t('newsletter.heading')}</h2>}
           <p className="nl-desc">{t('newsletter.desc')}</p>
-          <p className="nl-privacy">
-            {t('newsletter.privacyLead')} <Link href="/privacy" className="nl-privacy-link">{t('newsletter.privacyLink')}</Link>
-          </p>
         </div>
 
         {done ? (
@@ -187,9 +185,16 @@ export default function NewsletterForm({ variant, preview }: { variant: 'section
                 aria-describedby={describedBy('consent')}
                 onChange={(e) => setConsent(e.target.checked)}
               />
-              <label htmlFor="nl-consent" className="nl-consent">{consentText(lang)}</label>
+              <label htmlFor="nl-consent" className="nl-consent">{withLinks(consentMarkup(lang), 'nl-newtab-note')}</label>
             </div>
             {errors.consent && <span id="nl-consent-error" className="nl-error nl-error--consent" role="alert">{t(errors.consent)}</span>}
+            <p className="nl-privacy">
+              {t('newsletter.privacyLead')}{' '}
+              <a href="/privacy" target="_blank" rel="noopener" className="nl-privacy-link" aria-describedby="nl-newtab-note">
+                {t('newsletter.privacyLink')}
+              </a>
+            </p>
+            <span id="nl-newtab-note" hidden>{t('newsletter.newTab')}</span>
 
             <button type="submit" className="nl-submit" disabled={submitting} aria-busy={submitting}>
               {submitting ? t('newsletter.submitting') : t('newsletter.submit')}

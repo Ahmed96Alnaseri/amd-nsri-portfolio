@@ -6,13 +6,15 @@ import { useLanguage } from '@/lib/LanguageContext';
 import type { Lang } from '@/lib/translations';
 import type { LegalDoc } from '@/lib/privacy-content';
 
-/** Renders a [[text|/path]] link inside a sentence; everything else stays plain text. */
-export function withLinks(text: string, newTab = false) {
+/** Renders a [[text|/path]] link inside a sentence; everything else stays plain text. With newTabNoteId the link opens
+    in a new tab (used inside the sign-up form, so what was typed is kept) and is described by that element's text
+    ("opens in a new tab"), read after the link name so a word ending such as Turkish 'nı stays attached. */
+export function withLinks(text: string, newTabNoteId?: string) {
   return text.split(/(\[\[[^\]|]+\|[^\]]+\]\])/).map((part, i) => {
     const m = part.match(/^\[\[([^\]|]+)\|([^\]]+)\]\]$/);
     if (!m) return <Fragment key={i}>{part}</Fragment>;
-    return newTab
-      ? <a key={i} href={m[2]} target="_blank" rel="noopener">{m[1]}</a>
+    return newTabNoteId
+      ? <a key={i} href={m[2]} target="_blank" rel="noopener" aria-describedby={newTabNoteId}>{m[1]}</a>
       : <Link key={i} href={m[2]}>{m[1]}</Link>;
   });
 }

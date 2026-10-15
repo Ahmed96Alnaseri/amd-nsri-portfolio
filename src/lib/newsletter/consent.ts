@@ -7,8 +7,14 @@ export const CONSENT_VERSION: string = texts.current;
 
 const versions = texts.versions as Record<string, Record<Lang, string>>;
 
-export function consentText(lang: Lang, version: string = CONSENT_VERSION): string {
+/** The consent wording as the form shows it, with [[text|/path]] link markers (the form renders them as links). */
+export function consentMarkup(lang: Lang, version: string = CONSENT_VERSION): string {
   const v = versions[version];
   if (!v) throw new Error(`unknown consent version ${version}`);
   return v[lang] ?? v.EN;
+}
+
+/** The exact wording the person agreed to, as plain text (link markers removed). */
+export function consentText(lang: Lang, version: string = CONSENT_VERSION): string {
+  return consentMarkup(lang, version).replace(/\[\[([^\]|]+)\|[^\]]+\]\]/g, '$1');
 }

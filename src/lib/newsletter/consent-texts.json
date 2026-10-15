@@ -1,11 +1,16 @@
 {
-  "_comment": "Exact newsletter consent checkbox text per version and language. Never edit a published version: add a new one, point CURRENT at it, and every subscriber keeps the version they agreed to (stored with their record). v1 is deliberately silent about services; add a version that mentions them only after the Vercel plan and the lawyer review allow it. TR and AR v1 are translations by Claude, awaiting review.",
-  "current": "v1-2026-10",
+  "_comment": "Exact newsletter consent checkbox text per version and language. Never edit a published version: add a new one, point current at it, and every subscriber keeps the version they agreed to (stored with their record). [[text|/path]] marks a link on the form; the stored and exported wording is the text without the brackets. No version mentions services; add one that does only after the Vercel plan and the lawyer review allow it. TR and AR are translations by Claude, awaiting review.",
+  "current": "v2-2026-10",
   "versions": {
     "v1-2026-10": {
       "EN": "I agree to receive emails from AMD NSRI about new projects, journal articles and updates to its digital tools. I can unsubscribe at any time.",
       "TR": "AMD NSRI'dan yeni projeler, günlük yazıları ve dijital araçlarındaki güncellemeler hakkında e-posta almayı kabul ediyorum. Aboneliğimden istediğim zaman çıkabilirim.",
       "AR": "أوافق على تلقّي رسائل بريد إلكتروني من AMD NSRI حول المشاريع الجديدة ومقالات المدونة وتحديثات أدواتها الرقمية. ويمكنني إلغاء الاشتراك في أي وقت."
+    },
+    "v2-2026-10": {
+      "TR": "AMD NSRI bültenini, yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında e-posta ile almak istiyorum. [[Açık Rıza Beyanı|/consent]]'nı okudum ve kabul ediyorum; aboneliğimden istediğim zaman çıkabilirim.",
+      "EN": "I want to receive the AMD NSRI newsletter by email, about new projects, journal articles and digital tool updates. I have read and accept the [[Explicit Consent Statement|/consent]], and I can unsubscribe at any time.",
+      "AR": "أرغب في تلقّي النشرة البريدية لـ AMD NSRI عبر البريد الإلكتروني، حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية. وقد قرأت [[بيان الموافقة الصريحة|/consent]] وأوافق عليه، ويمكنني إلغاء الاشتراك في أي وقت."
     }
   }
 }
