@@ -257,20 +257,34 @@ const tools: Tool[] = [
     image: null,
     price: null,
   },
-  /* ── The tool page is live (/expanded-mesh-generator.html); the card stays "Coming soon" until its hero image
-        arrives, but the detail page already links to the tool. ── */
   {
     slug: 'expanded-mesh-generator',
     category: 'fabrication',
     name: 'Expanded Mesh Generator',
-    description: 'Generate expanded metal mesh patterns for façade and fabrication workflows.',
-    detail: 'Generate expanded metal mesh patterns for façade and fabrication workflows.',
-    features: [],
+    description:
+      'Expanded metal mesh panels from catalogue sizes, with an optional U or L frame. Exports STEP and DWG.',
+    detail:
+      'Expanded Mesh Generator builds an expanded metal mesh panel from its catalogue dimensions: the long and short way of the diamond (LWD, SWD), strand width, thickness and bend radius. Set the panel size, turn the mesh 90°, slide the pattern, and add an optional U-channel or L-angle frame with mitred corners. The live 3D view and the dimensioned 2D elevation update as you type, with readouts for open area, eye count, mesh depth and frame length. Export 3D solids as STEP and the 2D front elevation as DWG, straight from the browser. No installation, no account.',
+    features: [
+      'Mesh from catalogue dimensions: LWD, SWD, strand width, thickness and bend radius',
+      'Panel size, mesh direction (0° or ±90°) and pattern position',
+      'Optional U-channel or L-angle frame with 45° mitred corners; the mesh is cut to fit inside it',
+      'Live 3D view and a dimensioned 2D elevation',
+      'Readouts: panel area, mesh cut size, eye count, open area, mesh depth and frame length',
+      'STEP export: closed 3D solids per strand row and frame piece, in millimetres (a centre detail for very dense meshes)',
+      'DWG export: AutoCAD 2000 front elevation with hidden lines removed, on separate layers',
+    ],
     platform: 'Web',
-    status: 'Coming Soon',
+    platformLabel: 'Web — runs in browser',
+    status: 'Live',
     type: 'product',
+    // no artwork yet: the card shows the neutral diamond placeholder like the other tools without images, and the
+    // detail page shows no image box at all. Add heroImage / cardImage here when the hero arrives.
     image: null,
+    noHeroPlaceholder: true,
     price: null,
+    input: 'Mesh LWD · SWD · W · T · R, panel size, optional U or L frame',
+    output: 'STEP 3D solids · DWG 2D elevation',
     ctaLabel: 'Open Tool',
     ctaLink: '/expanded-mesh-generator.html',
     ctaExternal: true,

@@ -1267,7 +1267,29 @@ const VALUES: Record<Lang, ValueMap> = {
       'Güneşin gün boyunca izlediği yolu ve ahşap panellerin buna göre ayarlanışını gösteren cephe gölgeleme diyagramı',
     'A façade material and colour preview tool.': 'Cephe malzemesi ve renk önizleme aracı.',
     'Expanded Mesh Generator': 'Genişletilmiş Metal Ağ Üreteci',
-    'Generate expanded metal mesh patterns for façade and fabrication workflows.': 'Cephe ve fabrikasyon iş akışları için genişletilmiş metal ağ desenleri üretin.',
+    // Tools — Expanded Mesh Generator detail page: TR by Claude, for review
+    'Expanded metal mesh panels from catalogue sizes, with an optional U or L frame. Exports STEP and DWG.':
+      'Katalog ölçülerinden genişletilmiş metal ağ panelleri; isteğe bağlı U veya L çerçeveyle. STEP ve DWG olarak dışa aktarır.',
+    'Expanded Mesh Generator builds an expanded metal mesh panel from its catalogue dimensions: the long and short way of the diamond (LWD, SWD), strand width, thickness and bend radius. Set the panel size, turn the mesh 90°, slide the pattern, and add an optional U-channel or L-angle frame with mitred corners. The live 3D view and the dimensioned 2D elevation update as you type, with readouts for open area, eye count, mesh depth and frame length. Export 3D solids as STEP and the 2D front elevation as DWG, straight from the browser. No installation, no account.':
+      'Genişletilmiş Metal Ağ Üreteci, bir genişletilmiş metal ağ panelini katalog ölçülerinden oluşturur: uzun ve kısa göz çapı (LWD, SWD), şerit genişliği, kalınlık ve büküm yarıçapı. Panel ölçüsünü belirleyin, ağı 90° döndürün, deseni kaydırın ve isteğe bağlı olarak gönye köşeli bir U profil ya da L köşebent çerçeve ekleyin. Canlı 3B görünüm ve ölçülendirilmiş 2B görünüş siz yazdıkça güncellenir; açık alan, göz sayısı, ağ derinliği ve çerçeve uzunluğu da anında gösterilir. 3B katıları STEP, 2B ön görünüşü DWG olarak doğrudan tarayıcıdan dışa aktarın. Kurulum yok, hesap yok.',
+    'Mesh from catalogue dimensions: LWD, SWD, strand width, thickness and bend radius':
+      'Katalog ölçülerinden ağ: LWD, SWD, şerit genişliği, kalınlık ve büküm yarıçapı',
+    'Panel size, mesh direction (0° or ±90°) and pattern position':
+      'Panel ölçüsü, ağ yönü (0° veya ±90°) ve desen konumu',
+    'Optional U-channel or L-angle frame with 45° mitred corners; the mesh is cut to fit inside it':
+      'İsteğe bağlı, 45° gönye köşeli U profil veya L köşebent çerçeve; ağ, çerçevenin içine sığacak şekilde kesilir',
+    'Live 3D view and a dimensioned 2D elevation':
+      'Canlı 3B görünüm ve ölçülendirilmiş 2B görünüş',
+    'Readouts: panel area, mesh cut size, eye count, open area, mesh depth and frame length':
+      'Değerler: panel alanı, ağ kesim ölçüsü, göz sayısı, açık alan, ağ derinliği ve çerçeve uzunluğu',
+    'STEP export: closed 3D solids per strand row and frame piece, in millimetres (a centre detail for very dense meshes)':
+      'STEP: şerit sırası ve çerçeve parçası başına kapalı 3B katılar, milimetre cinsinden (çok yoğun ağlarda merkez detayı)',
+    'DWG export: AutoCAD 2000 front elevation with hidden lines removed, on separate layers':
+      'DWG: gizli çizgileri kaldırılmış, ayrı katmanlarda AutoCAD 2000 ön görünüşü',
+    'Mesh LWD · SWD · W · T · R, panel size, optional U or L frame':
+      'Ağ LWD · SWD · W · T · R, panel ölçüsü, isteğe bağlı U veya L çerçeve',
+    'STEP 3D solids · DWG 2D elevation':
+      'STEP 3B katılar · DWG 2B görünüş',
     'Available': 'Mevcut',
     'Custom': 'Özel',
     'Quote on request': 'Talep üzerine fiyat',
@@ -1804,7 +1826,29 @@ const VALUES: Record<Lang, ValueMap> = {
       'مخطط تظليل الواجهة يتتبّع مسار الشمس وكيفية ضبط الألواح الخشبية على مدار اليوم',
     'A façade material and colour preview tool.': 'أداة لمعاينة مواد الواجهات وألوانها.',
     'Expanded Mesh Generator': 'مولّد شبك المعدن الممدّد',
-    'Generate expanded metal mesh patterns for façade and fabrication workflows.': 'أنشئ أنماط شبك المعدن الممدّد لسير العمل في الواجهات والتصنيع.',
+    // Tools — Expanded Mesh Generator detail page: AR by Claude, for review
+    'Expanded metal mesh panels from catalogue sizes, with an optional U or L frame. Exports STEP and DWG.':
+      'ألواح من الشبك المعدني الممدّد بمقاسات الكتالوج، مع إطار اختياري على شكل U أو L. يُصدّر بصيغتي STEP وDWG.',
+    'Expanded Mesh Generator builds an expanded metal mesh panel from its catalogue dimensions: the long and short way of the diamond (LWD, SWD), strand width, thickness and bend radius. Set the panel size, turn the mesh 90°, slide the pattern, and add an optional U-channel or L-angle frame with mitred corners. The live 3D view and the dimensioned 2D elevation update as you type, with readouts for open area, eye count, mesh depth and frame length. Export 3D solids as STEP and the 2D front elevation as DWG, straight from the browser. No installation, no account.':
+      'ينشئ مولّد شبك المعدن الممدّد لوحاً من الشبك المعدني الممدّد انطلاقاً من مقاسات الكتالوج: القطر الطويل والقطر القصير للعين (LWD وSWD)، وعرض الشريط، والسماكة، ونصف قطر الثني. حدّد مقاس اللوح، وأدِر الشبك 90°، وأزِح النمط، وأضف إطاراً اختيارياً من مقطع U أو زاوية L بزوايا مشطوفة. ويتحدّث المنظر ثلاثي الأبعاد الحيّ والواجهة ثنائية الأبعاد المقيسة أثناء الكتابة، مع قراءات للمساحة المفتوحة وعدد العيون وعمق الشبك وطول الإطار. صدّر الأجسام ثلاثية الأبعاد بصيغة STEP والواجهة الأمامية ثنائية الأبعاد بصيغة DWG مباشرةً من المتصفح، دون تثبيت ودون حساب.',
+    'Mesh from catalogue dimensions: LWD, SWD, strand width, thickness and bend radius':
+      'شبك بمقاسات الكتالوج: LWD وSWD وعرض الشريط والسماكة ونصف قطر الثني',
+    'Panel size, mesh direction (0° or ±90°) and pattern position':
+      'مقاس اللوح واتجاه الشبك (0° أو ±90°) وموضع النمط',
+    'Optional U-channel or L-angle frame with 45° mitred corners; the mesh is cut to fit inside it':
+      'إطار اختياري من مقطع U أو زاوية L بزوايا مشطوفة 45°، ويُقصّ الشبك ليستقر داخله',
+    'Live 3D view and a dimensioned 2D elevation':
+      'منظر ثلاثي الأبعاد حيّ وواجهة ثنائية الأبعاد مقيسة',
+    'Readouts: panel area, mesh cut size, eye count, open area, mesh depth and frame length':
+      'قراءات: مساحة اللوح، ومقاس قصّ الشبك، وعدد العيون، والمساحة المفتوحة، وعمق الشبك، وطول الإطار',
+    'STEP export: closed 3D solids per strand row and frame piece, in millimetres (a centre detail for very dense meshes)':
+      'تصدير STEP: أجسام ثلاثية الأبعاد مغلقة لكل صف شرائط ولكل قطعة إطار، بالمليمتر (تفصيل المركز للشبك الكثيف جداً)',
+    'DWG export: AutoCAD 2000 front elevation with hidden lines removed, on separate layers':
+      'تصدير DWG: واجهة أمامية بصيغة AutoCAD 2000 مع إزالة الخطوط المخفية، على طبقات منفصلة',
+    'Mesh LWD · SWD · W · T · R, panel size, optional U or L frame':
+      'مقاسات الشبك LWD · SWD · W · T · R، ومقاس اللوح، وإطار U أو L اختياري',
+    'STEP 3D solids · DWG 2D elevation':
+      'STEP أجسام ثلاثية الأبعاد · DWG واجهة ثنائية الأبعاد',
     'Available': 'متاح',
     'Custom': 'مخصّص',
     'Quote on request': 'عرض سعر عند الطلب',
