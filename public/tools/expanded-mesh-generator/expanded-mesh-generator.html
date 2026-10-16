@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Expanded Mesh Generator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<!-- Fonts and libraries are served from this site (pinned versions in fonts/ and vendor/, see vendor/README.md):
+     the page contacts no outside provider. Paths are absolute because the page is also reached at
+     /expanded-mesh-generator.html, where relative paths would point at the site root. -->
+<link rel="stylesheet" href="/tools/expanded-mesh-generator/fonts/fonts.css">
 
 <!-- Vercel Web Analytics: cookieless page views, the same service as the main site. Not loaded on localhost. -->
 <script>
@@ -2354,8 +2355,8 @@ const FRAME_RGB = [0.6, 0.62, 0.65];
 
 <script type="importmap">
 { "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  "three": "/tools/expanded-mesh-generator/vendor/three-0.160.0/three.module.min.js",
+  "three/addons/": "/tools/expanded-mesh-generator/vendor/three-0.160.0/addons/"
 } }
 </script>
 
@@ -2639,12 +2640,7 @@ function t(en, ...args) {
 function applyStaticText() {
   document.documentElement.lang = lang.toLowerCase();
   document.documentElement.dir = lang === 'AR' ? 'rtl' : 'ltr';
-  if (lang === 'AR' && !document.getElementById('arFont')) {
-    const link = document.createElement('link');
-    link.id = 'arFont'; link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap';
-    document.head.appendChild(link);
-  }
+  // the Arabic font (IBM Plex Sans Arabic) is in fonts/fonts.css; the browser fetches it only when Arabic text shows
   document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = t(el.dataset.t); });
   document.querySelectorAll('[data-t-aria]').forEach((el) => el.setAttribute('aria-label', t(el.dataset.tAria)));
   document.querySelectorAll('[data-t-title]').forEach((el) => el.setAttribute('title', t(el.dataset.tTitle)));
@@ -3513,7 +3509,7 @@ function exportSTEP() {
 }
 
 // ---- DWG: AutoCAD 2000 drawing, writer loaded on first use
-const ACAD_URL = 'https://cdn.jsdelivr.net/npm/@node-projects/acad-ts@3.2.0/dist/index.js';
+const ACAD_URL = '/tools/expanded-mesh-generator/vendor/acad-ts-3.2.0/acad-ts.min.js';
 let acadModule = null;
 async function exportDWG() {
   if (!acadModule) { setBusyLabel(t('Loading DWG writer')); acadModule = import(ACAD_URL); }
