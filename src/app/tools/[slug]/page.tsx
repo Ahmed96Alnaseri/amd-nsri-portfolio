@@ -72,6 +72,23 @@ export default function ToolDetailPage({ params }: { params: { slug: string } })
             {tv(tool.status)}
           </span>
         </div>
+      ) : tool.heroPlaceholderSize ? (
+        // artwork not here yet: the diamond placeholder framed at the artwork's ratio, in the same layout
+        <div className="td-hero td-hero--whole">
+          <div
+            className="td-hero-frame"
+            role="img"
+            aria-label={tool.name}
+            style={{ aspectRatio: `${tool.heroPlaceholderSize.width} / ${tool.heroPlaceholderSize.height}` }}
+          >
+            <span className="td-hero-diamond" aria-hidden="true">◆</span>
+            <span className="td-hero-fade" aria-hidden="true" />
+          </div>
+          <span className={`td-status ${STATUS_MOD[tool.status]}`}>
+            <span className="td-status-dot" aria-hidden="true" />
+            {tv(tool.status)}
+          </span>
+        </div>
       ) : tool.noHeroPlaceholder ? null : (
         <div className="td-hero td-hero--placeholder" role="img" aria-label={tool.name}>
           <span className="td-hero-diamond" aria-hidden="true">◆</span>
@@ -303,6 +320,13 @@ const baseCss = `
   /* artwork shown whole: the box takes the image's own ratio, on the page background, unframed */
   .td-hero.td-hero--whole { height: auto; border: none; background-color: var(--color-bg); }
   .td-hero--whole img { display: block; width: 100%; height: auto; }
+  /* stands in for that image until it arrives: same width and ratio, framed like the placeholder */
+  .td-hero-frame {
+    position: relative; overflow: hidden; width: 100%;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+  .td-hero-frame .td-hero-diamond { font-size: clamp(48px, 7vw, 96px); }
   /* once the image's dark top band is shorter than the badge, lift the badge above the image
      instead of letting it cover the artwork */
   @media (max-width: 1000px) {
