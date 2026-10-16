@@ -25,7 +25,10 @@ const IP_LIMIT = { max: 5, windowSeconds: 60 * 60 };
 const EMAIL_LIMIT = { max: 3, windowSeconds: 24 * 60 * 60 };
 const LANGS: Lang[] = ['EN', 'TR', 'AR'];
 /** ?from= values the standalone tool pages send, recorded as the source page. */
-const TOOL_SOURCES: Record<string, string> = { nestri: '/nestri.html', 'nestri-pro': '/nestri-pro.html', ipunch: '/ipunch.html' };
+const TOOL_SOURCES: Record<string, string> = {
+  nestri: '/nestri.html', 'nestri-pro': '/nestri-pro.html', ipunch: '/ipunch.html',
+  'expanded-mesh-generator': '/expanded-mesh-generator.html',
+};
 
 const json = (body: unknown, status = 200) =>
   NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });

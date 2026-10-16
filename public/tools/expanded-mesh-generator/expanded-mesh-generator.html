@@ -1,0 +1,3661 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Expanded Mesh Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap">
+
+<!-- Vercel Web Analytics: cookieless page views, the same service as the main site. Not loaded on localhost. -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  (function () {
+    if (/^(localhost|127.0.0.1|[::1])$/.test(location.hostname)) return;
+    var el = document.createElement('script');
+    el.defer = true;
+    el.src = '/_vercel/insights/script.js';
+    document.head.appendChild(el);
+  })();
+</script>
+<style>
+/* =====================================================================
+   Expanded Mesh Generator · UI v2 "Workbench"
+   AMD NSRI · amdnsri.com/tools
+   One stylesheet: tokens, base, shell, components, phone, mockup-only.
+   Every colour, size and duration is a custom property.
+   Layout uses logical properties only, so dir="rtl" mirrors it.
+   State lives in attributes the tool sets:
+     aria-expanded · aria-checked · aria-pressed · aria-busy · disabled ·
+     hidden · data-frame · data-flipped · data-rot · data-view
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   1. TOKENS
+   --------------------------------------------------------------------- */
+.emg,
+.emg-sheet {
+  /* Ground and surfaces (warm near-blacks) */
+  --c-ground: #0d0d0b;
+  --c-surface-1: #12120f;
+  --c-surface-2: #191814;
+  --c-surface-3: #22211c;
+  --c-line: #2a2822;
+  --c-line-strong: #3b3830;
+  --c-line-hover: #57524a;
+
+  /* Text and icons (contrast on surface-1) */
+  --c-text: #ece6da;      /* 15.1:1 */
+  --c-text-2: #bdb5a6;    /*  9.2:1 */
+  --c-text-3: #948c7e;    /*  5.6:1 */
+  --c-icon: #807a6e;      /*  4.4:1, lines only */
+  --c-icon-fill: #6a655a; /* profile sections in icons */
+  --c-icon-fill-on: #8a8478;
+  --c-icon-dim: #3a372f;
+
+  /* Copper */
+  --c-accent: #b8956a;    /*  6.7:1 */
+  --c-accent-hi: #d4b287;
+  --c-accent-line: rgba(184, 149, 106, 0.55);
+  --c-accent-tint: rgba(184, 149, 106, 0.10);
+  --c-accent-tint-hi: rgba(184, 149, 106, 0.20);
+  --c-on-accent: #0d0d0b;
+
+  /* Status */
+  --c-warn: #e6c062;
+  --c-warn-line: rgba(230, 192, 98, 0.50);
+  --c-warn-tint: rgba(230, 192, 98, 0.08);
+  --c-ok: #9fcfae;
+  --c-error: #ec8b7c;
+  --c-focus: #f0d3a6;
+
+  /* Viewport chrome */
+  --c-vp-bg: #10100e;                       /* = three.js scene.background */
+  --c-overlay: rgba(13, 13, 11, 0.88);
+
+  /* 3D scene (three.js reads these once) */
+  --g3-mesh: #bfc2c5;                       /* MeshStandardMaterial, metalness .88 */
+  --g3-frame: #8c9096;                      /* profile material, metalness .78 */
+  --g3-dim: #b8956a;                        /* outline 45 %, dimension lines 100 % */
+
+  /* 2D drawing (Canvas 2D reads these once with getComputedStyle) */
+  --d2-bg: #10100e;
+  --d2-ghost: rgba(205, 200, 190, 0.16);    /* material the cut trims off, no frame */
+  --d2-panel: #16160f;
+  --d2-strand: #cdc8be;
+  --d2-frame-front: #8a867d;
+  --d2-frame-front-line: rgba(16, 16, 14, 0.70);
+  --d2-frame-back: #5b5852;
+  --d2-frame-back-line: rgba(16, 16, 14, 0.55);
+  --d2-outline: rgba(184, 149, 106, 0.70);
+  --d2-dim: #b8956a;
+  --d2-dim-text: #d4b287;
+  --d2-tag-bg: rgba(16, 16, 14, 0.92);
+  --d2-tag-line: rgba(184, 149, 106, 0.35);
+
+  /* Type */
+  --f-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --f-prose: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-title: 26px;
+  --t-section: 17px;
+  --t-spec: 18px;
+  --t-readout: 13.5px;
+  --t-value: 13.5px;
+  --t-label: 12px;
+  --t-code: 11.5px;
+  --t-hint: 12px;
+  --t-micro: 11px;
+
+  /* Space (4 px base) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+
+  /* Radius (sharp, drawing-sheet feel) */
+  --r-1: 2px;
+  --r-2: 4px;
+  --r-round: 999px;
+
+  /* Sizes */
+  --appbar-h: 72px;
+  --inspector-w: 344px;
+  --rail-w: 300px;
+  --cat-h: 48px;
+  --ctl-h: 28px;
+  --btn-h: 30px;
+  --seg-h: 28px;
+  --icon-w: 44px;
+  --icon-h: 38px;
+  --field-w: 88px;
+  --slider-h: 18px;
+  --thumb: 11px;
+  --switch-w: 36px;
+  --switch-h: 20px;
+  --xbtn-h: 48px;
+
+  /* Motion */
+  --dur: 140ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Arabic: Plex Sans Arabic carries prose and backs up mono labels */
+.emg:lang(ar),
+.emg-sheet:lang(ar) {
+  --f-prose: "IBM Plex Sans Arabic", "IBM Plex Sans", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", "IBM Plex Sans Arabic", ui-monospace, monospace;
+  --f-display: "DM Serif Display", "IBM Plex Sans Arabic", Georgia, serif;
+}
+
+/* Tablet and small laptop */
+@media (max-width: 1199px) {
+  .emg { --inspector-w: 304px; --rail-w: 264px; --t-title: 22px; }
+}
+
+/* Phone (same breakpoint as the tool today) */
+@media (max-width: 899px) {
+  .emg {
+    --t-title: 22px;
+    --t-spec: 15px;
+    --ctl-h: 40px;
+    --btn-h: 40px;
+    --seg-h: 34px;
+    --cat-h: 56px;
+    --field-w: 104px;
+    --slider-h: 36px;
+    --thumb: 15px;
+    --switch-w: 44px;
+    --switch-h: 26px;
+    --xbtn-h: 52px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   2. BASE
+   --------------------------------------------------------------------- */
+.emg,
+.emg *,
+.emg *::before,
+.emg *::after,
+.emg-sheet,
+.emg-sheet * { box-sizing: border-box; }
+
+.emg {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  line-height: 1.4;
+  color: var(--c-text);
+  background: var(--c-ground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.emg button,
+.emg input { font: inherit; color: inherit; }
+.emg button { cursor: pointer; }
+:where(.emg) :where(h1, h2, p, dl, dd, fieldset) { margin: 0; }
+:where(.emg) :where(fieldset) { border: 0; padding: 0; min-width: 0; }
+
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* Numbers, codes and dimensions always read left to right */
+.num { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
+
+/* Translatable prose picks its own direction */
+.ctl__hint, .foot, .ro__foot, .export__note, .status > span,
+.flip__sub, .ov-banner > span, .ov-hud { unicode-bidi: plaintext; }
+
+/* One focus language for the whole tool */
+.emg :focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.i16 { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------------------------------------------------------------------
+   3. SHELL
+   desktop:  brand     | viewport (bar) | spec
+             inspector | viewport       | rail (readouts + export)
+   --------------------------------------------------------------------- */
+.emg {
+  display: grid;
+  height: 100vh;
+  height: 100dvh;
+  grid-template-columns: var(--inspector-w) minmax(0, 1fr) var(--rail-w);
+  grid-template-rows: var(--appbar-h) minmax(0, 1fr);
+  grid-template-areas:
+    "brand     viewport spec"
+    "inspector viewport rail";
+}
+.emg__brand     { grid-area: brand; }
+.emg__spec      { grid-area: spec; }
+.emg__inspector { grid-area: inspector; }
+.emg__viewport  { grid-area: viewport; }
+.emg__rail      { grid-area: rail; }
+
+/* ---------------------------------------------------------------------
+   4. HEADER CELLS: brand + spec card
+   --------------------------------------------------------------------- */
+.brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding-inline: var(--s-5);
+  background: var(--c-ground);
+  border-block-end: 1px solid var(--c-line);
+  border-inline-end: 1px solid var(--c-line);
+}
+.brand__kicker {
+  font: 500 var(--t-micro)/1.2 var(--f-mono);
+  letter-spacing: 0.08em;
+  color: var(--c-accent);
+}
+.brand__title {
+  font: 400 var(--t-title)/1.05 var(--f-display);
+  letter-spacing: -0.005em;
+  color: var(--c-text);
+}
+
+.spec {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-inline: var(--s-4);
+  background: var(--c-ground);
+  border-block-end: 1px solid var(--c-line);
+  border-inline-start: 1px solid var(--c-line);
+}
+.spec__card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 12px;
+  row-gap: 3px;
+  align-items: center;
+  width: 100%;
+  padding: 8px 14px 8px 12px;
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-1);
+}
+.spec__mark {
+  grid-row: 1 / span 2;
+  width: 10px; height: 10px;
+  border: 1.5px solid var(--c-accent);
+  transform: rotate(45deg);
+}
+.spec__code,
+.spec__caption { grid-column: 2; }
+.spec__code {
+  font: 500 var(--t-spec)/1.1 var(--f-mono);
+  color: var(--c-text);
+  white-space: nowrap;
+}
+.spec__code i { font-style: normal; font-weight: 400; color: var(--c-text-3); margin-inline: 0.28em; }
+.spec__caption {
+  font: 400 var(--t-micro)/1.2 var(--f-mono);
+  letter-spacing: 0.04em;
+  color: var(--c-text-3);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------
+   5. INSPECTOR + CATEGORY (accordion)
+   --------------------------------------------------------------------- */
+.inspector {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--c-surface-1);
+  border-inline-end: 1px solid var(--c-line);
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-line-strong) transparent;
+}
+
+.cat { border-block-end: 1px solid var(--c-line); }
+.cat__head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--cat-h);
+  padding-inline: var(--s-2) var(--s-4);
+  background: var(--c-surface-1);
+}
+.cat[data-open="true"] > .cat__head { box-shadow: 0 1px 0 var(--c-line); }
+.cat__h { flex: 1; min-width: 0; font: inherit; }
+.cat__toggle {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  padding: 10px var(--s-2);
+  background: none;
+  border: 0;
+  border-radius: var(--r-1);
+  text-align: start;
+}
+.cat__chev {
+  align-self: center;
+  width: 14px; height: 14px; flex: none;
+  fill: none; stroke: var(--c-text-3); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform var(--dur) var(--ease);
+}
+.cat__toggle[aria-expanded="false"] .cat__chev { transform: rotate(-90deg); }
+[dir="rtl"] .cat__toggle[aria-expanded="false"] .cat__chev { transform: rotate(90deg); }
+.cat__title { font: 400 var(--t-section)/1.2 var(--f-display); color: var(--c-text); }
+.cat__unit { font: 400 var(--t-micro)/1 var(--f-mono); color: var(--c-text-3); }
+@media (hover: hover) {
+  .cat__toggle:hover .cat__title { color: var(--c-accent-hi); }
+  .cat__toggle:hover .cat__chev { stroke: var(--c-accent); }
+}
+.cat[data-open="false"] .cat__action { display: none; }
+.cat__body { padding-block: var(--s-1) var(--s-4); }
+.cat__body[hidden] { display: none; }
+
+/* Groups: related controls sit together, an inset hairline between groups */
+.grp { display: block; }
+.grp + .grp::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin: 4px var(--s-4);
+  background: var(--c-line);
+}
+
+/* Ghost button (Fit, Detail, Centre) */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--btn-h);
+  padding-inline: 10px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--r-1);
+  font: 500 var(--t-label)/1 var(--f-mono);
+  color: var(--c-text-2);
+  white-space: nowrap;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.btn-ghost .i16 { color: var(--c-text-3); }
+@media (hover: hover) {
+  .btn-ghost:hover:not(:disabled) { background: var(--c-surface-2); border-color: var(--c-line-strong); color: var(--c-text); }
+  .btn-ghost:hover:not(:disabled) .i16 { color: var(--c-accent); }
+}
+.btn-ghost:active:not(:disabled) { background: var(--c-surface-3); }
+.btn-ghost:disabled { color: #6f695f; cursor: default; }
+.btn-ghost:disabled .i16 { color: #5a554c; }
+.btn-ghost--sm { height: 28px; padding-inline: 8px; }
+
+/* ---------------------------------------------------------------------
+   6. NUMERIC CONTROL  (icon · code + name · field · slider · hint)
+   --------------------------------------------------------------------- */
+.ctl {
+  display: grid;
+  grid-template-columns: var(--icon-w) minmax(0, 1fr) var(--field-w);
+  grid-template-areas:
+    "ico lab  fld"
+    "ico sld  sld"
+    ".   hint hint";
+  column-gap: var(--s-3);
+  row-gap: 3px;
+  align-items: center;
+  padding: 8px var(--s-4);
+}
+.ctl[hidden] { display: none; }
+.ctl__ico { grid-area: ico; width: var(--icon-w); height: var(--icon-h); align-self: center; }
+.ctl__label {
+  grid-area: lab;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  min-width: 0;
+}
+.ctl__code {
+  font: 600 var(--t-code)/1.2 var(--f-mono);
+  letter-spacing: 0.04em;
+  color: var(--c-accent);
+}
+.ctl__name {
+  font: 400 var(--t-label)/1.25 var(--f-mono);
+  color: var(--c-text-2);
+  overflow-wrap: anywhere;
+}
+.ctl__field { grid-area: fld; }
+.ctl__slider { grid-area: sld; }
+.ctl__hint {
+  grid-area: hint;
+  font: 400 var(--t-hint)/1.35 var(--f-prose);
+  color: var(--c-text-3);
+}
+.ctl__hint:empty { display: none; }
+/* the tool sets .warn on the hint; :has() carries it to the field, slider and icon */
+.ctl__hint.warn,
+.ctl.is-warn .ctl__hint { padding-inline-start: 18px; color: var(--c-warn); }
+.ctl__hint.warn::before,
+.ctl.is-warn .ctl__hint::before {
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin-inline: -18px 5px;
+  vertical-align: -2px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2.2 14.6 13.6H1.4Z'/%3E%3Cpath d='M8 6.6v3.4M8 12v.01'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2.2 14.6 13.6H1.4Z'/%3E%3Cpath d='M8 6.6v3.4M8 12v.01'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.ctl:has(.ctl__hint.warn) .field,
+.ctl.is-warn .field { border-color: var(--c-warn-line); background: var(--c-warn-tint); }
+.ctl:has(.ctl__hint.warn) .slider,
+.ctl.is-warn .slider { --fill: var(--c-warn); }
+.ctl:has(.ctl__hint.warn) .ctl__ico .ic-h,
+.ctl.is-warn .ctl__ico .ic-h { stroke: var(--c-warn); }
+.ctl:has(.ctl__hint.warn) .ctl__ico .ic-f,
+.ctl.is-warn .ctl__ico .ic-f { fill: var(--c-warn); }
+
+/* Number field */
+.field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--ctl-h);
+  padding-inline: 8px;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-1);
+  direction: ltr;
+  transition: border-color var(--dur) var(--ease);
+}
+@media (hover: hover) { .field:hover { border-color: var(--c-line-hover); } }
+.field:focus-within {
+  border-color: var(--c-accent);
+  outline: 2px solid var(--c-focus);
+  outline-offset: 1px;
+}
+.field__input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  font: 500 var(--t-value)/1 var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text);
+  text-align: end;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.field__input:focus,
+.field__input:focus-visible { outline: none; }
+.field__input::-webkit-inner-spin-button,
+.field__input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.field__input::selection { background: var(--c-accent-tint-hi); }
+.field__unit { font: 400 var(--t-micro)/1 var(--f-mono); color: var(--c-text-3); }
+
+/* Slider: the tool already sets --pct on the range input; the track paints the fill */
+.slider {
+  --pct: 50%;
+  --fill: var(--c-accent);
+  width: 100%;
+  height: var(--slider-h);
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.slider:focus-visible { outline: none; }
+.slider::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(to right, var(--fill) 0 var(--pct), var(--c-line-strong) var(--pct) 100%);
+}
+[dir="rtl"] .slider::-webkit-slider-runnable-track {
+  background: linear-gradient(to left, var(--fill) 0 var(--pct), var(--c-line-strong) var(--pct) 100%);
+}
+.slider::-moz-range-track { height: 2px; background: var(--c-line-strong); }
+.slider::-moz-range-progress { height: 2px; background: var(--fill); }
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--thumb);
+  height: var(--thumb);
+  margin-top: calc((2px - var(--thumb)) / 2);
+  background: var(--c-accent);
+  border: 2px solid var(--c-surface-1);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px var(--c-accent);
+  transform: rotate(45deg);
+  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.slider::-moz-range-thumb {
+  width: var(--thumb);
+  height: var(--thumb);
+  background: var(--c-accent);
+  border: 2px solid var(--c-surface-1);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px var(--c-accent);
+  transform: rotate(45deg);
+}
+@media (hover: hover) {
+  .slider:hover::-webkit-slider-thumb { background: var(--c-accent-hi); }
+  .slider:hover::-moz-range-thumb { background: var(--c-accent-hi); }
+}
+.slider:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 1px var(--c-accent), 0 0 0 4px var(--c-focus); }
+.slider:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 1px var(--c-accent), 0 0 0 4px var(--c-focus); }
+
+/* Dimension icons: the tool's own drawings (ICONS, frameIcon, typeIcon, FLIP_ICON).
+   ic-s neutral line · ic-h copper dimension · ic-f copper part · ic-p profile section */
+.ico { overflow: visible; }
+.ico .ic-s { fill: none; stroke: var(--c-icon); stroke-width: 1.3; stroke-linejoin: round; }
+.ico .ic-h { fill: none; stroke: var(--c-accent); stroke-width: 1.3; stroke-linecap: round; }
+.ico .ic-f { fill: var(--c-accent); fill-opacity: 0.85; stroke: none; }
+.ico .ic-b { fill: var(--c-icon-dim); }
+.ico .ic-p { fill: var(--c-icon-fill); }
+.ico text { fill: var(--c-accent); font-family: var(--f-mono); }
+/* Flip mirrors the frame icons about y = 18, like mirror() in the tool */
+.emg[data-flipped="true"] .mir { transform: matrix(1, 0, 0, -1, 0, 36); }
+
+/* ---------------------------------------------------------------------
+   7. FRAME: profile type (radiogroup) + flip (switch)
+   --------------------------------------------------------------------- */
+.ptype {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 10px var(--s-4) 6px;
+}
+.ptype__opt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 58px;
+  padding: 6px 4px;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-1);
+  color: var(--c-text-2);
+  text-align: center;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.ptype__head { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 8px; margin: 0; padding: 12px var(--s-4) 0; }
+.ptype--dir { padding-block: 8px 8px; }
+.ptype__hint { margin: 0; padding: 0 var(--s-4) 10px; font: 400 var(--t-hint)/1.35 var(--f-prose); color: var(--c-text-3); }
+.ptype__hint:empty { display: none; }
+.ptype__ico { width: 44px; height: 32px; }
+.ptype__lab { font: 500 var(--t-label)/1.15 var(--f-mono); }
+@media (hover: hover) { .ptype__opt:hover { border-color: var(--c-line-hover); color: var(--c-text); } }
+.ptype__opt[aria-checked="true"] { background: var(--c-accent-tint); border-color: var(--c-accent); color: var(--c-text); }
+.ptype__opt[aria-checked="true"] .ic-p { fill: var(--c-icon-fill-on); }
+.ptype__opt[aria-checked="true"] .ic-s { stroke: var(--c-text-2); }
+
+.flip {
+  display: grid;
+  grid-template-columns: var(--icon-w) minmax(0, 1fr) auto;
+  column-gap: var(--s-3);
+  align-items: center;
+  width: calc(100% - 2 * var(--s-4));
+  min-height: 56px;
+  margin: 6px var(--s-4) 4px;
+  padding: 8px 12px 8px 0;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-1);
+  text-align: start;
+}
+.flip[hidden] { display: none; }
+.flip .ctl__ico { grid-area: auto; justify-self: center; }
+.flip__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.flip__label { font: 600 var(--t-code)/1.2 var(--f-mono); letter-spacing: 0.04em; color: var(--c-accent); }
+.flip__sub { font: 400 var(--t-hint)/1.3 var(--f-prose); color: var(--c-text-2); }
+@media (hover: hover) { .flip:hover { border-color: var(--c-line-hover); } }
+
+.switch { position: relative; flex: none; width: var(--switch-w); height: var(--switch-h); }
+.switch__track {
+  position: absolute; inset: 0;
+  background: var(--c-surface-3);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-round);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.switch__thumb {
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: calc(var(--switch-h) - 6px);
+  height: calc(var(--switch-h) - 6px);
+  background: var(--c-text-2);
+  border-radius: 50%;
+  transition: inset-inline-start var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.flip[aria-checked="true"] .switch__track { background: var(--c-accent-tint-hi); border-color: var(--c-accent); }
+.flip[aria-checked="true"] .switch__thumb { inset-inline-start: calc(var(--switch-w) - var(--switch-h) + 3px); background: var(--c-accent); }
+
+/* Footnotes inside categories */
+.foot {
+  padding: 8px var(--s-4) 0;
+  font: 400 var(--t-hint)/1.5 var(--f-prose);
+  color: var(--c-text-3);
+}
+
+/* Frame-dependent visibility (data-frame / data-flipped live on .emg) */
+.emg[data-frame="none"] .frame-only,
+.emg:not([data-frame="u"]) .frame-u,
+.emg:not([data-frame="l"]) .frame-l { display: none !important; }
+.emg[data-flipped="true"] .when-front,
+.emg:not([data-flipped="true"]) .when-back { display: none !important; }
+.emg:not([data-rot="90"]) .when-rot-p,
+.emg:not([data-rot="-90"]) .when-rot-n { display: none !important; }
+
+/* ---------------------------------------------------------------------
+   8. VIEWPORT
+   --------------------------------------------------------------------- */
+.vp {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--c-vp-bg);
+}
+.vp__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: var(--appbar-h);
+  padding-inline: var(--s-5) var(--s-4);
+  background: var(--c-ground);
+  border-block-end: 1px solid var(--c-line);
+}
+.vp__tag {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font: 400 var(--t-label)/1.3 var(--f-mono);
+  color: var(--c-text-3);
+}
+.vp__tag b { font-weight: 500; color: var(--c-text); }
+.vp__tools { display: flex; align-items: center; gap: var(--s-2); }
+.vp__btns { display: flex; align-items: center; gap: 2px; }
+.vp__sep { width: 1px; height: 20px; background: var(--c-line-strong); }
+
+.seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-1);
+}
+.seg__btn {
+  min-width: 44px;
+  height: var(--seg-h);
+  padding-inline: 10px;
+  background: none;
+  border: 0;
+  border-radius: 1px;
+  font: 600 var(--t-code)/1 var(--f-mono);
+  letter-spacing: 0.06em;
+  color: var(--c-text-3);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+@media (hover: hover) { .seg__btn:hover { color: var(--c-text); } }
+.seg__btn[aria-pressed="true"],
+.seg__btn[aria-selected="true"] {
+  background: var(--c-surface-3);
+  color: var(--c-accent-hi);
+  box-shadow: inset 0 -2px 0 var(--c-accent);
+}
+
+.vp__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--c-vp-bg);
+}
+/* The tool's <canvas> elements fill the stage */
+.vp__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.vp[data-view="3d"] .view-2d,
+.vp[data-view="2d"] .view-3d { display: none !important; }
+
+/* Overlays ---------------------------------------------------------- */
+.ov-dim {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 3px 7px;
+  background: var(--d2-tag-bg);
+  border: 1px solid var(--d2-tag-line);
+  border-radius: var(--r-1);
+  font: 500 var(--t-micro)/1.1 var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--d2-dim-text);
+  white-space: nowrap;
+  direction: ltr;
+  pointer-events: none;
+}
+
+.ov-banner {
+  position: absolute;
+  top: var(--s-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  width: max-content;
+  max-width: min(560px, calc(100% - 32px));
+  padding: 9px 14px 9px 12px;
+  background: rgba(30, 26, 14, 0.95);
+  border: 1px solid var(--c-warn-line);
+  border-radius: var(--r-1);
+  font: 400 var(--t-hint)/1.45 var(--f-prose);
+  color: var(--c-text);
+  z-index: 4;
+}
+.ov-banner[hidden] { display: none; }
+.ov-banner .i16 { margin-top: 1px; color: var(--c-warn); }
+.ov-banner b { font-weight: 500; color: var(--c-warn); white-space: nowrap; }
+
+.ov-hud {
+  position: absolute;
+  inset-inline-start: var(--s-3);
+  bottom: var(--s-3);
+  max-width: calc(100% - 230px);
+  padding: 6px 10px;
+  background: var(--c-overlay);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-1);
+  font: 500 var(--t-micro)/1.45 var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text);
+  pointer-events: none;
+  z-index: 4;
+}
+.ov-hud .tip { font-weight: 400; color: var(--c-text-3); }
+
+.ov-busy {
+  position: absolute;
+  inset-inline-end: var(--s-3);
+  bottom: var(--s-3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px 7px 12px;
+  background: var(--c-overlay);
+  border: 1px solid var(--c-accent-line);
+  border-radius: var(--r-1);
+  font: 500 var(--t-label)/1.1 var(--f-mono);
+  color: var(--c-text);
+  z-index: 4;
+}
+.ov-busy[hidden] { display: none; }
+
+/* Diamond spinner (busy chip and export buttons) */
+.spin {
+  width: 10px; height: 10px; flex: none;
+  border: 1.5px solid var(--c-accent);
+  transform: rotate(45deg);
+  animation: emg-spin 1.2s var(--ease) infinite;
+}
+@keyframes emg-spin { to { transform: rotate(405deg); } }
+@keyframes emg-pulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) {
+  .spin { animation: emg-pulse 1.6s ease-in-out infinite; }
+  .emg *, .emg *::before, .emg *::after { transition-duration: 0ms !important; }
+}
+
+/* ---------------------------------------------------------------------
+   9. RAIL: readouts (scroll if needed) + export (pinned to the bottom)
+   --------------------------------------------------------------------- */
+.rail {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--c-surface-1);
+  border-inline-start: 1px solid var(--c-line);
+}
+.rail__h {
+  margin-block-end: 10px;
+  font: 400 var(--t-section)/1.2 var(--f-display);
+  color: var(--c-text);
+}
+
+.ro {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px var(--s-5) var(--s-5);
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-line-strong) transparent;
+}
+.ro__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.ro__list dt { padding-inline-end: var(--s-3); }
+.ro__list dt,
+.ro__list dd {
+  padding-block: 8px;
+  border-block-end: 1px solid var(--c-line);
+}
+.ro__list dt { font: 400 var(--t-label)/1.3 var(--f-mono); color: var(--c-text-2); }
+.ro__list dd {
+  font: 500 var(--t-readout)/1.3 var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+  color: var(--c-text);
+  direction: ltr;
+}
+.ro__list dd.hl { color: var(--c-accent-hi); }
+.ro__foot {
+  margin-block-start: var(--s-3);
+  font: 400 var(--t-hint)/1.5 var(--f-prose);
+  color: var(--c-text-3);
+}
+
+.export {
+  flex: none;
+  padding: 16px var(--s-5) var(--s-5);
+  background: var(--c-ground);
+  border-block-start: 1px solid var(--c-line);
+}
+.export__bar { display: flex; flex-direction: column; gap: var(--s-2); }
+.export__buttons { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+.export__note {
+  margin-block-start: var(--s-3);
+  font: 400 11.5px/1.5 var(--f-prose);
+  color: var(--c-text-3);
+}
+
+.status {
+  order: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font: 400 var(--t-hint)/1.45 var(--f-prose);
+  color: var(--c-text-2);
+}
+.status:empty,
+.status[hidden] { display: none; }
+.status .i16 { width: 14px; height: 14px; margin-block-start: 2px; }
+.status[data-tone="ok"] { color: var(--c-ok); }
+.status[data-tone="error"] { color: var(--c-error); }
+
+.xbtn {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "fmt ico" "sub sub";
+  column-gap: var(--s-3);
+  row-gap: 2px;
+  align-content: center;
+  width: 100%;
+  min-height: var(--xbtn-h);
+  padding: 6px 10px 6px 14px;
+  text-align: start;
+  background: var(--c-accent-tint);
+  border: 1px solid var(--c-accent-line);
+  border-radius: var(--r-1);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.xbtn__fmt { grid-area: fmt; }
+.xbtn__sub { grid-area: sub; }
+.xbtn__ico { grid-area: ico; }
+.xbtn__fmt { font: 600 14px/1.1 var(--f-mono); letter-spacing: 0.06em; color: var(--c-text); }
+.xbtn__sub { font: 400 var(--t-micro)/1.3 var(--f-mono); color: var(--c-text-2); }
+.xbtn__ico { display: grid; place-items: center; width: 18px; height: 18px; color: var(--c-accent); }
+.xbtn__ico .spin { display: none; }
+@media (hover: hover) {
+  .xbtn:hover:not(:disabled) { background: var(--c-accent-tint-hi); border-color: var(--c-accent); }
+}
+.xbtn:active:not(:disabled) { background: var(--c-accent); }
+.xbtn:active:not(:disabled) .xbtn__fmt,
+.xbtn:active:not(:disabled) .xbtn__sub,
+.xbtn:active:not(:disabled) .xbtn__ico { color: var(--c-on-accent); }
+.xbtn[aria-busy="true"] { background: var(--c-accent-tint-hi); border-color: var(--c-accent); cursor: progress; opacity: 1; }
+.xbtn[aria-busy="true"] .xbtn__ico .i16 { display: none; }
+.xbtn[aria-busy="true"] .xbtn__ico .spin { display: block; }
+.xbtn:disabled:not([aria-busy="true"]) { opacity: 0.42; cursor: not-allowed; }
+
+/* ---------------------------------------------------------------------
+   10. PHONE (<= 899): one column, sticky viewport, fixed export bar
+   --------------------------------------------------------------------- */
+@media (max-width: 899px) {
+  .emg {
+    height: auto;
+    min-height: 100vh;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    align-content: start;
+    grid-template-areas: "brand" "spec" "viewport" "inspector" "rail";
+    padding-block-end: calc(var(--xbtn-h) + 24px + env(safe-area-inset-bottom));
+  }
+  .brand { padding: 16px var(--s-4) 8px; border: 0; }
+  .spec { padding: 0 var(--s-4) 14px; border: 0; border-block-end: 1px solid var(--c-line); }
+  .spec__card { display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; padding: 9px 12px; }
+  .spec__caption { margin-inline-start: auto; }
+
+  .vp {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    border-block-end: 1px solid var(--c-line);
+    box-shadow: 0 10px 18px -12px rgba(0, 0, 0, 0.8);
+  }
+  .vp__bar { flex-wrap: wrap; row-gap: 2px; min-height: 0; padding: 6px 10px 6px 12px; }
+  .vp__tools { order: 1; width: 100%; justify-content: space-between; }
+  .vp__sep { display: none; }
+  .vp__tag { order: 2; flex-basis: 100%; font-size: var(--t-micro); padding-block-end: 2px; }
+  .vp__stage { flex: none; height: clamp(190px, 30vh, 260px); }
+  .seg__btn { min-width: 56px; }
+  .ov-hud { max-width: calc(100% - 24px); bottom: auto; top: var(--s-2); inset-inline-start: var(--s-2); padding: 4px 8px; }
+  .ov-hud .tip { display: none; }
+  .ov-busy { inset-inline-end: var(--s-2); bottom: var(--s-2); }
+  .ov-banner { top: auto; bottom: var(--s-2); font-size: 11px; }
+  .ov-dim { font-size: 10px; padding: 2px 5px; }
+
+  .inspector { overflow: visible; border: 0; }
+  .cat__head { position: static; padding-inline: var(--s-1) var(--s-3); }
+  .cat__toggle { min-height: 48px; }
+  .btn-ghost--sm { height: 40px; padding-inline: 12px; }
+  .ctl { padding: 10px var(--s-4); row-gap: 2px; }
+  .ptype__opt { min-height: 64px; }
+
+  .rail { border: 0; background: var(--c-ground); }
+  .ro { overflow: visible; padding: 20px var(--s-4) 8px; }
+  .export { padding: 16px var(--s-4) 24px; border-block-start: 1px solid var(--c-line); }
+  .export__bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 30;
+    padding: 10px var(--s-3) calc(10px + env(safe-area-inset-bottom));
+    background: var(--c-ground);
+    border-block-start: 1px solid var(--c-line);
+    box-shadow: 0 -10px 18px -12px rgba(0, 0, 0, 0.85);
+  }
+  .export__buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .xbtn { padding-inline: 12px 10px; }
+  .status { order: 0; }
+}
+
+/* ---------------------------------------------------------------------
+   11. TOOL GLUE: canvases, 3D labels, utilities
+   --------------------------------------------------------------------- */
+html, body { margin: 0; background: #0d0d0b; }
+
+/* ---------------------------------------------------------------------
+   12. SITE GLUE: back link, language switch, tool-updates link
+   --------------------------------------------------------------------- */
+.emg { --appbar-h: 92px; }
+.brand__nav { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-block-end: 2px; }
+.brand__back {
+  font: 500 10px/1 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--c-accent); text-decoration: none; opacity: 0.75; transition: opacity var(--dur) var(--ease);
+}
+.brand__back:hover { opacity: 1; }
+.langs { display: flex; gap: 2px; padding: 2px; border: 1px solid var(--c-line-strong); border-radius: var(--r-1); }
+.langs button {
+  height: 20px; min-width: 28px; padding: 0 6px; border: 0; border-radius: var(--r-1); background: transparent;
+  color: var(--c-text-3); font: 500 10px/1 var(--f-mono); letter-spacing: 0.04em;
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.langs button[aria-pressed="true"] { background: var(--c-accent-tint-hi); color: var(--c-accent-hi); }
+@media (hover: hover) { .langs button:hover { color: var(--c-text); } }
+.emg-updates { margin: var(--s-3) 0 0; font: 400 var(--t-micro)/1.4 var(--f-mono); }
+.emg-updates a { color: var(--c-accent); text-decoration: none; }
+.emg-updates a:hover { color: var(--c-accent-hi); }
+/* Arabic: no letter-spacing, so the letters stay joined (the Latin title and number codes keep theirs) */
+html[lang=ar] .emg *:not(.brand__title):not(.num) { letter-spacing: 0 !important; }
+@media (max-width: 899px) {
+  .brand__nav { margin-block-end: 6px; }
+  .langs button { height: 30px; min-width: 40px; }
+}
+.viewport { position: absolute; inset: 0; }
+.labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     Expanded Mesh Generator · AMD NSRI
+     data-rot: 0 | 90 | -90 · data-frame: none | u | l · data-flipped: true | false
+     Controls are generated into the containers below; ids follow
+     <group>-<key>-n (number), -r (range), -h (hint), -name (label).
+     ===================================================================== -->
+<div class="emg" id="emg" data-rot="0" data-frame="u" data-flipped="false">
+
+  <header class="emg__brand brand">
+    <div class="brand__nav">
+      <a class="brand__back" href="/">← AMD NSRI</a>
+      <div class="langs" role="group" aria-label="Language" data-t-aria="Language">
+        <button type="button" data-lang="EN" aria-pressed="true">EN</button>
+        <button type="button" data-lang="TR" aria-pressed="false">TR</button>
+        <button type="button" data-lang="AR" aria-pressed="false">AR</button>
+      </div>
+    </div>
+    <p class="brand__kicker" data-t="Tools · Fabrication">Tools · Fabrication</p>
+    <h1 class="brand__title">Expanded Mesh Generator</h1>
+  </header>
+
+  <div class="emg__spec spec">
+    <div class="spec__card">
+      <span class="spec__mark" aria-hidden="true"></span>
+      <span class="spec__code num" id="specCode">75<i>×</i>25<i>×</i>5<i>×</i>2</span>
+      <span class="spec__caption num">LWD × SWD × W × T · mm</span>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       INSPECTOR · collapsible categories only
+       ================================================================= -->
+  <aside class="emg__inspector inspector" aria-label="Parameters" data-t-aria="Parameters">
+
+    <section class="cat" data-acc="mesh" data-open="true">
+      <div class="cat__head">
+        <h2 class="cat__h"><button class="cat__toggle" type="button" aria-expanded="true" aria-controls="acc-mesh"><svg class="cat__chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg><span class="cat__title" data-t="Mesh">Mesh</span><span class="cat__unit">mm</span></button></h2>
+      </div>
+      <div class="cat__body" id="acc-mesh">
+        <p class="ptype__head" id="meshDirLab"><b class="ctl__code" data-t="Direction">Direction</b><span class="ctl__name" id="meshDirName">LWD along the width</span></p>
+        <div class="ptype ptype--dir" id="meshDir" role="radiogroup" aria-labelledby="meshDirLab" aria-describedby="meshDirHint">
+          <button class="ptype__opt" type="button" role="radio" aria-checked="true" tabindex="0" data-rot="0" aria-label="0°, LWD along the panel width" data-t-aria="0°, LWD along the panel width"><svg class="ptype__ico ico" viewBox="0 2 44 32" aria-hidden="true"><path class="ic-s" d="M7 14 L14.5 8 L22 14 L14.5 20 Z M22 14 L29.5 8 L37 14 L29.5 20 Z"/><path class="ic-h" d="M7 28 H37 M7 28 l3.2 -2.2 M7 28 l3.2 2.2 M37 28 l-3.2 -2.2 M37 28 l-3.2 2.2"/></svg><span class="ptype__lab num">0°</span></button>
+          <button class="ptype__opt" type="button" role="radio" aria-checked="false" tabindex="-1" data-rot="90" aria-label="+90°, turned counter-clockwise" data-t-aria="+90°, turned counter-clockwise"><svg class="ptype__ico ico" viewBox="0 2 44 32" aria-hidden="true"><path class="ic-s" d="M17 3.5 L23 11 L17 18.5 L11 11 Z M17 18.5 L23 26 L17 33.5 L11 26 Z"/><path class="ic-h" d="M34 26 A8 8 0 0 0 34 10 M34 10 l3.4 -2.4 M34 10 l3.4 2.4"/></svg><span class="ptype__lab num">+90°</span></button>
+          <button class="ptype__opt" type="button" role="radio" aria-checked="false" tabindex="-1" data-rot="-90" aria-label="−90°, turned clockwise" data-t-aria="−90°, turned clockwise"><svg class="ptype__ico ico" viewBox="0 2 44 32" aria-hidden="true"><path class="ic-s" d="M17 3.5 L23 11 L17 18.5 L11 11 Z M17 18.5 L23 26 L17 33.5 L11 26 Z"/><path class="ic-h" d="M34 10 A8 8 0 0 1 34 26 M34 26 l3.4 -2.4 M34 26 l3.4 2.4"/></svg><span class="ptype__lab num">−90°</span></button>
+        </div>
+        <p class="ptype__hint" id="meshDirHint"></p>
+        <div id="meshControls"></div>
+      </div>
+    </section>
+
+    <section class="cat" data-acc="panel" data-open="true">
+      <div class="cat__head">
+        <h2 class="cat__h"><button class="cat__toggle" type="button" aria-expanded="true" aria-controls="acc-panel"><svg class="cat__chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg><span class="cat__title" data-t="Panel size">Panel size</span><span class="cat__unit">mm</span></button></h2>
+      </div>
+      <div class="cat__body" id="acc-panel">
+        <div id="panelControls"></div>
+      </div>
+    </section>
+
+    <section class="cat" data-acc="frame" data-open="true">
+      <div class="cat__head">
+        <h2 class="cat__h"><button class="cat__toggle" type="button" aria-expanded="true" aria-controls="acc-frame"><svg class="cat__chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg><span class="cat__title" data-t="Frame">Frame</span><span class="cat__unit">mm</span></button></h2>
+      </div>
+      <div class="cat__body" id="acc-frame">
+        <div class="ptype" id="ptype" role="radiogroup" aria-label="Profile type" data-t-aria="Profile type"></div>
+
+        <button class="flip frame-only" id="flipBtn" type="button" role="switch" aria-checked="false" aria-label="Flip the profile front to back" data-t-aria="Flip the profile front to back">
+          <svg class="ctl__ico ico" viewBox="0 0 44 38" aria-hidden="true"><path class="ic-s" d="M3 19 H40" stroke-dasharray="2 2"/><path class="ic-p" d="M7 4 H24 V7 H10 V16 H7 Z"/><path class="ic-p" d="M7 34 H24 V31 H10 V22 H7 Z" opacity=".4"/><path class="ic-h" d="M33 6 V32 M33 6 l-2.6 3.4 M33 6 l2.6 3.4 M33 32 l-2.6 -3.4 M33 32 l2.6 -3.4"/></svg>
+          <span class="flip__text"><b class="flip__label" data-t="Flip">Flip</b><span class="flip__sub" id="flipSub">Leg A1 on the front</span></span>
+          <span class="switch" aria-hidden="true"><span class="switch__track"></span><span class="switch__thumb"></span></span>
+        </button>
+
+        <div class="frame-u" id="frameControlsU"></div>
+        <div class="frame-l" id="frameControlsL"></div>
+
+        <p class="foot" id="frameFoot"></p>
+      </div>
+    </section>
+
+    <section class="cat" data-acc="shift" data-open="false">
+      <div class="cat__head">
+        <h2 class="cat__h"><button class="cat__toggle" type="button" aria-expanded="false" aria-controls="acc-shift"><svg class="cat__chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg><span class="cat__title" data-t="Pattern position">Pattern position</span></button></h2>
+        <button class="btn-ghost btn-ghost--sm cat__action" id="btnCentre" type="button" title="Put a bond back at the panel centre" data-t-title="Put a bond back at the panel centre" disabled><svg class="i16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.5v3M8 11.5v3M1.5 8h3M11.5 8h3"/></svg><span data-t="Centre">Centre</span></button>
+      </div>
+      <div class="cat__body" id="acc-shift" hidden>
+        <div id="shiftControls"></div>
+        <p class="foot" data-t="Slides the mesh inside the panel. The panel size stays the same. Without a frame, the 2D view shows the material the cut trims off faintly outside the panel edge.">Slides the mesh inside the panel. The panel size stays the same. Without a frame, the 2D view shows the material the cut trims off faintly outside the panel edge.</p>
+      </div>
+    </section>
+
+  </aside>
+
+  <!-- =================================================================
+       VIEWPORT
+       ================================================================= -->
+  <main class="emg__viewport vp" id="stage" data-view="3d">
+    <div class="vp__bar">
+      <p class="vp__tag num" id="titleTag"></p>
+      <div class="vp__tools">
+        <div class="seg" role="group" aria-label="View" data-t-aria="View">
+          <button class="seg__btn" type="button" data-view="3d" aria-pressed="true">3D</button>
+          <button class="seg__btn" type="button" data-view="2d" aria-pressed="false">2D</button>
+        </div>
+        <span class="vp__sep" aria-hidden="true"></span>
+        <div class="vp__btns">
+          <button class="btn-ghost" id="btnFit" type="button" title="Show the whole panel" data-t-title="Show the whole panel"><svg class="i16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/></svg><span data-t="Fit">Fit</span></button>
+          <button class="btn-ghost" id="btnDetail" type="button" title="Zoom to the panel centre" data-t-title="Zoom to the panel centre"><svg class="i16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.4 10.4 14 14M5 7h4M7 5v4"/></svg><span data-t="Detail">Detail</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="vp__stage" id="vpStage">
+      <div class="viewport view-3d" id="vp3d"><canvas class="vp__canvas" id="c3d"></canvas><div class="labels" id="labels3d"></div></div>
+      <div class="viewport view-2d" id="vp2d"><canvas class="vp__canvas" id="c2d"></canvas></div>
+
+      <div class="ov-banner" id="banner" role="status" hidden>
+        <svg class="i16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.2 14.6 13.6H1.4Z"/><path d="M8 6.6v3.4M8 12v.01"/></svg>
+        <span id="bannerText"></span>
+      </div>
+
+      <div class="ov-hud" id="hud"></div>
+
+      <div class="ov-busy" id="busy" role="status" aria-live="polite" hidden><span class="spin" aria-hidden="true"></span><span id="busyLabel">Building</span></div>
+    </div>
+  </main>
+
+  <!-- =================================================================
+       RAIL · readouts + export, always visible, never collapsible
+       ================================================================= -->
+  <aside class="emg__rail rail" aria-label="Results" data-t-aria="Results">
+    <section class="ro" aria-labelledby="ro-h">
+      <h2 class="rail__h" id="ro-h" data-t="Readouts">Readouts</h2>
+      <dl class="ro__list" id="stats"></dl>
+      <p class="ro__foot" id="statsFoot"></p>
+    </section>
+
+    <section class="export" aria-labelledby="ex-h">
+      <h2 class="rail__h" id="ex-h" data-t="Export">Export</h2>
+      <div class="export__bar">
+        <p class="status" id="exportStatus" role="status" aria-live="polite"></p>
+        <div class="export__buttons">
+          <button class="xbtn" type="button" data-exp="step">
+            <span class="xbtn__fmt">STEP</span>
+            <span class="xbtn__sub" id="stepSub" data-t="3D solids · mm">3D solids · mm</span>
+            <span class="xbtn__ico" aria-hidden="true"><svg class="i16" viewBox="0 0 16 16"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg><span class="spin"></span></span>
+          </button>
+          <button class="xbtn" type="button" data-exp="dwg">
+            <span class="xbtn__fmt">DWG</span>
+            <span class="xbtn__sub" id="dwgSub" data-t="2D elevation · mm">2D elevation · mm</span>
+            <span class="xbtn__ico" aria-hidden="true"><svg class="i16" viewBox="0 0 16 16"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg><span class="spin"></span></span>
+          </button>
+        </div>
+      </div>
+      <p class="export__note" id="exportNote" data-t="STEP: one closed solid per strand row and per frame piece, in millimetres, standing in the XZ plane like the Grasshopper output. DWG: AutoCAD 2000 format front elevation with hidden lines removed, on MESH, PANEL, FRAME, FRAME BACK, MESH CUT and DIMENSIONS layers.">STEP: one closed solid per strand row and per frame piece, in millimetres, standing in the XZ plane like the Grasshopper output. DWG: AutoCAD 2000 format front elevation with hidden lines removed, on MESH, PANEL, FRAME, FRAME BACK, MESH CUT and DIMENSIONS layers.</p>
+      <p class="emg-updates"><a id="toolUpdates" href="/updates?from=expanded-mesh-generator" data-t="Get tool updates →" hidden>Get tool updates →</a></p>
+      <script>
+      /* "Get tool updates": shown only while the AMD NSRI newsletter is on (this check answers 404 otherwise). No cookies, no tracking. */
+      fetch('/api/newsletter/status', { cache: 'no-store' }).then(function (r) { if (r.ok) document.getElementById('toolUpdates').hidden = false; }).catch(function () {});
+      </script>
+    </section>
+  </aside>
+
+</div>
+
+<script id="kernel-src" type="text/plain">
+// ============================================================================
+// Expanded mesh geometry kernel
+// Reproduces the logic of the Grasshopper definition (20x60.ghx):
+//   - zigzag strand edge with flat bonds, filleted corners
+//   - back edge offset by W out of plane (no twist, so every face is planar and
+//     the STEP export is a clean solid of flat faces)
+//   - ruled ribbon extruded by T, every row shifted half a period and stepped (W, h)
+//   - whole stack tilted by atan(W / h) so the rows stack straight up
+// Catalogue inputs: LWD, SWD, W (strand width), T (thickness), all in mm.
+// Panel coordinates: X = panel width (along LWD), Z = panel height (along SWD),
+// Y = depth (out of plane). Same orientation as the Grasshopper output.
+// Optional U or L perimeter frame (see frameSpec), either way round: the panel
+// size is then the outside of the frame and the mesh is cut to the inside face
+// of its outer wall.
+// ============================================================================
+
+const LIMITS = {
+  wToSwd: 0.4,        // W may not exceed 0.4 x SWD (keeps the rise h positive)
+  bondPerW: 0.6,      // half bond length a = 0.6 W  (GH file: a = 3 with W = 5)
+  bondMaxOfHalf: 0.18,// ...but never more than 18 % of half the LWD
+  twistPerW: 0,       // back-edge drop at the top bond (GH file: Z_2 = 1 with W = 5); 0 keeps faces planar
+  stepArcSeg: 3,      // fillet segments in STEP solids
+  stepFaceBudget: 160_000,
+  triBudget: 2_500_000,
+};
+
+function derive(inp) {
+  const L = inp.lwd, s = L / 2, P = inp.swd, half = P / 2;
+  const W = Math.min(inp.w, LIMITS.wToSwd * P);
+  const T = inp.t;
+  const h = Math.sqrt(Math.max(half * half - W * W, 1e-9));
+  const a = Math.min(LIMITS.bondPerW * W, LIMITS.bondMaxOfHalf * s);
+  const twist = LIMITS.twistPerW > 0 ? Math.min(LIMITS.twistPerW * W, 0.25 * h) : 0;
+  const alpha = Math.atan2(W, h);
+  // Bend radius. Each strand leaves a bond flat on an arc of radius R, runs straight
+  // through the middle of the slope, and enters the next bond on a second arc.
+  // As R grows the slope steepens; once the arcs need more room they shorten the
+  // bond flat. The largest radius turns the strand into one smooth S-curve from
+  // bond centre to bond centre: R = (s^2 + h^2) / 4h.
+  const rMax = 0.995 * (s * s + h * h) / (4 * h);
+  const radius = Math.max(0, Math.min(inp.r ?? 8, rMax));
+  let b = a, phi = 0;
+  if (radius > 1e-6) {
+    b = Math.min(a, Math.max(0, s / 2 - Math.sqrt(Math.max(0, radius * h - h * h / 4))));
+    const X = s / 2 - b, Y = radius - h / 2;
+    phi = Math.asin(Math.min(1, radius / Math.hypot(X, Y))) - Math.atan2(Y, X);
+  }
+  return {
+    L, s, P, W, T, h, a, b, phi, twist, alpha, radius, rMax,
+    ca: Math.cos(alpha), sa: Math.sin(alpha),
+    p: half,               // vertical pitch between successive rows (= SWD / 2)
+    bond: 2 * b,           // flat bond length after the bend arcs
+  };
+}
+
+// ---------------------------------------------------------------- profile ----
+// Front edge of one strand row over one period [0, L): low bond centred at x = 0,
+// high bond centred at x = s. Returns sorted arrays U (x) and Z (z).
+function buildProfile(d, arcSeg) {
+  const { L, s, h, a, b, phi, radius: R } = d;
+  const half = [[0, 0]];
+  const push = (x, z) => { if (x > half[half.length - 1][0] + 1e-9) half.push([x, z]); };
+  if (R <= 1e-6) {
+    push(a, 0); push(s - a, h);                       // sharp bends
+  } else {
+    const p1x = b + R * Math.sin(phi), p1z = R - R * Math.cos(phi);
+    push(b, 0);
+    if (arcSeg > 0) for (let j = 1; j < arcSeg; j++) { const t = phi * j / arcSeg; push(b + R * Math.sin(t), R - R * Math.cos(t)); }
+    push(p1x, p1z);                                   // arc into the straight slope
+    push(s - p1x, h - p1z);                           // straight slope through the midpoint
+    if (arcSeg > 0) for (let j = 1; j < arcSeg; j++) { const t = phi * (1 - j / arcSeg); push(s - b - R * Math.sin(t), h - R + R * Math.cos(t)); }
+    push(s - b, h);                                   // arc into the top bond
+  }
+  push(s, h);
+  const U = half.map((p) => p[0]), Z = half.map((p) => p[1]);
+  for (let i = half.length - 2; i >= 1; i--) {        // mirror the rising half about x = s
+    const xm = 2 * s - half[i][0];
+    if (xm > U[U.length - 1] + 1e-9 && xm < L - 1e-9) { U.push(xm); Z.push(half[i][1]); }
+  }
+  return { U, Z, L };
+}
+
+// fillet segments for STEP solids: more for big, sweeping bends
+function stepArcSeg(d) {
+  return Math.min(6, Math.max(LIMITS.stepArcSeg, Math.ceil(d.phi * 180 / Math.PI / 6)));
+}
+
+function evalProfile(prof, x) {
+  const { U, Z, L } = prof;
+  let u = x % L; if (u < 0) u += L;
+  let lo = 0, hi = U.length - 1;
+  if (u >= U[hi]) {
+    const t = (u - U[hi]) / (L - U[hi]);
+    return Z[hi] + (Z[0] - Z[hi]) * t;
+  }
+  while (hi - lo > 1) { const m = (lo + hi) >> 1; if (U[m] <= u) lo = m; else hi = m; }
+  const t = (u - U[lo]) / (U[hi] - U[lo]);
+  return Z[lo] + (Z[hi] - Z[lo]) * t;
+}
+
+// ------------------------------------------------------------- layout -------
+// Fixes the pattern relative to the full panel: a low bond of row 0 sits at the
+// panel centre, so detail crops show the true centre of the same panel.
+function layout(d, prof, panel) {
+  const phase = panel.w / 2 + (panel.sx || 0);   // pattern shift along X
+  let ymin = Infinity, ymax = -Infinity, zmin = Infinity, zmax = -Infinity;
+  for (let i = 0; i < prof.U.length; i++) {
+    for (const [y, z] of ring0(d, prof.Z[i])) {
+      const yr = y * d.ca - z * d.sa, zr = y * d.sa + z * d.ca;
+      if (yr < ymin) ymin = yr; if (yr > ymax) ymax = yr;
+      if (zr < zmin) zmin = zr; if (zr > zmax) zmax = zr;
+    }
+  }
+  const oz = panel.h / 2 - (zmin + zmax) / 2 + (panel.sy || 0);   // pattern shift along Z
+  const oy = -(ymin + ymax) / 2;
+  return { phase, oy, oz, zmin, zmax, depth: ymax - ymin };
+}
+
+// cross-section corners (y, z) of row 0 before tilt, for a front-edge height zf
+function ring0(d, zf) {
+  const zb = d.twist ? zf - d.twist * zf / d.h : zf;
+  return [[0, zf], [-d.W, zb], [-d.W, zb - d.T], [0, zf - d.T]];
+}
+
+function rowRange(d, lay, z0, z1) {
+  const k0 = Math.ceil((z0 - (lay.zmax + lay.oz)) / d.p);
+  const k1 = Math.floor((z1 - (lay.zmin + lay.oz)) / d.p);
+  return [k0, k1];
+}
+
+function rowXs(d, prof, shift, x0, x1) {
+  const xs = [x0];
+  const n0 = Math.floor((x0 - shift) / d.L) - 1, n1 = Math.ceil((x1 - shift) / d.L) + 1;
+  for (let n = n0; n <= n1; n++) {
+    const base = shift + n * d.L;
+    for (let i = 0; i < prof.U.length; i++) {
+      const x = prof.U[i] + base;
+      if (x > x0 + 1e-9 && x < x1 - 1e-9) xs.push(x);
+    }
+  }
+  xs.push(x1);
+  return xs;
+}
+
+function estimate(d, panel, region, arcSeg) {
+  const rows = (region.z1 - region.z0) / d.p + 2;
+  const perPeriod = arcSeg > 0 ? 4 * arcSeg + 6 : 8;
+  const samples = (region.x1 - region.x0) / d.L * perPeriod + 2;
+  return rows * samples * 8;
+}
+
+// ------------------------------------------------------------ 3D solids ------
+// Returns a Float32Array triangle soup in panel coords (X, Y, Z), 9 floats/tri.
+function buildSolids(d, prof, lay, region) {
+  const { x0, x1, z0, z1 } = region;
+  const [k0, k1] = rowRange(d, lay, z0, z1);
+  const chunks = []; let total = 0;
+  for (let k = k0; k <= k1; k++) {
+    const shift = k * d.s + lay.phase;
+    const xs = rowXs(d, prof, shift, x0, x1);
+    const n = xs.length;
+    const R = new Float64Array(n * 12);
+    let rzmin = Infinity, rzmax = -Infinity;
+    for (let i = 0; i < n; i++) {
+      const zf = evalProfile(prof, xs[i] - shift);
+      const c = ring0(d, zf);
+      for (let j = 0; j < 4; j++) {
+        const [y, z] = c[j];
+        const yr = y * d.ca - z * d.sa + lay.oy;
+        const zr = y * d.sa + z * d.ca + k * d.p + lay.oz;
+        const o = i * 12 + j * 3;
+        R[o] = xs[i]; R[o + 1] = yr; R[o + 2] = zr;
+        if (zr < rzmin) rzmin = zr; if (zr > rzmax) rzmax = zr;
+      }
+    }
+    let soup = tubeSoup(R, n);
+    if (rzmin < z0) soup = clipAndCap(soup, z0, true);
+    if (rzmax > z1) soup = clipAndCap(soup, z1, false);
+    if (soup.length) { chunks.push(soup); total += soup.length; }
+  }
+  const out = new Float32Array(total);
+  let o = 0; for (const c of chunks) { out.set(c, o); o += c.length; }
+  return out;
+}
+
+// rings are CCW about +X (ordered F, B, Bt, Ft); emits outward-facing triangles
+function tubeSoup(R, n) {
+  const out = new Float64Array(((n - 1) * 8 + 4) * 9);
+  let o = 0;
+  const put = (i, j) => { const b = i * 12 + j * 3; out[o++] = R[b]; out[o++] = R[b + 1]; out[o++] = R[b + 2]; };
+  for (let i = 0; i < n - 1; i++) {
+    for (let c = 0; c < 4; c++) {
+      const c1 = (c + 1) & 3;
+      put(i, c); put(i, c1); put(i + 1, c1);
+      put(i, c); put(i + 1, c1); put(i + 1, c);
+    }
+  }
+  put(0, 0); put(0, 3); put(0, 2);  put(0, 0); put(0, 2); put(0, 1);
+  const e = n - 1;
+  put(e, 0); put(e, 1); put(e, 2);  put(e, 0); put(e, 2); put(e, 3);
+  return out;
+}
+
+// ---------------------------------------------------------- plane clipping ---
+function cutPoint(p, q, c) {
+  let A = p, B = q;
+  if (A[0] > B[0] || (A[0] === B[0] && (A[1] > B[1] || (A[1] === B[1] && A[2] > B[2])))) { A = q; B = p; }
+  const t = (c - A[2]) / (B[2] - A[2]);
+  return [A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t, c];
+}
+
+// keepAbove: keep z >= c (cap faces -Z), else keep z <= c (cap faces +Z)
+function clipAndCap(src, c, keepAbove) {
+  const out = []; const segs = [];
+  const sg = keepAbove ? 1 : -1;
+  for (let i = 0; i < src.length; i += 9) {
+    const P = [[src[i], src[i + 1], src[i + 2]], [src[i + 3], src[i + 4], src[i + 5]], [src[i + 6], src[i + 7], src[i + 8]]];
+    const ins = [sg * (P[0][2] - c) >= 0, sg * (P[1][2] - c) >= 0, sg * (P[2][2] - c) >= 0];
+    const nIn = ins[0] + ins[1] + ins[2];
+    if (nIn === 3) { out.push(...P[0], ...P[1], ...P[2]); continue; }
+    if (nIn === 0) continue;
+    if (nIn === 1) {
+      const k = ins.indexOf(true);
+      const a = P[k], b = P[(k + 1) % 3], e = P[(k + 2) % 3];
+      const ab = cutPoint(a, b, c), ae = cutPoint(a, e, c);
+      out.push(...a, ...ab, ...ae);
+      segs.push([ab, ae]);
+    } else {
+      const k = ins.indexOf(false);
+      const q = P[k], a = P[(k + 1) % 3], b = P[(k + 2) % 3];
+      const qa = cutPoint(q, a, c), qb = cutPoint(q, b, c);
+      out.push(...qa, ...a, ...b, ...qa, ...b, ...qb);
+      segs.push([qb, qa]);
+    }
+  }
+  // chain boundary segments into loops and cap them
+  const key = (p) => Math.round(p[0] * 1e5) + ',' + Math.round(p[1] * 1e5);
+  const byStart = new Map();
+  segs.forEach((s, i) => { if (key(s[0]) !== key(s[1])) byStart.set(key(s[0]), i); });
+  const used = new Uint8Array(segs.length);
+  const wantUp = !keepAbove;
+  for (let i = 0; i < segs.length; i++) {
+    if (used[i] || key(segs[i][0]) === key(segs[i][1])) continue;
+    const loop = []; let j = i; const startKey = key(segs[i][0]); let closed = false;
+    for (let guard = 0; guard < segs.length + 1; guard++) {
+      used[j] = 1; loop.push(segs[j][0]);
+      const nk = key(segs[j][1]);
+      if (nk === startKey) { closed = true; break; }
+      const nj = byStart.get(nk);
+      if (nj === undefined || used[nj]) break;
+      j = nj;
+    }
+    if (!closed || loop.length < 3) continue;
+    for (const [a, b, e] of earClip(loop.map((p) => [p[0], p[1]]))) {
+      const A = loop[a], B = loop[b], E = loop[e];
+      const nz = (B[0] - A[0]) * (E[1] - A[1]) - (B[1] - A[1]) * (E[0] - A[0]);
+      if ((nz > 0) === wantUp) out.push(A[0], A[1], c, B[0], B[1], c, E[0], E[1], c);
+      else out.push(A[0], A[1], c, E[0], E[1], c, B[0], B[1], c);
+    }
+  }
+  return Float64Array.from(out);
+}
+
+// simple ear clipping for small simple polygons; returns index triples
+function earClip(pts) {
+  let idx = pts.map((_, i) => i);
+  // drop duplicates and collinear points
+  const area2 = (a, b, c) => (pts[b][0] - pts[a][0]) * (pts[c][1] - pts[a][1]) - (pts[b][1] - pts[a][1]) * (pts[c][0] - pts[a][0]);
+  let changed = true;
+  while (changed && idx.length > 3) {
+    changed = false;
+    for (let i = 0; i < idx.length; i++) {
+      const a = idx[(i + idx.length - 1) % idx.length], b = idx[i], c = idx[(i + 1) % idx.length];
+      if (Math.abs(area2(a, b, c)) < 1e-12) { idx.splice(i, 1); changed = true; break; }
+    }
+  }
+  let sum = 0;
+  for (let i = 0; i < idx.length; i++) { const p = pts[idx[i]], q = pts[idx[(i + 1) % idx.length]]; sum += p[0] * q[1] - q[0] * p[1]; }
+  const ccw = sum > 0;
+  const tris = [];
+  const inTri = (p, a, b, c) => {
+    const d1 = (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
+    const d2 = (c[0] - b[0]) * (p[1] - b[1]) - (c[1] - b[1]) * (p[0] - b[0]);
+    const d3 = (a[0] - c[0]) * (p[1] - c[1]) - (a[1] - c[1]) * (p[0] - c[0]);
+    return ccw ? (d1 > 0 && d2 > 0 && d3 > 0) : (d1 < 0 && d2 < 0 && d3 < 0);
+  };
+  let guard = 0;
+  while (idx.length > 3 && guard++ < 10000) {
+    let found = false;
+    for (let i = 0; i < idx.length; i++) {
+      const ia = idx[(i + idx.length - 1) % idx.length], ib = idx[i], ic = idx[(i + 1) % idx.length];
+      const cr = area2(ia, ib, ic);
+      if (ccw ? cr <= 0 : cr >= 0) continue;
+      let ok = true;
+      for (const m of idx) { if (m !== ia && m !== ib && m !== ic && inTri(pts[m], pts[ia], pts[ib], pts[ic])) { ok = false; break; } }
+      if (!ok) continue;
+      tris.push([ia, ib, ic]); idx.splice(i, 1); found = true; break;
+    }
+    if (!found) { // fall back to a fan to avoid an open hole
+      for (let i = 1; i < idx.length - 1; i++) tris.push([idx[0], idx[i], idx[i + 1]]);
+      return tris;
+    }
+  }
+  if (idx.length === 3) tris.push([idx[0], idx[1], idx[2]]);
+  return tris;
+}
+
+// ------------------------------------------------------------- 2D outlines ---
+// Front-view outlines of every strand row, clipped to the panel. Each polygon is
+// a flat array [x0, z0, x1, z1, ...] in panel coords.
+function buildOutlines(d, prof, lay, panel, region) {
+  const { x0, x1, z0, z1 } = region || { x0: 0, x1: panel.w, z0: 0, z1: panel.h };
+  const [k0, k1] = rowRange(d, lay, z0, z1);
+  const polys = [];
+  for (let k = k0; k <= k1; k++) {
+    const { xs, lo, hi } = rowBand(d, prof, lay, k, x0, x1);
+    clipBand(xs, lo, hi, z0, z1, polys);
+  }
+  return polys;
+}
+
+// front-view extent of strand row k: z from lo(x) to hi(x) at the sample points xs
+function rowBand(d, prof, lay, k, x0, x1) {
+  const shift = k * d.s + lay.phase;
+  const xs = rowXs(d, prof, shift, x0, x1);
+  const lo = new Float64Array(xs.length), hi = new Float64Array(xs.length);
+  for (let i = 0; i < xs.length; i++) {
+    const zf = evalProfile(prof, xs[i] - shift);
+    let a = Infinity, b = -Infinity;
+    for (const [y, z] of ring0(d, zf)) {
+      const zr = y * d.sa + z * d.ca + k * d.p + lay.oz;
+      if (zr < a) a = zr; if (zr > b) b = zr;
+    }
+    lo[i] = a; hi[i] = b;
+  }
+  return { xs, lo, hi };
+}
+
+// ------------------------------------------------------ visible elevation ---
+// What a front view really shows of the mesh is its eye openings. Neighbouring
+// strand rows overlap at the bonds, where they are one piece of metal, so the
+// drawing is made from the gaps between rows instead of each strand's own
+// outline: nothing is drawn where one strand passes behind another.
+// Row k+2 always sits wholly above the bottom edge of row k+1 (the bottom edge
+// rises less than one row pitch across a period), so each eye is exactly the
+// gap between the top edge of row k and the bottom edge of row k+1.
+// win is the visible window (the frame opening, or the cut size).
+// Returns loops (closed eye outlines, for clipping) and pieces (what to draw:
+// the loops without the segments that lie on the window border, which the
+// frame or panel edge already draws).
+function eyeOutlines(d, prof, lay, win) {
+  const { x0, x1, z0, z1 } = win;
+  const [k0, k1] = rowRange(d, lay, z0, z1);
+  const loops = [], pieces = [];
+  let A = rowBand(d, prof, lay, k0 - 1, x0, x1);
+  for (let k = k0 - 1; k <= k1; k++) {
+    const B = rowBand(d, prof, lay, k + 1, x0, x1);
+    eyesBetween(A, B, win, loops, pieces);
+    A = B;
+  }
+  return { loops, pieces };
+}
+
+function mergeXs(a, b) {
+  const out = [];
+  let i = 0, j = 0;
+  while (i < a.length || j < b.length) {
+    const v = j >= b.length || (i < a.length && a[i] <= b[j]) ? a[i++] : b[j++];
+    if (!out.length || v > out[out.length - 1] + 1e-9) out.push(v);
+  }
+  return out;
+}
+function sampleAt(xs, f, X) {
+  const out = new Float64Array(X.length);
+  let j = 0;
+  for (let i = 0; i < X.length; i++) {
+    while (j < xs.length - 2 && xs[j + 1] <= X[i]) j++;
+    const t = (X[i] - xs[j]) / (xs[j + 1] - xs[j]);
+    out[i] = f[j] + (f[j + 1] - f[j]) * t;
+  }
+  return out;
+}
+
+function eyesBetween(A, B, win, loops, pieces) {
+  const { x0, x1, z0, z1 } = win;
+  const X0 = mergeXs(A.xs, B.xs);
+  const ha = sampleAt(A.xs, A.hi, X0), lb = sampleAt(B.xs, B.lo, X0);
+  // add every point where the gap opens, closes, or meets the window border
+  const X = [], H = [], Lb = [];
+  for (let i = 0; i < X0.length; i++) {
+    if (i > 0) {
+      const ts = [];
+      const fa = [ha[i - 1] - lb[i - 1], ha[i - 1] - z0, lb[i - 1] - z1, ha[i - 1] - z1, lb[i - 1] - z0];
+      const fb = [ha[i] - lb[i], ha[i] - z0, lb[i] - z1, ha[i] - z1, lb[i] - z0];
+      for (let q = 0; q < 5; q++) if ((fa[q] < 0 && fb[q] > 0) || (fa[q] > 0 && fb[q] < 0)) ts.push(fa[q] / (fa[q] - fb[q]));
+      ts.sort((p, r) => p - r);
+      for (const t of ts) {
+        X.push(X0[i - 1] + (X0[i] - X0[i - 1]) * t);
+        H.push(ha[i - 1] + (ha[i] - ha[i - 1]) * t);
+        Lb.push(lb[i - 1] + (lb[i] - lb[i - 1]) * t);
+      }
+    }
+    X.push(X0[i]); H.push(ha[i]); Lb.push(lb[i]);
+  }
+  const n = X.length, eps = 1e-7;
+  const lo = (i) => Math.max(H[i], z0), up = (i) => Math.min(Lb[i], z1);
+  let i = 0;
+  while (i < n) {
+    if (!(up(i) - lo(i) > eps)) { i++; continue; }
+    const a = i;
+    while (i < n && up(i) - lo(i) > eps) i++;
+    const b = i - 1;
+    const loop = [];
+    if (a > 0) loop.push([X[a - 1], (lo(a - 1) + up(a - 1)) / 2]);   // the eye's tip
+    for (let j = a; j <= b; j++) loop.push([X[j], lo(j)]);
+    if (b < n - 1) loop.push([X[b + 1], (lo(b + 1) + up(b + 1)) / 2]);
+    for (let j = b; j >= a; j--) loop.push([X[j], up(j)]);
+    emitEye(loop, win, loops, pieces);
+  }
+}
+
+function emitEye(loop, win, loops, pieces) {
+  // drop repeated points
+  const P = [];
+  for (const p of loop) {
+    const q = P[P.length - 1];
+    if (!q || Math.abs(q[0] - p[0]) > 1e-7 || Math.abs(q[1] - p[1]) > 1e-7) P.push(p);
+  }
+  if (P.length > 1 && Math.abs(P[0][0] - P[P.length - 1][0]) < 1e-7 && Math.abs(P[0][1] - P[P.length - 1][1]) < 1e-7) P.pop();
+  if (P.length < 3) return;
+  let bx0 = Infinity, bx1 = -Infinity, bz0 = Infinity, bz1 = -Infinity;
+  for (const [x, z] of P) { if (x < bx0) bx0 = x; if (x > bx1) bx1 = x; if (z < bz0) bz0 = z; if (z > bz1) bz1 = z; }
+  loops.push({ P, bx0, bx1, bz0, bz1 });
+  // segments lying on the window border are not drawn
+  const tol = 1e-6;
+  const onBorder = (p, q) =>
+    (Math.abs(p[0] - win.x0) < tol && Math.abs(q[0] - win.x0) < tol) || (Math.abs(p[0] - win.x1) < tol && Math.abs(q[0] - win.x1) < tol) ||
+    (Math.abs(p[1] - win.z0) < tol && Math.abs(q[1] - win.z0) < tol) || (Math.abs(p[1] - win.z1) < tol && Math.abs(q[1] - win.z1) < tol);
+  const m = P.length, edge = [];
+  for (let k = 0; k < m; k++) edge.push(onBorder(P[k], P[(k + 1) % m]));
+  const first = edge.indexOf(true);
+  if (first < 0) { pieces.push({ pts: simplify(P, true), closed: true }); return; }
+  let run = null;
+  for (let s = 1; s <= m; s++) {
+    const k = (first + s) % m;              // segment k runs from P[k] to P[k + 1]
+    if (edge[k]) { if (run && run.length > 1) pieces.push({ pts: simplify(run, false), closed: false }); run = null; continue; }
+    if (!run) run = [P[k]];
+    run.push(P[(k + 1) % m]);
+  }
+  if (run && run.length > 1) pieces.push({ pts: simplify(run, false), closed: false });
+}
+
+// drop points that sit on a straight line between their neighbours
+function simplify(P, closed) {
+  const keep = [];
+  const n = P.length;
+  for (let i = 0; i < n; i++) {
+    if (!closed && (i === 0 || i === n - 1)) { keep.push(P[i]); continue; }
+    const a = P[(i + n - 1) % n], b = P[i], c = P[(i + 1) % n];
+    const cr = (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+    const len = Math.hypot(c[0] - a[0], c[1] - a[1]) || 1;
+    if (Math.abs(cr) / len > 1e-6) keep.push(b);
+  }
+  const out = new Float64Array(keep.length * 2);
+  keep.forEach((p, i) => { out[i * 2] = p[0]; out[i * 2 + 1] = p[1]; });
+  return out;
+}
+
+// parts of straight segments [x1, z1, x2, z2] that are seen through the eyes
+function clipToEyes(segs, loops) {
+  const out = [];
+  const inside = (x, z, cand) => {
+    for (const L of cand) {
+      if (x < L.bx0 || x > L.bx1 || z < L.bz0 || z > L.bz1) continue;
+      let c = false;
+      const P = L.P;
+      for (let i = 0, j = P.length - 1; i < P.length; j = i++) {
+        if ((P[i][1] > z) !== (P[j][1] > z) && x < (P[j][0] - P[i][0]) * (z - P[i][1]) / (P[j][1] - P[i][1]) + P[i][0]) c = !c;
+      }
+      if (c) return true;
+    }
+    return false;
+  };
+  for (const [ax, az, bx, bz] of segs) {
+    const dx = bx - ax, dz = bz - az;
+    const cand = loops.filter((L) => L.bx1 >= Math.min(ax, bx) && L.bx0 <= Math.max(ax, bx) && L.bz1 >= Math.min(az, bz) && L.bz0 <= Math.max(az, bz));
+    const ts = [0, 1];
+    for (const L of cand) {
+      const P = L.P;
+      for (let i = 0, j = P.length - 1; i < P.length; j = i++) {
+        const ex = P[i][0] - P[j][0], ez = P[i][1] - P[j][1];
+        const den = dx * ez - dz * ex;
+        if (Math.abs(den) < 1e-12) continue;
+        const wx = P[j][0] - ax, wz = P[j][1] - az;
+        const t = (wx * ez - wz * ex) / den, u = (wx * dz - wz * dx) / den;
+        if (t > 0 && t < 1 && u >= 0 && u <= 1) ts.push(t);
+      }
+    }
+    ts.sort((p, q) => p - q);
+    const runs = [];
+    for (let i = 0; i + 1 < ts.length; i++) {
+      const t0 = ts[i], t1 = ts[i + 1];
+      if (t1 - t0 < 1e-9) continue;
+      const tm = (t0 + t1) / 2;
+      if (!inside(ax + dx * tm, az + dz * tm, cand)) continue;
+      const last = runs[runs.length - 1];
+      if (last && t0 - last[1] < 1e-9) last[1] = t1; else runs.push([t0, t1]);
+    }
+    for (const [t0, t1] of runs) out.push([ax + dx * t0, az + dz * t0, ax + dx * t1, az + dz * t1]);
+  }
+  return out;
+}
+
+// everything the DWG front elevation needs, with hidden lines removed
+function elevation(inp, panel, arcSeg) {
+  const d = derive(inp);
+  const prof = buildProfile(d, arcSeg);
+  const { pp, map } = patternFrame(panel);
+  const lay = layout(d, prof, pp);
+  const fr = frameSpec(panel, lay.depth);
+  const f = fr ? fr.bandFront : 0;
+  const win = fr ? { x0: f, x1: pp.w - f, z0: f, z1: pp.h - f } : meshRect(pp);
+  const { loops, pieces } = eyeOutlines(d, prof, lay, win);
+  if (map) {
+    mapPolys(pieces.map((p) => p.pts), map);
+    for (const L of loops) {
+      L.P = L.P.map(([x, z]) => map(x, z));
+      L.bx0 = Math.min(...L.P.map((q) => q[0])); L.bx1 = Math.max(...L.P.map((q) => q[0]));
+      L.bz0 = Math.min(...L.P.map((q) => q[1])); L.bz1 = Math.max(...L.P.map((q) => q[1]));
+    }
+  }
+  let back = [];
+  if (fr && fr.bandBack > fr.bandFront + 1e-6) {
+    const b = fr.bandBack, W = panel.w, H = panel.h;
+    back = clipToEyes([
+      [b, b, W - b, b], [W - b, b, W - b, H - b], [W - b, H - b, b, H - b], [b, H - b, b, b],
+      [0, 0, b, b], [W, 0, W - b, b], [W, H, W - b, H - b], [0, H, b, H - b],
+    ], loops);
+  }
+  return { pieces, back, eyes: loops.length };
+}
+
+function clipBand(xs, lo, hi, z0, z1, polys) {
+  // refine with exact crossings of lo/hi against z0/z1
+  const X = [], LO = [], HI = [];
+  for (let i = 0; i < xs.length; i++) {
+    if (i > 0) {
+      const cuts = [];
+      for (const lim of [z0, z1]) {
+        for (const f of [lo, hi]) {
+          const a = f[i - 1] - lim, b = f[i] - lim;
+          if ((a < 0 && b > 0) || (a > 0 && b < 0)) cuts.push(a / (a - b));
+        }
+      }
+      cuts.sort((p, q) => p - q);
+      for (const t of cuts) {
+        X.push(xs[i - 1] + (xs[i] - xs[i - 1]) * t);
+        LO.push(lo[i - 1] + (lo[i] - lo[i - 1]) * t);
+        HI.push(hi[i - 1] + (hi[i] - hi[i - 1]) * t);
+      }
+    }
+    X.push(xs[i]); LO.push(lo[i]); HI.push(hi[i]);
+  }
+  let run = [];
+  const flush = () => {
+    if (run.length >= 2) {
+      const poly = [];
+      for (const r of run) poly.push(r[0], r[2]);
+      for (let i = run.length - 1; i >= 0; i--) poly.push(run[i][0], run[i][1]);
+      polys.push(Float64Array.from(poly));
+    }
+    run = [];
+  };
+  const eps = 1e-9;
+  for (let i = 0; i < X.length; i++) {
+    const top = Math.min(HI[i], z1), bot = Math.max(LO[i], z0);
+    if (top - bot >= -eps) run.push([X[i], bot, Math.max(top, bot)]);
+    else flush();
+  }
+  flush();
+}
+
+// ---------------------------------------------------------- performance ------
+// Open area: share of the front view not covered by strands (one repeating cell).
+function openArea(d, prof) {
+  const N = 720, P = d.P;
+  let covered = 0;
+  const band = (x, k) => {
+    const zf = evalProfile(prof, x - k * d.s);
+    let a = Infinity, b = -Infinity;
+    for (const [y, z] of ring0(d, zf)) {
+      const zr = y * d.sa + z * d.ca + k * d.p;
+      if (zr < a) a = zr; if (zr > b) b = zr;
+    }
+    return [a, b];
+  };
+  for (let i = 0; i < N; i++) {
+    const x = (i + 0.5) / N * d.L;
+    const iv = [];
+    for (const k of [0, 1]) {
+      let [a, b] = band(x, k);
+      if (b - a >= P) { iv.length = 0; iv.push([0, P]); break; }
+      const len = b - a;
+      a = ((a % P) + P) % P; b = a + len;
+      if (b > P) { iv.push([a, P], [0, b - P]); } else iv.push([a, b]);
+    }
+    iv.sort((p, q) => p[0] - q[0]);
+    let len = 0, cs = -1, ce = -1;
+    for (const [a, b] of iv) {
+      if (a > ce) { if (ce > cs) len += ce - cs; cs = a; ce = b; } else ce = Math.max(ce, b);
+    }
+    if (ce > cs) len += ce - cs;
+    covered += Math.min(len, P) / P;
+  }
+  return 1 - covered / N;
+}
+
+// kg per m2 for a given density in g/cm3 (aluminium 2.70)
+function weightPerM2(d, rho = 2.70) {
+  return rho * 2 * d.W * d.T / d.P;
+}
+
+// ------------------------------------------------------------------ frame ---
+// Optional perimeter frame, U or L profile, mitred at the four corners.
+// Section coordinates: u = distance in from the panel's outer edge, v = Y (-Y is the front).
+//   U: { type: 'u', a1, t1, b, tw, a2, t2, flip }
+//      web on the outside (depth b, thickness tw), leg 1 (length a1, thickness t1)
+//      over the front face, leg 2 (a2, t2) over the back face. The mesh is
+//      centred in the gap between the legs.
+//   L: { type: 'l', a, b, t, flip }
+//      face leg (length a) over the front face of the mesh, depth leg (length b)
+//      on the outside, one wall thickness t.
+//   flip mirrors the section front to back about the mesh centre plane.
+// Panel size is the outside of the frame. The mesh is cut to the inside face of
+// the web (U) or the depth leg (L).
+function frameSpec(panel, depth) {
+  const f = panel.frame;
+  if (!f || (f.type !== 'u' && f.type !== 'l')) return null;
+  let sec, inset, bandFront, bandBack;
+  if (f.type === 'u') {
+    const { a1, t1, b, tw, a2, t2 } = f;
+    const v0 = -(b + t1 - t2) / 2;
+    sec = [[0, v0], [a1, v0], [a1, v0 + t1], [tw, v0 + t1], [tw, v0 + b - t2], [a2, v0 + b - t2], [a2, v0 + b], [0, v0 + b]];
+    inset = tw; bandFront = a1; bandBack = a2;
+  } else {
+    const { a, b, t } = f;
+    const v0 = -depth / 2 - t;
+    sec = [[0, v0], [a, v0], [a, v0 + t], [t, v0 + t], [t, v0 + b], [0, v0 + b]];
+    inset = t; bandFront = a; bandBack = t;
+  }
+  if (f.flip) { sec = sec.map(([u, v]) => [u, -v]); [bandFront, bandBack] = [bandBack, bandFront]; }
+  let area = 0, mu = 0;                       // section area and its first moment about u = 0
+  for (let i = 0; i < sec.length; i++) {
+    const [u0, v0] = sec[i], [u1, v1] = sec[(i + 1) % sec.length];
+    const cr = u0 * v1 - u1 * v0;
+    area += cr / 2; mu += (u0 + u1) * cr / 6;
+  }
+  const vs = sec.map((p) => p[1]);
+  return {
+    type: f.type, flip: !!f.flip, sec, inset, bandFront, bandBack,
+    area: Math.abs(area), mu: Math.abs(mu), vMin: Math.min(...vs), vMax: Math.max(...vs),
+  };
+}
+
+function meshRect(panel) {
+  const f = panel.frame;
+  const t = !f ? 0 : f.type === 'u' ? f.tw : f.type === 'l' ? f.t : 0;
+  return { x0: t, x1: panel.w - t, z0: t, z1: panel.h - t };
+}
+
+// four closed polyhedra, each the section swept along one side with 45-degree
+// mitre planes at both ends (a point u in from the edge runs from s = u to L - u)
+function framePieces(panel, fr) {
+  const { w, h } = panel;
+  const sides = [
+    ['frame bottom', w, (s, u, v) => [s, v, u]],
+    ['frame right', h, (s, u, v) => [w - u, v, s]],
+    ['frame top', w, (s, u, v) => [w - s, v, h - u]],
+    ['frame left', h, (s, u, v) => [u, v, h - s]],
+  ];
+  const m = fr.sec.length;
+  return sides.map(([name, L, map]) => {
+    const V = [];
+    for (const [u, v] of fr.sec) V.push(map(u, u, v));
+    for (const [u, v] of fr.sec) V.push(map(L - u, u, v));
+    const F = [[...Array(m).keys()], [...Array(m).keys()].reverse().map((i) => i + m)];
+    for (let i = 0; i < m; i++) { const j = (i + 1) % m; F.push([i, i + m, j + m, j]); }
+    if (signedVolume(V, F) < 0) F.forEach((f) => f.reverse());
+    return { V, F, name };
+  });
+}
+
+function signedVolume(V, F) {
+  let vol = 0;
+  for (const L of F) {
+    const a = V[L[0]];
+    for (let i = 1; i + 1 < L.length; i++) {
+      const b = V[L[i]], c = V[L[i + 1]];
+      vol += a[0] * (b[1] * c[2] - b[2] * c[1]) - a[1] * (b[0] * c[2] - b[2] * c[0]) + a[2] * (b[0] * c[1] - b[1] * c[0]);
+    }
+  }
+  return vol / 6;
+}
+
+// triangle soup (outward winding) from planar polygon faces
+function shellTris(shells) {
+  const out = [];
+  for (const { V, F } of shells) {
+    for (const L of F) {
+      const n = newell(V, L);
+      const ax = Math.abs(n[0]) >= Math.abs(n[1]) && Math.abs(n[0]) >= Math.abs(n[2]) ? 0 : Math.abs(n[1]) >= Math.abs(n[2]) ? 1 : 2;
+      const i1 = ax === 0 ? 1 : 0, i2 = ax === 2 ? 1 : 2;
+      const tris = L.length === 3 ? [[0, 1, 2]] : earClip(L.map((k) => [V[k][i1], V[k][i2]]));
+      for (const [p, q, r] of tris) {
+        const A = V[L[p]], B = V[L[q]], C = V[L[r]];
+        const cx = (B[1] - A[1]) * (C[2] - A[2]) - (B[2] - A[2]) * (C[1] - A[1]);
+        const cy = (B[2] - A[2]) * (C[0] - A[0]) - (B[0] - A[0]) * (C[2] - A[2]);
+        const cz = (B[0] - A[0]) * (C[1] - A[1]) - (B[1] - A[1]) * (C[0] - A[0]);
+        if (cx * n[0] + cy * n[1] + cz * n[2] >= 0) out.push(...A, ...B, ...C);
+        else out.push(...A, ...C, ...B);
+      }
+    }
+  }
+  return Float32Array.from(out);
+}
+
+// mesh depth for a spec, without building anything (used by the UI limits)
+function meshDepth(inp) {
+  const d = derive(inp);
+  return layout(d, buildProfile(d, 4), { w: 0, h: 0 }).depth;
+}
+
+// --------------------------------------------------------- mesh direction ---
+// panel.rot turns the pattern in the panel: 0 keeps LWD along the panel width,
+// 90 turns it counter-clockwise and -90 clockwise (seen from the front), so LWD
+// runs up the panel. The strands step the opposite way in the two cases, so they
+// are two different meshes. The pattern is built in its own frame (LWD along x')
+// and then turned about the depth axis Y into the panel.
+// panel.sx / panel.sy stay in panel terms: they move the pattern right and up.
+function patternFrame(panel) {
+  const rot = panel.rot === 90 || panel.rot === -90 ? panel.rot : 0;
+  if (!rot) return { rot, pp: panel, map: null };
+  const W = panel.w, H = panel.h, sx = panel.sx || 0, sy = panel.sy || 0;
+  const pp = { ...panel, w: H, h: W, sx: rot === 90 ? sy : -sy, sy: rot === 90 ? -sx : sx };
+  const map = rot === 90 ? (x, z) => [W - z, x] : (x, z) => [z, H - x];
+  return { rot, pp, map };
+}
+function mapTris(T, map) {
+  for (let i = 0; i < T.length; i += 3) { const [x, z] = map(T[i], T[i + 2]); T[i] = x; T[i + 2] = z; }
+}
+function mapPolys(list, map) {
+  for (const P of list) for (let i = 0; i < P.length; i += 2) { const [x, z] = map(P[i], P[i + 1]); P[i] = x; P[i + 1] = z; }
+}
+function mapRect(r, map) {
+  const a = map(r.x0, r.z0), b = map(r.x1, r.z1);
+  return { x0: Math.min(a[0], b[0]), x1: Math.max(a[0], b[0]), z0: Math.min(a[1], b[1]), z1: Math.max(a[1], b[1]) };
+}
+
+function centreCrop(r, f) {
+  const cx = (r.x0 + r.x1) / 2, cz = (r.z0 + r.z1) / 2, hw = (r.x1 - r.x0) * f / 2, hh = (r.z1 - r.z0) * f / 2;
+  return { x0: cx - hw, x1: cx + hw, z0: cz - hh, z1: cz + hh };
+}
+
+// ------------------------------------------------------------ one-call API ---
+function generate(inp, panel, opts = {}) {
+  const d = derive(inp);
+  const budget = opts.triBudget ?? LIMITS.triBudget;
+  const { rot, pp, map } = patternFrame(panel);
+  const cutP = meshRect(pp), cut = meshRect(panel);   // pattern frame / panel
+  let arcSeg = 0;
+  for (const n of [8, 6, 4, 3, 2]) { if (estimate(d, pp, cutP, n) <= budget) { arcSeg = n; break; } }
+  const prof = buildProfile(d, arcSeg);
+  const lay = layout(d, prof, pp);
+  let region = cutP, cropped = false;
+  const est = estimate(d, pp, cutP, arcSeg);
+  if (est > budget) { region = centreCrop(cutP, Math.sqrt(budget / est)); cropped = true; }
+  const tris = opts.skip3D ? null : buildSolids(d, prof, lay, region);
+  const outlines = opts.skip2D ? null : buildOutlines(d, prof, lay, pp, cutP);
+  // the same pattern carried one diamond past every edge: shows what the cut trims off
+  const ghost = opts.skip2D ? null : buildOutlines(d, prof, lay, pp, { x0: cutP.x0 - d.L, x1: cutP.x1 + d.L, z0: cutP.z0 - d.P, z1: cutP.z1 + d.P });
+  if (map) {
+    if (tris) mapTris(tris, map);
+    if (outlines) mapPolys(outlines, map);
+    if (ghost) mapPolys(ghost, map);
+    region = mapRect(region, map);
+  }
+  const frame = frameSpec(panel, lay.depth);
+  const frameTris = frame && !opts.skip3D ? shellTris(framePieces(panel, frame)) : new Float32Array(0);
+  const stepFaces = estimate(d, pp, cutP, stepArcSeg(d)) / 4;
+  const cw = cut.x1 - cut.x0, ch = cut.z1 - cut.z0;
+  return {
+    d, prof, lay, rot, region, cropped, arcSeg, tris, outlines, ghost, frame, frameTris, meshRect: cut,
+    stats: {
+      openArea: openArea(d, prof),
+      kgm2: weightPerM2(d),
+      kgPanel: weightPerM2(d) * cw * ch / 1e6,
+      depth: lay.depth,
+      angleToPanel: 90 - d.alpha * 180 / Math.PI,
+      bond: d.bond,
+      radius: d.radius,
+      rMax: d.rMax,
+      rise: d.h,
+      cutW: cw,
+      cutH: ch,
+      diamondsX: cw / (rot ? d.P : d.L),   // eyes across the panel width
+      diamondsZ: ch / (rot ? d.L : d.P),   // eyes up the panel height
+      frameLength: frame ? 2 * (panel.w + panel.h) : 0,
+      wClamped: inp.w > LIMITS.wToSwd * inp.swd + 1e-9,
+      stepMB: Math.min(stepFaces, LIMITS.stepFaceBudget) * 930 / 1e6,
+      stepCropped: stepFaces > LIMITS.stepFaceBudget,
+    },
+  };
+}
+
+
+// ============================================================ B-rep (STEP) ===
+// Each strand row is a closed polyhedron of planar faces: one quad per segment on
+// the top and bottom surfaces, one polygon for each side, a quad at each end.
+// Rows crossing the panel top or bottom are cut by the plane and capped; pieces
+// that fall apart become separate solids.
+
+function rowPolyhedron(d, prof, lay, k, x0, x1) {
+  const shift = k * d.s + lay.phase;
+  const xs = rowXs(d, prof, shift, x0, x1);
+  const n = xs.length, V = [];
+  for (let i = 0; i < n; i++) {
+    const zf = evalProfile(prof, xs[i] - shift);
+    for (const [y, z] of ring0(d, zf)) {
+      V.push([xs[i], y * d.ca - z * d.sa + lay.oy, y * d.sa + z * d.ca + k * d.p + lay.oz]);
+    }
+  }
+  const id = (i, c) => i * 4 + c;
+  const F = [];
+  for (let i = 0; i < n - 1; i++) {
+    F.push([id(i, 0), id(i, 1), id(i + 1, 1), id(i + 1, 0)]); // top (ruled) surface
+    F.push([id(i, 2), id(i, 3), id(i + 1, 3), id(i + 1, 2)]); // bottom surface
+  }
+  const back = [id(0, 1)], front = [id(0, 3)];
+  for (let i = 0; i < n; i++) { back.push(id(i, 2)); front.push(id(i, 0)); }
+  for (let i = n - 1; i >= 1; i--) { back.push(id(i, 1)); front.push(id(i, 3)); }
+  F.push(back, front);
+  F.push([id(0, 0), id(0, 3), id(0, 2), id(0, 1)]);
+  const e = n - 1;
+  F.push([id(e, 0), id(e, 1), id(e, 2), id(e, 3)]);
+  return { V, F };
+}
+
+function newell(V, L) {
+  let nx = 0, ny = 0, nz = 0;
+  for (let i = 0; i < L.length; i++) {
+    const a = V[L[i]], b = V[L[(i + 1) % L.length]];
+    nx += (a[1] - b[1]) * (a[2] + b[2]);
+    ny += (a[2] - b[2]) * (a[0] + b[0]);
+    nz += (a[0] - b[0]) * (a[1] + b[1]);
+  }
+  const l = Math.hypot(nx, ny, nz) || 1;
+  return [nx / l, ny / l, nz / l];
+}
+
+// keepAbove: keep z >= c, else keep z <= c
+function clipPolyhedron(mesh, c, keepAbove) {
+  const sg = keepAbove ? 1 : -1;
+  const V = mesh.V.slice();
+  const sd = mesh.V.map((v) => sg * (v[2] - c));
+  const cutIdx = new Map();
+  const cutVert = (a, b) => {
+    const key = a < b ? a + '_' + b : b + '_' + a;
+    let id = cutIdx.get(key);
+    if (id === undefined) {
+      const p = V[Math.min(a, b)], q = V[Math.max(a, b)];
+      const t = (c - p[2]) / (q[2] - p[2]);
+      V.push([p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t, c]);
+      id = V.length - 1; cutIdx.set(key, id);
+    }
+    return id;
+  };
+  const F = [], cap = new Map();
+  for (const L of mesh.F) {
+    const m = L.length;
+    let nin = 0;
+    for (const v of L) if (sd[v] >= 0) nin++;
+    if (nin === m) { F.push(L); continue; }
+    if (nin === 0) continue;
+    let s0 = 0;
+    for (let i = 0; i < m; i++) if (sd[L[i]] >= 0 && sd[L[(i + m - 1) % m]] < 0) { s0 = i; break; }
+    const chains = [];
+    let cur = null;
+    for (let j = 0; j < m; j++) {
+      const i = (s0 + j) % m, a = L[(i + m - 1) % m], b = L[i], nb = L[(i + 1) % m];
+      const bin = sd[b] >= 0;
+      if (bin && sd[a] < 0) cur = { entry: cutVert(a, b), verts: [] };
+      if (bin) cur.verts.push(b);
+      if (bin && sd[nb] < 0) { cur.exit = cutVert(b, nb); chains.push(cur); cur = null; }
+    }
+    const nrm = newell(mesh.V, L);
+    const u = [nrm[1], -nrm[0], 0];
+    const along = (v) => V[v][0] * u[0] + V[v][1] * u[1];
+    const ends = [];
+    for (const ch of chains) { ends.push({ v: ch.entry, ch, out: false }); ends.push({ v: ch.exit, ch, out: true }); }
+    ends.sort((p, q) => along(p.v) - along(q.v));
+    const next = new Map();
+    for (let i = 0; i + 1 < ends.length; i += 2) {
+      const A = ends[i], B = ends[i + 1];
+      if (A.out === B.out) continue; // degenerate touch, skip
+      const ex = A.out ? A : B, en = A.out ? B : A;
+      next.set(ex.ch, en.ch);
+      cap.set(en.ch.entry, ex.ch.exit);
+    }
+    const used = new Set();
+    for (const ch0 of chains) {
+      if (used.has(ch0)) continue;
+      const poly = [];
+      let ch = ch0;
+      while (ch && !used.has(ch)) { used.add(ch); poly.push(ch.entry, ...ch.verts, ch.exit); ch = next.get(ch); }
+      if (poly.length >= 3) F.push(poly);
+    }
+  }
+  // caps
+  const seen = new Set();
+  for (const start of cap.keys()) {
+    if (seen.has(start)) continue;
+    const loop = [];
+    let v = start, guard = 0;
+    while (v !== undefined && !seen.has(v) && guard++ < 1e6) { seen.add(v); loop.push(v); v = cap.get(v); }
+    if (v !== start || loop.length < 3) continue;
+    const nrm = newell(V, loop);
+    if ((nrm[2] > 0) === keepAbove) loop.reverse();
+    F.push(loop);
+  }
+  return { V, F };
+}
+
+function splitShells(mesh) {
+  const parent = mesh.F.map((_, i) => i);
+  const find = (i) => { while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; } return i; };
+  const owner = new Map();
+  mesh.F.forEach((L, fi) => {
+    for (let i = 0; i < L.length; i++) {
+      const a = L[i], b = L[(i + 1) % L.length];
+      const key = a < b ? a + '_' + b : b + '_' + a;
+      const o = owner.get(key);
+      if (o === undefined) owner.set(key, fi);
+      else { const ra = find(o), rb = find(fi); if (ra !== rb) parent[ra] = rb; }
+    }
+  });
+  const groups = new Map();
+  mesh.F.forEach((L, fi) => { const r = find(fi); if (!groups.has(r)) groups.set(r, []); groups.get(r).push(L); });
+  return [...groups.values()].map((F) => ({ V: mesh.V, F }));
+}
+
+function buildShells(d, prof, lay, region) {
+  const { x0, x1, z0, z1 } = region;
+  const [k0, k1] = rowRange(d, lay, z0, z1);
+  const shells = [];
+  for (let k = k0; k <= k1; k++) {
+    let m = rowPolyhedron(d, prof, lay, k, x0, x1);
+    let zmin = Infinity, zmax = -Infinity;
+    for (const v of m.V) { if (v[2] < zmin) zmin = v[2]; if (v[2] > zmax) zmax = v[2]; }
+    if (zmax < z0 || zmin > z1) continue;
+    let clipped = false;
+    if (zmin < z0) { m = clipPolyhedron(m, z0, true); clipped = true; }
+    if (zmax > z1) { m = clipPolyhedron(m, z1, false); clipped = true; }
+    if (!m.F.length) continue;
+    if (clipped) shells.push(...splitShells(m)); else shells.push(m);
+  }
+  return shells;
+}
+
+// ------------------------------------------------------------------ STEP ----
+function writeSTEP(shells, meta) {
+  const out = [];
+  let n = 0;
+  const E = (s) => { n++; out.push('#' + n + '=' + s + ';'); return n; };
+  const R = (v, dp = 5) => {
+    if (Math.abs(v) < 0.5 * 10 ** -dp) return '0.';
+    let s = v.toFixed(dp);
+    s = s.replace(/0+$/, '');
+    return s;
+  };
+  const esc = (s) => String(s).replace(/'/g, "''");
+  const dirs = new Map();
+  const D = (x, y, z) => {
+    const l = Math.hypot(x, y, z) || 1;
+    const k = R(x / l, 10) + ',' + R(y / l, 10) + ',' + R(z / l, 10);
+    let id = dirs.get(k);
+    if (id === undefined) { id = E(`DIRECTION('',(${k}))`); dirs.set(k, id); }
+    return id;
+  };
+  const vecs = new Map();
+  const VEC = (dir, len) => {
+    const k = dir + '|' + R(len, 6);
+    let id = vecs.get(k);
+    if (id === undefined) { id = E(`VECTOR('',#${dir},${R(len, 6)})`); vecs.set(k, id); }
+    return id;
+  };
+
+  const name = esc(meta.name);
+  const ac = E("APPLICATION_CONTEXT('core data for automotive mechanical design processes')");
+  E(`APPLICATION_PROTOCOL_DEFINITION('international standard','automotive_design',2000,#${ac})`);
+  const pc = E(`PRODUCT_CONTEXT('',#${ac},'mechanical')`);
+  const prod = E(`PRODUCT('${name}','${name}','${esc(meta.description || '')}',(#${pc}))`);
+  E(`PRODUCT_RELATED_PRODUCT_CATEGORY('part',$,(#${prod}))`);
+  const pdf = E(`PRODUCT_DEFINITION_FORMATION('','',#${prod})`);
+  const pdc = E(`PRODUCT_DEFINITION_CONTEXT('part definition',#${ac},'design')`);
+  const pd = E(`PRODUCT_DEFINITION('design','',#${pdf},#${pdc})`);
+  const pds = E(`PRODUCT_DEFINITION_SHAPE('','',#${pd})`);
+  const lu = E('(LENGTH_UNIT()NAMED_UNIT(*)SI_UNIT(.MILLI.,.METRE.))');
+  const au = E('(NAMED_UNIT(*)PLANE_ANGLE_UNIT()SI_UNIT($,.RADIAN.))');
+  const su = E('(NAMED_UNIT(*)SI_UNIT($,.STERADIAN.)SOLID_ANGLE_UNIT())');
+  const um = E(`UNCERTAINTY_MEASURE_WITH_UNIT(LENGTH_MEASURE(1.E-05),#${lu},'distance_accuracy_value','confusion accuracy')`);
+  const ctx = E(`(GEOMETRIC_REPRESENTATION_CONTEXT(3)GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((#${um}))GLOBAL_UNIT_ASSIGNED_CONTEXT((#${lu},#${au},#${su}))REPRESENTATION_CONTEXT('Context #1','3D Context with UNIT and UNCERTAINTY'))`);
+  const o = E("CARTESIAN_POINT('',(0.,0.,0.))");
+  const ax0 = E(`AXIS2_PLACEMENT_3D('',#${o},#${D(0, 0, 1)},#${D(1, 0, 0)})`);
+
+  // surface styles, one per colour
+  const styles = new Map();
+  const styleFor = (col) => {
+    const k = col.map((c) => R(c, 3)).join(',');
+    let id = styles.get(k);
+    if (id === undefined) {
+      const crgb = E(`COLOUR_RGB('',${k})`);
+      const fasc = E(`FILL_AREA_STYLE_COLOUR('',#${crgb})`);
+      const fas = E(`FILL_AREA_STYLE('',(#${fasc}))`);
+      const ssfa = E(`SURFACE_STYLE_FILL_AREA(#${fas})`);
+      const sss = E(`SURFACE_SIDE_STYLE('',(#${ssfa}))`);
+      const ssu = E(`SURFACE_STYLE_USAGE(.BOTH.,#${sss})`);
+      id = E(`PRESENTATION_STYLE_ASSIGNMENT((#${ssu}))`);
+      styles.set(k, id);
+    }
+    return id;
+  };
+  const meshCol = meta.rgb || [0.78, 0.79, 0.8];
+
+  const solids = [], styled = [];
+  let faceCount = 0;
+  shells.forEach((sh, si) => {
+    const V = sh.V;
+    const cp = new Map(), vp = new Map();
+    const vertex = (i) => {
+      let id = vp.get(i);
+      if (id === undefined) {
+        const p = V[i];
+        const c = E(`CARTESIAN_POINT('',(${R(p[0])},${R(p[1])},${R(p[2])}))`);
+        cp.set(i, c);
+        id = E(`VERTEX_POINT('',#${c})`);
+        vp.set(i, id);
+      }
+      return id;
+    };
+    const edges = new Map();
+    const edge = (a, b) => {
+      const key = a < b ? a + '_' + b : b + '_' + a;
+      let e = edges.get(key);
+      if (!e) {
+        const va = vertex(a), vb = vertex(b);
+        const p = V[a], q = V[b];
+        const dx = q[0] - p[0], dy = q[1] - p[1], dz = q[2] - p[2];
+        const len = Math.hypot(dx, dy, dz);
+        const ln = E(`LINE('',#${cp.get(a)},#${VEC(D(dx, dy, dz), len)})`);
+        const ec = E(`EDGE_CURVE('',#${va},#${vb},#${ln},.T.)`);
+        e = { id: ec, from: a };
+        edges.set(key, e);
+      }
+      return e;
+    };
+    const faces = [];
+    for (const L0 of sh.F) {
+      // drop repeated consecutive vertices
+      const L = L0.filter((v, i) => v !== L0[(i + 1) % L0.length]);
+      if (L.length < 3) continue;
+      const oes = [];
+      for (let i = 0; i < L.length; i++) {
+        const a = L[i], b = L[(i + 1) % L.length];
+        const e = edge(a, b);
+        oes.push(E(`ORIENTED_EDGE('',*,*,#${e.id},${e.from === a ? '.T.' : '.F.'})`));
+      }
+      const loop = E(`EDGE_LOOP('',(${oes.map((x) => '#' + x).join(',')}))`);
+      const bound = E(`FACE_OUTER_BOUND('',#${loop},.T.)`);
+      const nrm = newell(V, L);
+      const p0 = V[L[0]];
+      let rx = 0, ry = 0, rz = 0;
+      for (let i = 1; i < L.length; i++) {
+        const p = V[L[i]];
+        rx = p[0] - p0[0]; ry = p[1] - p0[1]; rz = p[2] - p0[2];
+        if (Math.hypot(rx, ry, rz) > 1e-9) break;
+      }
+      const dt = rx * nrm[0] + ry * nrm[1] + rz * nrm[2];
+      rx -= dt * nrm[0]; ry -= dt * nrm[1]; rz -= dt * nrm[2];
+      vertex(L[0]);
+      const ax = E(`AXIS2_PLACEMENT_3D('',#${cp.get(L[0])},#${D(nrm[0], nrm[1], nrm[2])},#${D(rx, ry, rz)})`);
+      const pl = E(`PLANE('',#${ax})`);
+      faces.push(E(`ADVANCED_FACE('',(#${bound}),#${pl},.T.)`));
+    }
+    if (faces.length < 4) return;
+    faceCount += faces.length;
+    const shell = E(`CLOSED_SHELL('',(${faces.map((x) => '#' + x).join(',')}))`);
+    const solid = E(`MANIFOLD_SOLID_BREP('${esc(sh.name || 'strand ' + (si + 1))}',#${shell})`);
+    solids.push(solid);
+    styled.push(E(`STYLED_ITEM('color',(#${styleFor(sh.rgb || meshCol)}),#${solid})`));
+  });
+  const absr = E(`ADVANCED_BREP_SHAPE_REPRESENTATION('${name}',(#${ax0}${solids.map((x) => ',#' + x).join('')}),#${ctx})`);
+  E(`SHAPE_DEFINITION_REPRESENTATION(#${pds},#${absr})`);
+  E(`MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION('',(${styled.map((x) => '#' + x).join(',')}),#${ctx})`);
+
+  const stamp = (meta.date ? new Date(meta.date) : new Date()).toISOString().slice(0, 19);
+  const head = [
+    'ISO-10303-21;', 'HEADER;',
+    `FILE_DESCRIPTION(('${esc(meta.description || name)}'),'2;1');`,
+    `FILE_NAME('${name}.step','${stamp}',('AMD NSRI'),(''),'Expanded Mesh Generator','Expanded Mesh Generator','');`,
+    "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));",
+    'ENDSEC;', 'DATA;',
+  ];
+  return { text: head.join('\n') + '\n' + out.join('\n') + '\nENDSEC;\nEND-ISO-10303-21;\n', solids: solids.length, faces: faceCount };
+}
+
+function generateSTEP(inp, panel, meta) {
+  const d = derive(inp);
+  const arcSeg = stepArcSeg(d);
+  const prof = buildProfile(d, arcSeg);
+  const { pp, map } = patternFrame(panel);
+  const lay = layout(d, prof, pp);
+  const cut = meshRect(pp);
+  const estFaces = estimate(d, pp, cut, arcSeg) / 4;
+  let region = cut, cropped = false;
+  if (estFaces > LIMITS.stepFaceBudget) { region = centreCrop(cut, Math.sqrt(LIMITS.stepFaceBudget / estFaces)); cropped = true; }
+  const shells = buildShells(d, prof, lay, region);
+  if (map) {
+    // split shells share one vertex list: turn each list once
+    const done = new Map();
+    for (const sh of shells) {
+      let V = done.get(sh.V);
+      if (!V) { V = sh.V.map(([x, y, z]) => { const [a, b] = map(x, z); return [a, y, b]; }); done.set(sh.V, V); }
+      sh.V = V;
+    }
+    region = mapRect(region, map);
+  }
+  // the frame goes with the full panel only; a centre detail has no edges to frame
+  const fr = cropped ? null : frameSpec(panel, lay.depth);
+  if (fr) for (const p of framePieces(panel, fr)) shells.push({ ...p, rgb: FRAME_RGB });
+  const res = writeSTEP(shells, meta);
+  return { ...res, region, cropped, framed: !!fr };
+}
+const FRAME_RGB = [0.6, 0.62, 0.65];
+
+</script>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const $ = (s) => document.querySelector(s);
+const KERNEL = document.getElementById('kernel-src').textContent;
+const root = $('#emg');
+
+// ==================================================================== language
+// EN / TR / AR. The choice is shared with the main site (localStorage 'amd-nsri-lang', values EN / TR / AR): a
+// visitor reading the site in Turkish opens the tool in Turkish, and switching here switches the site too.
+// Everything the tool shows goes through t(): the English text is the key, {0} {1} … are filled in.
+// STEP and DWG file contents (layer names, descriptions) stay in English. TR and AR are Claude's translations.
+const LANG_KEY = 'amd-nsri-lang';
+const LANGS = ['EN', 'TR', 'AR'];
+const STR = {
+  TR: {
+    'Language': 'Dil',
+    'Tools · Fabrication': 'Araçlar · Fabrikasyon',
+    'Parameters': 'Parametreler',
+    'Mesh': 'Ağ',
+    'Direction': 'Yön',
+    '0°, LWD along the panel width': '0°, LWD panel genişliği boyunca',
+    '+90°, turned counter-clockwise': '+90°, saat yönünün tersine döndürülmüş',
+    '−90°, turned clockwise': '−90°, saat yönünde döndürülmüş',
+    'Panel size': 'Panel ölçüsü',
+    'Frame': 'Çerçeve',
+    'Profile type': 'Profil tipi',
+    'Flip the profile front to back': 'Profili önden arkaya çevir',
+    'Flip': 'Çevir',
+    'Pattern position': 'Desen konumu',
+    'Put a bond back at the panel centre': 'Bir bağ noktasını yeniden panel merkezine getir',
+    'Centre': 'Ortala',
+    'Slides the mesh inside the panel. The panel size stays the same. Without a frame, the 2D view shows the material the cut trims off faintly outside the panel edge.':
+      'Ağı panelin içinde kaydırır. Panel ölçüsü değişmez. Çerçeve yoksa 2B görünüm, kesimle atılan malzemeyi panel kenarının dışında soluk olarak gösterir.',
+    'View': 'Görünüm',
+    'Show the whole panel': 'Panelin tamamını göster',
+    'Fit': 'Sığdır',
+    'Zoom to the panel centre': 'Panel merkezine yakınlaş',
+    'Detail': 'Detay',
+    'Building': 'Hesaplanıyor',
+    'Results': 'Sonuçlar',
+    'Readouts': 'Değerler',
+    'Export': 'Dışa aktar',
+    '3D solids · mm': '3B katılar · mm',
+    '2D elevation · mm': '2B görünüş · mm',
+    'STEP: one closed solid per strand row and per frame piece, in millimetres, standing in the XZ plane like the Grasshopper output. DWG: AutoCAD 2000 format front elevation with hidden lines removed, on MESH, PANEL, FRAME, FRAME BACK, MESH CUT and DIMENSIONS layers.':
+      'STEP: her şerit sırası ve her çerçeve parçası için bir kapalı katı, milimetre cinsinden, Grasshopper çıktısındaki gibi XZ düzleminde. DWG: AutoCAD 2000 biçiminde, gizli çizgileri kaldırılmış ön görünüş; MESH, PANEL, FRAME, FRAME BACK, MESH CUT ve DIMENSIONS katmanlarında.',
+    'Get tool updates →': 'Araç güncellemelerini al →',
+    'None': 'Yok',
+    'U channel': 'U profil',
+    'L angle': 'L köşebent',
+    'Eye width': 'Göz genişliği',
+    'Eye height': 'Göz yüksekliği',
+    'Strand width': 'Şerit genişliği',
+    'Thickness': 'Kalınlık',
+    'Bend radius': 'Büküm yarıçapı',
+    'Width': 'Genişlik',
+    'Height': 'Yükseklik',
+    'along LWD': 'LWD boyunca',
+    'along SWD': 'SWD boyunca',
+    'Front leg': 'Ön kanat',
+    'Front thickness': 'Ön kalınlık',
+    'Web depth': 'Gövde derinliği',
+    'Web thickness': 'Gövde kalınlığı',
+    'Back leg': 'Arka kanat',
+    'Back thickness': 'Arka kalınlık',
+    'Face leg': 'Ön yüz kanadı',
+    'Depth leg': 'Derinlik kanadı',
+    'Wall thickness': 'Et kalınlığı',
+    'Shift X': 'Kaydırma X',
+    'Shift Y': 'Kaydırma Y',
+    '{0} {1}, millimetres': '{0} {1}, milimetre',
+    'Reduced to fit SWD. Max {0} mm at this SWD.': 'SWD\'ye sığması için düşürüldü. Bu SWD\'de en fazla {0} mm.',
+    'Max {0} mm at this SWD.': 'Bu SWD\'de en fazla {0} mm.',
+    'Thicker than the strand width. Unusual for expanded mesh.': 'Şerit genişliğinden kalın. Genişletilmiş metal için alışılmadık.',
+    'LWD is normally the longer of the two.': 'LWD normalde ikisinden uzun olanıdır.',
+    'Max {0} mm at these eye sizes.': 'Bu göz ölçülerinde en fazla {0} mm.',
+    'Sharp bends.': 'Keskin bükümler.',
+    'One smooth S-curve, no flat bond.': 'Tek, yumuşak bir S eğrisi; düz bağ yok.',
+    'Bond flat shortened to {0} mm.': 'Düz bağ {0} mm\'ye kısaldı.',
+    'Reduced to fit the eye. {0}': 'Göze sığması için düşürüldü. {0}',
+    '±{0} mm, half an eye each way.': 'Her yöne ±{0} mm, yarım göz.',
+    'Face leg on the back': 'Ön yüz kanadı arkada',
+    'Face leg on the front': 'Ön yüz kanadı önde',
+    'Leg {0} on the front': '{0} kanadı önde',
+    'LWD along the height': 'LWD yükseklik boyunca',
+    'LWD along the width': 'LWD genişlik boyunca',
+    'Turned 90° counter-clockwise.': 'Saat yönünün tersine 90° döndürüldü.',
+    'Turned 90° clockwise.': 'Saat yönünde 90° döndürüldü.',
+    'Opening {0} × {1} mm.': 'Açıklık {0} × {1} mm.',
+    'Min {0} mm to hold the {1} mm deep mesh.': '{1} mm derinliğindeki ağı tutmak için en az {0} mm.',
+    'Raised to hold the mesh. {0}': 'Ağı tutması için artırıldı. {0}',
+    'Behind the mesh.': 'Ağın arkasında.',
+    'Mesh cut {0} × {1} mm.': 'Ağ kesimi {0} × {1} mm.',
+    'Thick for this leg.': 'Bu kanat için kalın.',
+    'Thick for this face leg.': 'Bu ön yüz kanadı için kalın.',
+    'No frame. The mesh is cut to the full panel size.': 'Çerçeve yok. Ağ, panelin tam ölçüsünde kesilir.',
+    'Panel size is the outside of the frame. The mesh edge sits in the channel, centred between the legs, and is cut to the inside face of the web. Flip swaps the front and back legs. Corners are mitred at 45°.':
+      'Panel ölçüsü çerçevenin dış ölçüsüdür. Ağ kenarı kanalın içinde, kanatların ortasında durur ve gövdenin iç yüzüne göre kesilir. Çevir, ön ve arka kanatların yerini değiştirir. Köşeler 45° gönye kesilir.',
+    'Panel size is the outside of the frame. The face leg covers the back of the mesh edge, and the mesh is cut to the inside face of the outer leg. Corners are mitred at 45°.':
+      'Panel ölçüsü çerçevenin dış ölçüsüdür. Ön yüz kanadı ağ kenarının arka yüzünü örter; ağ, dış kanadın iç yüzüne göre kesilir. Köşeler 45° gönye kesilir.',
+    'Panel size is the outside of the frame. The face leg covers the front of the mesh edge, and the mesh is cut to the inside face of the outer leg. Corners are mitred at 45°.':
+      'Panel ölçüsü çerçevenin dış ölçüsüdür. Ön yüz kanadı ağ kenarının ön yüzünü örter; ağ, dış kanadın iç yüzüne göre kesilir. Köşeler 45° gönye kesilir.',
+    'mesh {0}90°': 'ağ {0}90°',
+    'panel {0} × {1} mm': 'panel {0} × {1} mm',
+    '{0} frame': '{0} çerçeve',
+    ', flipped': ', çevrilmiş',
+    'shift {0} / {1}': 'kaydırma {0} / {1}',
+    'Panel': 'Panel',
+    'Panel area': 'Panel alanı',
+    'Mesh cut': 'Ağ kesimi',
+    'Eyes quantity': 'Göz sayısı',
+    'Open area': 'Açık alan',
+    'Mesh depth': 'Ağ derinliği',
+    'Profile length': 'Profil uzunluğu',
+    'Eyes quantity: W counts eyes across the mesh width, L counts them along the mesh height. Part-eyes cut at the edges show as decimals.':
+      'Göz sayısı: W, ağ genişliği boyunca; L, ağ yüksekliği boyunca gözleri sayar. Kenarlarda kesilen kısmi gözler ondalık olarak gösterilir.',
+    'Profile length is the outside edge of the four mitred pieces.': 'Profil uzunluğu, gönye kesilmiş dört parçanın dış kenarıdır.',
+    'Live 3D shows the centre <b>{0} × {1} mm</b> of the mesh. The full panel is too dense to render in 3D at this mesh size. The 2D view and DWG cover the whole panel.':
+      'Canlı 3B görünüm, ağın merkezdeki <b>{0} × {1} mm</b> bölümünü gösterir. Bu ağ ölçüsünde panelin tamamı 3B çizim için fazla yoğun. 2B görünüm ve DWG panelin tamamını kapsar.',
+    '3D solids · centre detail · {0} MB': '3B katılar · merkez detayı · {0} MB',
+    '3D solids · {0} MB': '3B katılar · {0} MB',
+    'scroll to zoom, drag to pan, double-click to fit': 'yakınlaşmak için kaydırın, taşımak için sürükleyin, sığdırmak için çift tıklayın',
+    '{0} strand outlines': '{0} şerit dış hattı',
+    'scroll to zoom, drag to pan': 'yakınlaşmak için kaydırın, taşımak için sürükleyin',
+    '{0} triangles': '{0} üçgen',
+    'drag to orbit, right-drag to pan, scroll to zoom': 'döndürmek için sürükleyin, taşımak için sağ tuşla sürükleyin, yakınlaşmak için kaydırın',
+    'Loading DWG writer': 'DWG yazıcısı yükleniyor',
+    'Writing DWG': 'DWG yazılıyor',
+    'Building STEP': 'STEP oluşturuluyor',
+    'Could not load the DWG writer. Check the connection and try again.': 'DWG yazıcısı yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.',
+    'STEP saved: centre {0} × {1} mm of the mesh, {2} solids{3}. The full panel would be too large a file at this mesh size.':
+      'STEP kaydedildi: ağın merkezdeki {0} × {1} mm bölümü, {2} katı{3}. Bu ağ ölçüsünde panelin tamamı çok büyük bir dosya olurdu.',
+    ', without the frame': ', çerçevesiz',
+    'STEP saved: {0} solids{1}, {2} faces, {3} MB.': 'STEP kaydedildi: {0} katı{1}, {2} yüzey, {3} MB.',
+    ' (4 frame pieces)': ' (4 çerçeve parçası)',
+    'DWG saved: {0} eye outlines on layer MESH, hidden lines removed{1}. AutoCAD 2000 format.':
+      'DWG kaydedildi: MESH katmanında {0} göz dış hattı, gizli çizgiler kaldırılmış{1}. AutoCAD 2000 biçimi.',
+    ', frame on FRAME and FRAME BACK': ', çerçeve FRAME ve FRAME BACK katmanlarında',
+    ', hidden mesh cut edge dashed on MESH CUT': ', ağın gizli kesim kenarı MESH CUT katmanında kesik çizgiyle',
+  },
+  AR: {
+    'Language': 'اللغة',
+    'Tools · Fabrication': 'الأدوات · التصنيع',
+    'Parameters': 'المعاملات',
+    'Mesh': 'الشبك',
+    'Direction': 'الاتجاه',
+    '0°, LWD along the panel width': '0°، LWD على امتداد عرض اللوح',
+    '+90°, turned counter-clockwise': '+90°، مُدار عكس اتجاه عقارب الساعة',
+    '−90°, turned clockwise': '−90°، مُدار باتجاه عقارب الساعة',
+    'Panel size': 'مقاس اللوح',
+    'Frame': 'الإطار',
+    'Profile type': 'نوع المقطع',
+    'Flip the profile front to back': 'اقلب المقطع من الأمام إلى الخلف',
+    'Flip': 'قلب',
+    'Pattern position': 'موضع النمط',
+    'Put a bond back at the panel centre': 'أعِد نقطة ربط إلى مركز اللوح',
+    'Centre': 'توسيط',
+    'Slides the mesh inside the panel. The panel size stays the same. Without a frame, the 2D view shows the material the cut trims off faintly outside the panel edge.':
+      'يُزيح الشبك داخل اللوح دون أن يتغيّر مقاسه. وإن لم يكن هناك إطار، يعرض المنظر ثنائي الأبعاد المادةَ التي يزيلها القصّ بلون باهت خارج حافة اللوح.',
+    'View': 'العرض',
+    'Show the whole panel': 'اعرض اللوح كاملاً',
+    'Fit': 'ملاءمة',
+    'Zoom to the panel centre': 'كبّر إلى مركز اللوح',
+    'Detail': 'تفصيل',
+    'Building': 'جارٍ البناء',
+    'Results': 'النتائج',
+    'Readouts': 'القراءات',
+    'Export': 'التصدير',
+    '3D solids · mm': 'أجسام ثلاثية الأبعاد · mm',
+    '2D elevation · mm': 'واجهة ثنائية الأبعاد · mm',
+    'STEP: one closed solid per strand row and per frame piece, in millimetres, standing in the XZ plane like the Grasshopper output. DWG: AutoCAD 2000 format front elevation with hidden lines removed, on MESH, PANEL, FRAME, FRAME BACK, MESH CUT and DIMENSIONS layers.':
+      'STEP: جسم مصمت مغلق لكل صف من الشرائط ولكل قطعة إطار، بالمليمتر، قائم في المستوى XZ كما في مُخرَج Grasshopper. DWG: واجهة أمامية بصيغة AutoCAD 2000 مع إزالة الخطوط المخفية، على الطبقات MESH وPANEL وFRAME وFRAME BACK وMESH CUT وDIMENSIONS.',
+    'Get tool updates →': 'احصل على تحديثات الأدوات ←',
+    'None': 'بلا',
+    'U channel': 'مقطع U',
+    'L angle': 'زاوية L',
+    'Eye width': 'عرض العين',
+    'Eye height': 'ارتفاع العين',
+    'Strand width': 'عرض الشريط',
+    'Thickness': 'السماكة',
+    'Bend radius': 'نصف قطر الثني',
+    'Width': 'العرض',
+    'Height': 'الارتفاع',
+    'along LWD': 'على امتداد LWD',
+    'along SWD': 'على امتداد SWD',
+    'Front leg': 'الجناح الأمامي',
+    'Front thickness': 'السماكة الأمامية',
+    'Web depth': 'عمق الجذع',
+    'Web thickness': 'سماكة الجذع',
+    'Back leg': 'الجناح الخلفي',
+    'Back thickness': 'السماكة الخلفية',
+    'Face leg': 'جناح الواجهة',
+    'Depth leg': 'جناح العمق',
+    'Wall thickness': 'سماكة الجدار',
+    'Shift X': 'إزاحة X',
+    'Shift Y': 'إزاحة Y',
+    '{0} {1}, millimetres': '{0} {1}، بالمليمتر',
+    'Reduced to fit SWD. Max {0} mm at this SWD.': 'خُفِّض ليناسب SWD. الحد الأقصى {0} mm عند قيمة SWD هذه.',
+    'Max {0} mm at this SWD.': 'الحد الأقصى {0} mm عند قيمة SWD هذه.',
+    'Thicker than the strand width. Unusual for expanded mesh.': 'أسمك من عرض الشريط، وهذا غير مألوف في الشبك الممدّد.',
+    'LWD is normally the longer of the two.': 'يكون LWD عادةً الأطولَ بين البُعدين.',
+    'Max {0} mm at these eye sizes.': 'الحد الأقصى {0} mm عند مقاسات العين هذه.',
+    'Sharp bends.': 'ثنيات حادّة.',
+    'One smooth S-curve, no flat bond.': 'منحنى S واحد سلس، دون ربط مستوٍ.',
+    'Bond flat shortened to {0} mm.': 'قُصِّر الربط المستوي إلى {0} mm.',
+    'Reduced to fit the eye. {0}': 'خُفِّض ليناسب العين. {0}',
+    '±{0} mm, half an eye each way.': '±{0} mm، نصف عين في كل اتجاه.',
+    'Face leg on the back': 'جناح الواجهة في الخلف',
+    'Face leg on the front': 'جناح الواجهة في الأمام',
+    'Leg {0} on the front': 'الجناح {0} في الأمام',
+    'LWD along the height': 'LWD على امتداد الارتفاع',
+    'LWD along the width': 'LWD على امتداد العرض',
+    'Turned 90° counter-clockwise.': 'مُدار 90° عكس اتجاه عقارب الساعة.',
+    'Turned 90° clockwise.': 'مُدار 90° باتجاه عقارب الساعة.',
+    'Opening {0} × {1} mm.': 'الفتحة {0} × {1} mm.',
+    'Min {0} mm to hold the {1} mm deep mesh.': 'الحد الأدنى {0} mm لاحتواء شبك بعمق {1} mm.',
+    'Raised to hold the mesh. {0}': 'زِيد ليحتوي الشبك. {0}',
+    'Behind the mesh.': 'خلف الشبك.',
+    'Mesh cut {0} × {1} mm.': 'قصّ الشبك {0} × {1} mm.',
+    'Thick for this leg.': 'سميك بالنسبة لهذا الجناح.',
+    'Thick for this face leg.': 'سميك بالنسبة لجناح الواجهة هذا.',
+    'No frame. The mesh is cut to the full panel size.': 'دون إطار. يُقصّ الشبك بمقاس اللوح الكامل.',
+    'Panel size is the outside of the frame. The mesh edge sits in the channel, centred between the legs, and is cut to the inside face of the web. Flip swaps the front and back legs. Corners are mitred at 45°.':
+      'مقاس اللوح هو المقاس الخارجي للإطار. تستقر حافة الشبك داخل المجرى في منتصف المسافة بين الجناحين، وتُقصّ عند الوجه الداخلي للجذع. يبدّل القلبُ الجناحين الأمامي والخلفي. وتُقصّ الزوايا مشطوفةً بزاوية 45°.',
+    'Panel size is the outside of the frame. The face leg covers the back of the mesh edge, and the mesh is cut to the inside face of the outer leg. Corners are mitred at 45°.':
+      'مقاس اللوح هو المقاس الخارجي للإطار. يغطي جناح الواجهة الجانب الخلفي من حافة الشبك، ويُقصّ الشبك عند الوجه الداخلي للجناح الخارجي. وتُقصّ الزوايا مشطوفةً بزاوية 45°.',
+    'Panel size is the outside of the frame. The face leg covers the front of the mesh edge, and the mesh is cut to the inside face of the outer leg. Corners are mitred at 45°.':
+      'مقاس اللوح هو المقاس الخارجي للإطار. يغطي جناح الواجهة الجانب الأمامي من حافة الشبك، ويُقصّ الشبك عند الوجه الداخلي للجناح الخارجي. وتُقصّ الزوايا مشطوفةً بزاوية 45°.',
+    'mesh {0}90°': 'الشبك {0}90°',
+    'panel {0} × {1} mm': 'اللوح {0} × {1} mm',
+    '{0} frame': 'إطار {0}',
+    ', flipped': '، مقلوب',
+    'shift {0} / {1}': 'إزاحة {0} / {1}',
+    'Panel': 'اللوح',
+    'Panel area': 'مساحة اللوح',
+    'Mesh cut': 'قصّ الشبك',
+    'Eyes quantity': 'عدد العيون',
+    'Open area': 'المساحة المفتوحة',
+    'Mesh depth': 'عمق الشبك',
+    'Profile length': 'طول المقطع',
+    'Eyes quantity: W counts eyes across the mesh width, L counts them along the mesh height. Part-eyes cut at the edges show as decimals.':
+      'عدد العيون: يعدّ W العيونَ عبر عرض الشبك، ويعدّها L على امتداد ارتفاعه. وتظهر العيون الجزئية المقصوصة عند الحواف بكسور عشرية.',
+    'Profile length is the outside edge of the four mitred pieces.': 'طول المقطع هو الحافة الخارجية للقطع الأربع المشطوفة.',
+    'Live 3D shows the centre <b>{0} × {1} mm</b> of the mesh. The full panel is too dense to render in 3D at this mesh size. The 2D view and DWG cover the whole panel.':
+      'يعرض المنظر ثلاثي الأبعاد الحيّ الجزءَ المركزي <b>{0} × {1} mm</b> من الشبك، إذ إن اللوح الكامل أكثف من أن يُعرَض بثلاثة أبعاد عند مقاس الشبك هذا. ويغطي المنظر ثنائي الأبعاد وملف DWG اللوح كاملاً.',
+    '3D solids · centre detail · {0} MB': 'أجسام ثلاثية الأبعاد · تفصيل المركز · {0} MB',
+    '3D solids · {0} MB': 'أجسام ثلاثية الأبعاد · {0} MB',
+    'scroll to zoom, drag to pan, double-click to fit': 'مرّر للتكبير، واسحب للتحريك، وانقر مرتين للملاءمة',
+    '{0} strand outlines': '{0} مخطط شريط',
+    'scroll to zoom, drag to pan': 'مرّر للتكبير، واسحب للتحريك',
+    '{0} triangles': '{0} مثلث',
+    'drag to orbit, right-drag to pan, scroll to zoom': 'اسحب للتدوير، واسحب بالزر الأيمن للتحريك، ومرّر للتكبير',
+    'Loading DWG writer': 'جارٍ تحميل كاتب DWG',
+    'Writing DWG': 'جارٍ كتابة DWG',
+    'Building STEP': 'جارٍ بناء STEP',
+    'Could not load the DWG writer. Check the connection and try again.': 'تعذّر تحميل كاتب DWG. تحقّق من الاتصال وحاول مجدداً.',
+    'STEP saved: centre {0} × {1} mm of the mesh, {2} solids{3}. The full panel would be too large a file at this mesh size.':
+      'حُفِظ ملف STEP: الجزء المركزي {0} × {1} mm من الشبك، وعدد الأجسام المصمتة {2}{3}. سيكون ملف اللوح الكامل كبيراً جداً عند مقاس الشبك هذا.',
+    ', without the frame': '، دون الإطار',
+    'STEP saved: {0} solids{1}, {2} faces, {3} MB.': 'حُفِظ ملف STEP: عدد الأجسام المصمتة {0}{1}، وعدد الأوجه {2}، والحجم {3} MB.',
+    ' (4 frame pieces)': ' (4 قطع إطار)',
+    'DWG saved: {0} eye outlines on layer MESH, hidden lines removed{1}. AutoCAD 2000 format.':
+      'حُفِظ ملف DWG: عدد مخططات العيون {0} على الطبقة MESH، مع إزالة الخطوط المخفية{1}. بصيغة AutoCAD 2000.',
+    ', frame on FRAME and FRAME BACK': '، والإطار على الطبقتين FRAME وFRAME BACK',
+    ', hidden mesh cut edge dashed on MESH CUT': '، وحافة قصّ الشبك المخفية بخط متقطع على الطبقة MESH CUT',
+  },
+};
+let lang = 'EN';
+try { const saved = localStorage.getItem(LANG_KEY); if (LANGS.includes(saved)) lang = saved; } catch (e) { /* storage unavailable */ }
+function t(en, ...args) {
+  const s = (lang !== 'EN' && STR[lang][en]) || en;
+  return args.length ? s.replace(/\{(\d+)\}/g, (_, i) => args[i]) : s;
+}
+// fixed texts in the page carry their English text in data-t (content), data-t-aria (aria-label), data-t-title (title)
+function applyStaticText() {
+  document.documentElement.lang = lang.toLowerCase();
+  document.documentElement.dir = lang === 'AR' ? 'rtl' : 'ltr';
+  if (lang === 'AR' && !document.getElementById('arFont')) {
+    const link = document.createElement('link');
+    link.id = 'arFont'; link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap';
+    document.head.appendChild(link);
+  }
+  document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = t(el.dataset.t); });
+  document.querySelectorAll('[data-t-aria]').forEach((el) => el.setAttribute('aria-label', t(el.dataset.tAria)));
+  document.querySelectorAll('[data-t-title]').forEach((el) => el.setAttribute('title', t(el.dataset.tTitle)));
+  if (!document.querySelector('[data-exp][aria-busy]')) $('#busyLabel').textContent = t('Building');
+  document.querySelectorAll('.langs [data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+}
+function setLang(next) {
+  if (!LANGS.includes(next) || next === lang) return;
+  lang = next;
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* storage unavailable */ }
+  applyStaticText();
+  relabelControls();
+  syncUI();
+  if (cur) renderStats(cur);
+  resize();
+}
+
+// colours come from the stylesheet tokens (3D: --g3-*, 2D drawing: --d2-*)
+const css = getComputedStyle(root);
+const tok = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
+const TOK = {
+  vpBg: tok('--c-vp-bg', '#10100e'),
+  g3Mesh: tok('--g3-mesh', '#bfc2c5'), g3Frame: tok('--g3-frame', '#8c9096'), g3Dim: tok('--g3-dim', '#b8956a'),
+  d2Bg: tok('--d2-bg', '#10100e'), d2Ghost: tok('--d2-ghost', 'rgba(205,200,190,.16)'), d2Panel: tok('--d2-panel', '#16160f'),
+  d2Strand: tok('--d2-strand', '#cdc8be'),
+  d2Front: tok('--d2-frame-front', '#8a867d'), d2FrontLine: tok('--d2-frame-front-line', 'rgba(16,16,14,.7)'),
+  d2Back: tok('--d2-frame-back', '#5b5852'), d2BackLine: tok('--d2-frame-back-line', 'rgba(16,16,14,.55)'),
+  d2Outline: tok('--d2-outline', 'rgba(184,149,106,.7)'), d2Dim: tok('--d2-dim', '#b8956a'), d2DimText: tok('--d2-dim-text', '#d4b287'),
+  d2TagBg: tok('--d2-tag-bg', 'rgba(16,16,14,.92)'), d2TagLine: tok('--d2-tag-line', 'rgba(184,149,106,.35)'),
+  fMono: tok('--f-mono', '"IBM Plex Mono", monospace'),
+};
+
+// ======================================================================= state
+const state = {
+  mesh: { lwd: 75, swd: 25, w: 5, t: 2, r: 8 },
+  panel: { w: 1000, h: 600 },
+  frame: { type: 'u', flip: false },
+  fu: { a1: 25, t1: 2, b: 20, tw: 2, a2: 25, t2: 2 },   // U: leg 1, web, leg 2
+  fl: { a: 25, b: 20, t: 2 },                           // L: face leg, depth leg, wall
+  shift: { x: 0, y: 0 },
+  dir: 0,                                               // mesh direction: 0, 90 (CCW) or -90 (CW)
+  view: '3d',
+};
+let cur = null;            // latest build result
+let viewMode = 'fit';      // 'fit' | 'detail' | 'free'
+
+const fmt = (v, n = 2) => String(+(+v).toFixed(n));
+const signed = (v) => (v > 0 ? '+' : v < 0 ? '−' : '') + fmt(Math.abs(v), 1);
+
+// ======================================================================= icons
+const DIA = 'M3 18 L18.5 7.5 L25.5 7.5 L41 18 L25.5 28.5 L18.5 28.5 Z';
+const ICONS = {
+  r: `<svg viewBox="0 0 44 38" aria-hidden="true"><path class="ic-s" d="M2 30 L12 30 M22.7 25 L36 9" stroke-width="2.4"/><path class="ic-h" d="M12 30 A14 14 0 0 0 22.7 25" stroke-width="2.4"/><path class="ic-h" d="M12 16 L19.9 27.4" stroke-dasharray="1.6 1.8" stroke-width="1"/><circle class="ic-f" cx="12" cy="16" r="1.7"/><text x="27" y="34" font-size="8" font-family="IBM Plex Mono, monospace" fill="#b8956a">R</text></svg>`,
+  sx: `<svg viewBox="0 0 44 38" aria-hidden="true"><path class="ic-s" d="M2 22 L9 22 L19 12 L25 12 L35 22 L42 22" opacity=".7"/><path class="ic-h" d="M8 31 H36 M8 31 L12 28 M8 31 L12 34 M36 31 L32 28 M36 31 L32 34"/><path class="ic-s" d="M3 5 V27 M41 5 V27" stroke-dasharray="2 2"/></svg>`,
+  sy: `<svg viewBox="0 0 44 38" aria-hidden="true"><path class="ic-s" d="M2 21 L8 21 L16 13 L22 13 L30 21 L34 21" opacity=".7"/><path class="ic-h" d="M39 6 V32 M39 6 L36 10 M39 6 L42 10 M39 32 L36 28 M39 32 L42 28"/><path class="ic-s" d="M2 4 H34 M2 34 H34" stroke-dasharray="2 2"/></svg>`,
+  lwd: `<svg viewBox="0 0 44 38" aria-hidden="true"><path class="ic-s" d="M12 7 L22 -1 L32 7 M12 23 L22 31 L32 23" opacity=".45"/><path class="ic-s" d="M2 15 L12 7 L22 15 L12 23 Z M22 15 L32 7 L42 15 L32 23 Z"/><path class="ic-h" d="M12 15 V37 M32 15 V37" stroke-dasharray="1.6 1.8" stroke-width="1" opacity=".75"/><path class="ic-h" d="M12 35 H32 M12 35 l3.2 -2.2 M12 35 l3.2 2.2 M32 35 l-3.2 -2.2 M32 35 l-3.2 2.2"/><circle class="ic-f" cx="12" cy="15" r="1.7"/><circle class="ic-f" cx="32" cy="15" r="1.7"/></svg>`,
+  swd: `<svg viewBox="0 0 44 38" aria-hidden="true"><path class="ic-s" d="M27 10 L37 19 L27 28" opacity=".45"/><path class="ic-s" d="M7 10 L17 1 L27 10 L17 19 Z M7 28 L17 19 L27 28 L17 37 Z"/><path class="ic-h" d="M17 10 H43 M17 28 H43" stroke-dasharray="1.6 1.8" stroke-width="1" opacity=".75"/><path class="ic-h" d="M40 10 V28 M40 10 l-2.2 3.2 M40 10 l2.2 3.2 M40 28 l-2.2 -3.2 M40 28 l2.2 -3.2"/><circle class="ic-f" cx="17" cy="10" r="1.7"/><circle class="ic-f" cx="17" cy="28" r="1.7"/></svg>`,
+  w: `<svg viewBox="0 0 44 38" aria-hidden="true"><path class="ic-s" d="M2 28 L16 28 L32 12 L42 12"/><path class="ic-f" d="M2 28 L16 28 L32 12 L42 12 L42 18 L34 18 L18 34 L2 34 Z" fill-opacity=".55"/><path class="ic-h" d="M26 17 L30 21.5"/><path class="ic-h" d="M24.5 15.5 L27.5 18.5 M28.5 20 L31.5 23"/></svg>`,
+  t: `<svg viewBox="0 0 44 38" aria-hidden="true"><path class="ic-s" d="M3 24 L18 24 L26 14 L41 14"/><path class="ic-f" d="M3 24 L18 24 L26 14 L41 14 L41 18 L28 18 L20 28 L3 28 Z"/><path class="ic-h" d="M37 6 V14 M37 18 V26 M34 14 H40 M34 18 H40"/></svg>`,
+  pw: `<svg viewBox="0 0 44 38" aria-hidden="true"><rect class="ic-s" x="5" y="6" width="34" height="20"/><path class="ic-s" d="M5 16 L13 11 L21 16 L29 11 L39 16" opacity=".6"/><path class="ic-h" d="M5 33 H39 M5 30 V36 M39 30 V36"/></svg>`,
+  ph: `<svg viewBox="0 0 44 38" aria-hidden="true"><rect class="ic-s" x="4" y="5" width="28" height="28"/><path class="ic-s" d="M4 19 L11 14 L18 19 L25 14 L32 19" opacity=".6"/><path class="ic-h" d="M39 5 V33 M36 5 H42 M36 33 H42"/></svg>`,
+};
+
+// frame sections in a 44 x 38 box: outer wall on the left, the mesh enters from
+// the right, the front of the panel at the top. Flip mirrors about y = 18.
+const SEC = { u: 'M7 6 H31 V9.5 H10.5 V26.5 H31 V30 H7 Z', l: 'M7 6 H31 V9.5 H10.5 V30 H7 Z' };
+const PART = { top: 'M7 6 H31 V9.5 H7 Z', web: 'M7 6 H10.5 V30 H7 Z', bottom: 'M7 26.5 H31 V30 H7 Z' };
+const DIM = {
+  top: 'M7 2.5 H31 M7 0.8 V4.2 M31 0.8 V4.2',
+  bottom: 'M7 33.5 H31 M7 31.8 V35.2 M31 31.8 V35.2',
+  depth: 'M2.5 6 V30 M0.8 6 H4.2 M0.8 30 H4.2',
+};
+const MESH_IN = { u: 'M13 18 H44', l: 'M13 11.2 H44' };
+const meshLine = (d) => `<path class="ic-s" d="${d}" stroke-width="2.6" stroke-dasharray="3.2 1.8" stroke-linejoin="miter"/>`;
+// the stylesheet mirrors every .mir group about y = 18 when data-flipped="true"
+const mirror = (inner) => `<g class="mir">${inner}</g>`;
+// what each frame control marks on its icon: a dimension line or a part of the section
+const FRAME_MARK = {
+  u: { a1: ['dim', 'top'], t1: ['part', 'top'], b: ['dim', 'depth'], tw: ['part', 'web'], a2: ['dim', 'bottom'], t2: ['part', 'bottom'] },
+  l: { a: ['dim', 'top'], b: ['dim', 'depth'], t: ['part', 'all'] },
+};
+function frameIcon(type, key) {
+  const [kind, which] = FRAME_MARK[type][key];
+  let g = `<path class="${which === 'all' ? 'ic-f' : 'ic-p'}" d="${SEC[type]}"/>`;
+  if (kind === 'part' && which !== 'all') g += `<path class="ic-f" d="${PART[which]}"/>`;
+  g += meshLine(MESH_IN[type]);
+  if (kind === 'dim') g += `<path class="ic-h" d="${DIM[which]}"/>`;
+  return `<svg class="ctl__ico ico" viewBox="0 0 44 38" aria-hidden="true">${mirror(g)}</svg>`;
+}
+function typeIcon(type) {
+  if (type === 'none') return `<svg class="ptype__ico ico" viewBox="0 2 44 32" aria-hidden="true">${meshLine('M7 18 H44')}<path class="ic-s" d="M5 8 V28" stroke-dasharray="2 2"/></svg>`;
+  return `<svg class="ptype__ico ico" viewBox="0 2 44 32" aria-hidden="true">${mirror(`<path class="ic-p" d="${SEC[type]}"/>${meshLine(MESH_IN[type])}`)}</svg>`;
+}
+const PROFILE_TYPES = [{ type: 'none', label: 'None' }, { type: 'u', label: 'U channel' }, { type: 'l', label: 'L angle' }];
+
+// ==================================================================== controls
+// grp: controls in the same group sit together, with a hairline between groups
+const CONTROLS = [
+  { group: 'mesh', grp: 1, key: 'lwd', code: 'LWD', name: 'Eye width', min: 10, max: 200, step: 0.5, icon: 'lwd' },
+  { group: 'mesh', grp: 1, key: 'swd', code: 'SWD', name: 'Eye height', min: 5, max: 100, step: 0.5, icon: 'swd' },
+  { group: 'mesh', grp: 2, key: 'w', code: 'W', name: 'Strand width', min: 0.5, max: 20, step: 0.1, icon: 'w' },
+  { group: 'mesh', grp: 2, key: 't', code: 'T', name: 'Thickness', min: 0.3, max: 8, step: 0.1, icon: 't' },
+  { group: 'mesh', grp: 3, key: 'r', code: 'R', name: 'Bend radius', min: 0, max: 100, step: 0.5, icon: 'r' },
+  { group: 'panel', grp: 1, key: 'w', code: 'Width', name: 'along LWD', min: 100, max: 3000, step: 10, icon: 'pw' },
+  { group: 'panel', grp: 1, key: 'h', code: 'Height', name: 'along SWD', min: 100, max: 2000, step: 10, icon: 'ph' },
+  { group: 'fu', grp: 1, key: 'a1', code: 'A1', name: 'Front leg', min: 5, max: 150, step: 0.5 },
+  { group: 'fu', grp: 1, key: 't1', code: 't1', name: 'Front thickness', min: 1, max: 6, step: 0.1 },
+  { group: 'fu', grp: 2, key: 'b', code: 'B', name: 'Web depth', min: 5, max: 150, step: 0.5 },
+  { group: 'fu', grp: 2, key: 'tw', code: 'tw', name: 'Web thickness', min: 1, max: 6, step: 0.1 },
+  { group: 'fu', grp: 3, key: 'a2', code: 'A2', name: 'Back leg', min: 5, max: 150, step: 0.5 },
+  { group: 'fu', grp: 3, key: 't2', code: 't2', name: 'Back thickness', min: 1, max: 6, step: 0.1 },
+  { group: 'fl', grp: 1, key: 'a', code: 'A', name: 'Face leg', min: 5, max: 150, step: 0.5 },
+  { group: 'fl', grp: 1, key: 'b', code: 'B', name: 'Depth leg', min: 5, max: 150, step: 0.5 },
+  { group: 'fl', grp: 2, key: 't', code: 't', name: 'Wall thickness', min: 1, max: 6, step: 0.1 },
+  { group: 'shift', grp: 1, key: 'x', code: 'Shift X', name: 'along LWD', min: -37.5, max: 37.5, step: 0.1, icon: 'sx' },
+  { group: 'shift', grp: 1, key: 'y', code: 'Shift Y', name: 'along SWD', min: -12.5, max: 12.5, step: 0.1, icon: 'sy' },
+];
+const HOLDER = { mesh: '#meshControls', panel: '#panelControls', fu: '#frameControlsU', fl: '#frameControlsL', shift: '#shiftControls' };
+const DIRS = [0, 90, -90];
+const ui = {};
+
+function buildControls() {
+  const groups = new Map();
+  for (const c of CONTROLS) {
+    const id = `${c.group}-${c.key}`;
+    const gk = c.group + c.grp;
+    if (!groups.has(gk)) {
+      const g = document.createElement('div');
+      g.className = 'grp';
+      $(HOLDER[c.group]).appendChild(g);
+      groups.set(gk, g);
+    }
+    const el = document.createElement('div');
+    el.className = 'ctl';
+    el.innerHTML = `${c.icon ? ICONS[c.icon].replace('<svg ', '<svg class="ctl__ico ico" ') : frameIcon(c.group === 'fu' ? 'u' : 'l', c.key)}
+      <label class="ctl__label" for="${id}-n"><b class="ctl__code">${t(c.code)}</b><span class="ctl__name" id="${id}-name">${t(c.name)}</span></label>
+      <div class="ctl__field field"><input class="field__input" id="${id}-n" type="number" inputmode="decimal" min="${c.min}" max="${c.max}" step="${c.step}"><span class="field__unit">mm</span></div>
+      <input class="ctl__slider slider" id="${id}-r" type="range" min="${c.min}" max="${c.max}" step="${c.step}" aria-label="${t('{0} {1}, millimetres', t(c.code), t(c.name))}">
+      <p class="ctl__hint" id="${id}-h"></p>`;
+    groups.get(gk).appendChild(el);
+    const r = el.querySelector('.slider'), n = el.querySelector('.field__input'), h = el.querySelector('.ctl__hint');
+    ui[id] = { c, el, r, n, h, code: el.querySelector('.ctl__code'), name: el.querySelector('.ctl__name'), max: c.max, min: c.min };
+    r.addEventListener('input', () => setValue(c, +r.value));
+    n.addEventListener('input', () => {
+      const v = parseFloat(n.value);
+      if (Number.isFinite(v) && v >= ui[id].min && v <= ui[id].max) setValue(c, v, true);
+    });
+    n.addEventListener('change', () => {
+      let v = parseFloat(n.value);
+      if (!Number.isFinite(v)) v = state[c.group][c.key];
+      setValue(c, Math.min(ui[id].max, Math.max(ui[id].min, v)));
+    });
+    n.addEventListener('keydown', (e) => { if (e.key === 'Enter') n.blur(); });
+  }
+  // profile type: None / U / L
+  const pt = $('#ptype');
+  for (const p of PROFILE_TYPES) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ptype__opt'; b.dataset.ftype = p.type; b.setAttribute('role', 'radio');
+    b.innerHTML = `${typeIcon(p.type)}<span class="ptype__lab">${t(p.label)}</span>`;
+    b.addEventListener('click', () => setFrameType(p.type));
+    pt.appendChild(b);
+  }
+  radioKeys(pt, () => PROFILE_TYPES.map((p) => p.type), () => state.frame.type, setFrameType, (v) => `[data-ftype="${v}"]`);
+  // flip: mirror the profile front to back
+  $('#flipBtn').addEventListener('click', () => { state.frame.flip = !state.frame.flip; syncUI(); requestBuild(); });
+  // mesh direction: 0 / +90 / -90
+  const md = $('#meshDir');
+  md.querySelectorAll('[data-rot]').forEach((b) => b.addEventListener('click', () => setDir(+b.dataset.rot)));
+  radioKeys(md, () => DIRS, () => state.dir, setDir, (v) => `[data-rot="${v}"]`);
+}
+// arrow keys move the choice in a radiogroup (mirrored in right-to-left layouts)
+function radioKeys(group, values, current, set, sel) {
+  group.addEventListener('keydown', (e) => {
+    let step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!step) return;
+    e.preventDefault();
+    if (document.documentElement.dir === 'rtl' && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) step = -step;
+    const list = values(), i = list.indexOf(current());
+    const next = list[(i + step + list.length) % list.length];
+    set(next);
+    group.querySelector(sel(next)).focus();
+  });
+}
+// control labels in the current language (names that follow the frame or the direction are set in syncUI)
+function relabelControls() {
+  for (const id in ui) {
+    const { c, code, name, r } = ui[id];
+    code.textContent = t(c.code);
+    name.textContent = t(c.name);
+    r.setAttribute('aria-label', t('{0} {1}, millimetres', t(c.code), t(c.name)));
+  }
+  document.querySelectorAll('#ptype [data-ftype]').forEach((b) => {
+    b.querySelector('.ptype__lab').textContent = t(PROFILE_TYPES.find((p) => p.type === b.dataset.ftype).label);
+  });
+}
+function setDir(d) {
+  if (state.dir === d) return;
+  state.dir = d;
+  applyConstraints();
+  syncUI();
+  requestBuild();
+}
+function setFrameType(type) {
+  if (state.frame.type === type) return;
+  state.frame.type = type;
+  applyConstraints();
+  syncUI();
+  requestBuild();
+}
+
+function setValue(c, v, fromTyping = false) {
+  state[c.group][c.key] = v;
+  applyConstraints();
+  syncUI(fromTyping ? `${c.group}-${c.key}` : null);
+  requestBuild();
+}
+
+let wCapFlash = -1e9, wCapTimer = 0, rCapFlash = -1e9, rCapTimer = 0, bCapFlash = -1e9, bCapTimer = 0;
+const KF = new Function(KERNEL + '\nreturn { derive, meshDepth };')();
+const kernelDerive = KF.derive;
+let meshD = 0, frameBMin = 0;   // mesh depth and the smallest frame depth that holds it
+function applyConstraints() {
+  const m = state.mesh;
+  const wMax = Math.max(0.5, Math.floor(Math.min(20, 0.4 * m.swd) * 10 + 1e-9) / 10);
+  const W = ui['mesh-w'];
+  W.max = wMax; W.r.max = wMax; W.n.max = wMax;
+  if (m.w > wMax) {
+    m.w = wMax; wCapFlash = performance.now();
+    clearTimeout(wCapTimer); wCapTimer = setTimeout(() => syncUI(document.activeElement?.id), 2600);
+  }
+  // bend radius limited by what fits the eye at these settings
+  const rMax = Math.max(0, Math.floor(kernelDerive({ lwd: m.lwd, swd: m.swd, w: m.w, t: m.t, r: 0 }).rMax * 2 + 1e-9) / 2);
+  const RU = ui['mesh-r'];
+  RU.max = rMax; RU.r.max = rMax; RU.n.max = rMax;
+  if (m.r > rMax) {
+    m.r = rMax; rCapFlash = performance.now();
+    clearTimeout(rCapTimer); rCapTimer = setTimeout(() => syncUI(document.activeElement?.id), 2600);
+  }
+  // frame: the depth must hold the mesh (U: between both legs, L: behind the face leg),
+  // legs must reach past the outer wall, and leave an opening in the panel
+  const f = state.frame, U = state.fu, L = state.fl;
+  meshD = KF.meshDepth({ lwd: m.lwd, swd: m.swd, w: m.w, t: m.t, r: m.r });
+  const half = (v) => Math.ceil(v * 2 - 1e-9) / 2;
+  const range = (id, min, max) => { const u = ui[id]; u.min = min; u.max = max; u.r.min = u.n.min = min; u.r.max = u.n.max = max; };
+  const legMax = Math.max(10, Math.min(150, Math.floor((Math.min(state.panel.w, state.panel.h) / 2 - 10) * 2) / 2));
+  const uBMin = half(meshD + U.t1 + U.t2), uLegMin = Math.max(5, half(U.tw + 1));
+  range('fu-b', uBMin, Math.max(150, uBMin));
+  range('fu-a1', uLegMin, legMax); range('fu-a2', uLegMin, legMax);
+  U.a1 = Math.min(legMax, Math.max(uLegMin, U.a1)); U.a2 = Math.min(legMax, Math.max(uLegMin, U.a2));
+  const lBMin = half(meshD + L.t), lAMin = Math.max(5, half(L.t + 1));
+  range('fl-b', lBMin, Math.max(150, lBMin)); range('fl-a', lAMin, legMax);
+  L.a = Math.min(legMax, Math.max(lAMin, L.a));
+  frameBMin = f.type === 'l' ? lBMin : uBMin;
+  const G = f.type === 'l' ? L : U;
+  if (f.type !== 'none' && G.b < frameBMin) {
+    G.b = frameBMin; bCapFlash = performance.now();
+    clearTimeout(bCapTimer); bCapTimer = setTimeout(() => syncUI(document.activeElement?.id), 2600);
+  }
+  if (f.type !== 'u') U.b = Math.max(U.b, uBMin);
+  if (f.type !== 'l') L.b = Math.max(L.b, lBMin);
+  // pattern shift covers one diamond: half an eye each way, along LWD and along SWD
+  // (turning the mesh swaps which panel direction each one runs in)
+  const hl = Math.floor(m.lwd / 2 * 10) / 10, hs = Math.floor(m.swd / 2 * 10) / 10;
+  const lim = state.dir ? { x: hs, y: hl } : { x: hl, y: hs };
+  for (const k of ['x', 'y']) {
+    const u = ui['shift-' + k];
+    u.min = -lim[k]; u.max = lim[k];
+    u.r.min = u.n.min = -lim[k]; u.r.max = u.n.max = lim[k];
+    state.shift[k] = Math.max(-lim[k], Math.min(lim[k], state.shift[k]));
+  }
+}
+
+function syncUI(skipNumId) {
+  for (const id in ui) {
+    const { c, r, n } = ui[id];
+    const v = state[c.group][c.key];
+    r.value = v;
+    const min = +r.min, max = +r.max;
+    r.style.setProperty('--pct', `${((v - min) / (max - min)) * 100}%`);
+    if (id !== skipNumId) n.value = fmt(v, 2);
+  }
+  const m = state.mesh;
+  const recentCap = performance.now() - wCapFlash < 2500;
+  setHint('mesh-w', t(recentCap ? 'Reduced to fit SWD. Max {0} mm at this SWD.' : 'Max {0} mm at this SWD.', fmt(ui['mesh-w'].max, 1)), recentCap);
+  setHint('mesh-t', m.t > m.w ? t('Thicker than the strand width. Unusual for expanded mesh.') : '', true);
+  setHint('mesh-lwd', m.lwd < m.swd ? t('LWD is normally the longer of the two.') : '', true);
+  const rCap = performance.now() - rCapFlash < 2500;
+  const dr = kernelDerive(m);
+  const rMaxTxt = t('Max {0} mm at these eye sizes.', fmt(ui['mesh-r'].max, 1));
+  const rNote = m.r === 0 ? t('Sharp bends.') + ' '
+    : dr.bond < 2 * dr.a - 0.05 ? (dr.bond < 0.3 ? t('One smooth S-curve, no flat bond.') : t('Bond flat shortened to {0} mm.', fmt(dr.bond, 1))) + ' '
+    : '';
+  setHint('mesh-r', rCap ? t('Reduced to fit the eye. {0}', rMaxTxt) : rNote + rMaxTxt, rCap);
+  const sh = state.shift;
+  setHint('shift-x', t('±{0} mm, half an eye each way.', fmt(ui['shift-x'].max, 1)), false);
+  setHint('shift-y', t('±{0} mm, half an eye each way.', fmt(ui['shift-y'].max, 1)), false);
+  $('#btnCentre').disabled = !sh.x && !sh.y;
+  // frame
+  const f = state.frame, framed = f.type !== 'none', p = state.panel, U = state.fu, L = state.fl;
+  // the stylesheet shows the right frame controls and mirrors the icons from these
+  root.dataset.frame = f.type;
+  root.dataset.flipped = String(f.flip);
+  root.dataset.rot = String(state.dir);
+  document.querySelectorAll('#ptype [data-ftype]').forEach((b) => {
+    const on = b.dataset.ftype === f.type;
+    b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1;
+  });
+  $('#flipBtn').setAttribute('aria-checked', String(f.flip));
+  $('#flipSub').textContent = f.type === 'l' ? t(f.flip ? 'Face leg on the back' : 'Face leg on the front') : t('Leg {0} on the front', f.flip ? 'A2' : 'A1');
+  // mesh direction
+  const turned = state.dir !== 0;
+  document.querySelectorAll('#meshDir [data-rot]').forEach((b) => {
+    const on = +b.dataset.rot === state.dir;
+    b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1;
+  });
+  $('#meshDirName').textContent = t(turned ? 'LWD along the height' : 'LWD along the width');
+  $('#meshDirHint').textContent = state.dir === 90 ? t('Turned 90° counter-clockwise.') : state.dir === -90 ? t('Turned 90° clockwise.') : '';
+  ui['panel-w'].name.textContent = t(turned ? 'along SWD' : 'along LWD');
+  ui['panel-h'].name.textContent = t(turned ? 'along LWD' : 'along SWD');
+  ui['shift-x'].name.textContent = t(turned ? 'along SWD' : 'along LWD');
+  ui['shift-y'].name.textContent = t(turned ? 'along LWD' : 'along SWD');
+  // U legs are named by where they sit: flipping moves leg A1 to the back
+  ui['fu-a1'].name.textContent = t(f.flip ? 'Back leg' : 'Front leg');
+  ui['fu-t1'].name.textContent = t(f.flip ? 'Back thickness' : 'Front thickness');
+  ui['fu-a2'].name.textContent = t(f.flip ? 'Front leg' : 'Back leg');
+  ui['fu-t2'].name.textContent = t(f.flip ? 'Front thickness' : 'Back thickness');
+  const opening = (band) => t('Opening {0} × {1} mm.', fmt(p.w - 2 * band, 1), fmt(p.h - 2 * band, 1));
+  const bCap = performance.now() - bCapFlash < 2500;
+  const bTxt = t('Min {0} mm to hold the {1} mm deep mesh.', fmt(frameBMin, 1), fmt(meshD, 1));
+  const bHint = [bCap && framed ? t('Raised to hold the mesh. {0}', bTxt) : bTxt, bCap && framed];
+  const [frontLeg, backLeg] = f.flip ? ['a2', 'a1'] : ['a1', 'a2'];
+  setHint('fu-' + frontLeg, opening(U[frontLeg]), false);
+  setHint('fu-' + backLeg, t('Behind the mesh.'), false);
+  setHint('fu-b', ...(f.type === 'u' ? bHint : [t('Min {0} mm to hold the {1} mm deep mesh.', fmt(ui['fu-b'].min, 1), fmt(meshD, 1)), false]));
+  setHint('fu-tw', t('Mesh cut {0} × {1} mm.', fmt(p.w - 2 * U.tw, 1), fmt(p.h - 2 * U.tw, 1)), false);
+  setHint('fu-t1', U.t1 >= U.a1 / 2 ? t('Thick for this leg.') : '', true);
+  setHint('fu-t2', U.t2 >= U.a2 / 2 ? t('Thick for this leg.') : '', true);
+  setHint('fl-a', f.flip ? `${t('Behind the mesh.')} ${opening(L.t)}` : opening(L.a), false);
+  setHint('fl-b', ...(f.type === 'l' ? bHint : [t('Min {0} mm to hold the {1} mm deep mesh.', fmt(ui['fl-b'].min, 1), fmt(meshD, 1)), false]));
+  setHint('fl-t', L.t >= L.a / 2 ? t('Thick for this face leg.') : '', true);
+  $('#frameFoot').textContent = t({
+    none: 'No frame. The mesh is cut to the full panel size.',
+    u: 'Panel size is the outside of the frame. The mesh edge sits in the channel, centred between the legs, and is cut to the inside face of the web. Flip swaps the front and back legs. Corners are mitred at 45°.',
+    l: f.flip
+      ? 'Panel size is the outside of the frame. The face leg covers the back of the mesh edge, and the mesh is cut to the inside face of the outer leg. Corners are mitred at 45°.'
+      : 'Panel size is the outside of the frame. The face leg covers the front of the mesh edge, and the mesh is cut to the inside face of the outer leg. Corners are mitred at 45°.',
+  }[f.type]);
+  const code = [m.lwd, m.swd, m.w, m.t].map((v) => fmt(v, 2)).join('<i>×</i>');
+  $('#specCode').innerHTML = code;
+  $('#titleTag').innerHTML = `<b>${[m.lwd, m.swd, m.w, m.t].map((v) => fmt(v, 2)).join(' × ')}</b>${turned ? ` &nbsp;·&nbsp; ${t('mesh {0}90°', state.dir > 0 ? '+' : '−')}` : ''} &nbsp;·&nbsp; ${t('panel {0} × {1} mm', fmt(p.w, 0), fmt(p.h, 0))}${framed ? ` &nbsp;·&nbsp; ${t('{0} frame', frameCode(frameParams(), '×'))}${f.flip ? t(', flipped') : ''}` : ''}${sh.x || sh.y ? ` &nbsp;·&nbsp; ${t('shift {0} / {1}', signed(sh.x), signed(sh.y))}` : ''}`;
+}
+// the frame as the kernel takes it, or null
+function frameParams() {
+  const f = state.frame;
+  return f.type === 'none' ? null : { type: f.type, flip: f.flip, ...(f.type === 'u' ? state.fu : state.fl) };
+}
+// profile code in physical order, front leg first: U 25×20×2, U 40/15×24×3/4/1.5, L 25×20×2
+function frameCode(fp, sep) {
+  if (fp.type === 'l') return `L ${[fp.a, fp.b, fp.t].map((v) => fmt(v, 2)).join(sep)}`;
+  const [af, tf, ab, tb] = fp.flip ? [fp.a2, fp.t2, fp.a1, fp.t1] : [fp.a1, fp.t1, fp.a2, fp.t2];
+  const A = af === ab ? fmt(af, 2) : `${fmt(af, 2)}/${fmt(ab, 2)}`;
+  const T = tf === fp.tw && tb === fp.tw ? fmt(fp.tw, 2) : `${fmt(tf, 2)}/${fmt(fp.tw, 2)}/${fmt(tb, 2)}`;
+  return `U ${A}${sep}${fmt(fp.b, 2)}${sep}${T}`;
+}
+function frameLegend(fp) {
+  if (fp.type === 'l') return 'A x B x t' + (fp.flip ? ', FACE LEG ON THE BACK' : '');
+  const [af, tf, ab, tb] = fp.flip ? [fp.a2, fp.t2, fp.a1, fp.t1] : [fp.a1, fp.t1, fp.a2, fp.t2];
+  return `${af === ab ? 'A' : 'A FRONT/BACK'} x B x ${tf === fp.tw && tb === fp.tw ? 't' : 't FRONT/WEB/BACK'}`;
+}
+function setHint(id, text, warn) {
+  // every call passes warn only for warning texts (a cap just applied, an unusual value), so the text itself is not checked
+  const h = ui[id].h; h.textContent = text; h.classList.toggle('warn', !!warn && !!text);
+}
+
+// ====================================================================== worker
+const WORKER_GLUE = `
+function packPolys(list) {
+  let n = 0; for (const p of list) n += p.length;
+  const pts = new Float32Array(n), offs = new Int32Array(list.length + 1);
+  let o = 0;
+  list.forEach((p, i) => { offs[i] = o; pts.set(p, o); o += p.length; });
+  offs[list.length] = o;
+  return [pts, offs];
+}
+function packElev(e, id) {
+  let n = 0; for (const p of e.pieces) n += p.pts.length;
+  const pts = new Float64Array(n), offs = new Int32Array(e.pieces.length + 1), closed = new Uint8Array(e.pieces.length);
+  let o = 0;
+  e.pieces.forEach((p, i) => { offs[i] = o; pts.set(p.pts, o); o += p.pts.length; closed[i] = p.closed ? 1 : 0; });
+  offs[e.pieces.length] = o;
+  return { type: 'elev', id, pts, offs, closed, back: e.back, eyes: e.eyes };
+}
+function pack(g, id) {
+  const [pts, offs] = packPolys(g.outlines), [gpts, goffs] = packPolys(g.ghost);
+  return { id, tris: g.tris, frameTris: g.frameTris, frame: g.frame, meshRect: g.meshRect, pts, offs, gpts, goffs, stats: g.stats, region: g.region, cropped: g.cropped, d: g.d, depth: g.lay.depth, arcSeg: g.arcSeg };
+}`;
+let worker = null, localRun = null;
+let localStep = null, localElev = null;
+function runLocalElev(job) {
+  if (!localElev) localElev = new Function(KERNEL + WORKER_GLUE + '\nreturn (job) => packElev(elevation(job.inp, job.panel, job.arcSeg), job.id);')();
+  return localElev(job);
+}
+function runLocalStep(job) {
+  if (!localStep) localStep = new Function(KERNEL + '\nreturn generateSTEP;')();
+  const st = localStep(job.inp, job.panel, job.meta);
+  return { type: 'step', id: job.id, bytes: new TextEncoder().encode(st.text), solids: st.solids, faces: st.faces, cropped: st.cropped, region: st.region, framed: st.framed };
+}
+function runLocal(job) {
+  if (!localRun) localRun = new Function(KERNEL + WORKER_GLUE + '\nreturn (job) => pack(generate(job.inp, job.panel), job.id);')();
+  const r = localRun(job); r.panel = job.panel; r.inp = job.inp; return r;
+}
+try {
+  const src = KERNEL + WORKER_GLUE + `
+self.onmessage = (e) => {
+  const job = e.data;
+  if (job.type === 'elev') {
+    const r = packElev(elevation(job.inp, job.panel, job.arcSeg), job.id);
+    self.postMessage(r, [r.pts.buffer, r.offs.buffer, r.closed.buffer]);
+    return;
+  }
+  if (job.type === 'step') {
+    const st = generateSTEP(job.inp, job.panel, job.meta);
+    const bytes = new TextEncoder().encode(st.text);
+    self.postMessage({ type: 'step', id: job.id, bytes, solids: st.solids, faces: st.faces, cropped: st.cropped, region: st.region, framed: st.framed }, [bytes.buffer]);
+    return;
+  }
+  const r = pack(generate(job.inp, job.panel), job.id);
+  r.panel = job.panel; r.inp = job.inp;
+  self.postMessage(r, [r.tris.buffer, r.frameTris.buffer, r.pts.buffer, r.offs.buffer, r.gpts.buffer, r.goffs.buffer]);
+};`;
+  worker = new Worker(URL.createObjectURL(new Blob([src], { type: 'text/javascript' })));
+  worker.onmessage = (e) => (e.data.type === 'step' || e.data.type === 'elev' ? onStep(e.data) : onResult(e.data));
+  worker.onerror = () => { worker = null; busy = false; requestBuild(); };
+} catch (err) { worker = null; }
+
+let busy = false, pending = null, reqId = 0, busyTimer = 0;
+function requestBuild() {
+  pending = { inp: { ...state.mesh }, panel: { ...state.panel, sx: state.shift.x, sy: state.shift.y, rot: state.dir, frame: frameParams() } };
+  if (!busy) dispatch();
+}
+function dispatch() {
+  if (!pending) return;
+  const job = pending; pending = null; busy = true; job.id = ++reqId;
+  clearTimeout(busyTimer);
+  busyTimer = setTimeout(() => { $('#busy').hidden = false; }, 140);
+  if (worker) worker.postMessage(job);
+  else setTimeout(() => onResult(runLocal(job)), 0);
+}
+function onResult(r) {
+  busy = false;
+  const prevPanel = cur?.panel;
+  cur = r;
+  apply3D(r, prevPanel);
+  apply2D(r, prevPanel);
+  renderStats(r);
+  if (pending) dispatch();
+  else { clearTimeout(busyTimer); if (!exporting) $('#busy').hidden = true; }
+}
+
+// ====================================================================== stats
+function renderStats(r) {
+  const s = r.stats, p = r.panel;
+  const rows = [
+    [t('Panel'), `${fmt(p.w, 0)} × ${fmt(p.h, 0)} mm`, true],
+    [t('Panel area'), `${(p.w * p.h / 1e6).toFixed(3)} m²`],
+    r.frame && [t('Mesh cut'), `${fmt(s.cutW, 1)} × ${fmt(s.cutH, 1)} mm`, true],
+    [t('Eyes quantity'), `W ${s.diamondsX.toFixed(1)} × L ${s.diamondsZ.toFixed(1)}`],
+    [t('Open area'), `${(s.openArea * 100).toFixed(1)} %`, true],
+    [t('Mesh depth'), `${s.depth.toFixed(1)} mm`],
+    r.frame && [t('Profile length'), `${(s.frameLength / 1000).toFixed(2)} m`],
+  ].filter(Boolean);
+  $('#stats').innerHTML = rows.map(([k, v, hl]) => `<dt>${k}</dt><dd${hl ? ' class="hl"' : ''}>${v}</dd>`).join('');
+  $('#statsFoot').textContent = t('Eyes quantity: W counts eyes across the mesh width, L counts them along the mesh height. Part-eyes cut at the edges show as decimals.')
+    + (r.frame ? ' ' + t('Profile length is the outside edge of the four mitred pieces.') : '');
+  const rg = r.region;
+  if (r.cropped) {
+    $('#bannerText').innerHTML = t('Live 3D shows the centre <b>{0} × {1} mm</b> of the mesh. The full panel is too dense to render in 3D at this mesh size. The 2D view and DWG cover the whole panel.', fmt(rg.x1 - rg.x0, 0), fmt(rg.z1 - rg.z0, 0));
+  }
+  const mb = s.stepMB < 1 ? '< 1' : `≈ ${Math.round(s.stepMB)}`;
+  $('#stepSub').textContent = t(s.stepCropped ? '3D solids · centre detail · {0} MB' : '3D solids · {0} MB', mb);
+  $('#banner').hidden = !r.cropped || state.view !== '3d';
+  updateHud();
+}
+
+// ========================================================================== 3D
+const vp3 = $('#vp3d'), canvas3 = $('#c3d');
+const renderer = new THREE.WebGLRenderer({ canvas: canvas3, antialias: true, preserveDrawingBuffer: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.98;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(TOK.vpBg);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(32, 1, 1, 100000);
+const controls = new OrbitControls(camera, canvas3);
+controls.enableDamping = true;
+controls.dampingFactor = 0.09;
+controls.screenSpacePanning = true;
+controls.zoomToCursor = true;
+controls.minDistance = 4;
+controls.addEventListener('start', () => { viewMode = 'free'; });
+
+const meshMat = new THREE.MeshStandardMaterial({ color: TOK.g3Mesh, metalness: 0.88, roughness: 0.34 });
+const meshObj = new THREE.Mesh(new THREE.BufferGeometry(), meshMat);
+scene.add(meshObj);
+const keyLight = new THREE.DirectionalLight(0xfff3e2, 1.5);
+keyLight.position.set(0.5, 0.9, 1);
+scene.add(keyLight);
+scene.add(new THREE.HemisphereLight(0xf2ece2, 0x16140f, 0.3));
+
+// aluminium frame profiles
+const profMat = new THREE.MeshStandardMaterial({ color: TOK.g3Frame, metalness: 0.78, roughness: 0.5 });
+const profObj = new THREE.Mesh(new THREE.BufferGeometry(), profMat);
+scene.add(profObj);
+
+const outlineMat = new THREE.LineBasicMaterial({ color: TOK.g3Dim, transparent: true, opacity: 0.45 });
+const dimMat = new THREE.LineBasicMaterial({ color: TOK.g3Dim });
+const outlineObj = new THREE.LineLoop(new THREE.BufferGeometry(), outlineMat);
+const dimObj = new THREE.LineSegments(new THREE.BufferGeometry(), dimMat);
+scene.add(outlineObj, dimObj);
+
+const labelsEl = $('#labels3d');
+const lblW = document.createElement('div'), lblH = document.createElement('div');
+lblW.className = lblH.className = 'ov-dim num';
+labelsEl.append(lblW, lblH);
+const anchorW = new THREE.Vector3(), anchorH = new THREE.Vector3();
+
+function dimOffset(p) { return Math.max(18, 0.045 * Math.max(p.w, p.h)); }
+
+// kernel (X, Y, Z) -> three (x, y, z): panel centred, Z up, -Y towards the viewer
+function toGeometry(src, W2, H2) {
+  const pos = new Float32Array(src.length);
+  for (let i = 0; i < src.length; i += 3) {
+    pos[i] = src[i] - W2; pos[i + 1] = src[i + 2] - H2; pos[i + 2] = -src[i + 1];
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.computeVertexNormals();
+  geo.computeBoundingSphere();
+  return geo;
+}
+function apply3D(r, prevPanel) {
+  const p = r.panel, W2 = p.w / 2, H2 = p.h / 2;
+  meshObj.geometry.dispose();
+  meshObj.geometry = toGeometry(r.tris, W2, H2);
+  profObj.geometry.dispose();
+  profObj.geometry = toGeometry(r.frameTris, W2, H2);
+  profObj.visible = r.frameTris.length > 0;
+
+  // panel outline and dimension lines, on the front face of the mesh or frame
+  const zf = Math.max(r.depth / 2, r.frame ? -r.frame.vMin : 0) + 0.2;
+  const off = dimOffset(p), ext = off * 0.3, tk = off * 0.18;
+  outlineObj.geometry.dispose();
+  outlineObj.geometry = new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute([
+    -W2, -H2, zf, W2, -H2, zf, W2, H2, zf, -W2, H2, zf], 3));
+  const yb = -H2 - off, xr = W2 + off;
+  const seg = [
+    -W2, -H2 - ext * 0.5, zf, -W2, yb - ext, zf,   W2, -H2 - ext * 0.5, zf, W2, yb - ext, zf,
+    -W2, yb, zf, W2, yb, zf,
+    -W2 - tk, yb - tk, zf, -W2 + tk, yb + tk, zf,   W2 - tk, yb - tk, zf, W2 + tk, yb + tk, zf,
+    W2 + ext * 0.5, -H2, zf, xr + ext, -H2, zf,   W2 + ext * 0.5, H2, zf, xr + ext, H2, zf,
+    xr, -H2, zf, xr, H2, zf,
+    xr - tk, -H2 - tk, zf, xr + tk, -H2 + tk, zf,   xr - tk, H2 - tk, zf, xr + tk, H2 + tk, zf,
+  ];
+  dimObj.geometry.dispose();
+  dimObj.geometry = new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+  anchorW.set(0, yb, zf); anchorH.set(xr, 0, zf);
+  lblW.textContent = `${fmt(p.w, 0)} mm`;
+  lblH.textContent = `${fmt(p.h, 0)} mm`;
+
+  const panelChanged = !prevPanel || prevPanel.w !== p.w || prevPanel.h !== p.h;
+  if (!prevPanel) fit3D();
+  else if (panelChanged && viewMode === 'fit') fit3D();
+  needsRender = true;
+}
+
+function viewportSize(el) { const b = el.getBoundingClientRect(); return [Math.max(1, b.width), Math.max(1, b.height)]; }
+
+function fit3D() {
+  if (!cur) return;
+  const p = cur.panel, off = dimOffset(p);
+  const fov = THREE.MathUtils.degToRad(camera.fov);
+  const needW = p.w + off * 7, needH = p.h + off * 5;
+  const dist = Math.max(needH / 2 / Math.tan(fov / 2), needW / 2 / (Math.tan(fov / 2) * camera.aspect)) * 1.1;
+  const dir = new THREE.Vector3(0.2, 0.13, 1).normalize();
+  controls.target.set(off * 1.4, -off * 0.9, 0);
+  camera.position.copy(dir.multiplyScalar(dist).add(controls.target));
+  controls.update();
+  viewMode = 'fit'; needsRender = true;
+}
+function detail3D() {
+  if (!cur) return;
+  const fov = THREE.MathUtils.degToRad(camera.fov);
+  const span = 4.6 * cur.d.L;
+  const dist = span / 2 / (Math.tan(fov / 2) * Math.min(camera.aspect, 1.5));
+  const dir = new THREE.Vector3(0.48, 0.3, 0.82).normalize();
+  controls.target.set(0, 0, 0);
+  camera.position.copy(dir.multiplyScalar(dist));
+  controls.update();
+  viewMode = 'detail'; needsRender = true;
+}
+
+let needsRender = true;
+const tmpV = new THREE.Vector3();
+function placeLabel(el, v, dx, dy, ax, ay) {
+  const [w, h] = viewportSize(vp3);
+  tmpV.copy(v).project(camera);
+  if (tmpV.z > 1 || tmpV.z < -1) { el.style.opacity = 0; return; }
+  const x = (tmpV.x * 0.5 + 0.5) * w + dx, y = (-tmpV.y * 0.5 + 0.5) * h + dy;
+  el.style.opacity = 1;
+  el.style.transform = `translate(${x}px, ${y}px) translate(${ax}%, ${ay}%)`;
+}
+function render3D() {
+  const d = camera.position.distanceTo(controls.target);
+  camera.near = Math.max(0.05, d / 800);
+  camera.far = d * 40 + 20000;
+  camera.updateProjectionMatrix();
+  renderer.render(scene, camera);
+  placeLabel(lblW, anchorW, 0, 14, -50, 0);
+  placeLabel(lblH, anchorH, 14, 0, 0, -50);
+}
+function tick() {
+  requestAnimationFrame(tick);
+  const moved = controls.update();
+  if (state.view === '3d' && (moved || needsRender)) { render3D(); needsRender = false; }
+}
+
+// ========================================================================== 2D
+const vp2 = $('#vp2d'), cv2 = $('#c2d'), ctx2 = cv2.getContext('2d');
+let path2 = null, ghost2 = null;
+const v2 = { s: 1, ox: 0, oy: 0, fitted: false };
+let mouse2 = null;
+
+function toPath(pts, offs) {
+  const P = new Path2D();
+  for (let i = 0; i < offs.length - 1; i++) {
+    const a = offs[i], b = offs[i + 1];
+    if (b - a < 6) continue;
+    P.moveTo(pts[a], pts[a + 1]);
+    for (let j = a + 2; j < b; j += 2) P.lineTo(pts[j], pts[j + 1]);
+    P.closePath();
+  }
+  return P;
+}
+function apply2D(r, prevPanel) {
+  path2 = toPath(r.pts, r.offs);
+  ghost2 = toPath(r.gpts, r.goffs);
+  const panelChanged = !prevPanel || prevPanel.w !== r.panel.w || prevPanel.h !== r.panel.h;
+  if (!v2.fitted || (panelChanged && viewMode !== 'free')) fit2D(); else draw2D();
+}
+
+function fit2D() {
+  if (!cur) return;
+  if (state.view !== '2d') { v2.fitted = false; return; }
+  const [w, h] = viewportSize(vp2);
+  const p = cur.panel, top = 28, side = 44, bottom = 76, right = 104;
+  v2.s = Math.min((w - side - right) / p.w, (h - top - bottom) / p.h);
+  v2.ox = side + ((w - side - right) - p.w * v2.s) / 2;
+  v2.oy = top + ((h - top - bottom) + p.h * v2.s) / 2;
+  v2.fitted = true;
+  draw2D();
+}
+function detail2D() {
+  if (!cur || state.view !== '2d') return;
+  const [w, h] = viewportSize(vp2);
+  const p = cur.panel, turned = cur.panel.rot ? 1 : 0;
+  v2.s = Math.min(w / (4.5 * (turned ? cur.d.P : cur.d.L)), h / (7 * (turned ? cur.d.L : cur.d.P)));
+  v2.ox = w / 2 - (p.w / 2) * v2.s;
+  v2.oy = h / 2 + (p.h / 2) * v2.s;
+  draw2D();
+}
+
+let draw2DQueued = false;
+function draw2D() {
+  if (draw2DQueued) return;
+  draw2DQueued = true;
+  requestAnimationFrame(() => { draw2DQueued = false; paint2D(); });
+}
+function paint2D() {
+  if (state.view !== '2d' || !cur) return;
+  const [w, h] = viewportSize(vp2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  if (cv2.width !== Math.round(w * dpr) || cv2.height !== Math.round(h * dpr)) { cv2.width = Math.round(w * dpr); cv2.height = Math.round(h * dpr); }
+  const p = cur.panel, s = v2.s;
+  ctx2.setTransform(1, 0, 0, 1, 0, 0);
+  ctx2.fillStyle = TOK.d2Bg;
+  ctx2.fillRect(0, 0, cv2.width, cv2.height);
+  ctx2.setTransform(dpr * s, 0, 0, -dpr * s, dpr * v2.ox, dpr * v2.oy);
+  // material the cut trims off, shown only without a frame (with one, the mesh ends behind the frame)
+  if (ghost2 && !cur.frame) { ctx2.fillStyle = TOK.d2Ghost; ctx2.fill(ghost2); }
+  ctx2.fillStyle = TOK.d2Panel;
+  ctx2.fillRect(0, 0, p.w, p.h);
+  const fr = cur.frame;
+  // the leg behind the mesh shows through the eyes
+  if (fr) frameBand2D(p, fr.bandBack, TOK.d2Back, TOK.d2BackLine, s);
+  // strands as one solid fill: where rows overlap at the bonds no edge shows
+  if (path2) { ctx2.fillStyle = TOK.d2Strand; ctx2.fill(path2); }
+  // the leg in front of the mesh hides everything behind it
+  if (fr) frameBand2D(p, fr.bandFront, TOK.d2Front, TOK.d2FrontLine, s);
+  ctx2.lineWidth = 1 / s; ctx2.strokeStyle = TOK.d2Outline;
+  ctx2.strokeRect(0, 0, p.w, p.h);
+
+  // dimensions in screen space
+  ctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const x0 = v2.ox, x1 = v2.ox + p.w * s, y0 = v2.oy, y1 = v2.oy - p.h * s;
+  const by = y0 + 30, rx = x1 + 30, tk = 5;
+  ctx2.strokeStyle = TOK.d2Dim; ctx2.lineWidth = 1;
+  ctx2.beginPath();
+  ctx2.moveTo(x0, y0 + 6); ctx2.lineTo(x0, by + 8); ctx2.moveTo(x1, y0 + 6); ctx2.lineTo(x1, by + 8);
+  ctx2.moveTo(x0, by); ctx2.lineTo(x1, by);
+  ctx2.moveTo(x0 - tk, by + tk); ctx2.lineTo(x0 + tk, by - tk); ctx2.moveTo(x1 - tk, by + tk); ctx2.lineTo(x1 + tk, by - tk);
+  ctx2.moveTo(x1 + 6, y0); ctx2.lineTo(rx + 8, y0); ctx2.moveTo(x1 + 6, y1); ctx2.lineTo(rx + 8, y1);
+  ctx2.moveTo(rx, y0); ctx2.lineTo(rx, y1);
+  ctx2.moveTo(rx - tk, y0 + tk); ctx2.lineTo(rx + tk, y0 - tk); ctx2.moveTo(rx - tk, y1 + tk); ctx2.lineTo(rx + tk, y1 - tk);
+  ctx2.stroke();
+  ctx2.font = `500 11px ${TOK.fMono}`;
+  ctx2.textBaseline = 'middle';
+  tag2D(`${fmt(p.w, 0)} mm`, (x0 + x1) / 2, by, 'center');
+  tag2D(`${fmt(p.h, 0)} mm`, rx + 10, (y0 + y1) / 2, 'left');
+}
+// a frame leg seen in elevation: band of width a round the panel, mitred corners
+function frameBand2D(p, a, fill, line, s) {
+  const band = new Path2D();
+  band.rect(0, 0, p.w, p.h); band.rect(a, a, p.w - 2 * a, p.h - 2 * a);
+  ctx2.fillStyle = fill;
+  ctx2.fill(band, 'evenodd');
+  ctx2.lineWidth = 1 / s; ctx2.strokeStyle = line;
+  ctx2.beginPath();
+  ctx2.rect(a, a, p.w - 2 * a, p.h - 2 * a);
+  ctx2.moveTo(0, 0); ctx2.lineTo(a, a); ctx2.moveTo(p.w, 0); ctx2.lineTo(p.w - a, a);
+  ctx2.moveTo(p.w, p.h); ctx2.lineTo(p.w - a, p.h - a); ctx2.moveTo(0, p.h); ctx2.lineTo(a, p.h - a);
+  ctx2.stroke();
+}
+function tag2D(text, x, y, align) {
+  const tw = ctx2.measureText(text).width, pad = 7, bh = 19;
+  const bx = align === 'center' ? x - tw / 2 - pad : x;
+  ctx2.fillStyle = TOK.d2TagBg;
+  ctx2.fillRect(bx, y - bh / 2, tw + pad * 2, bh);
+  ctx2.strokeStyle = TOK.d2TagLine;
+  ctx2.strokeRect(bx + .5, y - bh / 2 + .5, tw + pad * 2 - 1, bh - 1);
+  ctx2.fillStyle = TOK.d2DimText;
+  ctx2.textAlign = 'left';
+  ctx2.fillText(text, bx + pad, y + 0.5);
+}
+
+// pan / zoom
+cv2.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const b = cv2.getBoundingClientRect(), mx = e.clientX - b.left, my = e.clientY - b.top;
+  const k = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0016));
+  v2.ox = mx - (mx - v2.ox) * k; v2.oy = my - (my - v2.oy) * k; v2.s *= k;
+  viewMode = 'free'; draw2D(); updateHud(mx, my);
+}, { passive: false });
+const pointers = new Map(); let pinch = null;
+cv2.addEventListener('pointerdown', (e) => { cv2.setPointerCapture(e.pointerId); pointers.set(e.pointerId, { x: e.clientX, y: e.clientY }); viewMode = 'free'; });
+cv2.addEventListener('pointermove', (e) => {
+  const b = cv2.getBoundingClientRect();
+  updateHud(e.clientX - b.left, e.clientY - b.top);
+  if (!pointers.has(e.pointerId)) return;
+  const prev = pointers.get(e.pointerId);
+  if (pointers.size === 1) {
+    v2.ox += e.clientX - prev.x; v2.oy += e.clientY - prev.y;
+  } else if (pointers.size === 2) {
+    const [a, c] = [...pointers.entries()].map(([id, p]) => (id === e.pointerId ? { x: e.clientX, y: e.clientY } : p));
+    const dist = Math.hypot(a.x - c.x, a.y - c.y), mx = (a.x + c.x) / 2 - b.left, my = (a.y + c.y) / 2 - b.top;
+    if (pinch) { const k = dist / pinch; v2.ox = mx - (mx - v2.ox) * k; v2.oy = my - (my - v2.oy) * k; v2.s *= k; }
+    pinch = dist;
+  }
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  draw2D();
+});
+const endPointer = (e) => { pointers.delete(e.pointerId); if (pointers.size < 2) pinch = null; };
+cv2.addEventListener('pointerup', endPointer);
+cv2.addEventListener('pointercancel', endPointer);
+cv2.addEventListener('pointerleave', () => { mouse2 = null; updateHud(); });
+cv2.addEventListener('dblclick', fit2D);
+
+function updateHud(mx, my) {
+  const hud = $('#hud');
+  if (!cur) return;
+  if (state.view === '2d') {
+    if (mx !== undefined) mouse2 = [mx, my];
+    if (mouse2) {
+      const x = (mouse2[0] - v2.ox) / v2.s, z = (v2.oy - mouse2[1]) / v2.s;
+      hud.innerHTML = `x ${x.toFixed(1)} &nbsp; y ${z.toFixed(1)} mm<span class="tip"> &nbsp;·&nbsp; ${t('scroll to zoom, drag to pan, double-click to fit')}</span>`;
+    } else hud.innerHTML = `${t('{0} strand outlines', (cur.offs.length - 1).toLocaleString())}<span class="tip"> &nbsp;·&nbsp; ${t('scroll to zoom, drag to pan')}</span>`;
+  } else {
+    hud.innerHTML = `${t('{0} triangles', (cur.tris.length / 9).toLocaleString())}<span class="tip"> &nbsp;·&nbsp; ${t('drag to orbit, right-drag to pan, scroll to zoom')}</span>`;
+  }
+}
+
+// ===================================================================== views
+const VIEW_BTNS = document.querySelectorAll('.seg__btn[data-view]');
+function setView(v) {
+  state.view = v;
+  $('#stage').dataset.view = v;   // the stylesheet shows the matching canvas
+  VIEW_BTNS.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+  $('#banner').hidden = !(cur && cur.cropped && v === '3d');
+  if (v === '2d') { if (!v2.fitted) fit2D(); else if (viewMode === 'detail') detail2D(); else draw2D(); } else { resize(); needsRender = true; }
+  updateHud();
+}
+VIEW_BTNS.forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
+$('#btnCentre').addEventListener('click', () => { state.shift.x = 0; state.shift.y = 0; syncUI(); requestBuild(); });
+$('#btnFit').addEventListener('click', () => (state.view === '3d' ? fit3D() : (viewMode = 'fit', fit2D())));
+$('#btnDetail').addEventListener('click', () => (state.view === '3d' ? detail3D() : (viewMode = 'detail', detail2D())));
+
+function resize() {
+  const [w, h] = viewportSize(vp3);
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  needsRender = true;
+  if (state.view === '2d') draw2D();
+}
+new ResizeObserver(resize).observe($('#vpStage'));
+
+// ==================================================================== exports
+function baseName() {
+  const m = cur.inp, p = cur.panel;
+  return `expanded-mesh_${[m.lwd, m.swd, Math.min(m.w, 0.4 * m.swd), m.t].map((v) => fmt(v, 2)).join('x')}${p.rot ? `_rot${p.rot}` : ''}_${fmt(p.w, 0)}x${fmt(p.h, 0)}${p.frame ? '_' + frameCode(p.frame, 'x').replace(' ', '').replace(/\//g, '-') + (p.frame.flip ? '-flip' : '') : ''}`;
+}
+function download(data, name, type) {
+  const url = URL.createObjectURL(new Blob([data], { type }));
+  const a = Object.assign(document.createElement('a'), { href: url, download: name });
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+function dimsGeometry(p) {
+  const off = Math.max(25, 0.05 * Math.max(p.w, p.h)), tk = off * 0.18, ext = off * 0.3, th = Math.max(8, off * 0.4);
+  return { off, tk, ext, th };
+}
+function specText(sep) {
+  const m = cur.inp;
+  return [m.lwd, m.swd, Math.min(m.w, 0.4 * m.swd), m.t].map((v) => fmt(v, 2)).join(sep);
+}
+
+// ---- STEP: closed solids built in the worker
+let stepSeq = 0; const stepWaiters = new Map();
+function onStep(r) { const w = stepWaiters.get(r.id); if (w) { stepWaiters.delete(r.id); w(r); } }
+function exportSTEP() {
+  const job = {
+    type: 'step', id: ++stepSeq, inp: { ...cur.inp }, panel: { ...cur.panel },
+    meta: {
+      name: baseName(),
+      description: `Expanded mesh ${specText(' x ')} mm (LWD x SWD x W x T), bend radius ${fmt(cur.stats.radius, 1)} mm`
+        + (cur.panel.rot ? `, turned 90 deg ${cur.panel.rot > 0 ? 'counter-clockwise' : 'clockwise'} (LWD vertical)` : '')
+        + `, panel ${fmt(cur.panel.w, 1)} x ${fmt(cur.panel.h, 1)} mm`
+        + (cur.panel.frame ? `, ${frameCode(cur.panel.frame, ' x ')} mm frame (${frameLegend(cur.panel.frame)}), mitred, mesh cut ${fmt(cur.stats.cutW, 1)} x ${fmt(cur.stats.cutH, 1)} mm` : ''),
+      date: new Date().toISOString(),
+    },
+  };
+  return new Promise((resolve) => {
+    stepWaiters.set(job.id, (r) => {
+      download(r.bytes, baseName() + (r.cropped ? '_centre-detail' : '') + '.step', 'application/step');
+      resolve(r.cropped
+        ? t('STEP saved: centre {0} × {1} mm of the mesh, {2} solids{3}. The full panel would be too large a file at this mesh size.',
+          fmt(r.region.x1 - r.region.x0, 0), fmt(r.region.z1 - r.region.z0, 0), r.solids, cur.panel.frame ? t(', without the frame') : '')
+        : t('STEP saved: {0} solids{1}, {2} faces, {3} MB.', r.solids, r.framed ? t(' (4 frame pieces)') : '', r.faces.toLocaleString(), (r.bytes.length / 1e6).toFixed(1)));
+    });
+    if (worker) worker.postMessage(job);
+    else setTimeout(() => onStep(runLocalStep(job)), 0);
+  });
+}
+
+// ---- DWG: AutoCAD 2000 drawing, writer loaded on first use
+const ACAD_URL = 'https://cdn.jsdelivr.net/npm/@node-projects/acad-ts@3.2.0/dist/index.js';
+let acadModule = null;
+async function exportDWG() {
+  if (!acadModule) { setBusyLabel(t('Loading DWG writer')); acadModule = import(ACAD_URL); }
+  let A;
+  try { A = await acadModule; } catch (err) { acadModule = null; throw new Error(t('Could not load the DWG writer. Check the connection and try again.')); }
+  setBusyLabel(t('Writing DWG'));
+  // front view with hidden lines removed: eye outlines inside the frame opening,
+  // and the parts of the back leg seen through the eyes
+  const job = { type: 'elev', id: ++stepSeq, inp: { ...cur.inp }, panel: { ...cur.panel }, arcSeg: Math.max(cur.arcSeg, cur.d.radius > 0 ? 4 : 0) };
+  const el = await new Promise((resolve) => {
+    stepWaiters.set(job.id, resolve);
+    if (worker) worker.postMessage(job); else setTimeout(() => onStep(runLocalElev(job)), 0);
+  });
+  const p = cur.panel, pts = el.pts, offs = el.offs;
+  const doc = new A.CadDocument(A.ACadVersion.AC1015, true);
+  doc.header.insUnits = A.UnitsType.Millimeters;
+  const layer = (name, aci) => { const l = new A.Layer(name); l.color = new A.Color(aci); doc.layers.add(l); return l; };
+  const LM = layer('MESH', 8), LP = layer('PANEL', 30), LD = layer('DIMENSIONS', 30);
+  const ents = doc.modelSpace.entities;
+  const poly = (c, lay, closed = true) => {
+    const v = [];
+    for (let i = 0; i < c.length; i += 2) v.push(new A.XY(+c[i], +c[i + 1]));
+    const pl = new A.LwPolyline(v); pl.isClosed = closed; pl.layer = lay; ents.add(pl);
+  };
+  const line = (x1, y1, x2, y2, lay = LD) => { const l = new A.Line(); l.startPoint = new A.XYZ(x1, y1, 0); l.endPoint = new A.XYZ(x2, y2, 0); l.layer = lay; ents.add(l); };
+  const text = (s, x, y, h, rot) => {
+    const t = new A.TextEntity(s); t.height = h; t.rotation = rot; t.layer = LD;
+    t.horizontalAlignment = A.TextHorizontalAlignment.Center; t.verticalAlignment = A.TextVerticalAlignmentType.Middle;
+    t.insertPoint = new A.XYZ(x, y, 0); t.alignmentPoint = new A.XYZ(x, y, 0); ents.add(t);
+  };
+  for (let i = 0; i < offs.length - 1; i++) {
+    const a = offs[i], b = offs[i + 1];
+    if (b - a >= 4) poly(pts.subarray(a, b), LM, el.closed[i] === 1);
+  }
+  poly([0, 0, p.w, 0, p.w, p.h, 0, p.h], LP);
+  const fr = cur.frame, fp = p.frame;
+  if (fr) {
+    // front leg with its mitre joints on FRAME; the back leg on FRAME BACK, only
+    // where it is seen through the eyes; the mesh cut edge, hidden behind the
+    // front leg, as a dashed line on MESH CUT
+    const LF = layer('FRAME', 7), LB = layer('FRAME BACK', 9), LC = layer('MESH CUT', 1), mr = cur.meshRect;
+    try {
+      const lt = new A.LineType('HIDDEN'); lt.description = '__ __ __ __';
+      for (const len of [6, -3]) { const sg = new A.LineTypeSegment(); sg.length = len; lt.addSegment(sg); }
+      doc.lineTypes.add(lt); LC.lineType = lt;
+    } catch (err) { /* plain line if the writer cannot add a line type */ }
+    const a = fr.bandFront;
+    poly([a, a, p.w - a, a, p.w - a, p.h - a, a, p.h - a], LF);
+    line(0, 0, a, a, LF); line(p.w, 0, p.w - a, a, LF); line(p.w, p.h, p.w - a, p.h - a, LF); line(0, p.h, a, p.h - a, LF);
+    for (const [x1, z1, x2, z2] of el.back) line(x1, z1, x2, z2, LB);
+    if (fr.bandFront > fr.inset + 1e-6) poly([mr.x0, mr.z0, mr.x1, mr.z0, mr.x1, mr.z1, mr.x0, mr.z1], LC);
+  }
+  const { off, tk, ext, th } = dimsGeometry(p);
+  line(0, -ext * 0.5, 0, -off - ext); line(p.w, -ext * 0.5, p.w, -off - ext);
+  line(0, -off, p.w, -off);
+  line(-tk, -off - tk, tk, -off + tk); line(p.w - tk, -off - tk, p.w + tk, -off + tk);
+  text(fmt(p.w, 1), p.w / 2, -off - th * 1.1, th, 0);
+  line(p.w + ext * 0.5, 0, p.w + off + ext, 0); line(p.w + ext * 0.5, p.h, p.w + off + ext, p.h);
+  line(p.w + off, 0, p.w + off, p.h);
+  line(p.w + off - tk, -tk, p.w + off + tk, tk); line(p.w + off - tk, p.h - tk, p.w + off + tk, p.h + tk);
+  text(fmt(p.h, 1), p.w + off + th * 1.1, p.h / 2, th, Math.PI / 2);
+  const shiftNote = p.sx || p.sy ? `, PATTERN SHIFT X ${fmt(p.sx || 0, 1)} Y ${fmt(p.sy || 0, 1)} FROM CENTRE` : '';
+  const dirNote = p.rot ? `, TURNED 90%%d ${p.rot > 0 ? 'CCW' : 'CW'} (LWD VERTICAL)` : '';
+  text(`EXPANDED MESH ${specText(' x ')} (LWD x SWD x W x T), R ${fmt(cur.stats.radius, 1)} - mm${dirNote}${shiftNote}`, p.w / 2, -off - th * 3.2, th * 0.8, 0);
+  if (fr) text(`FRAME ${frameCode(fp, ' x ')} (${frameLegend(fp)}), MITRED CORNERS - MESH CUT ${fmt(cur.stats.cutW, 1)} x ${fmt(cur.stats.cutH, 1)} - mm`, p.w / 2, -off - th * 4.6, th * 0.8, 0);
+  const buf = A.DwgWriter.writeToBuffer(doc);
+  download(buf, baseName() + '.dwg', 'application/acad');
+  return t('DWG saved: {0} eye outlines on layer MESH, hidden lines removed{1}. AutoCAD 2000 format.', el.eyes.toLocaleString(),
+    fr ? t(', frame on FRAME and FRAME BACK') + (fr.bandFront > fr.inset + 1e-6 ? t(', hidden mesh cut edge dashed on MESH CUT') : '') : '');
+}
+
+const EXPORTERS = { step: exportSTEP, dwg: exportDWG };
+const busyEl = $('#busy'), busyLabel = $('#busyLabel'), statusEl = $('#exportStatus');
+let exporting = false, statusTimer = 0;
+function setBusyLabel(s) { busyLabel.textContent = s; busyEl.hidden = false; }
+const STATUS_ICON = {
+  ok: '<svg class="i16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg>',
+  error: '<svg class="i16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.8v3.8M8 11.2v.01"/></svg>',
+};
+function sayStatus(tone, text) {
+  clearTimeout(statusTimer);
+  statusEl.dataset.tone = tone;
+  statusEl.innerHTML = STATUS_ICON[tone];
+  const span = document.createElement('span'); span.textContent = text; statusEl.appendChild(span);
+  if (tone === 'ok') statusTimer = setTimeout(() => { statusEl.innerHTML = ''; }, 9000);
+}
+document.querySelectorAll('[data-exp]').forEach((b) => b.addEventListener('click', async () => {
+  if (!cur || exporting) return;
+  exporting = true;
+  const btns = document.querySelectorAll('[data-exp]');
+  btns.forEach((x) => (x.disabled = true));
+  b.setAttribute('aria-busy', 'true');
+  clearTimeout(statusTimer); statusEl.innerHTML = '';
+  setBusyLabel(t(b.dataset.exp === 'step' ? 'Building STEP' : 'Writing DWG'));
+  try {
+    sayStatus('ok', await EXPORTERS[b.dataset.exp]());
+  } catch (err) {
+    sayStatus('error', err.message || String(err));
+  } finally {
+    exporting = false;
+    b.removeAttribute('aria-busy');
+    btns.forEach((x) => (x.disabled = false));
+    busyEl.hidden = !busy; busyLabel.textContent = t('Building');
+  }
+}));
+
+// ================================================================== sections
+const ACC_KEY = 'emg-sections';
+const ACC_DEFAULT = { mesh: true, panel: true, frame: true, shift: false };
+let accState = { ...ACC_DEFAULT };
+try {
+  const saved = JSON.parse(localStorage.getItem(ACC_KEY) || '{}');
+  for (const k in ACC_DEFAULT) if (typeof saved[k] === 'boolean') accState[k] = saved[k];
+} catch (e) { /* storage unavailable */ }
+function setSection(sec, open, save = true) {
+  const key = sec.dataset.acc, btn = sec.querySelector('.cat__toggle');
+  accState[key] = open;
+  sec.dataset.open = String(open);
+  btn.setAttribute('aria-expanded', String(open));
+  document.getElementById(btn.getAttribute('aria-controls')).hidden = !open;
+  if (save) { try { localStorage.setItem(ACC_KEY, JSON.stringify(accState)); } catch (e) { /* storage unavailable */ } }
+}
+document.querySelectorAll('.cat[data-acc]').forEach((sec) => {
+  setSection(sec, accState[sec.dataset.acc] !== false, false);
+  sec.querySelector('.cat__toggle').addEventListener('click', () => setSection(sec, sec.dataset.open !== 'true'));
+});
+
+// ======================================================================= start
+applyStaticText();
+document.querySelectorAll('.langs [data-lang]').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+buildControls();
+applyConstraints();
+syncUI();
+resize();
+requestBuild();
+tick();
+window.__mesh = {
+  state, get cur() { return cur; }, setView, fit3D, detail3D, fit2D, detail2D, setFrameType, setDir, frameCode, frameParams, setLang,
+  setValue: (g, k, v) => setValue(CONTROLS.find((c) => c.group === g && c.key === k), v),
+  look: (t, p) => { controls.target.set(...t); camera.position.set(...p); controls.update(); viewMode = 'free'; needsRender = true; },
+  zoom2D: (s, ox, oy) => { Object.assign(v2, { s, ox, oy }); viewMode = 'free'; draw2D(); },
+};
+</script>
+</body>
+</html>

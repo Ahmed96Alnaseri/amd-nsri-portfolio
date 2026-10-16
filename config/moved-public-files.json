@@ -233,6 +233,11 @@
    "rewrite": true
   },
   {
+   "from": "/expanded-mesh-generator.html",
+   "to": "/tools/expanded-mesh-generator/expanded-mesh-generator.html",
+   "rewrite": true
+  },
+  {
    "from": "/PPG FACADE/RENDER/4.png",
    "to": "/projects/ppg-factory-facade/renders/4.png"
   },
