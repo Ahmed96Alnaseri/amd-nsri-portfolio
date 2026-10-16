@@ -7,12 +7,16 @@ export type ToolPlatform =
   | 'Grasshopper · Service';
 export type ToolStatus = 'Live' | 'Beta' | 'Coming Soon' | 'Available';
 export type ToolType = 'showcase' | 'product' | 'quote';
+/** What a tool is for: drives the filter tabs on /tools (the platform badge on each card stays separate). */
+export type ToolCategory = 'design' | 'fabrication' | 'lifestyle';
 
 export interface Tool {
   /** URL slug — /tools/[slug] */
   slug: string;
   /** Display name — DM Serif Display */
   name: string;
+  /** Filter tab on /tools */
+  category: ToolCategory;
   /** One-line description (cards) — translated via tv() */
   description: string;
   /** Fuller description (detail hero) — translated via tv() */
@@ -69,7 +73,7 @@ export interface Tool {
   cardStatusOnly?: boolean;
   /** Drop the sidebar's status row (nothing to announce for a service or a live web tool). */
   hideStatus?: boolean;
-  /** Overrides the sidebar's platform value (the bare `platform` still drives filtering). */
+  /** Overrides the sidebar's platform value (the bare `platform` is the card's badge; filtering uses `category`). */
   platformLabel?: string;
   /** Path to a self-contained page embedded as the detail hero, replacing the placeholder. */
   embed?: string;
@@ -93,13 +97,13 @@ export interface Tool {
   cardTag?: string;
 }
 
-/** Filter chips shown above the grid (in order). */
-export const TOOL_PLATFORMS = ['Grasshopper', 'Web', 'Software'] as const;
-export type ToolPlatformFilter = (typeof TOOL_PLATFORMS)[number];
+/** Filter tabs shown above the grid, after "All" (in order); labels in translations.ts (tools.cat*). */
+export const TOOL_CATEGORIES: ToolCategory[] = ['design', 'fabrication', 'lifestyle'];
 
 const tools: Tool[] = [
   {
     slug: 'perforation-pattern-engine',
+    category: 'design',
     name: 'IPunch',
     description: 'Upload an image. Get a perforated panel pattern with live DXF export.',
     detail:
@@ -128,6 +132,7 @@ const tools: Tool[] = [
   },
   {
     slug: 'surface-punch-mapper',
+    category: 'fabrication',
     name: 'NESTRI',
     description:
       'Paste your panel schedule and get an optimized nesting layout. Minimizes sheet waste and exports DXF for CNC cutting.',
@@ -158,7 +163,41 @@ const tools: Tool[] = [
     output: 'Nested layout DXF · utilization report',
   },
   {
+    slug: 'nestri-pro',
+    category: 'fabrication',
+    name: 'NESTRI PRO',
+    description: 'True-shape nesting from DXF. Fills part cut-outs; exports DXF and Excel.',
+    detail:
+      'True-shape sheet nesting for fabrication. Upload the DXF your parts are drawn in — outlines, cut-outs and bend lines are read from the drawing — and get a nesting layout of the real shapes, with small parts placed in the cut-outs of larger ones. Export the nested sheets as DXF, ready for CNC cutting.',
+    // what PRO adds over NESTRI comes first
+    features: [
+      'Nests the real part outlines read from DXF',
+      'Places small parts in the cut-outs of larger ones',
+      'Rolls, offcuts and odd-shaped sheets as stock',
+      'Layer mapping; quantities read from the drawing',
+      'Utilization, waste and weight per sheet size',
+      'DXF with cut, bend and marking layers, plus an Excel report',
+    ],
+    platform: 'Web',
+    platformLabel: 'Web — runs in browser',
+    eyebrowFull: 'Web Tool · Pro Edition',
+    status: 'Live',
+    hideStatus: true,
+    type: 'product',
+    image: null,
+    heroImage: { src: '/tools/nestri-pro/hero.png', width: 1540, height: 480 },
+    // card shows the two panels only; the hero's wordmark would repeat the card title
+    cardImage: '/tools/nestri-pro/card.webp',
+    price: null,
+    input: 'DXF part drawings',
+    output: 'Nested sheets DXF · Excel report',
+    ctaLabel: 'Open NESTRI PRO',
+    ctaLink: '/nestri-pro.html',
+    ctaExternal: true,
+  },
+  {
     slug: 'sheet-metal-unfolder',
+    category: 'fabrication',
     name: 'Sheet Metal Unfolding',
     description: 'Send your file. Receive fabrication-ready flat patterns.',
     detail:
@@ -204,42 +243,43 @@ const tools: Tool[] = [
     output: 'DWG flat pattern · STEP',
     tags: ['unfolding', 'sheet metal', 'fabrication', 'DWG', 'grasshopper', 'service'],
   },
+  /* ── Coming soon: placeholder page like AMAD and Pinact until the tool is ready ── */
   {
-    slug: 'nestri-pro',
-    name: 'NESTRI PRO',
-    description: 'True-shape nesting from DXF. Fills part cut-outs; exports DXF and Excel.',
-    detail:
-      'True-shape sheet nesting for fabrication. Upload the DXF your parts are drawn in — outlines, cut-outs and bend lines are read from the drawing — and get a nesting layout of the real shapes, with small parts placed in the cut-outs of larger ones. Export the nested sheets as DXF, ready for CNC cutting.',
-    // what PRO adds over NESTRI comes first
-    features: [
-      'Nests the real part outlines read from DXF',
-      'Places small parts in the cut-outs of larger ones',
-      'Rolls, offcuts and odd-shaped sheets as stock',
-      'Layer mapping; quantities read from the drawing',
-      'Utilization, waste and weight per sheet size',
-      'DXF with cut, bend and marking layers, plus an Excel report',
-    ],
+    slug: 'finsa',
+    category: 'design',
+    name: 'FINSA',
+    description: 'A façade material and colour preview tool.',
+    detail: 'A façade material and colour preview tool.',
+    features: [],
     platform: 'Web',
-    platformLabel: 'Web — runs in browser',
-    eyebrowFull: 'Web Tool · Pro Edition',
-    status: 'Live',
-    hideStatus: true,
+    status: 'Coming Soon',
     type: 'product',
     image: null,
-    heroImage: { src: '/tools/nestri-pro/hero.png', width: 1540, height: 480 },
-    // card shows the two panels only; the hero's wordmark would repeat the card title
-    cardImage: '/tools/nestri-pro/card.webp',
     price: null,
-    input: 'DXF part drawings',
-    output: 'Nested sheets DXF · Excel report',
-    ctaLabel: 'Open NESTRI PRO',
-    ctaLink: '/nestri-pro.html',
+  },
+  /* ── The tool page is live (/expanded-mesh-generator.html); the card stays "Coming soon" until its hero image
+        arrives, but the detail page already links to the tool. ── */
+  {
+    slug: 'expanded-mesh-generator',
+    category: 'fabrication',
+    name: 'Expanded Mesh Generator',
+    description: 'Generate expanded metal mesh patterns for façade and fabrication workflows.',
+    detail: 'Generate expanded metal mesh patterns for façade and fabrication workflows.',
+    features: [],
+    platform: 'Web',
+    status: 'Coming Soon',
+    type: 'product',
+    image: null,
+    price: null,
+    ctaLabel: 'Open Tool',
+    ctaLink: '/expanded-mesh-generator.html',
     ctaExternal: true,
   },
   /* ── Coming soon: placeholder page — replace name/description/detail and add content when the
         real tool is ready. No features, price or CTA until then. ── */
   {
     slug: 'amad',
+    category: 'lifestyle',
     name: 'AMAD',
     description: 'Arrange my plans. Turn your goals into a daily schedule that adapts to you.',
     detail: 'A web app for personal planning. AMAD turns your goals into a daily schedule that adapts to you.',
@@ -252,6 +292,7 @@ const tools: Tool[] = [
   },
   {
     slug: 'pinact',
+    category: 'lifestyle',
     name: 'Pinact',
     description: 'Location intelligence and site analysis — standalone software',
     detail:
@@ -267,31 +308,6 @@ const tools: Tool[] = [
     image: null,
     price: 'Contact for pricing',
     cardStatusOnly: true,
-  },
-  /* ── Coming soon: placeholder page like AMAD and Pinact until the tool is ready ── */
-  {
-    slug: 'finsa',
-    name: 'FINSA',
-    description: 'A façade material and colour preview tool.',
-    detail: 'A façade material and colour preview tool.',
-    features: [],
-    platform: 'Web',
-    status: 'Coming Soon',
-    type: 'product',
-    image: null,
-    price: null,
-  },
-  {
-    slug: 'expanded-mesh-generator',
-    name: 'Expanded Mesh Generator',
-    description: 'Generate expanded metal mesh patterns for façade and fabrication workflows.',
-    detail: 'Generate expanded metal mesh patterns for façade and fabrication workflows.',
-    features: [],
-    platform: 'Web',
-    status: 'Coming Soon',
-    type: 'product',
-    image: null,
-    price: null,
   },
 ];
 

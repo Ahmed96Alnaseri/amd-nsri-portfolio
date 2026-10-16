@@ -270,6 +270,10 @@ export const translations = {
       input:       'Input',
       output:      'Output',
       price:       'Price',
+      catDesign:      'Design',
+      catFabrication: 'Fabrication',
+      catLifestyle:   'Life style',
+      filterBy:       'Filter tools by category',
     },
     shop: {
       eyebrow:        'Shop',
@@ -635,6 +639,10 @@ export const translations = {
       input:       'Girdi',
       output:      'Çıktı',
       price:       'Fiyat',
+      catDesign:      'Tasarım',
+      catFabrication: 'Fabrikasyon',
+      catLifestyle:   'Yaşam Tarzı',
+      filterBy:       'Araçları kategoriye göre filtrele',
     },
     shop: {
       eyebrow:        'Mağaza',
@@ -1000,6 +1008,10 @@ export const translations = {
       input:       'المُدخل',
       output:      'المُخرج',
       price:       'السعر',
+      catDesign:      'التصميم',
+      catFabrication: 'التصنيع',
+      catLifestyle:   'أسلوب الحياة',
+      filterBy:       'تصفية الأدوات حسب الفئة',
     },
     shop: {
       eyebrow:        'المتجر',

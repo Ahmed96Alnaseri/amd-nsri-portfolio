@@ -4,13 +4,20 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import tools, {
-  TOOL_PLATFORMS,
+  TOOL_CATEGORIES,
   type Tool,
+  type ToolCategory,
   type ToolStatus,
 } from '@/data/tools';
 
-const FILTERS = ['All', ...TOOL_PLATFORMS] as const;
-type Filter = (typeof FILTERS)[number];
+/* filter tabs: All, then one per category (what the tool is for; the WEB / SOFTWARE badge stays on each card) */
+type Filter = 'All' | ToolCategory;
+const FILTERS: Filter[] = ['All', ...TOOL_CATEGORIES];
+const CATEGORY_LABEL: Record<ToolCategory, string> = {
+  design: 'tools.catDesign',
+  fabrication: 'tools.catFabrication',
+  lifestyle: 'tools.catLifestyle',
+};
 
 /* status → modifier class */
 const STATUS_MOD: Record<ToolStatus, string> = {
@@ -86,7 +93,7 @@ export default function ToolsPage() {
 
   const visible = active === 'All'
     ? tools
-    : tools.filter(tl => tl.platform.includes(active));
+    : tools.filter(tl => tl.category === active);
 
   return (
     <>
@@ -334,12 +341,12 @@ export default function ToolsPage() {
         <h1 className="tp-title">{t('tools.title')}</h1>
         <p className="tp-desc">{t('tools.desc')}</p>
 
-        <div className="tp-filters" role="group" aria-label="Filter tools by platform">
+        <div className="tp-filters" role="group" aria-label={t('tools.filterBy')}>
           {FILTERS.map(f => {
             const n = f === 'All'
               ? tools.length
-              : tools.filter(tl => tl.platform.includes(f)).length;
-            // a platform with no tools right now gets no chip; it returns when one is added
+              : tools.filter(tl => tl.category === f).length;
+            // a category with no tools right now gets no tab; it returns when one is added
             if (!n) return null;
             return (
               <button
@@ -348,7 +355,7 @@ export default function ToolsPage() {
                 className={`tp-f${active === f ? ' on' : ''}`}
                 onClick={() => setActive(f)}
               >
-                {f === 'All' ? tv('All') : f}
+                {f === 'All' ? tv('All') : t(CATEGORY_LABEL[f])}
                 <span className="tp-fn">{String(n).padStart(2, '0')}</span>
               </button>
             );
