@@ -34,6 +34,9 @@ export interface Tool {
   image: string | null;
   /** While image is null, show no hero box at all instead of the diamond placeholder. */
   noHeroPlaceholder?: boolean;
+  /** Artwork on its way: the detail page shows the diamond placeholder at this size's ratio, laid out like
+      heroImage (badge position included), so adding heroImage later swaps it in without moving anything. */
+  heroPlaceholderSize?: { width: number; height: number };
   /** Finished artwork for the detail hero, composed on the page background: shown whole at its own
       ratio — no crop, fade or diamond. Takes precedence over `image` there; the card keeps `image`. */
   heroImage?: { src: string; width: number; height: number };
@@ -280,10 +283,10 @@ const tools: Tool[] = [
     status: 'Live',
     hideStatus: true,
     type: 'product',
-    // no artwork yet: the card shows the neutral diamond placeholder like the other tools without images, and the
-    // detail page shows no image box at all. Add heroImage / cardImage here when the hero arrives.
+    // no artwork yet: the card and the detail page show the neutral diamond placeholder, the detail one framed
+    // at IPunch's and NESTRI's hero size. When the hero arrives, add heroImage (detail) and cardImage (card) here.
     image: null,
-    noHeroPlaceholder: true,
+    heroPlaceholderSize: { width: 1540, height: 480 },
     price: 'Free',
     cardBadge: 'FREE · LIVE',
     input: 'Mesh LWD · SWD · W · T · R, panel size, optional U or L frame',
