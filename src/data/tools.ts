@@ -276,13 +276,16 @@ const tools: Tool[] = [
     ],
     platform: 'Web',
     platformLabel: 'Web — runs in browser',
+    eyebrowFull: 'Web Tool · Free',
     status: 'Live',
+    hideStatus: true,
     type: 'product',
     // no artwork yet: the card shows the neutral diamond placeholder like the other tools without images, and the
     // detail page shows no image box at all. Add heroImage / cardImage here when the hero arrives.
     image: null,
     noHeroPlaceholder: true,
-    price: null,
+    price: 'Free',
+    cardBadge: 'FREE · LIVE',
     input: 'Mesh LWD · SWD · W · T · R, panel size, optional U or L frame',
     output: 'STEP 3D solids · DWG 2D elevation',
     ctaLabel: 'Open Tool',
