@@ -10,7 +10,10 @@ import type { Metadata } from 'next';
  * string on them explicitly.
  */
 export const SITE_NAME = 'AMD NSRI';
-export const SITE_URL = 'https://amd-nsri-portfolio-alpha.vercel.app';
+// The site's first address (amd-nsri-portfolio-alpha.vercel.app) is redirected here in next.config.mjs.
+export const SITE_URL = 'https://amdnsri.com';
+/** Link previews and search engines read the pages in English (TR and AR are switched in the browser). */
+export const OG_LOCALE = 'en_US';
 
 export interface PageMetaOptions {
   /** Page name used in the title, e.g. "Architecture" → "Architecture — AMD NSRI". */
@@ -42,6 +45,7 @@ export function pageMetadata({ name, path, description, absoluteTitle, image }: 
       type: 'website',
       url,
       siteName: SITE_NAME,
+      locale: OG_LOCALE,
       ...(image ? { images: [image] } : {}),
     },
     twitter: {
