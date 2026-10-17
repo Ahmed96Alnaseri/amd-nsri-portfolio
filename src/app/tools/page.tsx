@@ -208,6 +208,14 @@ export default function ToolsPage() {
             left: calc(clamp(28px, 3vw, 40px) + 36ch + 32px);
             right: calc(clamp(28px, 3vw, 40px) - 14px);
           }
+          /* Arabic: the card is built from spans, which globals.css sets right-to-left, so the badge row,
+             text and foot all mirror and the 36ch description moves to the right edge. The still is
+             placed absolutely and would stay on the right over the text: mirror it to the left. */
+          [lang="ar"] .tc-media--art {
+            left: calc(clamp(28px, 3vw, 40px) - 14px);
+            right: calc(clamp(28px, 3vw, 40px) + 36ch + 32px);
+            background-position: left center;
+          }
           .tc--art .tc-fade { display: none; }
         }
         /* narrow card: the description runs the full width, so the still drops behind it as a faint
