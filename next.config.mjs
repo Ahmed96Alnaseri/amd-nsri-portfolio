@@ -40,6 +40,15 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // the site's first address still reaches the production deployment: send every request on it, path and
+      // query kept, to the same page on amdnsri.com (SITE_URL in src/lib/seo.ts). Only this exact host matches,
+      // so amdnsri.com, www and the preview deployments are untouched. It comes first so moved files take one hop.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'amd-nsri-portfolio-alpha.vercel.app' }],
+        destination: 'https://amdnsri.com/:path*',
+        permanent: true,
+      },
       // the Custom Grasshopper Scripts service was taken off the site; its page sends visitors to the Tools page
       { source: '/tools/grasshopper-scripts', destination: '/tools', permanent: true },
       ...moves

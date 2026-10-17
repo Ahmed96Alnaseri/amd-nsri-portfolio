@@ -4,9 +4,10 @@ import './globals.css';
 import Navigation from '@/components/Navigation';
 import { LanguageProvider } from '@/lib/LanguageContext';
 import { ThemeProvider } from '@/lib/ThemeContext';
+import { SITE_URL, OG_LOCALE } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://amd-nsri-portfolio-alpha.vercel.app'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'AMD NSRI',
     template: '%s — AMD NSRI',
@@ -24,8 +25,8 @@ export const metadata: Metadata = {
     description:
       'AMD NSRI — computational design, facade engineering and fabrication intelligence. Based in Istanbul.',
     type: 'website',
-    locale: 'en_US',
-    url: 'https://amd-nsri-portfolio-alpha.vercel.app',
+    locale: OG_LOCALE,
+    url: SITE_URL,
     siteName: 'AMD NSRI',
   },
   twitter: {
