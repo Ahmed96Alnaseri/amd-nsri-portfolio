@@ -283,10 +283,10 @@ const tools: Tool[] = [
     status: 'Live',
     hideStatus: true,
     type: 'product',
-    // no artwork yet: the card and the detail page show the neutral diamond placeholder, the detail one framed
-    // at IPunch's and NESTRI's hero size. When the hero arrives, add heroImage (detail) and cardImage (card) here.
     image: null,
-    heroPlaceholderSize: { width: 1540, height: 480 },
+    heroImage: { src: '/tools/expanded-mesh-generator/hero.png', width: 1540, height: 480 },
+    // the panel drawing only; the hero's wordmark would repeat the card title
+    cardImage: '/tools/expanded-mesh-generator/card.webp',
     price: 'Free',
     cardBadge: 'FREE · LIVE',
     input: 'Mesh LWD · SWD · W · T · R, panel size, optional U or L frame',
