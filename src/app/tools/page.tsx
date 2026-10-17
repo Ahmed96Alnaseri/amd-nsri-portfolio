@@ -311,9 +311,10 @@ export default function ToolsPage() {
           transition: transform 400ms cubic-bezier(.16,1,.3,1);
         }
         .tc:hover .tc-arrow { transform: translateX(5px); }
-        /* Arabic: the foot mirrors, so the arrow sits on the left; point it (and its hover nudge) left */
-        [lang="ar"] .tc-arrow { transform: scaleX(-1); }
-        [lang="ar"] .tc:hover .tc-arrow { transform: translateX(-5px) scaleX(-1); }
+        /* Arabic: the foot mirrors, so the arrow sits on the left; point it left. The flip uses the separate
+           scale property, which is not transitioned (the language is set after load, so a transform here
+           would animate the flip), and it mirrors the hover translateX(5px) into a nudge to the left. */
+        [lang="ar"] .tc-arrow { scale: -1 1; }
 
         /* ── bottom strip ──────────────────────────────────────── */
         .tp-strip {
@@ -337,7 +338,6 @@ export default function ToolsPage() {
           .tc:hover { transform: none; }
           .tc:hover .tc-media { transform: none; }
           .tc:hover .tc-arrow { transform: none; }
-          [lang="ar"] .tc:hover .tc-arrow { transform: scaleX(-1); }
         }
 
         /* ── responsive ────────────────────────────────────────── */
