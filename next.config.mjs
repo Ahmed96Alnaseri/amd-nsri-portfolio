@@ -42,7 +42,8 @@ const nextConfig = {
     return [
       // the site's first address still reaches the production deployment: send every request on it, path and
       // query kept, to the same page on amdnsri.com (SITE_URL in src/lib/seo.ts). Only this exact host matches,
-      // so amdnsri.com, www and the preview deployments are untouched. It comes first so moved files take one hop.
+      // so amdnsri.com, www and the preview deployments are untouched. It comes first, before the moved-file rules,
+      // so nothing on the old host is answered there; amdnsri.com then applies those rules itself.
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'amd-nsri-portfolio-alpha.vercel.app' }],
