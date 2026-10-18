@@ -756,7 +756,7 @@ export const translations = {
       pages:         '{n} sayfa',
       previewError:  'Önizleme gösterilemedi. PDF’i yine de indirebilirsiniz.',
     },
-    // the "not found" page (src/app/not-found.tsx): TR by Claude, for review
+    // the "not found" page (src/app/not-found.tsx): TR by Claude, reviewed
     notFound: {
       docTitle:  'Sayfa bulunamadı',
       eyebrow:   'Hata 404 · Sayfa bulunamadı',
@@ -1135,7 +1135,7 @@ export const translations = {
       pages:         '{n} صفحة',
       previewError:  'تعذّر عرض المعاينة. لا يزال بإمكانك تحميل ملف PDF.',
     },
-    // the "not found" page (src/app/not-found.tsx): AR by Claude (MSA), for review
+    // the "not found" page (src/app/not-found.tsx): AR by Claude (MSA), reviewed
     notFound: {
       docTitle:  'الصفحة غير موجودة',
       eyebrow:   'خطأ 404 · الصفحة غير موجودة',
