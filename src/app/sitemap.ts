@@ -41,6 +41,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const tool of tools) {
     if (tool.status === 'Coming Soon') continue;
     routes.push({ path: `/tools/${tool.slug}`, changeFrequency: 'monthly', priority: 0.7 });
+    // the tool itself, when it is a page of its own on this site (/ipunch.html, /nestri.html, …)
+    if (tool.ctaLink?.startsWith('/') && tool.ctaLink.endsWith('.html')) {
+      routes.push({ path: tool.ctaLink, changeFrequency: 'monthly', priority: 0.7 });
+    }
   }
 
   // each journal post, dated by its publication date
