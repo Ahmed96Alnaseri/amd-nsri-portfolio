@@ -41,8 +41,10 @@ export interface Tool {
       ratio — no crop, fade or diamond. Takes precedence over `image` there; the card keeps `image`. */
   heroImage?: { src: string; width: number; height: number };
   /** Static still of the detail hero for the /tools card, trimmed to the design. Shown whole beside the
-      card text, never cropped; tools without a hero design leave it unset and keep the diamond. */
-  cardImage?: string;
+      card text, never cropped; tools without a hero design leave it unset and keep the diamond.
+      width/height are the file's own size: narrow cards reserve the image's space from them before it
+      loads, so the card doesn't grow while it arrives. Update them when the file changes. */
+  cardImage?: { src: string; width: number; height: number };
   /** Product price (e.g. "Contact for pricing"); null for showcase */
   price: string | null;
   /** Fine print under the price/CTA explaining how the price is arrived at. */
@@ -122,7 +124,7 @@ const tools: Tool[] = [
     type: 'product',
     image: null,
     heroImage: { src: '/tools/ipunch/hero.png', width: 1540, height: 480 },
-    cardImage: '/tools/ipunch/card.webp',
+    cardImage: { src: '/tools/ipunch/card.webp', width: 1040, height: 365 },
     price: 'Free',
     cardBadge: 'Free · Live',
     hideStatus: true,
@@ -156,7 +158,7 @@ const tools: Tool[] = [
     image: null,
     heroImage: { src: '/tools/nestri/hero.png', width: 1540, height: 480 },
     // card shows the two panels only; the hero's wordmark would repeat the card title
-    cardImage: '/tools/nestri/card.webp',
+    cardImage: { src: '/tools/nestri/card.webp', width: 1040, height: 335 },
     price: 'Free',
     cardBadge: 'FREE · LIVE',
     ctaLabel: 'Open NESTRI',
@@ -190,7 +192,7 @@ const tools: Tool[] = [
     image: null,
     heroImage: { src: '/tools/nestri-pro/hero.png', width: 1540, height: 480 },
     // card shows the two panels only; the hero's wordmark would repeat the card title
-    cardImage: '/tools/nestri-pro/card.webp',
+    cardImage: { src: '/tools/nestri-pro/card.webp', width: 1040, height: 313 },
     price: null,
     input: 'DXF part drawings',
     output: 'Nested sheets DXF · Excel report',
@@ -239,7 +241,7 @@ const tools: Tool[] = [
       "Hi, I'd like to submit a project for sheet metal unfolding.\n\nProject description:\nPanel count (approx):\nMaterial & thickness:\nRequired output format (DWG / STEP / other):\nDeadline (if any):",
     embed: '/tools/sheet-metal-unfolder/hero.html',
     // resting frame of the embed (1440×480), before Unfold is pressed
-    cardImage: '/tools/sheet-metal-unfolder/card.webp',
+    cardImage: { src: '/tools/sheet-metal-unfolder/card.webp', width: 1040, height: 405 },
     embedHeight: 480,
     embedHeightMobile: 720,
     embedTitle: 'Sheet Metal Unfolder — interactive demo',
@@ -286,7 +288,7 @@ const tools: Tool[] = [
     image: null,
     heroImage: { src: '/tools/expanded-mesh-generator/hero.png', width: 1540, height: 480 },
     // the panel drawing only; the hero's wordmark would repeat the card title
-    cardImage: '/tools/expanded-mesh-generator/card.webp',
+    cardImage: { src: '/tools/expanded-mesh-generator/card.webp', width: 1040, height: 670 },
     price: 'Free',
     cardBadge: 'FREE · LIVE',
     input: 'Mesh LWD · SWD · W · T · R, panel size, optional U or L frame',
