@@ -203,7 +203,6 @@ export const PROJECTS: Project[] = [
       { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/17-facade-shading-diagram.webp', subtitle: 'Façade Shading Diagram', alt: 'Façade shading diagram tracing the sun path and how the timber panels adjust through the day' },
     ],
     summary: 'Competition proposal for a municipal social services building in Muğla\'s historic Menteşe district: two public routes, a central courtyard and a pocket theatre opening onto an outdoor amphitheatre.',
-    ogImage: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/og.jpg',
   },
   {
     title: 'Toyota SAS & Lexus Showroom',
