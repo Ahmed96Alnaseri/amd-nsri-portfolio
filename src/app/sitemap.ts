@@ -3,6 +3,8 @@ import { SITE_URL } from '@/lib/seo';
 import { SHOP_ENABLED, DESIGN_ENABLED } from '@/lib/features';
 import { PROJECTS, slugify } from '@/data/architectureProjects';
 import { newsletterEnabled, newsletterMode } from '@/lib/newsletter/config';
+import tools from '@/data/tools';
+import posts from '@/data/journal-posts';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -11,6 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     path: string;
     changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'];
     priority: number;
+    /** When the page last changed, if known; otherwise the build date. */
+    modified?: Date;
   }[] = [
     { path: '/',             changeFrequency: 'monthly', priority: 1 },
     { path: '/architecture', changeFrequency: 'monthly', priority: 0.9 },
@@ -33,9 +37,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     routes.push({ path: `/architecture/${p.slug ?? slugify(p.title)}`, changeFrequency: 'yearly', priority: 0.6 });
   }
 
-  return routes.map(({ path, changeFrequency, priority }) => ({
+  // each tool page, once the tool is out: "Coming Soon" tools stay out until they are live
+  for (const tool of tools) {
+    if (tool.status === 'Coming Soon') continue;
+    routes.push({ path: `/tools/${tool.slug}`, changeFrequency: 'monthly', priority: 0.7 });
+  }
+
+  // each journal post, dated by its publication date
+  for (const post of posts) {
+    routes.push({
+      path: `/journal/${post.slug}`,
+      changeFrequency: 'yearly',
+      priority: 0.6,
+      modified: new Date(`${post.year}-${post.month.padStart(2, '0')}-${post.day.padStart(2, '0')}T00:00:00Z`),
+    });
+  }
+
+  return routes.map(({ path, changeFrequency, priority, modified }) => ({
     url: `${SITE_URL}${path}`,
-    lastModified,
+    lastModified: modified ?? lastModified,
     changeFrequency,
     priority,
   }));
