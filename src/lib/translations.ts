@@ -377,6 +377,16 @@ export const translations = {
       pages:         '{n} pages',
       previewError:  'The preview could not be shown. You can still download the PDF.',
     },
+    // the "not found" page (src/app/not-found.tsx)
+    notFound: {
+      docTitle:  'Page not found',
+      eyebrow:   'Error 404 · Page not found',
+      title:     'This page doesn’t exist.',
+      body:      'The address may be mistyped, or the page has moved or been taken down.',
+      requested: 'Requested address',
+      home:      'Back to home',
+      tools:     'Browse the tools',
+    },
   },
 
   TR: {
@@ -746,6 +756,16 @@ export const translations = {
       pages:         '{n} sayfa',
       previewError:  'Önizleme gösterilemedi. PDF’i yine de indirebilirsiniz.',
     },
+    // the "not found" page (src/app/not-found.tsx): TR by Claude, for review
+    notFound: {
+      docTitle:  'Sayfa bulunamadı',
+      eyebrow:   'Hata 404 · Sayfa bulunamadı',
+      title:     'Bu sayfa mevcut değil.',
+      body:      'Adres yanlış yazılmış olabilir ya da sayfa taşınmış veya kaldırılmış olabilir.',
+      requested: 'İstenen adres',
+      home:      'Ana sayfaya dön',
+      tools:     'Araçlara göz at',
+    },
   },
 
   AR: {
@@ -1114,6 +1134,16 @@ export const translations = {
       loading:       'جارٍ تحميل الكتالوج…',
       pages:         '{n} صفحة',
       previewError:  'تعذّر عرض المعاينة. لا يزال بإمكانك تحميل ملف PDF.',
+    },
+    // the "not found" page (src/app/not-found.tsx): AR by Claude (MSA), for review
+    notFound: {
+      docTitle:  'الصفحة غير موجودة',
+      eyebrow:   'خطأ 404 · الصفحة غير موجودة',
+      title:     'هذه الصفحة غير موجودة.',
+      body:      'ربما كُتب العنوان بشكل خاطئ، أو نُقلت الصفحة أو أُزيلت.',
+      requested: 'العنوان المطلوب',
+      home:      'العودة إلى الصفحة الرئيسية',
+      tools:     'تصفّح الأدوات',
     },
   },
 } as const;
