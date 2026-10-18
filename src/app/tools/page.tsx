@@ -38,7 +38,7 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
       aria-label={`${tool.name} — view details`}
     >
       {tool.cardImage
-        ? <span className="tc-media tc-media--art" style={{ backgroundImage: `url(${tool.cardImage})` }} aria-hidden="true" />
+        ? <span className="tc-media tc-media--art" style={{ backgroundImage: `url(${tool.cardImage.src})` }} aria-hidden="true" />
         : tool.image
         ? <span className="tc-media" style={{ backgroundImage: `url(${tool.image})` }} aria-hidden="true" />
         : <span className="tc-media tc-media--placeholder" aria-hidden="true"><span className="tc-diamond" aria-hidden="true">◆</span></span>
@@ -78,8 +78,9 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
         {/* narrow cards only (see .tc-art): the still in its own row under the text instead of behind it */}
         {tool.cardImage && (
           <span className="tc-art" aria-hidden="true">
+            {/* width/height give the box its final size before the file arrives (no jump while it loads) */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={tool.cardImage} alt="" loading="lazy" decoding="async" />
+            <img src={tool.cardImage.src} width={tool.cardImage.width} height={tool.cardImage.height} alt="" loading="lazy" decoding="async" />
           </span>
         )}
 
