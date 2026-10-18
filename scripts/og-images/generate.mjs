@@ -25,8 +25,13 @@ const MANIFEST = path.join(ROOT, 'src/data/og-images.json');
 const W = 1200, H = 630;
 const C = { BG: '#0d0d0b', COPPER: '#b8956a', COPPER_DIM: '#7a6144', SECONDARY: '#8a8880' };
 const fontFile = (subset) => fs.readFileSync(path.join(HERE, `node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-${subset}-500-normal.woff`));
-// Latin first, then Latin Extended for Turkish letters in project names (ı, ğ, ş)
-const FONTS = ['latin', 'latin-ext'].map((s) => ({ name: 'IBM Plex Mono', data: fontFile(s), weight: 500, style: 'normal' }));
+// Latin, with Latin Extended as a fallback for Turkish letters in project names (ğ, ş). The renderer only falls
+// back to a font with a different name, so the extended set is registered under its own name, listed second.
+const FONTS = [
+  { name: 'IBM Plex Mono', data: fontFile('latin'), weight: 500, style: 'normal' },
+  { name: 'IBM Plex Mono Ext', data: fontFile('latin-ext'), weight: 500, style: 'normal' },
+];
+const FAMILY = 'IBM Plex Mono, IBM Plex Mono Ext';
 
 /** Element for satori: h('div', { display: 'flex', ... }, ...children); an img takes its attributes as `attrs`. */
 const h = (type, style, ...children) => ({ type, props: { style: { display: 'flex', ...style }, children: children.flat().filter((c) => c != null && c !== false) } });
@@ -89,7 +94,7 @@ async function toolCard(tool) {
       const scale = Math.min((W - 2 * PAD) / art.info.width, room / art.info.height);
       const aw = Math.round(art.info.width * scale), ah = Math.round(art.info.height * scale);
       const png = await sharp(art.data).resize(aw * 2, ah * 2, { kernel: 'lanczos3' }).png().toBuffer();
-      return { layout: 'name + drawing', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: 'IBM Plex Mono', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: GAP, padding: '32px 0' },
+      return { layout: 'name + drawing', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: FAMILY, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: GAP, padding: '32px 0' },
         h('div', { width: W, padding: `0 ${PAD}px`, flexDirection: 'column' }, top),
         h('div', { width: W, padding: `0 ${PAD}px`, fontSize: NAME, lineHeight: 1.1, letterSpacing: -1, color: C.COPPER }, tool.name),
         img(dataUri(png, 'image/png'), aw, ah),
@@ -104,12 +109,12 @@ async function toolCard(tool) {
     const heroW = Math.round(art.info.width * scale), heroH = Math.round(art.info.height * scale);
     const png = await sharp(art.data).resize(heroW * 2, heroH * 2, { kernel: 'lanczos3' }).png().toBuffer();
     // eyebrow, hero and description kept together as one block in the middle of the card
-    return { layout: 'whole hero (no separate wordmark column)', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: 'IBM Plex Mono', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 40 },
+    return { layout: 'whole hero (no separate wordmark column)', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: FAMILY, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 40 },
       h('div', { width: W, padding: '0 48px', flexDirection: 'column' }, top),
       img(dataUri(png, 'image/png'), heroW, heroH),
       h('div', { width: W, padding: '0 48px' }, desc))) };
   }
-  return { layout: 'text (no hero)', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: 'IBM Plex Mono', flexDirection: 'column', justifyContent: 'space-between', padding: `72px ${padX + 8}px` },
+  return { layout: 'text (no hero)', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: FAMILY, flexDirection: 'column', justifyContent: 'space-between', padding: `72px ${padX + 8}px` },
     top,
     h('div', { flexDirection: 'column' },
       h('div', { fontSize: tool.name.length > 14 ? 80 : 120, lineHeight: 1.05, letterSpacing: -3, color: C.COPPER }, tool.name),
@@ -134,7 +139,7 @@ async function projectCard(p) {
     .extract({ left: Math.round((rw - PHOTO_W * 2) / 2), top: Math.round(((rh - H * 2) * yPct) / 100), width: PHOTO_W * 2, height: H * 2 })
     .jpeg({ quality: 90 }).toBuffer();
 
-  return { layout: 'title + photo', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: 'IBM Plex Mono', position: 'relative' },
+  return { layout: 'title + photo', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: FAMILY, position: 'relative' },
     img(dataUri(photo, 'image/jpeg'), PHOTO_W, H, { position: 'absolute', right: 0, top: 0 }),
     // a long, eased fade so its end never shows as an edge in a bright sky
     h('div', { position: 'absolute', top: 0, left: W - PHOTO_W, width: 340, height: H,
