@@ -1,0 +1,130 @@
+// Link-preview images (1200x630) for the tool and project pages, in the style of the site card
+// (src/app/opengraph-image.tsx): #0d0d0b ground, copper title, IBM Plex Mono, a short copper rule.
+// Writes public/og/<section>/<slug>.(png|jpg) and the list the pages read, src/data/og-images.json.
+//
+//   node --no-warnings generate.mjs                        every tool and project
+//   node --no-warnings generate.mjs tools/ipunch ...       only these (section/slug), into public/og as usual
+//   node --no-warnings generate.mjs --out <dir> <ids...>   samples into another folder; the list is not touched
+//
+// The data is read straight from src/data (Node 23+ runs the TypeScript files as they are).
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import satori from 'satori';
+import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
+import tools from '../../src/data/tools.ts';
+import { PROJECTS, slugify } from '../../src/data/architectureProjects.ts';
+
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, '../..');
+const PUBLIC = path.join(ROOT, 'public');
+const MANIFEST = path.join(ROOT, 'src/data/og-images.json');
+
+const W = 1200, H = 630;
+const C = { BG: '#0d0d0b', COPPER: '#b8956a', COPPER_DIM: '#7a6144', SECONDARY: '#8a8880' };
+const fontFile = (subset) => fs.readFileSync(path.join(HERE, `node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-${subset}-500-normal.woff`));
+// Latin first, then Latin Extended for Turkish letters in project names (ı, ğ, ş)
+const FONTS = ['latin', 'latin-ext'].map((s) => ({ name: 'IBM Plex Mono', data: fontFile(s), weight: 500, style: 'normal' }));
+
+/** Element for satori: h('div', { display: 'flex', ... }, ...children); an img takes its attributes as `attrs`. */
+const h = (type, style, ...children) => ({ type, props: { style: { display: 'flex', ...style }, children: children.flat().filter((c) => c != null && c !== false) } });
+const img = (src, width, height, style = {}) => ({ type: 'img', props: { src, width, height, style } });
+
+const dataUri = (buf, type) => `data:${type};base64,${buf.toString('base64')}`;
+
+async function render(tree) {
+  const svg = await satori(tree, { width: W, height: H, fonts: FONTS });
+  return new Resvg(svg, { fitTo: { mode: 'width', value: W } }).render().asPng();
+}
+
+/* ── tool card: eyebrow + badge, the hero whole across the card, the one-line description ──────────────
+   Tools without a hero get the site-card layout: the name large, a copper rule, the description. */
+async function toolCard(tool) {
+  const eyebrow = 'AMD NSRI · TOOLS';
+  const badge = (tool.cardBadge ?? tool.status).toUpperCase();
+  const top = h('div', { justifyContent: 'space-between', fontSize: 24, letterSpacing: 5 },
+    h('div', { color: C.COPPER_DIM }, eyebrow), h('div', { color: C.COPPER }, badge));
+  const desc = h('div', { fontSize: 28, lineHeight: 1.4, color: C.SECONDARY }, tool.description);
+  const padX = 72;
+
+  if (tool.heroImage) {
+    // The hero's own margins are the page colour, so they are trimmed off (nothing of the artwork is cut) and
+    // the artwork fills almost the whole card width: 24 px each side, up to the height left by the text.
+    const flat = await sharp(path.join(PUBLIC, tool.heroImage.src)).flatten({ background: C.BG }).png().toBuffer();
+    const trimmed = await sharp(flat).trim({ background: C.BG, threshold: 12 }).png().toBuffer({ resolveWithObject: true });
+    const pad = Math.round(trimmed.info.width * 0.012);
+    const art = await sharp(trimmed.data).extend({ top: pad, bottom: pad, left: pad, right: pad, background: C.BG }).png().toBuffer({ resolveWithObject: true });
+    const scale = Math.min((W - 48) / art.info.width, 400 / art.info.height);
+    const heroW = Math.round(art.info.width * scale), heroH = Math.round(art.info.height * scale);
+    const png = await sharp(art.data).resize(heroW * 2, heroH * 2, { kernel: 'lanczos3' }).png().toBuffer();
+    // eyebrow, hero and description kept together as one block in the middle of the card
+    return render(h('div', { width: W, height: H, background: C.BG, fontFamily: 'IBM Plex Mono', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 40 },
+      h('div', { width: W, padding: '0 48px', flexDirection: 'column' }, top),
+      img(dataUri(png, 'image/png'), heroW, heroH),
+      h('div', { width: W, padding: '0 48px' }, desc)));
+  }
+  return render(h('div', { width: W, height: H, background: C.BG, fontFamily: 'IBM Plex Mono', flexDirection: 'column', justifyContent: 'space-between', padding: `72px ${padX + 8}px` },
+    top,
+    h('div', { flexDirection: 'column' },
+      h('div', { fontSize: tool.name.length > 14 ? 80 : 120, lineHeight: 1.05, letterSpacing: -3, color: C.COPPER }, tool.name),
+      h('div', { width: 220, height: 2, background: C.COPPER, marginTop: 32 })),
+    desc));
+}
+
+/* ── project card: title block left, the cover photo right, feathered into the page colour ─────────── */
+const PHOTO_W = 620;
+async function projectCard(p) {
+  const eyebrow = 'AMD NSRI · ARCHITECTURE';
+  const meta = `${p.type} · ${p.location} · ${p.year}`;
+  const titleSize = p.title.length <= 20 ? 52 : p.title.length <= 32 ? 44 : 38;
+  // the cover photo cropped to the panel; a "center 35%"-style position on that image moves the crop up or down
+  const pos = p.images.find((i) => i.src === p.coverImage)?.position;
+  const yPct = pos ? parseFloat(pos.split(/\s+/)[1] ?? '50') : 50;
+  const src = sharp(path.join(PUBLIC, p.coverImage));
+  const { width: sw, height: sh } = await src.metadata();
+  const scale = Math.max((PHOTO_W * 2) / sw, (H * 2) / sh);
+  const rw = Math.round(sw * scale), rh = Math.round(sh * scale);
+  const photo = await sharp(path.join(PUBLIC, p.coverImage)).resize(rw, rh)
+    .extract({ left: Math.round((rw - PHOTO_W * 2) / 2), top: Math.round(((rh - H * 2) * yPct) / 100), width: PHOTO_W * 2, height: H * 2 })
+    .jpeg({ quality: 90 }).toBuffer();
+
+  return render(h('div', { width: W, height: H, background: C.BG, fontFamily: 'IBM Plex Mono', position: 'relative' },
+    img(dataUri(photo, 'image/jpeg'), PHOTO_W, H, { position: 'absolute', right: 0, top: 0 }),
+    // a long, eased fade so its end never shows as an edge in a bright sky
+    h('div', { position: 'absolute', top: 0, left: W - PHOTO_W, width: 340, height: H,
+      backgroundImage: `linear-gradient(to right, ${C.BG} 0%, rgba(13,13,11,0.82) 22%, rgba(13,13,11,0.5) 48%, rgba(13,13,11,0.2) 74%, rgba(13,13,11,0.05) 90%, rgba(13,13,11,0) 100%)` }),
+    h('div', { flexDirection: 'column', justifyContent: 'space-between', height: H, width: W - PHOTO_W + 40, padding: '72px 48px 72px 72px' },
+      h('div', { fontSize: 20, letterSpacing: 5, color: C.COPPER_DIM }, eyebrow),
+      h('div', { flexDirection: 'column' },
+        h('div', { fontSize: titleSize, lineHeight: 1.12, letterSpacing: -1, color: C.COPPER }, p.title),
+        h('div', { width: 160, height: 2, background: C.COPPER, marginTop: 30 })),
+      h('div', { fontSize: 22, lineHeight: 1.45, color: C.SECONDARY }, meta))));
+}
+
+/* ── run ───────────────────────────────────────────────────────────────────────────────────────────── */
+const args = process.argv.slice(2);
+const outIdx = args.indexOf('--out');
+const outDir = outIdx >= 0 ? path.resolve(args[outIdx + 1]) : null;
+const only = new Set(args.filter((a, i) => a !== '--out' && i !== outIdx + 1));
+
+const jobs = [
+  ...tools.map((t) => ({ id: `tools/${t.slug}`, make: () => toolCard(t), ext: 'png' })),
+  ...PROJECTS.map((p) => ({ id: `architecture/${p.slug ?? slugify(p.title)}`, make: () => projectCard(p), ext: 'jpg' })),
+].filter((j) => !only.size || only.has(j.id));
+
+const manifest = fs.existsSync(MANIFEST) ? JSON.parse(fs.readFileSync(MANIFEST, 'utf8')) : {};
+for (const job of jobs) {
+  const png = await job.make();
+  // tool cards stay PNG (thin drawing lines); project cards are photos, so JPEG keeps them small
+  const file = job.ext === 'png'
+    ? await sharp(png).png({ compressionLevel: 9, palette: true, quality: 90 }).toBuffer()
+    : await sharp(png).jpeg({ quality: 85, mozjpeg: true }).toBuffer();
+  const rel = `og/${job.id}.${job.ext}`;
+  const dest = path.join(outDir ?? PUBLIC, rel);
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, file);
+  manifest[job.id] = `/${rel}`;
+  console.log(`${job.id.padEnd(48)} ${(file.length / 1024).toFixed(0).padStart(4)} KB  ${dest}`);
+}
+if (!outDir) fs.writeFileSync(MANIFEST, JSON.stringify(Object.fromEntries(Object.entries(manifest).sort()), null, 2) + '\n');
