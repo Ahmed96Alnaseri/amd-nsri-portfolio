@@ -75,6 +75,14 @@ function ToolCard({ tool, index }: { tool: Tool; index: number }) {
           <span className="tc-desc">{tv(tool.description)}</span>
         </span>
 
+        {/* narrow cards only (see .tc-art): the still in its own row under the text instead of behind it */}
+        {tool.cardImage && (
+          <span className="tc-art" aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={tool.cardImage} alt="" loading="lazy" decoding="async" />
+          </span>
+        )}
+
         <span className="tc-foot">
           <span className="tc-index" aria-hidden="true">
             T-{String(index + 1).padStart(2, '0')}
@@ -218,12 +226,15 @@ export default function ToolsPage() {
           }
           .tc--art .tc-fade { display: none; }
         }
-        /* narrow card: the description runs the full width, so the still drops behind it as a faint
-           texture — whole, but quiet enough to keep the text readable */
+        /* narrow card (phones, tablets upright): the description runs the full width, so the still gets
+           a row of its own under the text, whole and at full width, instead of sitting behind the text */
+        .tc-art { display: none; }
         @container (max-width: 599.98px) {
-          .tc-media--art { opacity: .18; background-position: center; }
-          .tc:hover .tc-media--art { opacity: .26; }
+          .tc-media--art { display: none; }
           .tc--art .tc-fade { display: none; }
+          .tc-art { display: block; margin-top: clamp(24px, 3vw, 32px); }
+          .tc-art img { display: block; width: 100%; height: auto; opacity: .85; transition: opacity 500ms ease; }
+          .tc:hover .tc-art img { opacity: 1; }
         }
         .tc-diamond {
           position: absolute; right: 22%; top: 50%; transform: translateY(-50%);
@@ -334,7 +345,7 @@ export default function ToolsPage() {
 
         /* ── reduced motion ────────────────────────────────────── */
         @media (prefers-reduced-motion: reduce) {
-          .tc, .tc-arrow, .tc-media, .tp-f { transition: none !important; }
+          .tc, .tc-arrow, .tc-media, .tc-art img, .tp-f { transition: none !important; }
           .tc:hover { transform: none; }
           .tc:hover .tc-media { transform: none; }
           .tc:hover .tc-arrow { transform: none; }
