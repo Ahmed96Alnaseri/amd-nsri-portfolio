@@ -24,6 +24,9 @@ export type Project = {
   summary?: string;
   /** 1200×630 link-preview image; without it the page uses the site's default preview. */
   ogImage?: string;
+  /** Where the generated link-preview image crops the cover photo, as "x% y%" (default "50% 50%").
+   *  Only for scripts/og-images; the site's own photo crops use ProjectImage.position. */
+  ogPhotoPosition?: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -71,6 +74,8 @@ export const PROJECTS: Project[] = [
     architect: 'Ahmed Alnaseri, Furkan Kartekin',
     area: '500 m²',
     coverImage: '/projects/hasyl-canopy/card/canopy-v1-1-photo.webp',
+    // the link preview shows the right of the photo, so the whole HASYL sign is in the crop
+    ogPhotoPosition: '100% 50%',
     images: [
       { src: '/projects/hasyl-canopy/card/canopy-v1-1-photo.webp', subtitle: 'Exterior View' },
       { src: '/projects/hasyl-canopy/card/ceiling-turkmen.webp',    subtitle: 'Ceiling Pattern Detail' },
@@ -198,7 +203,6 @@ export const PROJECTS: Project[] = [
       { src: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/17-facade-shading-diagram.webp', subtitle: 'Façade Shading Diagram', alt: 'Façade shading diagram tracing the sun path and how the timber panels adjust through the day' },
     ],
     summary: 'Competition proposal for a municipal social services building in Muğla\'s historic Menteşe district: two public routes, a central courtyard and a pocket theatre opening onto an outdoor amphitheatre.',
-    ogImage: '/projects/mugla-belediyesi-sosyal-hizmet-binasi/og.jpg',
   },
   {
     title: 'Toyota SAS & Lexus Showroom',

@@ -1,0 +1,19 @@
+{
+  "architecture/baghdad-private-hospital": "/og/architecture/baghdad-private-hospital.jpg",
+  "architecture/balikesir-cumhuriyet-meydani": "/og/architecture/balikesir-cumhuriyet-meydani.jpg",
+  "architecture/corten-facade-villa": "/og/architecture/corten-facade-villa.jpg",
+  "architecture/hasyl-canopy": "/og/architecture/hasyl-canopy.jpg",
+  "architecture/kerkuk-restaurant": "/og/architecture/kerkuk-restaurant.jpg",
+  "architecture/lexus-toyota-showroom-slemani": "/og/architecture/lexus-toyota-showroom-slemani.jpg",
+  "architecture/mugla-belediyesi-sosyal-hizmet-binasi": "/og/architecture/mugla-belediyesi-sosyal-hizmet-binasi.jpg",
+  "architecture/national-hospital-baghdad": "/og/architecture/national-hospital-baghdad.jpg",
+  "architecture/ppg-factory-facade": "/og/architecture/ppg-factory-facade.jpg",
+  "tools/amad": "/og/tools/amad.png",
+  "tools/expanded-mesh-generator": "/og/tools/expanded-mesh-generator.png",
+  "tools/finsa": "/og/tools/finsa.png",
+  "tools/nestri-pro": "/og/tools/nestri-pro.png",
+  "tools/perforation-pattern-engine": "/og/tools/perforation-pattern-engine.png",
+  "tools/pinact": "/og/tools/pinact.png",
+  "tools/sheet-metal-unfolder": "/og/tools/sheet-metal-unfolder.png",
+  "tools/surface-punch-mapper": "/og/tools/surface-punch-mapper.png"
+}
