@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import generatedPreviews from '@/data/og-images.json';
 
 /**
  * Central SEO config + a small helper that builds a per-page `Metadata`
@@ -14,6 +15,25 @@ export const SITE_NAME = 'AMD NSRI';
 export const SITE_URL = 'https://amdnsri.com';
 /** Link previews and search engines read the pages in English (TR and AR are switched in the browser). */
 export const OG_LOCALE = 'en_US';
+
+export type PreviewImage = { url: string; width: number; height: number; alt: string };
+
+/** The site card (src/app/opengraph-image.tsx), for pages without a preview image of their own. */
+export const SITE_PREVIEW: PreviewImage = {
+  url: '/opengraph-image',
+  width: 1200,
+  height: 630,
+  alt: 'AMD NSRI — Computational Design & Fabrication Intelligence',
+};
+
+/**
+ * The generated preview image of a page ("tools/<slug>", "architecture/<slug>"), made by scripts/og-images and
+ * listed in src/data/og-images.json; the site card when there is none.
+ */
+export function previewImage(id: string, alt: string): PreviewImage {
+  const url = (generatedPreviews as Record<string, string>)[id];
+  return url ? { url, width: 1200, height: 630, alt } : SITE_PREVIEW;
+}
 
 export interface PageMetaOptions {
   /** Page name used in the title, e.g. "Architecture" → "Architecture — AMD NSRI". */

@@ -126,17 +126,20 @@ async function toolCard(tool) {
 const PHOTO_W = 620;
 async function projectCard(p) {
   const eyebrow = 'AMD NSRI · ARCHITECTURE';
-  const meta = `${p.type} · ${p.location} · ${p.year}`;
+  // place and year are joined with no-break spaces, so a line break can only fall after the type
+  const meta = `${p.type} · ${`${p.location} · ${p.year}`.replace(/ /g, ' ')}`;
   const titleSize = p.title.length <= 20 ? 52 : p.title.length <= 32 ? 44 : 38;
-  // the cover photo cropped to the panel; a "center 35%"-style position on that image moves the crop up or down
-  const pos = p.images.find((i) => i.src === p.coverImage)?.position;
-  const yPct = pos ? parseFloat(pos.split(/\s+/)[1] ?? '50') : 50;
+  // The cover photo cropped to the panel. The project's ogPhotoPosition ("x% y%") moves the crop; otherwise a
+  // "center 35%"-style position on that image moves it up or down, as on the site.
+  const pct = (v) => (v === 'left' || v === 'top' ? 0 : v === 'right' || v === 'bottom' ? 100 : v === 'center' || v == null ? 50 : parseFloat(v));
+  const [px, py] = p.ogPhotoPosition ? p.ogPhotoPosition.split(/\s+/) : ['center', p.images.find((i) => i.src === p.coverImage)?.position?.split(/\s+/)[1]];
+  const xPct = pct(px), yPct = pct(py);
   const src = sharp(path.join(PUBLIC, p.coverImage));
   const { width: sw, height: sh } = await src.metadata();
   const scale = Math.max((PHOTO_W * 2) / sw, (H * 2) / sh);
   const rw = Math.round(sw * scale), rh = Math.round(sh * scale);
   const photo = await sharp(path.join(PUBLIC, p.coverImage)).resize(rw, rh)
-    .extract({ left: Math.round((rw - PHOTO_W * 2) / 2), top: Math.round(((rh - H * 2) * yPct) / 100), width: PHOTO_W * 2, height: H * 2 })
+    .extract({ left: Math.round(((rw - PHOTO_W * 2) * xPct) / 100), top: Math.round(((rh - H * 2) * yPct) / 100), width: PHOTO_W * 2, height: H * 2 })
     .jpeg({ quality: 90 }).toBuffer();
 
   return { layout: 'title + photo', png: await render(h('div', { width: W, height: H, background: C.BG, fontFamily: FAMILY, position: 'relative' },
