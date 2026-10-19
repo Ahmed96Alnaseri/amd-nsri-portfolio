@@ -71,7 +71,9 @@
     '.amdg-lead{color:#8a8880;margin:0 0 26px}',
     '.amdg-label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a8880;margin-bottom:8px}',
     '.amdg[dir=rtl] .amdg-label{letter-spacing:0}',
-    '.amdg-input{width:100%;font:inherit;font-size:15px;color:#e8e4dc;background:#141412;border:1px solid #2a2a26;padding:12px 14px;outline:none;direction:ltr;text-align:left;transition:border-color .3s}',
+    // 16px: iPhones zoom the page in on fields with smaller text
+    '.amdg-input{width:100%;font:inherit;font-size:16px;color:#e8e4dc;background:#141412;border:1px solid #2a2a26;padding:12px 14px;outline:none;direction:ltr;text-align:left;transition:border-color .3s}',
+    '.amdg-input::placeholder{color:#5a5854;opacity:1}',
     '.amdg-input:focus{border-color:#b8956a}',
     '.amdg-check{display:flex;gap:12px;align-items:flex-start;margin:20px 0 6px;cursor:pointer;color:#e8e4dc;font-size:13px}',
     '.amdg-check input{flex:none;width:17px;height:17px;margin:3px 0 0;accent-color:#b8956a;cursor:pointer}',
@@ -90,7 +92,9 @@
     '.amdg-notice{font-size:11.5px;line-height:1.65;color:#8a8880;margin:0 0 10px}',
     '.amdg-files{font-size:11.5px;color:#5a5854;margin:0}',
     '.amdg-test{margin:0 0 18px;padding:8px 12px;border:1px dashed rgba(184,149,106,.5);color:#b8956a;font-size:11px;letter-spacing:.06em}',
-    '.amdg-hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}',
+    // hidden in place (clipped to nothing), not moved off-screen: an offset would widen the panel in right-to-left
+    '.amdg-hp{position:absolute!important;width:1px!important;height:1px!important;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
+    '.amdg-hp input{width:1px;height:1px;padding:0;border:0}',
     '@media (prefers-reduced-motion:reduce){.amdg-btn::before,.amdg-input{transition:none}}',
   ].join('');
 
