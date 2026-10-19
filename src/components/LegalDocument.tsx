@@ -1,9 +1,9 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
-import type { Lang } from '@/lib/translations';
+import { LANGS, type Lang } from '@/lib/translations';
 import type { LegalDoc } from '@/lib/privacy-content';
 
 /** Renders a [[text|/path]] link inside a sentence; everything else stays plain text. With newTabNoteId the link opens
@@ -21,10 +21,18 @@ export function withLinks(text: string, newTabNoteId?: string) {
 
 /**
  * The draft legal pages (/privacy, /consent) in the visitor's language, with the DRAFT banner on top. Text lives in
- * src/lib/privacy-content.ts and src/lib/consent-content.ts.
+ * src/lib/privacy-content.ts and src/lib/consent-content.ts (newsletter), src/lib/tool-gate/legal-content.ts (email gate).
+ * A ?lang=EN|TR|AR in the address shows that language without changing the visitor's saved choice: the tool pages,
+ * which keep their own language, open these pages in the language of their email form.
  */
 export default function LegalDocument({ content }: { content: Record<Lang, LegalDoc> }) {
-  const { lang } = useLanguage();
+  const { lang: siteLang } = useLanguage();
+  const [asked, setAsked] = useState<Lang | null>(null);
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('lang')?.toUpperCase() as Lang | undefined;
+    if (q && LANGS.includes(q)) setAsked(q);
+  }, []);
+  const lang = asked ?? siteLang;
   const c = content[lang] ?? content.TR;
   return (
     <>
@@ -49,7 +57,8 @@ export default function LegalDocument({ content }: { content: Record<Lang, Legal
         .pv li { margin-bottom: 6px; }
         .pv a { color: var(--color-accent); text-decoration: none; border-bottom: 1px solid rgba(184,149,106,.4); }
       ` }} />
-      <article className="pv">
+      {/* lang/dir here too, so the site's Arabic right-to-left rules ([lang="ar"] …) apply when ?lang= asks for it */}
+      <article className="pv" lang={lang.toLowerCase()} dir={lang === 'AR' ? 'rtl' : 'ltr'}>
         <div className="pv-inner">
           <p className="pv-draft" role="note">{c.draft}</p>
           <h1 className="pv-title">{c.title}</h1>

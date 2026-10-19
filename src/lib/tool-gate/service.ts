@@ -2,6 +2,7 @@ import { createHash, randomBytes } from 'crypto';
 import nodemailer from 'nodemailer';
 import { translations } from '@/lib/translations';
 import { toolGateConfig, toolGateEnabled } from './config';
+import consentTexts from './consent-texts.json';
 
 /*
  * The email gate's two API answers (src/app/api/tool-gate/*). Server only.
@@ -10,8 +11,13 @@ import { toolGateConfig, toolGateEnabled } from './config';
  * gone when the instance stops. No log line contains an address or the SMTP server's error text.
  */
 
-/** Identifies the consent wording a sign-up agreed to; change it whenever the notice text changes. */
-const CONSENT_VERSION = 'tool-gate notice v1 (2026-10-19), pending legal review';
+/** The approval texts a sign-up agrees to (consent-texts.json): a new version whenever any of the wording changes. */
+type Lang3 = 'EN' | 'TR' | 'AR';
+interface ApprovalVersion { documents: string; privacy: Record<Lang3, string>; consent: Record<Lang3, string> }
+const TEXTS_VERSION: string = consentTexts.current;
+const APPROVALS = (consentTexts.versions as Record<string, ApprovalVersion>)[TEXTS_VERSION];
+/** The wording as agreed to, without the [[text|/path]] link markers. */
+const plain = (s: string) => s.replace(/\[\[([^\]|]+)\|[^\]]+\]\]/g, '$1');
 const TOOLS = new Set(['ipunch', 'nestri', 'nestri-pro', 'expanded-mesh-generator']);
 const LANGS = new Set(['EN', 'TR', 'AR']);
 const EMAIL = /^[^\s@<>"(),;:\\[\]]+@[^\s@<>"(),;:\\[\]]+\.[^\s@<>"(),;:\\[\]]{2,}$/;
@@ -42,7 +48,10 @@ const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 const notFound = () => json({ error: 'not found' }, 404);
 
-/** GET: whether the gate is on, and its text in the three languages (from src/lib/translations.ts). */
+/**
+ * GET: whether the gate is on, its text in the three languages (src/lib/translations.ts) and the two approval
+ * checkboxes with their version (consent-texts.json).
+ */
 export function status() {
   if (!toolGateEnabled()) return notFound();
   const { mode } = toolGateConfig();
@@ -50,12 +59,13 @@ export function status() {
     enabled: true,
     dryRun: mode === 'preview',
     text: { EN: translations.EN.toolGate, TR: translations.TR.toolGate, AR: translations.AR.toolGate },
+    approvals: { version: TEXTS_VERSION, privacy: APPROVALS.privacy, consent: APPROVALS.consent },
   });
 }
 
 /**
- * POST { email, consent, website (hidden), tool, lang, ms }. Always answers quickly; the visitor's access never
- * depends on the answer. Sends at most one email per sign-up.
+ * POST { email, privacy, consent, website (hidden), tool, lang, ms }. Both approvals are required. Always answers
+ * quickly; the visitor's access never depends on the answer. Sends at most one email per sign-up.
  */
 export async function subscribe(req: Request) {
   if (!toolGateEnabled()) return notFound();
@@ -72,6 +82,7 @@ export async function subscribe(req: Request) {
   const lang = LANGS.has(str(body.lang, 2).toUpperCase()) ? str(body.lang, 2).toUpperCase() : 'EN';
 
   if (!EMAIL.test(email)) return json({ error: 'invalid email' }, 400);
+  if (body.privacy !== true) return json({ error: 'privacy required' }, 400);
   if (body.consent !== true) return json({ error: 'consent required' }, 400);
 
   // spam: the hidden field is filled, or the form was sent faster than a person could. Pretend success.
@@ -120,10 +131,17 @@ export async function subscribe(req: Request) {
         'New sign-up for the AMD NSRI free tools.',
         '',
         `Email: ${email}`,
-        `Consent: yes, to tool access and the AMD NSRI newsletter (${CONSENT_VERSION})`,
         `Language: ${lang}`,
         `Tool: ${tool}`,
         `Time (UTC): ${new Date(now).toISOString()}`,
+        '',
+        `Approval 1, Privacy Notice read: YES`,
+        `  Wording agreed to (${lang}): ${plain(APPROVALS.privacy[lang as Lang3])}`,
+        `Approval 2, explicit consent (newsletter and tool access): YES`,
+        `  Wording agreed to (${lang}): ${plain(APPROVALS.consent[lang as Lang3])}`,
+        '',
+        `Approval texts version: ${TEXTS_VERSION}`,
+        `Notice version: ${APPROVALS.documents}`,
       ].join('\n'),
     });
     console.log(`[tool-gate] sent (tool ${tool}, ${lang})`);

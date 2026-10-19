@@ -4,8 +4,9 @@
  *
  * - Asks /api/tool-gate/status whether the gate is on (TOOL_GATE_MODE, src/lib/tool-gate/config.ts). If it is off,
  *   or the request fails, nothing happens: the tool opens as before.
- * - Otherwise it covers the tool with a panel asking for an email and consent. The page underneath is untouched
- *   (search engines see it as before) and made inert while the panel is open.
+ * - Otherwise it covers the tool with a panel asking for an email and two separate, required approvals (Privacy
+ *   Notice read; explicit consent), which link to /privacy and /consent. The page underneath is untouched (search
+ *   engines see it as before) and made inert while the panel is open.
  * - After the form is sent, this device remembers that it has signed up (never the address) and the panel does not
  *   come back. Access is granted even if the server is slow or fails.
  * - Text in EN/TR/AR comes from the status answer (src/lib/translations.ts, toolGate).
@@ -48,7 +49,7 @@
   var t0 = withTimeout(6000);
   fetch('/api/tool-gate/status', { cache: 'no-store', signal: t0.signal })
     .then(function (r) { t0.done(); return r.ok ? r.json() : null; })
-    .then(function (s) { if (s && s.enabled && s.text && !hasAccess()) open(s); })
+    .then(function (s) { if (s && s.enabled && s.text && s.approvals && !hasAccess()) open(s); })
     .catch(function () { t0.done(); /* gate off or unreachable: the tool stays open */ });
 
   var CSS = [
@@ -77,6 +78,10 @@
     '.amdg-input:focus{border-color:#b8956a}',
     '.amdg-check{display:flex;gap:12px;align-items:flex-start;margin:20px 0 6px;cursor:pointer;color:#e8e4dc;font-size:13px}',
     '.amdg-check input{flex:none;width:17px;height:17px;margin:3px 0 0;accent-color:#b8956a;cursor:pointer}',
+    '.amdg-check + .amdg-check{margin-top:12px}',
+    '.amdg-check a{color:#b8956a;text-decoration:none;border-bottom:1px solid rgba(184,149,106,.45)}',
+    '.amdg-check a:hover,.amdg-check a:focus-visible{border-bottom-color:#b8956a}',
+    '.amdg-sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
     '.amdg-err{min-height:20px;margin:6px 0 0;font-size:12px;color:#d98a6a}',
     '.amdg-btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px;margin-top:14px;font:inherit;font-size:11px;letter-spacing:.1em;text-transform:uppercase;',
     'color:#e8e4dc;background:transparent;border:1px solid #b8956a;padding:14px 26px;cursor:pointer;transition:color .35s}',
@@ -125,9 +130,14 @@
     var test = s.dryRun ? el('p', { 'class': 'amdg-test' }) : null;
     var label = el('label', { 'class': 'amdg-label', 'for': 'amdg-email' });
     var input = el('input', { 'class': 'amdg-input', id: 'amdg-email', type: 'email', name: 'email', autocomplete: 'email', inputmode: 'email', required: '', maxlength: '254', dir: 'ltr' });
-    var consent = el('input', { type: 'checkbox', id: 'amdg-consent', name: 'consent' });
+    // two separate, unticked, required approvals (texts versioned in src/lib/tool-gate/consent-texts.json)
+    var privacy = el('input', { type: 'checkbox', id: 'amdg-privacy', name: 'privacy', required: '' });
+    var privacyText = el('span');
+    var privacyCheck = el('label', { 'class': 'amdg-check', 'for': 'amdg-privacy' }, [privacy, privacyText]);
+    var consent = el('input', { type: 'checkbox', id: 'amdg-consent', name: 'consent', required: '' });
     var consentText = el('span');
-    var check = el('label', { 'class': 'amdg-check', 'for': 'amdg-consent' }, [consent, consentText]);
+    var consentCheck = el('label', { 'class': 'amdg-check', 'for': 'amdg-consent' }, [consent, consentText]);
+    var newTabNote = el('span', { 'class': 'amdg-sr', id: 'amdg-newtab' });
     var err = el('p', { 'class': 'amdg-err', role: 'alert', 'aria-live': 'polite' });
     var btnText = el('span');
     var arrow = el('span', { 'class': 'amdg-arrow', 'aria-hidden': 'true', text: '→' });
@@ -143,12 +153,23 @@
       b.addEventListener('click', function () { lang = L; render(); });
       return b;
     });
-    var form = el('form', { novalidate: '' }, [label, input, check, err, hpWrap, btn]);
+    var form = el('form', { novalidate: '' }, [label, input, privacyCheck, consentCheck, newTabNote, err, hpWrap, btn]);
     var panel = el('div', { 'class': 'amdg-panel' }, [
       el('div', { 'class': 'amdg-top' }, [eyebrow, el('div', { 'class': 'amdg-langs' }, langBtns)]),
       title, lead, test, form, el('div', { 'class': 'amdg-rule', 'aria-hidden': 'true' }), notice, files,
     ]);
     var root = el('div', { 'class': 'amdg', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'amdg-title', 'aria-describedby': 'amdg-lead amdg-notice' }, [panel]);
+
+    // an approval text with its [[text|/path]] links: the page opens in a new tab, in the panel's language, so what
+    // was typed here is kept
+    function fillApproval(node, markup) {
+      node.textContent = '';
+      markup.split(/(\[\[[^\]|]+\|[^\]]+\]\])/).forEach(function (part) {
+        var m = part.match(/^\[\[([^\]|]+)\|([^\]]+)\]\]$/);
+        if (!m) { if (part) node.appendChild(document.createTextNode(part)); return; }
+        node.appendChild(el('a', { href: m[2] + '?lang=' + lang, target: '_blank', rel: 'noopener', 'aria-describedby': 'amdg-newtab', text: m[1] }));
+      });
+    }
 
     function render() {
       var tx = s.text[lang] || s.text.EN;
@@ -159,7 +180,9 @@
       if (test) test.textContent = tx.dryRun;
       label.textContent = tx.emailLabel;
       input.setAttribute('placeholder', tx.emailPlaceholder);
-      consentText.textContent = tx.consent;
+      fillApproval(privacyText, s.approvals.privacy[lang] || s.approvals.privacy.EN);
+      fillApproval(consentText, s.approvals.consent[lang] || s.approvals.consent.EN);
+      newTabNote.textContent = tx.newTab;
       btnText.textContent = btn.disabled ? tx.sending : tx.submit;
       notice.textContent = tx.notice;
       files.textContent = tx.filesNote;
@@ -181,12 +204,14 @@
 
     var EMAIL = /^[^\s@<>"(),;:\\[\]]+@[^\s@<>"(),;:\\[\]]+\.[^\s@<>"(),;:\\[\]]{2,}$/;
     input.addEventListener('input', clearError);
+    privacy.addEventListener('change', clearError);
     consent.addEventListener('change', clearError);
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (btn.disabled) return;
       var email = input.value.trim();
       if (!EMAIL.test(email) || email.length > 254) { showError('errEmail'); input.focus(); return; }
+      if (!privacy.checked) { showError('errPrivacy'); privacy.focus(); return; }
       if (!consent.checked) { showError('errConsent'); consent.focus(); return; }
       clearError();
       btn.disabled = true; render();
@@ -194,7 +219,7 @@
       fetch('/api/tool-gate/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, consent: true, website: hp.value, tool: TOOL, lang: lang, ms: Date.now() - shownAt }),
+        body: JSON.stringify({ email: email, privacy: true, consent: true, website: hp.value, tool: TOOL, lang: lang, ms: Date.now() - shownAt }),
         signal: t.signal,
       })
         .then(function (r) { t.done(); return r.status === 400 ? r.json().catch(function () { return {}; }) : null; })
