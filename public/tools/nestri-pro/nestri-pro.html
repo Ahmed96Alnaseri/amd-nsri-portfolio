@@ -3829,5 +3829,7 @@ if (parts.length) $('run').classList.add('pending');
 window.NESTRI_PRO = { loadSample: loadSample, run: run, state: function () { return { S: S, parts: parts, last: last }; } };
 })();
 </script>
+<!-- Email gate (off unless TOOL_GATE_MODE is set; see src/lib/tool-gate/config.ts) -->
+<script src="/tools/gate/gate.js" data-tool="nestri-pro" defer></script>
 </body>
 </html>

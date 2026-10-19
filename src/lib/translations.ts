@@ -387,6 +387,22 @@ export const translations = {
       home:      'Back to home',
       tools:     'Browse the tools',
     },
+    // the email gate on the free tools (public/tools/gate/gate.js, served by /api/tool-gate/status).
+    // LEGAL: the consent and notice wording needs the lawyer's review before the gate goes live.
+    toolGate: {
+      title:            'One step before the tool',
+      lead:             'The tools are free. Enter your email once to use them on this device.',
+      emailLabel:       'Email',
+      emailPlaceholder: 'you@example.com',
+      consent:          'I agree that my email is used to give me access to the free tools and to send me the AMD NSRI newsletter.',
+      notice:           'Your email is required to use the free tools and will be used for the AMD NSRI newsletter. It passes through our hosting provider’s server (Vercel, Frankfurt) to a mailbox in Turkey and is not stored on the hosting server. To have it removed, write to contact@amdnsri.com.',
+      filesNote:        'Your files never leave your device: the tool runs in your browser.',
+      submit:           'Continue to the tool',
+      sending:          'One moment…',
+      errEmail:         'Please enter a valid email address.',
+      errConsent:       'Please tick the box to continue.',
+      dryRun:           'Test mode: nothing is sent.',
+    },
   },
 
   TR: {
@@ -766,6 +782,22 @@ export const translations = {
       home:      'Ana sayfaya dön',
       tools:     'Araçlara göz at',
     },
+    // the email gate on the free tools: TR by Claude.
+    // LEGAL: the consent and notice wording needs the lawyer's review before the gate goes live.
+    toolGate: {
+      title:            'Araca geçmeden önce bir adım',
+      lead:             'Araçlar ücretsizdir. Bu cihazda kullanmak için e-posta adresinizi bir kez girin.',
+      emailLabel:       'E-posta',
+      emailPlaceholder: 'siz@ornek.com',
+      consent:          'E-posta adresimin, ücretsiz araçlara erişimim için ve bana AMD NSRI bülteninin gönderilmesi için kullanılmasını kabul ediyorum.',
+      notice:           'Ücretsiz araçları kullanmak için e-posta adresiniz gereklidir ve AMD NSRI bülteni için kullanılacaktır. Adresiniz, barındırma sağlayıcımızın sunucusu (Vercel, Frankfurt) üzerinden Türkiye’deki bir posta kutusuna iletilir ve barındırma sunucusunda saklanmaz. Silinmesini istemek için contact@amdnsri.com adresine yazın.',
+      filesNote:        'Dosyalarınız cihazınızdan çıkmaz: araç tarayıcınızda çalışır.',
+      submit:           'Araca devam et',
+      sending:          'Bir saniye…',
+      errEmail:         'Lütfen geçerli bir e-posta adresi girin.',
+      errConsent:       'Devam etmek için lütfen kutuyu işaretleyin.',
+      dryRun:           'Test modu: hiçbir şey gönderilmez.',
+    },
   },
 
   AR: {
@@ -1144,6 +1176,22 @@ export const translations = {
       requested: 'العنوان المطلوب',
       home:      'العودة إلى الصفحة الرئيسية',
       tools:     'تصفّح الأدوات',
+    },
+    // the email gate on the free tools: AR by Claude (MSA).
+    // LEGAL: the consent and notice wording needs the lawyer's review before the gate goes live.
+    toolGate: {
+      title:            'خطوة واحدة قبل الأداة',
+      lead:             'الأدوات مجانية. أدخل بريدك الإلكتروني مرة واحدة لاستخدامها على هذا الجهاز.',
+      emailLabel:       'البريد الإلكتروني',
+      emailPlaceholder: 'you@example.com',
+      consent:          'أوافق على استخدام بريدي الإلكتروني لمنحي إمكانية الوصول إلى الأدوات المجانية ولإرسال النشرة الإخبارية لـ AMD NSRI إليّ.',
+      notice:           'بريدك الإلكتروني مطلوب لاستخدام الأدوات المجانية، وسيُستخدم لإرسال النشرة الإخبارية لـ AMD NSRI. يمرّ عبر خادم مزوّد الاستضافة لدينا (Vercel، فرانكفورت) إلى صندوق بريد في تركيا، ولا يُخزَّن على خادم الاستضافة. لطلب حذفه، راسلنا على contact@amdnsri.com.',
+      filesNote:        'لا تغادر ملفاتك جهازك: تعمل الأداة داخل متصفحك.',
+      submit:           'المتابعة إلى الأداة',
+      sending:          'لحظة من فضلك…',
+      errEmail:         'يُرجى إدخال بريد إلكتروني صالح.',
+      errConsent:       'يُرجى تحديد المربع للمتابعة.',
+      dryRun:           'وضع الاختبار: لا يُرسَل أي شيء.',
     },
   },
 } as const;

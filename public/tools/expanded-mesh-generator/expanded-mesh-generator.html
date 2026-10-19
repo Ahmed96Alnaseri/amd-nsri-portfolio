@@ -3670,5 +3670,7 @@ window.__mesh = {
   zoom2D: (s, ox, oy) => { Object.assign(v2, { s, ox, oy }); viewMode = 'free'; draw2D(); },
 };
 </script>
+<!-- Email gate (off unless TOOL_GATE_MODE is set; see src/lib/tool-gate/config.ts) -->
+<script src="/tools/gate/gate.js" data-tool="expanded-mesh-generator" defer></script>
 </body>
 </html>
