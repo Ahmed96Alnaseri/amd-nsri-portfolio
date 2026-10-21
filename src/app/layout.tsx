@@ -20,6 +20,16 @@ export const metadata: Metadata = {
     'Istanbul', 'Ahmed Alnaseri'
   ],
   authors: [{ name: 'Ahmed Alnaseri' }],
+  // tab icons (src/app/favicon.ico is added by Next itself) and the phone home-screen icons; the standalone tool
+  // pages in public/tools link the same files in their own <head>
+  icons: {
+    icon: [
+      { url: '/icon-32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/icon-16.png', type: 'image/png', sizes: '16x16' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+  },
   openGraph: {
     title: 'AMD NSRI',
     description:
