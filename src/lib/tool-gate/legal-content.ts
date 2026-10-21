@@ -33,7 +33,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. Veri Sorumlusu',
         blocks: [
           'Kişisel verileriniz, Kanun\'un 3. maddesinde tanımlı "Veri Sorumlusu" sıfatıyla Ahmed Alnaseri tarafından işlenmektedir.',
-          'Ahmed Alnaseri — Adresi: [posta adresi sağlanacak], E-posta adresi: contact@amdnsri.com [AVUKAT TEYİT EDECEK: hukuki statü ile başka kimlik bilgilerinin, örneğin vergi kimlik numarasının, yer alması gerekip gerekmediği].',
+          'Ahmed Alnaseri — Adresi: [posta adresi sağlanacak], E-posta adresi: contact@amdnsri.com.',
         ],
       },
       {
@@ -42,11 +42,11 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `Web sitemizdeki araç sayfalarında, araçları kullanmadan önce gösterilen e-posta formu aracılığıyla sizlerden toplanan iletişim (e-posta adresiniz), pazarlama (bülten onay tercihiniz) ve işlem güvenliği (onay zamanı, onay metinlerinin sürümü ve gösterildiği dil, formun doldurulduğu araç sayfası) kategorilerindeki kişisel verileriniz aşağıda belirtilen amaç ve hukuki sebeplerle işlenmektedir.`,
           'Açık rızanızın bulunması (Kanun m. 5/1) sebebine dayanılarak; iletişim ve pazarlama kategorilerindeki verileriniz aşağıdaki amaçla işlenir:',
           [
-            `İletişim Faaliyetlerinin Yürütülmesi (yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderilmesi) ve ücretsiz araçlara erişimin sağlanması [AVUKAT TEYİT EDECEK: araç erişiminin açık rızaya bağlanmasının uygunluğu]`,
+            `İletişim Faaliyetlerinin Yürütülmesi (yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderilmesi) ve ücretsiz araçlara erişimin sağlanması`,
           ],
           'Veri sorumlusunun hukuki yükümlülüğünü yerine getirebilmesi için zorunlu olması (Kanun m. 5/2-ç) sebebine dayanılarak; iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz aşağıdaki amaçlarla işlenir:',
           [
-            `Faaliyetlerin Mevzuata Uygun Yürütülmesi (ticari elektronik ileti onayının ve silme taleplerinin ispatı ve uygulanması hâlinde İleti Yönetim Sistemi'ne (İYS) kayıt [AVUKAT TEYİT EDECEK: İYS kaydının uygulanıp uygulanmadığı])`,
+            `Faaliyetlerin Mevzuata Uygun Yürütülmesi (ticari elektronik ileti onayının ve silme taleplerinin ispatı ve uygulanması hâlinde İleti Yönetim Sistemi'ne (İYS) kayıt)`,
             'Saklama ve Arşiv Faaliyetlerinin Yürütülmesi',
             'Talep / Şikayetlerin Takibi (Kanun\'un 11. maddesi kapsamındaki başvuruların yanıtlanması)',
             'Yetkili Kişi, Kurum ve Kuruluşlara Bilgi Verilmesi',
@@ -57,21 +57,21 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
             'Veri Sorumlusu Operasyonlarının Güvenliğinin Temini',
           ],
           `IP adresiniz ile tarayıcınıza ve cihazınıza ilişkin bilgiler saklanmaz. Kötüye kullanımı önlemek için kayıt denemeleri kısa bir süre boyunca ağ adresi ve e-posta adresi başına sayılır; bu sayaçlar adresin kendisini değil, yalnızca tek yönlü bir kodu tutar, yalnızca sunucu işleminin çalışma belleğinde bulunur, hiçbir yere yazılmaz ve bu işlem sona erdiğinde kaybolur.`,
-          '[AVUKAT TEYİT EDECEK: web sitesindeki iletişim formunun bu metne mi yoksa ayrı bir metne mi alınacağı.]',
+          'Web sitesindeki iletişim formu aracılığıyla gönderilen mesajlar (ad, e-posta adresi, konu ve mesaj) Resend e-posta hizmeti aracılığıyla e-posta olarak posta kutumuza iletilir; web sitesi bu mesajları saklamaz.',
         ],
       },
       {
         heading: '3. İşlenen Kişisel Verilerin Kimlere ve Hangi Amaçla Aktarılabileceği',
         blocks: [
           'İşlediğimiz kişisel verilerinizi, yalnızca yukarıdaki amaçlarla ve bu amaçlar için gerekli olduğu ölçüde aşağıdaki taraflara aktarabilmekteyiz:',
-          `Hizmet aldığımız Özel Hukuk Tüzel Kişilerine; iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz, web sitesinin, e-posta formunun ve bültenin teknik olarak çalıştırılması (Bilgi Güvenliği Süreçlerinin Yürütülmesi, İletişim Faaliyetlerinin Yürütülmesi, Saklama ve Arşiv Faaliyetlerinin Yürütülmesi) amacıyla aktarılır [YAYINDAN ÖNCE TEYİT EDİLECEK: sağlayıcılar, bölgeler ve sözleşme koşulları]:`,
+          `Hizmet aldığımız Özel Hukuk Tüzel Kişilerine; iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz, web sitesinin, e-posta formunun ve bültenin teknik olarak çalıştırılması (Bilgi Güvenliği Süreçlerinin Yürütülmesi, İletişim Faaliyetlerinin Yürütülmesi, Saklama ve Arşiv Faaliyetlerinin Yürütülmesi) amacıyla aktarılır:`,
           [
             `Vercel (Amerika Birleşik Devletleri): web sitesinin ve e-posta formunun barındırılması; formu işleyen sunucu Frankfurt, Almanya'da çalışır; e-posta adresiniz bu sunucudan yalnızca geçer ve orada saklanmaz.`,
             `E-posta hizmeti sağlayıcısı turhost (Çizgi Telekomünikasyon A.Ş.) (Türkiye): her kayıt, adresiniz ve onaylarınızla birlikte tek bir e-posta olarak newsletter@news.amdnsri.com posta kutusuna iletilir ve orada saklanır.`,
             `Google (Google Fonts): web sitesinin ve IPunch, NESTRI ve NESTRI PRO araç sayfalarının yazı tiplerinin yüklenmesi; bu sayfalardan biri açıldığında IP adresiniz Google'a iletilir.`,
             `jsDelivr: IPunch'ta ilk kez bir DWG dosyası açıldığında DWG okuyucu kod kitaplığının yüklenmesi; bu sırada IP adresiniz jsDelivr'e iletilir, dosyanız ise cihazınızdan çıkmaz.`,
           ],
-          `Vercel, Google ve jsDelivr Türkiye dışında bulunduğundan kişisel verileriniz yurt dışına aktarılmaktadır. Bu aktarımın Kanun'un 9. maddesi kapsamındaki dayanağı: [AVUKAT TEYİT EDECEK].`,
+          `Vercel, Google, jsDelivr ve Resend Türkiye dışında bulunduğundan kişisel verileriniz yurt dışına aktarılmaktadır.`,
           'Yetkili Kamu Kurum ve Kuruluşlarına; iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz, yalnızca mevzuatın gerektirdiği hâllerde aşağıdaki amaçlarla aktarılır:',
           [
             'Faaliyetlerin Mevzuata Uygun Yürütülmesi',
@@ -96,14 +96,14 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. İlgili Kişi Olarak Haklarınız',
         blocks: [
           'Kanun\'un "ilgili kişinin hakları"nı düzenleyen 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmiş olması hâlinde düzeltilmesini isteme, Kanun\'un 7. maddesinde öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme, bu işlemlerin kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme, işlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme ve kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.',
-          'Bu haklarınıza ve Kanun\'un uygulamasına ilişkin taleplerinizi yazılı olarak veya kayıtlı elektronik posta (KEP) adresi ya da sistemimizde kayıtlı bulunan e-posta adresinizi kullanmak suretiyle ya da Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ\'de öngörülen diğer başvuru usullerine uygun olarak contact@amdnsri.com adresine iletebilirsiniz [AVUKAT TEYİT EDECEK: yazılı başvurular için posta adresi]. Talebinizi niteliğine göre en kısa sürede ve en geç 30 (otuz) gün içinde ücretsiz olarak sonuçlandıracağız.',
+          'Bu haklarınıza ve Kanun\'un uygulamasına ilişkin taleplerinizi yazılı olarak veya kayıtlı elektronik posta (KEP) adresi ya da sistemimizde kayıtlı bulunan e-posta adresinizi kullanmak suretiyle ya da Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ\'de öngörülen diğer başvuru usullerine uygun olarak contact@amdnsri.com adresine iletebilirsiniz. Talebinizi niteliğine göre en kısa sürede ve en geç 30 (otuz) gün içinde ücretsiz olarak sonuçlandıracağız.',
         ],
       },
       {
         heading: '6. Kişisel Verilerin Saklanma Süresi',
         blocks: [[
           `Kaydınıza ilişkin hiçbir bilgi barındırma sağlayıcısının sunucularında saklanmaz.`,
-          `Kaydınız, Türkiye'deki posta kutumuzda tek bir e-posta olarak, contact@amdnsri.com adresine yazarak silinmesini isteyene kadar saklanır [AVUKAT TEYİT EDECEK: onay ve silme kayıtları için yasal saklama süresi].`,
+          `Kaydınız, Türkiye'deki posta kutumuzda tek bir e-posta olarak, contact@amdnsri.com adresine yazarak silinmesini isteyene kadar saklanır.`,
           `Silme talebinizde kaydınız silinir.`,
           `Kötüye kullanımı önlemeye yönelik sayaçlar yalnızca sunucu işleminin çalışma belleğinde tutulur ve bu işlem sona erdiğinde kaybolur.`,
         ]],
@@ -130,7 +130,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. Data Controller',
         blocks: [
           'Your personal data is processed by Ahmed Alnaseri in the capacity of "Data Controller" as defined in Article 3 of the Law.',
-          'Ahmed Alnaseri — Address: [postal address to be provided], Email: contact@amdnsri.com [LAWYER TO CONFIRM: legal status, and whether other identifying details such as a tax identification number must be listed].',
+          'Ahmed Alnaseri — Address: [postal address to be provided], Email: contact@amdnsri.com.',
         ],
       },
       {
@@ -139,11 +139,11 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `Your personal data in the categories of contact (your email address), marketing (your newsletter consent preference) and transaction security (time of consent, version and language of the consent texts, and the tool page where you filled in the form), collected from you through the email form shown on the tool pages of our website before you use the tools, is processed for the purposes and on the legal grounds set out below.`,
           'On the ground of your explicit consent (Law, Art. 5/1), your data in the contact and marketing categories is processed for the following purpose:',
           [
-            `Carrying out communication activities (sending the newsletter about new projects, journal articles and digital tool updates) and giving access to the free tools [LAWYER TO CONFIRM: whether access to the tools may depend on explicit consent]`,
+            `Carrying out communication activities (sending the newsletter about new projects, journal articles and digital tool updates) and giving access to the free tools`,
           ],
           'On the ground that processing is necessary for the data controller to comply with a legal obligation (Law, Art. 5/2-ç), your data in the contact, marketing and transaction security categories is processed for the following purposes:',
           [
-            `Carrying out activities in compliance with the legislation (proof of consent to commercial electronic messages and of removal requests, and, where applicable, registration with the Message Management System (İYS) [LAWYER TO CONFIRM: whether İYS registration applies])`,
+            `Carrying out activities in compliance with the legislation (proof of consent to commercial electronic messages and of removal requests, and, where applicable, registration with the Message Management System (İYS))`,
             'Carrying out storage and archiving activities',
             'Following up requests and complaints (answering applications under Article 11 of the Law)',
             'Providing information to authorised persons, institutions and organisations',
@@ -154,21 +154,21 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
             'Ensuring the security of the data controller\'s operations',
           ],
           `Your IP address and details of your browser or device are not stored. To prevent abuse, sign-up attempts are counted for a short time per network address and per email address; these counters hold only a one-way code, not the address itself, exist only in the working memory of the server process, are never written anywhere, and are gone when that process ends.`,
-          '[LAWYER TO CONFIRM: whether the contact form on the website belongs in this notice or in a separate one.]',
+          'Messages sent through the contact form on the website (name, email address, subject and message) are delivered by email to our mailbox through the email service Resend; the website does not store them.',
         ],
       },
       {
         heading: '3. To Whom and for What Purpose Personal Data May Be Transferred',
         blocks: [
           'We may transfer your personal data to the parties below, only for the purposes above and only as far as these purposes require:',
-          `To private-law legal entities that provide services to us, your data in the contact, marketing and transaction security categories is transferred for running the website, the email form and the newsletter technically (carrying out information security processes, communication activities, and storage and archiving activities) [TO CONFIRM before publishing: providers, regions and contract terms]:`,
+          `To private-law legal entities that provide services to us, your data in the contact, marketing and transaction security categories is transferred for running the website, the email form and the newsletter technically (carrying out information security processes, communication activities, and storage and archiving activities):`,
           [
             `Vercel (United States): hosting of the website and the email form; the server that handles the form runs in Frankfurt, Germany; your email address only passes through it and is not stored there.`,
             `Email service provider turhost (Çizgi Telekomünikasyon A.Ş.) (Turkey): each sign-up is sent, with your address and your approvals, as one email to the newsletter@news.amdnsri.com mailbox, where it is kept.`,
             `Google (Google Fonts): loading the typefaces of the website and of the IPunch, NESTRI and NESTRI PRO tool pages; when one of these pages opens, your IP address is sent to Google.`,
             `jsDelivr: loading the DWG-reading code library the first time a DWG file is opened in IPunch; your IP address is sent to jsDelivr, while your file does not leave your device.`,
           ],
-          `Since Vercel, Google and jsDelivr are located outside Turkey, your personal data is transferred abroad. Basis for this transfer under Article 9 of the Law: [LAWYER TO CONFIRM].`,
+          `Since Vercel, Google, jsDelivr and Resend are located outside Turkey, your personal data is transferred abroad.`,
           'To authorised public institutions and organisations, your data in the contact, marketing and transaction security categories is transferred only where the legislation requires it, for the following purposes:',
           [
             'Carrying out activities in compliance with the legislation',
@@ -193,14 +193,14 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. Your Rights as a Data Subject',
         blocks: [
           'Under Article 11 of the Law on "the rights of the data subject", you have the right to learn whether your personal data is processed; to request information if it has been processed; to learn the purpose of processing and whether the data is used in line with that purpose; to know the third parties in Turkey or abroad to whom it has been transferred; to request its correction if it is incomplete or inaccurate; to request its erasure or destruction under the conditions in Article 7 of the Law; to request that these actions be notified to the third parties to whom the data has been transferred; to object to a result against you arising from analysis of the data exclusively by automated systems; and to claim compensation for damage suffered because of unlawful processing.',
-          'You can send your requests regarding these rights and the application of the Law to contact@amdnsri.com in writing, or by using a registered electronic mail (KEP) address or the email address registered in our system, or by other methods provided for in the Communiqué on the Procedures and Principles of Application to the Data Controller [LAWYER TO CONFIRM: postal address for written applications]. We will conclude your request free of charge as soon as possible, according to its nature, and within 30 (thirty) days at the latest.',
+          'You can send your requests regarding these rights and the application of the Law to contact@amdnsri.com in writing, or by using a registered electronic mail (KEP) address or the email address registered in our system, or by other methods provided for in the Communiqué on the Procedures and Principles of Application to the Data Controller. We will conclude your request free of charge as soon as possible, according to its nature, and within 30 (thirty) days at the latest.',
         ],
       },
       {
         heading: '6. How Long Personal Data Is Kept',
         blocks: [[
           `Nothing about your sign-up is stored on the hosting provider's servers.`,
-          `Your sign-up is kept as one email in our mailbox in Turkey until you ask for its removal by writing to contact@amdnsri.com [LAWYER TO CONFIRM: legal retention period for consent and removal records].`,
+          `Your sign-up is kept as one email in our mailbox in Turkey until you ask for its removal by writing to contact@amdnsri.com.`,
           `On a removal request your sign-up is deleted.`,
           `Counters used to prevent abuse are held only in the working memory of the server process and are gone when that process ends.`,
         ]],
@@ -227,7 +227,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. المسؤول عن البيانات',
         blocks: [
           'يعالج أحمد الناصري بياناتك الشخصية بصفته "المسؤول عن البيانات" وفق التعريف الوارد في المادة 3 من القانون.',
-          'أحمد الناصري — العنوان: [يُقدَّم العنوان البريدي لاحقاً]، البريد الإلكتروني: contact@amdnsri.com [يؤكّده المحامي: الصفة القانونية، ومدى لزوم ذكر بيانات تعريفية أخرى مثل الرقم الضريبي].',
+          'أحمد الناصري — العنوان: [يُقدَّم العنوان البريدي لاحقاً]، البريد الإلكتروني: contact@amdnsri.com.',
         ],
       },
       {
@@ -236,11 +236,11 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `تُعالَج بياناتك الشخصية التي نجمعها منك عبر نموذج البريد الإلكتروني المعروض في صفحات الأدوات على موقعنا قبل استخدامها، ضمن فئات الاتصال (عنوان بريدك الإلكتروني)، والتسويق (تفضيل موافقتك على النشرة)، وأمن المعاملات (وقت الموافقة، وإصدار نصوص الموافقة ولغتها، وصفحة الأداة التي عبّأت فيها النموذج)، للأغراض وعلى الأسس القانونية المبيّنة أدناه.`,
           'استناداً إلى موافقتك الصريحة (المادة 5/1 من القانون)، تُعالَج بياناتك ضمن فئتي الاتصال والتسويق للغرض التالي:',
           [
-            `تنفيذ أنشطة التواصل (إرسال النشرة حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية) وإتاحة الوصول إلى الأدوات المجانية [يؤكّده المحامي: مدى جواز ربط الوصول إلى الأدوات بالموافقة الصريحة]`,
+            `تنفيذ أنشطة التواصل (إرسال النشرة حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية) وإتاحة الوصول إلى الأدوات المجانية`,
           ],
           'استناداً إلى كون المعالجة ضرورية لوفاء المسؤول عن البيانات بالتزامه القانوني (المادة 5/2-ç من القانون)، تُعالَج بياناتك ضمن فئات الاتصال والتسويق وأمن المعاملات للأغراض التالية:',
           [
-            `تنفيذ الأنشطة وفق التشريعات (إثبات الموافقة على الرسائل التجارية الإلكترونية وطلبات الحذف، والتسجيل في نظام إدارة الرسائل (İYS) إن كان ذلك منطبقاً [يؤكّده المحامي: مدى انطباق التسجيل في İYS])`,
+            `تنفيذ الأنشطة وفق التشريعات (إثبات الموافقة على الرسائل التجارية الإلكترونية وطلبات الحذف، والتسجيل في نظام إدارة الرسائل (İYS) إن كان ذلك منطبقاً)`,
             'تنفيذ أنشطة الحفظ والأرشفة',
             'متابعة الطلبات والشكاوى (الردّ على الطلبات المقدَّمة بموجب المادة 11 من القانون)',
             'تقديم المعلومات إلى الأشخاص والمؤسسات والهيئات المخوَّلة',
@@ -251,21 +251,21 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
             'ضمان أمن عمليات المسؤول عن البيانات',
           ],
           `لا يُحفَظ عنوان IP الخاص بك ولا بيانات متصفحك أو جهازك. ولمنع إساءة الاستخدام، تُحصى محاولات الاشتراك لفترة قصيرة لكل عنوان شبكة ولكل عنوان بريد إلكتروني؛ ولا تحتفظ هذه العدّادات إلا برمز باتجاه واحد لا بالعنوان نفسه، ولا توجد إلا في ذاكرة عمل عملية الخادم، ولا تُكتَب في أي مكان، وتزول عند انتهاء تلك العملية.`,
-          '[يؤكّده المحامي: ما إذا كان نموذج التواصل على الموقع يدخل في هذا الإشعار أم في إشعار مستقل.]',
+          'تصل الرسائل المُرسَلة عبر نموذج التواصل على الموقع (الاسم، وعنوان البريد الإلكتروني، والموضوع، والرسالة) إلى صندوق بريدنا بالبريد الإلكتروني عبر خدمة البريد الإلكتروني Resend، ولا يحفظها الموقع.',
         ],
       },
       {
         heading: '3. الجهات التي يجوز نقل البيانات الشخصية إليها والغرض من ذلك',
         blocks: [
           'يجوز لنا نقل بياناتك الشخصية إلى الجهات التالية، للأغراض المذكورة أعلاه فقط وبالقدر الذي تقتضيه:',
-          `إلى أشخاص اعتباريين من القانون الخاص نتلقى منهم خدمات؛ تُنقَل بياناتك ضمن فئات الاتصال والتسويق وأمن المعاملات لتشغيل الموقع ونموذج البريد الإلكتروني والنشرة تقنياً (تنفيذ عمليات أمن المعلومات، وأنشطة التواصل، وأنشطة الحفظ والأرشفة) [يُتحقَّق منه قبل النشر: المزوّدون والمناطق وشروط التعاقد]:`,
+          `إلى أشخاص اعتباريين من القانون الخاص نتلقى منهم خدمات؛ تُنقَل بياناتك ضمن فئات الاتصال والتسويق وأمن المعاملات لتشغيل الموقع ونموذج البريد الإلكتروني والنشرة تقنياً (تنفيذ عمليات أمن المعلومات، وأنشطة التواصل، وأنشطة الحفظ والأرشفة):`,
           [
             `Vercel (الولايات المتحدة): استضافة الموقع ونموذج البريد الإلكتروني؛ ويعمل الخادم الذي يعالج النموذج في فرانكفورت، ألمانيا؛ ويمرّ عنوان بريدك الإلكتروني عبره فقط ولا يُخزَّن فيه.`,
             `مزوّد خدمة البريد الإلكتروني turhost (Çizgi Telekomünikasyon A.Ş.) (تركيا): يُرسَل كل اشتراك، مع عنوانك وموافقاتك، كرسالة واحدة إلى صندوق البريد newsletter@news.amdnsri.com حيث يُحتفَظ به.`,
             `Google (Google Fonts): تحميل خطوط الموقع وصفحات أدوات IPunch وNESTRI وNESTRI PRO؛ وعند فتح إحدى هذه الصفحات يُرسَل عنوان IP الخاص بك إلى Google.`,
             `jsDelivr: تحميل مكتبة برمجية لقراءة ملفات DWG عند فتح أول ملف DWG في IPunch؛ ويُرسَل عنوان IP الخاص بك إلى jsDelivr، بينما لا يغادر ملفك جهازك.`,
           ],
-          `ولأن Vercel وGoogle وjsDelivr تقع خارج تركيا، تُنقَل بياناتك الشخصية إلى الخارج. الأساس القانوني لهذا النقل بموجب المادة 9 من القانون: [يؤكّده المحامي].`,
+          `ولأن Vercel وGoogle وjsDelivr وResend تقع خارج تركيا، تُنقَل بياناتك الشخصية إلى الخارج.`,
           'إلى المؤسسات والهيئات العامة المخوَّلة؛ تُنقَل بياناتك ضمن فئات الاتصال والتسويق وأمن المعاملات فقط حيثما تقتضي التشريعات ذلك، للأغراض التالية:',
           [
             'تنفيذ الأنشطة وفق التشريعات',
@@ -290,14 +290,14 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. حقوقك بصفتك صاحب البيانات',
         blocks: [
           'بموجب المادة 11 من القانون الخاصة بـ"حقوق صاحب البيانات"، يحق لك أن تعرف ما إذا كانت بياناتك الشخصية تُعالَج؛ وأن تطلب معلومات عنها إن كانت قد عولجت؛ وأن تعرف غرض المعالجة وما إذا كانت تُستخدم وفقاً له؛ وأن تعرف الأطراف الثالثة التي نُقلت إليها داخل تركيا أو خارجها؛ وأن تطلب تصحيحها إن كانت ناقصة أو غير صحيحة؛ وأن تطلب محوها أو إتلافها وفق الشروط الواردة في المادة 7 من القانون؛ وأن تطلب إبلاغ الأطراف الثالثة التي نُقلت إليها بهذه الإجراءات؛ وأن تعترض على أي نتيجة ضدك ناتجة عن تحليل البيانات حصراً بواسطة أنظمة آلية؛ وأن تطالب بالتعويض عن الضرر الناجم عن معالجتها بصورة مخالفة للقانون.',
-          'يمكنك إرسال طلباتك المتعلقة بهذه الحقوق وبتطبيق القانون إلى contact@amdnsri.com كتابةً، أو باستخدام عنوان بريد إلكتروني مسجَّل (KEP) أو عنوان البريد الإلكتروني المسجَّل لدينا، أو وفق طرق التقديم الأخرى المنصوص عليها في البلاغ الخاص بإجراءات ومبادئ تقديم الطلبات إلى المسؤول عن البيانات [يؤكّده المحامي: العنوان البريدي للطلبات الكتابية]. وسنبتّ في طلبك مجاناً في أقرب وقت ممكن بحسب طبيعته، وخلال 30 (ثلاثين) يوماً على الأكثر.',
+          'يمكنك إرسال طلباتك المتعلقة بهذه الحقوق وبتطبيق القانون إلى contact@amdnsri.com كتابةً، أو باستخدام عنوان بريد إلكتروني مسجَّل (KEP) أو عنوان البريد الإلكتروني المسجَّل لدينا، أو وفق طرق التقديم الأخرى المنصوص عليها في البلاغ الخاص بإجراءات ومبادئ تقديم الطلبات إلى المسؤول عن البيانات. وسنبتّ في طلبك مجاناً في أقرب وقت ممكن بحسب طبيعته، وخلال 30 (ثلاثين) يوماً على الأكثر.',
         ],
       },
       {
         heading: '6. مدة الاحتفاظ بالبيانات الشخصية',
         blocks: [[
           `لا يُخزَّن أي شيء يتعلق باشتراكك على خوادم مزوّد الاستضافة.`,
-          `يُحتفَظ باشتراكك كرسالة واحدة في صندوق بريدنا في تركيا إلى أن تطلب حذفه بمراسلة contact@amdnsri.com [يؤكّده المحامي: مدة الحفظ القانونية لسجلات الموافقة والحذف].`,
+          `يُحتفَظ باشتراكك كرسالة واحدة في صندوق بريدنا في تركيا إلى أن تطلب حذفه بمراسلة contact@amdnsri.com.`,
           `وعند طلبك الحذف يُحذف اشتراكك.`,
           `لا تُحفَظ العدّادات المستخدمة لمنع إساءة الاستخدام إلا في ذاكرة عمل عملية الخادم، وتزول عند انتهاء تلك العملية.`,
         ]],
@@ -332,7 +332,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
       {
         heading: 'Beyan ve Onay',
         blocks: [
-          `Kişisel verilerimin [[AMD NSRI Aydınlatma Metni|/privacy]]'nde belirtilen yöntem, amaç ve hukuki sebeplerle sınırlı kalmak kaydıyla; 6698 sayılı Kanun ve diğer ilgili mevzuata uygun olarak veri sorumlusu tarafından yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderilmesi ve ücretsiz araçlara erişimimin sağlanması amacıyla kullanılmasına ve bu amaçla Aydınlatma Metni'nde belirtilen hizmet sağlayıcılara aktarılmasına açık bir şekilde rıza verdiğimi kabul ve beyan ediyorum [AVUKAT TEYİT EDECEK: yurt dışına aktarım için ayrıca açık rıza gerekip gerekmediği].`,
+          `Kişisel verilerimin [[AMD NSRI Aydınlatma Metni|/privacy]]'nde belirtilen yöntem, amaç ve hukuki sebeplerle sınırlı kalmak kaydıyla; 6698 sayılı Kanun ve diğer ilgili mevzuata uygun olarak veri sorumlusu tarafından yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderilmesi ve ücretsiz araçlara erişimimin sağlanması amacıyla kullanılmasına ve bu amaçla Aydınlatma Metni'nde belirtilen hizmet sağlayıcılara aktarılmasına açık bir şekilde rıza verdiğimi kabul ve beyan ediyorum.`,
           'Kişisel verilerimin üçüncü kişilerle onların kendi reklam veya pazarlama amaçları için paylaşılmayacağı konusunda bilgilendirildim.',
           `Bu beyanı, araç sayfalarındaki e-posta formunda yer alan iki onay kutusunu işaretleyerek ve formu göndererek veriyorum; onay e-postası gönderilmez.`,
         ],
@@ -364,7 +364,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
       {
         heading: 'Statement and Consent',
         blocks: [
-          `I accept and declare that I explicitly consent to my personal data being used by the data controller, in accordance with Law No. 6698 and other relevant legislation and limited to the methods, purposes and legal grounds set out in the [[AMD NSRI Privacy Notice|/privacy]], to send me a newsletter about new projects, journal articles and digital tool updates and to give me access to the free tools, and to it being transferred for this purpose to the service providers named in the Privacy Notice [LAWYER TO CONFIRM: whether a separate explicit consent is needed for the transfer abroad].`,
+          `I accept and declare that I explicitly consent to my personal data being used by the data controller, in accordance with Law No. 6698 and other relevant legislation and limited to the methods, purposes and legal grounds set out in the [[AMD NSRI Privacy Notice|/privacy]], to send me a newsletter about new projects, journal articles and digital tool updates and to give me access to the free tools, and to it being transferred for this purpose to the service providers named in the Privacy Notice.`,
           'I have been informed that my personal data will not be shared with third parties for their own advertising or marketing.',
           `I give this statement by ticking the two approval boxes on the email form on the tool pages and sending the form; no confirmation email is sent.`,
         ],
@@ -396,7 +396,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
       {
         heading: 'البيان والموافقة',
         blocks: [
-          `أقرّ وأُعلن أنني أوافق صراحةً على أن يستخدم المسؤول عن البيانات بياناتي الشخصية، وفقاً للقانون رقم 6698 والتشريعات الأخرى ذات الصلة، وفي حدود الطرق والأغراض والأسس القانونية المبيّنة في [[إشعار الخصوصية لدى AMD NSRI|/privacy]]، لإرسال نشرة بريدية إليّ حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية ولإتاحة الوصول إلى الأدوات المجانية لي، وعلى نقلها لهذا الغرض إلى مزوّدي الخدمات المذكورين في إشعار الخصوصية [يؤكّده المحامي: مدى لزوم موافقة صريحة مستقلة للنقل إلى الخارج].`,
+          `أقرّ وأُعلن أنني أوافق صراحةً على أن يستخدم المسؤول عن البيانات بياناتي الشخصية، وفقاً للقانون رقم 6698 والتشريعات الأخرى ذات الصلة، وفي حدود الطرق والأغراض والأسس القانونية المبيّنة في [[إشعار الخصوصية لدى AMD NSRI|/privacy]]، لإرسال نشرة بريدية إليّ حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية ولإتاحة الوصول إلى الأدوات المجانية لي، وعلى نقلها لهذا الغرض إلى مزوّدي الخدمات المذكورين في إشعار الخصوصية.`,
           'وقد أُعلمت بأن بياناتي الشخصية لن تُشارَك مع أطراف ثالثة لأغراض الإعلان أو التسويق الخاصة بها.',
           `وأقدّم هذا البيان بوضع علامة في مربّعَي الموافقة في نموذج البريد الإلكتروني بصفحات الأدوات، ثم بإرسال النموذج؛ ولا تُرسَل أي رسالة تأكيد.`,
         ],
