@@ -504,7 +504,7 @@ html[lang=ar] body *{letter-spacing:0!important}
               </svg>
             </button>
           </summary>
-          <textarea id="pasteBox" placeholder="Pose&#9;Width&#9;Length&#9;Qty — tab, comma or space separated. The header line is ignored."></textarea>
+          <textarea id="pasteBox" data-i18n-ph="pasteHint" placeholder="Pose&#9;Width&#9;Length&#9;Qty — tab or space separated. Decimals with a comma or a dot (1049,5 or 1049.5). The header line is ignored."></textarea>
           <div class="btn-row">
             <button class="btn" id="pasteReplace" type="button" data-i18n="Replace rows">Replace rows</button>
             <button class="btn" id="pasteAdd" type="button" data-i18n="Add to list">Add to list</button>
@@ -1154,6 +1154,14 @@ function clearPanels() {
 // A pasted line is read from the right: the run of numbers at the end carries
 // width / length / qty, everything before it is the name. That way "ALU 1" or
 // a leading row number stays part of the name instead of being read as a size.
+// A pasted line is split on tabs when it has one (a real Excel row: the columns are exact, so a pose name may
+// hold spaces), otherwise on spaces. A comma is never a separator: it is the decimal mark (1049,5 = 1049.5).
+function pasteCells(line) {
+  var s = line.trim();
+  return s.split(s.indexOf('\t') >= 0 ? /\t+/ : /\s+/)
+    .map(function (x) { return x.trim(); }).filter(function (x) { return x !== ''; });
+}
+
 function isNumTok(t) {
   return /^[\d.,]+$/.test(t) && isFinite(parseFloat(t.replace(',', '.')));
 }
@@ -1179,7 +1187,7 @@ function applyPaste(mode) {
   var rows = [], skipped = 0;
   raw.split(/\r?\n/).forEach(function (line) {
     if (!line.trim()) return;
-    var parts = line.trim().split(/[\t,;]+|\s{1,}/).filter(function (s) { return s !== ''; });
+    var parts = pasteCells(line);
     var cut = splitLine(parts);
     var nums = cut.nums;
     if (nums.length < 2) { skipped++; return; }
@@ -1206,8 +1214,7 @@ function applySheetPaste(mode) {
   raw.split(/\r?\n/).forEach(function (line) {
     if (!line.trim()) return;
     var unlimited = false;
-    var parts = line.trim().split(/[\t,;]+|\s{1,}/).filter(function (x) {
-      if (x === '') return false;
+    var parts = pasteCells(line).filter(function (x) {
       if (/^(unlimited|unltd|infinite|inf|∞)$/i.test(x)) { unlimited = true; return false; }
       return true;
     });
@@ -2376,7 +2383,8 @@ var NESTRI_STRINGS = {
     'All sheets (DXF)': '↓ All sheets (DXF)',
     'Prev': '‹ Prev',
     'Next': 'Next ›',
-    'offcut': 'offcut'
+    'offcut': 'offcut',
+    'pasteHint': 'Pose\tWidth\tLength\tQty — tab or space separated. Decimals with a comma or a dot (1049,5 or 1049.5). The header line is ignored.'
   },
   tr: {
     'Sheet nesting optimiser': 'Sac yerleştirme optimizörü',
@@ -2448,7 +2456,8 @@ var NESTRI_STRINGS = {
     'offcut': 'Fire parça',
     'offcuts': 'Fire parçalar',
     '% used': '% kullanıldı',
-    'Sheet': 'Sac'
+    'Sheet': 'Sac',
+    'pasteHint': 'Poz\tGenişlik\tUzunluk\tAdet — sekme ya da boşlukla ayrılmış. Ondalık için virgül ya da nokta (1049,5 veya 1049.5). Başlık satırı atlanır.'
   },
   ar: {
     'Sheet nesting optimiser': 'محسّن تعشيش الألواح',
@@ -2520,7 +2529,8 @@ var NESTRI_STRINGS = {
     'offcut': 'قصاصة',
     'offcuts': 'قصاصات',
     '% used': '% مستخدم',
-    'Sheet': 'لوح'
+    'Sheet': 'لوح',
+    'pasteHint': 'الوضعية\tالعرض\tالطول\tالكمية — مفصولة بتاب أو مسافة. الكسور العشرية بفاصلة أو نقطة (1049,5 أو 1049.5). يُتجاهل سطر العناوين.'
   }
 };
 
@@ -2549,6 +2559,9 @@ function applyLang(lang) {
   // toggle, idle statuses) whose number sits in data-i18n-pre
   document.querySelectorAll('[data-i18n]').forEach(function (el) {
     el.textContent = (el.getAttribute('data-i18n-pre') || '') + t(el.getAttribute('data-i18n'));
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
+    el.placeholder = t(el.getAttribute('data-i18n-ph'));
   });
   try { localStorage.setItem('nestri-lang', currentLang); } catch (err) { /* private mode */ }
 }
