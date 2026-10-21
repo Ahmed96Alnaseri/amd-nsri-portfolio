@@ -27,7 +27,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. Veri Sorumlusu',
         blocks: [
           'Kişisel verileriniz, Kanun\'un 3. maddesinde tanımlı "Veri Sorumlusu" sıfatıyla Ahmed Alnaseri tarafından işlenmektedir.',
-          'Ahmed Alnaseri — Adresi: [posta adresi sağlanacak], E-posta adresi: contact@amdnsri.com [AVUKAT TEYİT EDECEK: hukuki statü ile başka kimlik bilgilerinin, örneğin vergi kimlik numarasının, yer alması gerekip gerekmediği].',
+          'Ahmed Alnaseri — E-posta adresi: contact@amdnsri.com [AVUKAT TEYİT EDECEK: hukuki statü ile başka kimlik bilgilerinin, örneğin vergi kimlik numarasının, yer alması gerekip gerekmediği].',
         ],
       },
       {
@@ -90,7 +90,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. İlgili Kişi Olarak Haklarınız',
         blocks: [
           'Kanun\'un "ilgili kişinin hakları"nı düzenleyen 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmiş olması hâlinde düzeltilmesini isteme, Kanun\'un 7. maddesinde öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme, bu işlemlerin kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme, işlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme ve kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.',
-          'Bu haklarınıza ve Kanun\'un uygulamasına ilişkin taleplerinizi yazılı olarak veya kayıtlı elektronik posta (KEP) adresi ya da sistemimizde kayıtlı bulunan e-posta adresinizi kullanmak suretiyle ya da Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ\'de öngörülen diğer başvuru usullerine uygun olarak contact@amdnsri.com adresine iletebilirsiniz [AVUKAT TEYİT EDECEK: yazılı başvurular için posta adresi]. Talebinizi niteliğine göre en kısa sürede ve en geç 30 (otuz) gün içinde ücretsiz olarak sonuçlandıracağız.',
+          'Bu haklarınıza ve Kanun\'un uygulamasına ilişkin taleplerinizi, sistemimizde kayıtlı bulunan e-posta adresinizi ya da kayıtlı elektronik posta (KEP) adresinizi kullanarak contact@amdnsri.com adresine e-posta ile iletebilirsiniz. Talebinizi niteliğine göre en kısa sürede ve en geç 30 (otuz) gün içinde ücretsiz olarak sonuçlandıracağız.',
         ],
       },
       {
@@ -124,7 +124,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. Data Controller',
         blocks: [
           'Your personal data is processed by Ahmed Alnaseri in the capacity of "Data Controller" as defined in Article 3 of the Law.',
-          'Ahmed Alnaseri — Address: [postal address to be provided], Email: contact@amdnsri.com [LAWYER TO CONFIRM: legal status, and whether other identifying details such as a tax identification number must be listed].',
+          'Ahmed Alnaseri — Email: contact@amdnsri.com [LAWYER TO CONFIRM: legal status, and whether other identifying details such as a tax identification number must be listed].',
         ],
       },
       {
@@ -187,7 +187,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. Your Rights as a Data Subject',
         blocks: [
           'Under Article 11 of the Law on "the rights of the data subject", you have the right to learn whether your personal data is processed; to request information if it has been processed; to learn the purpose of processing and whether the data is used in line with that purpose; to know the third parties in Turkey or abroad to whom it has been transferred; to request its correction if it is incomplete or inaccurate; to request its erasure or destruction under the conditions in Article 7 of the Law; to request that these actions be notified to the third parties to whom the data has been transferred; to object to a result against you arising from analysis of the data exclusively by automated systems; and to claim compensation for damage suffered because of unlawful processing.',
-          'You can send your requests regarding these rights and the application of the Law to contact@amdnsri.com in writing, or by using a registered electronic mail (KEP) address or the email address registered in our system, or by other methods provided for in the Communiqué on the Procedures and Principles of Application to the Data Controller [LAWYER TO CONFIRM: postal address for written applications]. We will conclude your request free of charge as soon as possible, according to its nature, and within 30 (thirty) days at the latest.',
+          'You can send your requests regarding these rights and the application of the Law by email to contact@amdnsri.com, from the email address registered in our system or from a registered electronic mail (KEP) address. We will conclude your request free of charge as soon as possible, according to its nature, and within 30 (thirty) days at the latest.',
         ],
       },
       {
@@ -221,7 +221,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. المسؤول عن البيانات',
         blocks: [
           'يعالج أحمد الناصري بياناتك الشخصية بصفته "المسؤول عن البيانات" وفق التعريف الوارد في المادة 3 من القانون.',
-          'أحمد الناصري — العنوان: [يُقدَّم العنوان البريدي لاحقاً]، البريد الإلكتروني: contact@amdnsri.com [يؤكّده المحامي: الصفة القانونية، ومدى لزوم ذكر بيانات تعريفية أخرى مثل الرقم الضريبي].',
+          'أحمد الناصري — البريد الإلكتروني: contact@amdnsri.com [يؤكّده المحامي: الصفة القانونية، ومدى لزوم ذكر بيانات تعريفية أخرى مثل الرقم الضريبي].',
         ],
       },
       {
@@ -284,7 +284,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. حقوقك بصفتك صاحب البيانات',
         blocks: [
           'بموجب المادة 11 من القانون الخاصة بـ"حقوق صاحب البيانات"، يحق لك أن تعرف ما إذا كانت بياناتك الشخصية تُعالَج؛ وأن تطلب معلومات عنها إن كانت قد عولجت؛ وأن تعرف غرض المعالجة وما إذا كانت تُستخدم وفقاً له؛ وأن تعرف الأطراف الثالثة التي نُقلت إليها داخل تركيا أو خارجها؛ وأن تطلب تصحيحها إن كانت ناقصة أو غير صحيحة؛ وأن تطلب محوها أو إتلافها وفق الشروط الواردة في المادة 7 من القانون؛ وأن تطلب إبلاغ الأطراف الثالثة التي نُقلت إليها بهذه الإجراءات؛ وأن تعترض على أي نتيجة ضدك ناتجة عن تحليل البيانات حصراً بواسطة أنظمة آلية؛ وأن تطالب بالتعويض عن الضرر الناجم عن معالجتها بصورة مخالفة للقانون.',
-          'يمكنك إرسال طلباتك المتعلقة بهذه الحقوق وبتطبيق القانون إلى contact@amdnsri.com كتابةً، أو باستخدام عنوان بريد إلكتروني مسجَّل (KEP) أو عنوان البريد الإلكتروني المسجَّل لدينا، أو وفق طرق التقديم الأخرى المنصوص عليها في البلاغ الخاص بإجراءات ومبادئ تقديم الطلبات إلى المسؤول عن البيانات [يؤكّده المحامي: العنوان البريدي للطلبات الكتابية]. وسنبتّ في طلبك مجاناً في أقرب وقت ممكن بحسب طبيعته، وخلال 30 (ثلاثين) يوماً على الأكثر.',
+          'يمكنك إرسال طلباتك المتعلقة بهذه الحقوق وبتطبيق القانون بالبريد الإلكتروني إلى contact@amdnsri.com، من عنوان البريد الإلكتروني المسجَّل لدينا أو من عنوان بريد إلكتروني مسجَّل (KEP). وسنبتّ في طلبك مجاناً في أقرب وقت ممكن بحسب طبيعته، وخلال 30 (ثلاثين) يوماً على الأكثر.',
         ],
       },
       {
