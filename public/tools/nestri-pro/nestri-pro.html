@@ -798,7 +798,7 @@ en: {
   uMm: 'mm', uCm: 'cm', uM: 'm', uIn: 'inch', uFt: 'feet',
   layers: 'Layer mapping', nLayers: '{0} layers',
   rOuter: 'Outer cut', rInner: 'Inner cut', rBend: 'Bend / fold line', rMark: 'Marking / etch', rText: 'Text', rIgnore: 'Ignore',
-  pasteQty: 'Paste quantities', pastePh: 'Part name\tQty — tab, comma or space separated. The header line is ignored.',
+  pasteQty: 'Paste quantities', pastePh: 'Part name\tQty — tab or space separated. The header line is ignored.',
   pasteExcel: 'Paste from Excel', replaceRows: 'Replace rows', addToList: 'Add to list',
   pasteNone: 'Nothing pasted', pasteNoRows: 'No name / quantity pairs found', pasteRes: '{0} matched', pasteMiss: '{0} not found: {1}',
   errDwg: 'DWG not readable — save as DXF',
@@ -865,7 +865,7 @@ tr: {
   uMm: 'mm', uCm: 'cm', uM: 'm', uIn: 'inç', uFt: 'fit',
   layers: 'Katman eşleme', nLayers: '{0} katman',
   rOuter: 'Dış kesim', rInner: 'İç kesim', rBend: 'Büküm çizgisi', rMark: 'Markalama', rText: 'Yazı', rIgnore: 'Yok say',
-  pasteQty: 'Adetleri yapıştır', pastePh: 'Parça adı\tAdet — sekme, virgül ya da boşlukla ayrılmış. Başlık satırı atlanır.',
+  pasteQty: 'Adetleri yapıştır', pastePh: 'Parça adı\tAdet — sekme ya da boşlukla ayrılmış. Başlık satırı atlanır.',
   pasteExcel: 'Excel’den yapıştır', replaceRows: 'Satırları değiştir', addToList: 'Listeye ekle',
   pasteNone: 'Yapıştırılan bir şey yok', pasteNoRows: 'Ad / adet çifti bulunamadı', pasteRes: '{0} eşleşti', pasteMiss: '{0} bulunamadı: {1}',
   errDwg: 'DWG okunamaz — DXF olarak kaydedin',
@@ -932,7 +932,7 @@ ar: {
   uMm: 'مم', uCm: 'سم', uM: 'م', uIn: 'بوصة', uFt: 'قدم',
   layers: 'ربط الطبقات', nLayers: '{0} طبقة',
   rOuter: 'قطع خارجي', rInner: 'قطع داخلي', rBend: 'خط ثني', rMark: 'تعليم / حفر', rText: 'نص', rIgnore: 'تجاهل',
-  pasteQty: 'لصق الكميات', pastePh: 'اسم القطعة\tالكمية — مفصولة بتاب أو فاصلة أو مسافة. يُتجاهل سطر العناوين.',
+  pasteQty: 'لصق الكميات', pastePh: 'اسم القطعة\tالكمية — مفصولة بتاب أو مسافة. يُتجاهل سطر العناوين.',
   pasteExcel: 'لصق من Excel', replaceRows: 'استبدال الصفوف', addToList: 'إضافة إلى القائمة',
   pasteNone: 'لم يُلصق شيء', pasteNoRows: 'لم يُعثر على اسم وكمية', pasteRes: 'تطابق {0}', pasteMiss: 'غير موجود ({0}): {1}',
   errDwg: 'لا يمكن قراءة DWG — احفظه بصيغة DXF',
@@ -2922,7 +2922,7 @@ function applyQtyPaste(mode) {
   if (!raw) return setStatus('pasteStatus', 'err', 'pasteNone');
   var rows = [];
   raw.split(/\r?\n/).forEach(function (line) {
-    var tk = line.trim().split(/[\t,;]+|\s+/).filter(function (s) { return s !== ''; });
+    var tk = pasteCells(line);
     if (tk.length < 2) return;
     var q = tk[tk.length - 1].replace(',', '.');
     if (!/^[\d.]+$/.test(q) || !isFinite(parseFloat(q))) return;
@@ -3023,6 +3023,13 @@ function addStock(d) {
 }
 function loadDefaultSheets() { S.stock = []; DEFAULT_SHEETS.forEach(addStock); }
 
+// a pasted line splits on tabs when it has one (a real Excel row, so a name may hold spaces), else on spaces;
+// a comma is never a separator, it is the decimal mark (1049,5 = 1049.5)
+function pasteCells(line) {
+  var s = line.trim();
+  return s.split(s.indexOf('\t') >= 0 ? /\t+/ : /\s+/)
+    .map(function (x) { return x.trim(); }).filter(function (x) { return x !== ''; });
+}
 function isNumTok(tk) { return /^[\d.,]+$/.test(tk) && isFinite(parseFloat(tk.replace(',', '.'))); }
 function splitLine(tk) {
   var k = tk.length;
@@ -3039,8 +3046,7 @@ function applySheetPaste(mode) {
   raw.split(/\r?\n/).forEach(function (line) {
     if (!line.trim()) return;
     var unl = false;
-    var tk = line.trim().split(/[\t,;]+|\s+/).filter(function (x) {
-      if (x === '') return false;
+    var tk = pasteCells(line).filter(function (x) {
       if (/^(unlimited|unltd|infinite|inf|∞)$/i.test(x)) { unl = true; return false; }
       return true;
     });
