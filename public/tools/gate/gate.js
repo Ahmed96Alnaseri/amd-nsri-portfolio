@@ -7,8 +7,12 @@
  * - Otherwise it covers the tool with a panel asking for an email and two separate, required approvals (Privacy
  *   Notice read; explicit consent), which link to /privacy and /consent. The page underneath is untouched (search
  *   engines see it as before) and made inert while the panel is open.
- * - After the form is sent, this device remembers that it has signed up (never the address) and the panel does not
- *   come back. Access is granted even if the server is slow or fails.
+ * - After the form is sent, this device remembers that it has signed up, with the date and the address's hash from
+ *   the server (never the address itself), and the panel does not come back. Access is granted even if the server is
+ *   slow or fails.
+ * - On every later visit of any page that loads this script, only that hash is sent to /api/tool-gate/check. If the
+ *   address is on the removed list (its owner asked to stop emails), the stored sign-up is cleared and the panel comes
+ *   back with a message; the sign-up also refuses such an address. If the check fails, the tool stays open.
  * - Text in EN/TR/AR comes from the status answer (src/lib/translations.ts, toolGate).
  */
 (function () {
@@ -16,29 +20,40 @@
   var script = document.currentScript;
   var TOOL = (script && script.getAttribute('data-tool')) || 'unknown';
   var KEY = 'amd-nsri-tool-access';
-  var memoryFlag = false; // last resort when the browser blocks storage: this page visit only
+  var KINDS = ['localStorage', 'sessionStorage'];
+  var memoryAccess = null; // last resort when the browser blocks storage: this page visit only
 
   function store(kind) { try { return window[kind]; } catch (e) { return null; } }
-  function hasAccess() {
-    if (memoryFlag) return true;
-    var kinds = ['localStorage', 'sessionStorage'];
-    for (var i = 0; i < kinds.length; i++) {
-      var s = store(kinds[i]);
-      try { if (s && s.getItem(KEY)) return true; } catch (e) { /* blocked */ }
+  /** The stored sign-up ({ v, t, h? }), or null. A sign-up from before the removed list has no hash (h). */
+  function readAccess() {
+    if (memoryAccess) return memoryAccess;
+    for (var i = 0; i < KINDS.length; i++) {
+      var s = store(KINDS[i]);
+      try {
+        var raw = s && s.getItem(KEY);
+        if (raw) { try { return JSON.parse(raw) || {}; } catch (e) { return {}; } }
+      } catch (e) { /* blocked */ }
     }
-    return false;
+    return null;
   }
-  function grantAccess() {
-    var value = JSON.stringify({ v: 1, t: Date.now() }); // a flag and a date, never the address
-    var kinds = ['localStorage', 'sessionStorage'];
-    for (var i = 0; i < kinds.length; i++) {
-      var s = store(kinds[i]);
+  function hasAccess() { return !!readAccess(); }
+  function grantAccess(token) {
+    // a flag, a date and the address's hash from the server, never the address
+    var access = token ? { v: 2, t: Date.now(), h: token } : { v: 1, t: Date.now() };
+    var value = JSON.stringify(access);
+    for (var i = 0; i < KINDS.length; i++) {
+      var s = store(KINDS[i]);
       try { if (s) { s.setItem(KEY, value); return; } } catch (e) { /* try the next one */ }
     }
-    memoryFlag = true;
+    memoryAccess = access;
   }
-
-  if (hasAccess()) return;
+  function clearAccess() {
+    memoryAccess = null;
+    for (var i = 0; i < KINDS.length; i++) {
+      var s = store(KINDS[i]);
+      try { if (s) s.removeItem(KEY); } catch (e) { /* blocked */ }
+    }
+  }
 
   function withTimeout(ms) {
     var ctrl = 'AbortController' in window ? new AbortController() : null;
@@ -46,11 +61,26 @@
     return { signal: ctrl ? ctrl.signal : undefined, done: function () { if (timer) clearTimeout(timer); } };
   }
 
-  var t0 = withTimeout(6000);
-  fetch('/api/tool-gate/status', { cache: 'no-store', signal: t0.signal })
-    .then(function (r) { t0.done(); return r.ok ? r.json() : null; })
-    .then(function (s) { if (s && s.enabled && s.text && s.approvals && !hasAccess()) open(s); })
-    .catch(function () { t0.done(); /* gate off or unreachable: the tool stays open */ });
+  function loadGate(blocked) {
+    var t0 = withTimeout(6000);
+    fetch('/api/tool-gate/status', { cache: 'no-store', signal: t0.signal })
+      .then(function (r) { t0.done(); return r.ok ? r.json() : null; })
+      .then(function (s) { if (s && s.enabled && s.text && s.approvals && !hasAccess()) open(s, blocked); })
+      .catch(function () { t0.done(); /* gate off or unreachable: the tool stays open */ });
+  }
+
+  // an earlier sign-up: send only its hash; on "blocked" clear it and show the gate again. Any failure keeps the tool open.
+  function checkRemoved(token) {
+    var tc = withTimeout(6000);
+    fetch('/api/tool-gate/check', {
+      method: 'POST', cache: 'no-store', signal: tc.signal,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: token }),
+    })
+      .then(function (r) { tc.done(); return r.ok ? r.json() : null; })
+      .then(function (c) { if (c && c.blocked === true) { clearAccess(); loadGate(true); } })
+      .catch(function () { tc.done(); console.warn('[tool-gate] removed-list check failed; the tool stays open'); });
+  }
 
   var CSS = [
     '.amdg{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:16px;',
@@ -83,6 +113,7 @@
     '.amdg-check a:hover,.amdg-check a:focus-visible{border-bottom-color:#b8956a}',
     '.amdg-sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
     '.amdg-err{min-height:20px;margin:6px 0 0;font-size:12px;color:#d98a6a}',
+    '.amdg-blocked{margin:0 0 18px;padding:12px 14px;border:1px solid rgba(217,138,106,.5);font-size:12.5px;line-height:1.6;color:#d98a6a}',
     '.amdg-btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px;margin-top:14px;font:inherit;font-size:11px;letter-spacing:.1em;text-transform:uppercase;',
     'color:#e8e4dc;background:transparent;border:1px solid #b8956a;padding:14px 26px;cursor:pointer;transition:color .35s}',
     '.amdg[dir=rtl] .amdg-btn{letter-spacing:0;font-size:13px}',
@@ -112,7 +143,8 @@
     return n;
   }
 
-  function open(s) {
+  function open(s, blocked) {
+    var isBlocked = !!blocked;
     var LANGS = ['EN', 'TR', 'AR'];
     var pageLang = (document.documentElement.getAttribute('lang') || 'en').slice(0, 2).toUpperCase();
     var lang = LANGS.indexOf(pageLang) >= 0 ? pageLang : 'EN';
@@ -127,6 +159,7 @@
     var title = el('h2', { 'class': 'amdg-title', id: 'amdg-title' });
     var lead = el('p', { 'class': 'amdg-lead', id: 'amdg-lead' });
     var test = s.dryRun ? el('p', { 'class': 'amdg-test' }) : null;
+    var blockedMsg = el('p', { 'class': 'amdg-blocked', id: 'amdg-blocked', role: 'alert' });
     var label = el('label', { 'class': 'amdg-label', 'for': 'amdg-email' });
     var input = el('input', { 'class': 'amdg-input', id: 'amdg-email', type: 'email', name: 'email', autocomplete: 'email', inputmode: 'email', required: '', maxlength: '254', dir: 'ltr' });
     // two separate, unticked, required approvals (texts versioned in src/lib/tool-gate/consent-texts.json)
@@ -154,7 +187,7 @@
     var form = el('form', { novalidate: '' }, [label, input, privacyCheck, consentCheck, newTabNote, err, hpWrap, btn]);
     var panel = el('div', { 'class': 'amdg-panel' }, [
       el('div', { 'class': 'amdg-top' }, [eyebrow, el('div', { 'class': 'amdg-langs' }, langBtns)]),
-      title, lead, test, form, el('div', { 'class': 'amdg-rule', 'aria-hidden': 'true' }), files,
+      title, lead, blockedMsg, test, form, el('div', { 'class': 'amdg-rule', 'aria-hidden': 'true' }), files,
     ]);
     var root = el('div', { 'class': 'amdg', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'amdg-title', 'aria-describedby': 'amdg-lead' }, [panel]);
 
@@ -183,6 +216,8 @@
       newTabNote.textContent = tx.newTab;
       btnText.textContent = btn.disabled ? tx.sending : tx.submit;
       files.textContent = tx.filesNote;
+      blockedMsg.hidden = !isBlocked;
+      blockedMsg.textContent = isBlocked ? tx.blocked : '';
       if (err.getAttribute('data-key')) err.textContent = tx[err.getAttribute('data-key')];
       langBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.textContent === lang)); });
     }
@@ -219,12 +254,18 @@
         body: JSON.stringify({ email: email, privacy: true, consent: true, website: hp.value, tool: TOOL, lang: lang, ms: Date.now() - shownAt }),
         signal: t.signal,
       })
-        .then(function (r) { t.done(); return r.status === 400 ? r.json().catch(function () { return {}; }) : null; })
+        .then(function (r) {
+          t.done();
+          return r.json().then(function (j) { return { status: r.status, body: j || {} }; }, function () { return { status: r.status, body: {} }; });
+        })
         .catch(function () { t.done(); return null; })
-        .then(function (bad) {
-          // the server only refuses an address its own check rejects; anything else (sent, not sent, slow, down) opens the tool
-          if (bad && bad.error === 'invalid email') { btn.disabled = false; showError('errEmail'); input.focus(); return; }
-          grantAccess();
+        .then(function (res) {
+          var body = (res && res.body) || {};
+          // the server refuses only an address its own check rejects, or one on the removed list; anything else
+          // (sent, not sent, slow, down) opens the tool
+          if (res && res.status === 400 && body.error === 'invalid email') { btn.disabled = false; showError('errEmail'); input.focus(); return; }
+          if (res && res.status === 403 && body.blocked) { btn.disabled = false; isBlocked = true; render(); input.focus(); return; }
+          grantAccess(typeof body.token === 'string' ? body.token : null);
           close();
         });
     });
@@ -233,4 +274,8 @@
     document.body.appendChild(root);
     setTimeout(function () { try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); } }, 50);
   }
+
+  var access = readAccess();
+  if (!access) loadGate(false);
+  else if (typeof access.h === 'string') checkRemoved(access.h);
 })();
