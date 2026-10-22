@@ -395,7 +395,6 @@ export const translations = {
       emailLabel:       'Email',
       emailPlaceholder: 'you@example.com',
       // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
-      notice:           'Your email is required to use the free tools and will be used for the AMD NSRI newsletter. It passes through our hosting provider’s server (Vercel, Frankfurt) to a mailbox in Turkey and is not stored on the hosting server. To have it removed, write to contact@amdnsri.com.',
       filesNote:        'Your files never leave your device: the tool runs in your browser.',
       submit:           'Continue to the tool',
       sending:          'One moment…',
@@ -792,7 +791,6 @@ export const translations = {
       emailLabel:       'E-posta',
       emailPlaceholder: 'siz@ornek.com',
       // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
-      notice:           'Ücretsiz araçları kullanmak için e-posta adresiniz gereklidir ve AMD NSRI bülteni için kullanılacaktır. Adresiniz, barındırma sağlayıcımızın sunucusu (Vercel, Frankfurt) üzerinden Türkiye’deki bir posta kutusuna iletilir ve barındırma sunucusunda saklanmaz. Silinmesini istemek için contact@amdnsri.com adresine yazın.',
       filesNote:        'Dosyalarınız cihazınızdan çıkmaz: araç tarayıcınızda çalışır.',
       submit:           'Araca devam et',
       sending:          'Bir saniye…',
@@ -1189,7 +1187,6 @@ export const translations = {
       emailLabel:       'البريد الإلكتروني',
       emailPlaceholder: 'you@example.com',
       // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
-      notice:           'بريدك الإلكتروني مطلوب لاستخدام الأدوات المجانية، وسيُستخدم لإرسال النشرة الإخبارية لـ AMD NSRI. يمرّ عبر خادم مزوّد الاستضافة لدينا (Vercel، فرانكفورت) إلى صندوق بريد في تركيا، ولا يُخزَّن على خادم الاستضافة. لطلب حذفه، راسلنا على contact@amdnsri.com.',
       filesNote:        'لا تغادر ملفاتك جهازك: تعمل الأداة داخل متصفحك.',
       submit:           'المتابعة إلى الأداة',
       sending:          'لحظة من فضلك…',
