@@ -285,3 +285,95 @@ This website must feel like a technical archive, portfolio, and design system co
 Every spacing, color, animation speed, font size, and line weight must feel intentional.
 Nothing should look like a template. Nothing should look generated.
 AMD NSRI must feel like it was designed by the same intelligence that builds the work inside it.
+
+---
+
+# PROJECT HANDBOOK (added 2026-10-19, trimmed 2026-10-22)
+
+Everything above this line is the original design-system brief, kept word for word.
+Everything below is the working handbook for Claude sessions on this project.
+Private notes (local paths, plans, account details) are kept outside the repository and imported here:
+
+@~/.claude/amd-nsri-private.md
+
+---
+
+## WHO I AM
+
+- Ahmed Alnaseri, architect in Istanbul, owner of AMD NSRI (https://amdnsri.com).
+
+---
+
+## MY WORKING RULES
+
+### How to talk to me
+- Reply in English only, short and simple. Long or complicated instructions confuse me.
+- Never use Turkish words in chat replies (website translation text is fine).
+- Symptom first: tell me what you found before proposing a fix.
+- When you ask me to run something: one command per code block, then ask me for a screenshot.
+- Give complete final scripts, not partial edits.
+- Report plainly, mark unsure things, show what you checked. Stop and ask when the request does not match reality.
+
+### Git and deploy
+- Always ask before every push to main, even after all checks pass.
+- Merge into main with a merge commit (`--no-ff`). A fast-forward push of a commit already built as a Vercel preview does not start a production deploy; if that happens, push an empty commit.
+- `git save` is an alias for add + commit + push. It pushes the CURRENT branch, so never run it (or run_git_save.bat) without asking me.
+- Preview first: new branch, local or Vercel preview, screenshots, then ask.
+- Check the live site after each deploy, in the browser pane. Repeated curl calls to amdnsri.com trigger Vercel's security checkpoint (403).
+- Vercel previews need a Vercel login in the browser pane: I sign in myself.
+- The repository is public: never commit personal details, local paths, plans or account details. They belong in the private notes.
+
+### Safety
+- Never delete anything outside the project folder. Ask before any delete inside it. Never put cleanup in compound commands. Write test files to new, uniquely named folders.
+- Do not touch DNS at all.
+- Never sign in and never enter credentials for me. No real emails are sent until I approve.
+- Never put secrets in code, logs, summaries or this file. Setting names only.
+
+### Site work
+- Trilingual site: every text add, edit or delete must be done in EN, TR and AR (src/lib/translations.ts).
+- Arabic must be Modern Standard Arabic, never dialect. Always check Arabic right-to-left layout.
+- Check desktop and phone widths (375 and 390 px) and Arabic RTL; show screenshots.
+- Keep the design system above (dark #0d0d0b, copper #b8956a, DM Serif Display + IBM Plex Mono).
+- Project routing: a Built project is also copied to src/data/fabrication-projects.ts; a Concept Design project is also copied to src/data/design-projects.ts.
+- My specs often use names that are not in the code (for example title instead of name): map them to the real names and tell me about any differences.
+- `next build` while `next dev` runs breaks the dev server (shared .next folder): build in a separate git worktree instead.
+
+---
+
+## DECISIONS
+
+- Email gate instead of the old newsletter:
+  - email asked once before the 4 free tool pages (IPunch, NESTRI, NESTRI PRO, Expanded Mesh Generator); the /tools/<tool> detail pages stay open for search engines
+  - forward-only by SMTP to the gate mailbox; nothing stored on our side (no database, no Vercel storage, no logs with emails)
+  - single opt-in with two required checkboxes: "I have read the Privacy Notice" and explicit consent; one welcome email after sign-up, no confirmation email
+  - if SMTP fails or the hourly limit is reached, the sign-up is lost (accepted); the visitor still gets access
+  - gate API routes run in Vercel Frankfurt (fra1)
+  - off by default
+- Mail for the gate: one mailbox on news.amdnsri.com, at most 60 emails per hour; each sign-up uses 2 (sign-up + welcome).
+- Old Neon/Resend newsletter code stays in place, unused and off.
+- /privacy and /consent show the gate versions when the gate is on, the newsletter versions when only the newsletter is on, and 404 when both are off.
+- OG preview images are static files made by scripts/og-images (the Next OG library fails to build on Windows).
+- Search engines see English only (TR/AR are switched in the browser). Searchable TR/AR addresses (SEO step 6) are postponed.
+
+---
+
+## SETTINGS (names only, never values)
+
+- Email gate (src/lib/tool-gate/config.ts): TOOL_GATE_MODE (off | preview | live; default off; preview is never active in production), SMTP_HOST, SMTP_PORT (465 or 587), SMTP_USER, SMTP_PASS, SMTP_FROM, TOOL_GATE_TO, TOOL_GATE_HOURLY_MAX (optional, default 50, max 60), TOOL_GATE_LOCAL_TEST (only for local `next start` testing).
+- Contact form (Resend): RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL.
+- Old newsletter (off): NEWSLETTER_MODE, NEWSLETTER_SECRET, DATABASE_URL, SITE_URL, RESEND_API_KEY, CONTACT_FROM_EMAIL, NEWSLETTER_REPLY_TO, CRON_SECRET, NEWSLETTER_PREVIEW_CONFIRM_TTL_MINUTES.
+- Vercel cron: /api/newsletter/cleanup daily at 03:00 (does nothing without a database and CRON_SECRET).
+- Redirects: amd-nsri-portfolio-alpha.vercel.app → amdnsri.com (next.config.mjs); www.amdnsri.com → amdnsri.com (Vercel).
+- Card images: width and height are stored next to cardImage in src/data/tools.ts; update them when a card file is replaced.
+- OG images: cd scripts/og-images, npm install, npm run generate; then commit public/og/ and src/data/og-images.json.
+
+---
+
+## HELPER FILES
+
+- In the project:
+  - start_dev.bat: opens a window "AMD Dev Server" running npm run dev
+  - run_git_save.bat: runs git save (commit + push of the current branch). Never run it without asking me.
+  - sleep_pc.bat: puts the PC to sleep
+  - start_claude_rc.vbs: opens Claude in the project folder and turns on remote control
+- Dev server port can be 3000 or 3001: check it with an HTTP request. .claude/launch.json exists, but the Browser preview tool may pick another project's config; start the dev server in a Terminal tab instead.

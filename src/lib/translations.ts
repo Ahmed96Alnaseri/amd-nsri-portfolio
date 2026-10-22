@@ -387,6 +387,24 @@ export const translations = {
       home:      'Back to home',
       tools:     'Browse the tools',
     },
+    // the email gate on the free tools (public/tools/gate/gate.js, served by /api/tool-gate/status).
+    // LEGAL: the consent and notice wording needs the lawyer's review before the gate goes live.
+    toolGate: {
+      title:            'One step before the tool',
+      lead:             'The tools are free. Enter your email once to use them on this device.',
+      emailLabel:       'Email',
+      emailPlaceholder: 'you@example.com',
+      // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
+      notice:           'Your email is required to use the free tools and will be used for the AMD NSRI newsletter. It passes through our hosting provider’s server (Vercel, Frankfurt) to a mailbox in Turkey and is not stored on the hosting server. To have it removed, write to contact@amdnsri.com.',
+      filesNote:        'Your files never leave your device: the tool runs in your browser.',
+      submit:           'Continue to the tool',
+      sending:          'One moment…',
+      errEmail:         'Please enter a valid email address.',
+      errPrivacy:       'Please confirm that you have read the Privacy Notice.',
+      errConsent:       'Please tick the consent box to continue.',
+      newTab:           '(opens in a new tab)',
+      dryRun:           'Test mode: nothing is sent.',
+    },
   },
 
   TR: {
@@ -766,6 +784,24 @@ export const translations = {
       home:      'Ana sayfaya dön',
       tools:     'Araçlara göz at',
     },
+    // the email gate on the free tools: TR by Claude.
+    // LEGAL: the consent and notice wording needs the lawyer's review before the gate goes live.
+    toolGate: {
+      title:            'Araca geçmeden önce bir adım',
+      lead:             'Araçlar ücretsizdir. Bu cihazda kullanmak için e-posta adresinizi bir kez girin.',
+      emailLabel:       'E-posta',
+      emailPlaceholder: 'siz@ornek.com',
+      // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
+      notice:           'Ücretsiz araçları kullanmak için e-posta adresiniz gereklidir ve AMD NSRI bülteni için kullanılacaktır. Adresiniz, barındırma sağlayıcımızın sunucusu (Vercel, Frankfurt) üzerinden Türkiye’deki bir posta kutusuna iletilir ve barındırma sunucusunda saklanmaz. Silinmesini istemek için contact@amdnsri.com adresine yazın.',
+      filesNote:        'Dosyalarınız cihazınızdan çıkmaz: araç tarayıcınızda çalışır.',
+      submit:           'Araca devam et',
+      sending:          'Bir saniye…',
+      errEmail:         'Lütfen geçerli bir e-posta adresi girin.',
+      errPrivacy:       'Lütfen Aydınlatma Metni\'ni okuduğunuzu onaylayın.',
+      errConsent:       'Devam etmek için lütfen açık rıza kutusunu işaretleyin.',
+      newTab:           '(yeni sekmede açılır)',
+      dryRun:           'Test modu: hiçbir şey gönderilmez.',
+    },
   },
 
   AR: {
@@ -1144,6 +1180,24 @@ export const translations = {
       requested: 'العنوان المطلوب',
       home:      'العودة إلى الصفحة الرئيسية',
       tools:     'تصفّح الأدوات',
+    },
+    // the email gate on the free tools: AR by Claude (MSA).
+    // LEGAL: the consent and notice wording needs the lawyer's review before the gate goes live.
+    toolGate: {
+      title:            'خطوة واحدة قبل الأداة',
+      lead:             'الأدوات مجانية. أدخل بريدك الإلكتروني مرة واحدة لاستخدامها على هذا الجهاز.',
+      emailLabel:       'البريد الإلكتروني',
+      emailPlaceholder: 'you@example.com',
+      // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
+      notice:           'بريدك الإلكتروني مطلوب لاستخدام الأدوات المجانية، وسيُستخدم لإرسال النشرة الإخبارية لـ AMD NSRI. يمرّ عبر خادم مزوّد الاستضافة لدينا (Vercel، فرانكفورت) إلى صندوق بريد في تركيا، ولا يُخزَّن على خادم الاستضافة. لطلب حذفه، راسلنا على contact@amdnsri.com.',
+      filesNote:        'لا تغادر ملفاتك جهازك: تعمل الأداة داخل متصفحك.',
+      submit:           'المتابعة إلى الأداة',
+      sending:          'لحظة من فضلك…',
+      errEmail:         'يُرجى إدخال بريد إلكتروني صالح.',
+      errPrivacy:       'يُرجى تأكيد أنك قرأت إشعار الخصوصية.',
+      errConsent:       'يُرجى تحديد مربّع الموافقة للمتابعة.',
+      newTab:           '(يُفتح في علامة تبويب جديدة)',
+      dryRun:           'وضع الاختبار: لا يُرسَل أي شيء.',
     },
   },
 } as const;

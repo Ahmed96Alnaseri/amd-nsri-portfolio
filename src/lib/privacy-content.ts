@@ -7,7 +7,6 @@ import type { Lang } from '@/lib/translations';
  * to be confirmed. A block is a paragraph (string) or a bullet list (string[]); [[text|/path]] is a link.
  */
 export interface LegalDoc {
-  draft: string;
   title: string;
   status: string;
   intro: string[];
@@ -16,9 +15,8 @@ export interface LegalDoc {
 
 export const PRIVACY: Record<Lang, LegalDoc> = {
   TR: {
-    draft: 'TASLAK: avukat incelemesini bekliyor, yürürlükte değil. [Köşeli parantez] içindeki ifadeler yayından önce teyit edilecektir.',
     title: 'AMD NSRI Aydınlatma Metni',
-    status: 'Ekim 2026\'da hazırlanan taslak; henüz yürürlükte değil. Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir [AVUKAT TEYİT EDECEK].',
+    status: 'Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir [AVUKAT TEYİT EDECEK].',
     intro: [
       'AMD NSRI olarak kişisel verilerinizin güvenliğinin sağlanmasına önem veriyoruz. Bu amaçla, kişisel verilerin korunması için gerekli önlemleri alan ve azami hassasiyet gösteren AMD NSRI olarak, web sitemizdeki bülten aboneliği kapsamında kişisel verilerinizin işlenmesi hususunda sizleri 6698 sayılı Kişisel Verilerin Korunması Kanunu\'nun ("Kanun") 10. maddesi uyarınca bilgilendirmek isteriz.',
     ],
@@ -27,7 +25,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. Veri Sorumlusu',
         blocks: [
           'Kişisel verileriniz, Kanun\'un 3. maddesinde tanımlı "Veri Sorumlusu" sıfatıyla Ahmed Alnaseri tarafından işlenmektedir.',
-          'Ahmed Alnaseri — Adresi: [posta adresi sağlanacak], E-posta adresi: contact@amdnsri.com [AVUKAT TEYİT EDECEK: hukuki statü ile başka kimlik bilgilerinin, örneğin vergi kimlik numarasının, yer alması gerekip gerekmediği].',
+          'Ahmed Alnaseri — E-posta adresi: contact@amdnsri.com [AVUKAT TEYİT EDECEK: hukuki statü ile başka kimlik bilgilerinin, örneğin vergi kimlik numarasının, yer alması gerekip gerekmediği].',
         ],
       },
       {
@@ -90,7 +88,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. İlgili Kişi Olarak Haklarınız',
         blocks: [
           'Kanun\'un "ilgili kişinin hakları"nı düzenleyen 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmiş olması hâlinde düzeltilmesini isteme, Kanun\'un 7. maddesinde öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme, bu işlemlerin kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme, işlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme ve kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.',
-          'Bu haklarınıza ve Kanun\'un uygulamasına ilişkin taleplerinizi yazılı olarak veya kayıtlı elektronik posta (KEP) adresi ya da sistemimizde kayıtlı bulunan e-posta adresinizi kullanmak suretiyle ya da Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ\'de öngörülen diğer başvuru usullerine uygun olarak contact@amdnsri.com adresine iletebilirsiniz [AVUKAT TEYİT EDECEK: yazılı başvurular için posta adresi]. Talebinizi niteliğine göre en kısa sürede ve en geç 30 (otuz) gün içinde ücretsiz olarak sonuçlandıracağız.',
+          'Bu haklarınıza ve Kanun\'un uygulamasına ilişkin taleplerinizi, sistemimizde kayıtlı bulunan e-posta adresinizi ya da kayıtlı elektronik posta (KEP) adresinizi kullanarak contact@amdnsri.com adresine e-posta ile iletebilirsiniz. Talebinizi niteliğine göre en kısa sürede ve en geç 30 (otuz) gün içinde ücretsiz olarak sonuçlandıracağız.',
         ],
       },
       {
@@ -113,9 +111,8 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
   },
 
   EN: {
-    draft: 'DRAFT: awaiting review by a lawyer, not in force. Text in [square brackets] is to be confirmed before publishing.',
     title: 'AMD NSRI Privacy Notice',
-    status: 'Draft prepared in October 2026; not yet in force. The Turkish text is the authoritative version; the English and Arabic texts are translations [LAWYER TO CONFIRM].',
+    status: 'The Turkish text is the authoritative version; the English and Arabic texts are translations [LAWYER TO CONFIRM].',
     intro: [
       'At AMD NSRI we care about keeping your personal data secure. As AMD NSRI, taking the necessary measures and the utmost care to protect personal data, we would like to inform you, under Article 10 of Personal Data Protection Law No. 6698 (the "Law"), about how your personal data is processed in connection with the newsletter sign-up on our website.',
     ],
@@ -124,7 +121,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. Data Controller',
         blocks: [
           'Your personal data is processed by Ahmed Alnaseri in the capacity of "Data Controller" as defined in Article 3 of the Law.',
-          'Ahmed Alnaseri — Address: [postal address to be provided], Email: contact@amdnsri.com [LAWYER TO CONFIRM: legal status, and whether other identifying details such as a tax identification number must be listed].',
+          'Ahmed Alnaseri — Email: contact@amdnsri.com [LAWYER TO CONFIRM: legal status, and whether other identifying details such as a tax identification number must be listed].',
         ],
       },
       {
@@ -187,7 +184,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. Your Rights as a Data Subject',
         blocks: [
           'Under Article 11 of the Law on "the rights of the data subject", you have the right to learn whether your personal data is processed; to request information if it has been processed; to learn the purpose of processing and whether the data is used in line with that purpose; to know the third parties in Turkey or abroad to whom it has been transferred; to request its correction if it is incomplete or inaccurate; to request its erasure or destruction under the conditions in Article 7 of the Law; to request that these actions be notified to the third parties to whom the data has been transferred; to object to a result against you arising from analysis of the data exclusively by automated systems; and to claim compensation for damage suffered because of unlawful processing.',
-          'You can send your requests regarding these rights and the application of the Law to contact@amdnsri.com in writing, or by using a registered electronic mail (KEP) address or the email address registered in our system, or by other methods provided for in the Communiqué on the Procedures and Principles of Application to the Data Controller [LAWYER TO CONFIRM: postal address for written applications]. We will conclude your request free of charge as soon as possible, according to its nature, and within 30 (thirty) days at the latest.',
+          'You can send your requests regarding these rights and the application of the Law by email to contact@amdnsri.com, from the email address registered in our system or from a registered electronic mail (KEP) address. We will conclude your request free of charge as soon as possible, according to its nature, and within 30 (thirty) days at the latest.',
         ],
       },
       {
@@ -210,9 +207,8 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
   },
 
   AR: {
-    draft: 'مسودة: بانتظار مراجعة محامٍ، وغير سارية. ما بين [معقوفين] يجب التحقق منه قبل النشر.',
     title: 'إشعار الخصوصية لدى AMD NSRI',
-    status: 'مسودة أُعدّت في أكتوبر 2026، وهي غير سارية بعد. النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان [يؤكّده المحامي].',
+    status: 'النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان [يؤكّده المحامي].',
     intro: [
       'نحرص في AMD NSRI على ضمان أمن بياناتك الشخصية. ولهذا الغرض، وبصفتنا AMD NSRI التي تتخذ التدابير اللازمة وتولي أقصى درجات العناية لحماية البيانات الشخصية، نودّ إعلامك، وفقاً للمادة 10 من قانون حماية البيانات الشخصية رقم 6698 ("القانون")، بكيفية معالجة بياناتك الشخصية في إطار الاشتراك في النشرة البريدية على موقعنا.',
     ],
@@ -221,7 +217,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '1. المسؤول عن البيانات',
         blocks: [
           'يعالج أحمد الناصري بياناتك الشخصية بصفته "المسؤول عن البيانات" وفق التعريف الوارد في المادة 3 من القانون.',
-          'أحمد الناصري — العنوان: [يُقدَّم العنوان البريدي لاحقاً]، البريد الإلكتروني: contact@amdnsri.com [يؤكّده المحامي: الصفة القانونية، ومدى لزوم ذكر بيانات تعريفية أخرى مثل الرقم الضريبي].',
+          'أحمد الناصري — البريد الإلكتروني: contact@amdnsri.com [يؤكّده المحامي: الصفة القانونية، ومدى لزوم ذكر بيانات تعريفية أخرى مثل الرقم الضريبي].',
         ],
       },
       {
@@ -284,7 +280,7 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
         heading: '5. حقوقك بصفتك صاحب البيانات',
         blocks: [
           'بموجب المادة 11 من القانون الخاصة بـ"حقوق صاحب البيانات"، يحق لك أن تعرف ما إذا كانت بياناتك الشخصية تُعالَج؛ وأن تطلب معلومات عنها إن كانت قد عولجت؛ وأن تعرف غرض المعالجة وما إذا كانت تُستخدم وفقاً له؛ وأن تعرف الأطراف الثالثة التي نُقلت إليها داخل تركيا أو خارجها؛ وأن تطلب تصحيحها إن كانت ناقصة أو غير صحيحة؛ وأن تطلب محوها أو إتلافها وفق الشروط الواردة في المادة 7 من القانون؛ وأن تطلب إبلاغ الأطراف الثالثة التي نُقلت إليها بهذه الإجراءات؛ وأن تعترض على أي نتيجة ضدك ناتجة عن تحليل البيانات حصراً بواسطة أنظمة آلية؛ وأن تطالب بالتعويض عن الضرر الناجم عن معالجتها بصورة مخالفة للقانون.',
-          'يمكنك إرسال طلباتك المتعلقة بهذه الحقوق وبتطبيق القانون إلى contact@amdnsri.com كتابةً، أو باستخدام عنوان بريد إلكتروني مسجَّل (KEP) أو عنوان البريد الإلكتروني المسجَّل لدينا، أو وفق طرق التقديم الأخرى المنصوص عليها في البلاغ الخاص بإجراءات ومبادئ تقديم الطلبات إلى المسؤول عن البيانات [يؤكّده المحامي: العنوان البريدي للطلبات الكتابية]. وسنبتّ في طلبك مجاناً في أقرب وقت ممكن بحسب طبيعته، وخلال 30 (ثلاثين) يوماً على الأكثر.',
+          'يمكنك إرسال طلباتك المتعلقة بهذه الحقوق وبتطبيق القانون بالبريد الإلكتروني إلى contact@amdnsri.com، من عنوان البريد الإلكتروني المسجَّل لدينا أو من عنوان بريد إلكتروني مسجَّل (KEP). وسنبتّ في طلبك مجاناً في أقرب وقت ممكن بحسب طبيعته، وخلال 30 (ثلاثين) يوماً على الأكثر.',
         ],
       },
       {

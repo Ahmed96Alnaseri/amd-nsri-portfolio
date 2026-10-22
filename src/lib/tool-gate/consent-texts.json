@@ -1,0 +1,36 @@
+{
+  "_comment": "The email gate's two required approval checkboxes, per version and language. Never edit a published version: add a new one and point current at it; every sign-up email records the version and the exact wording agreed to. [[text|/path]] marks a link (it opens in a new tab); the recorded wording is the text without the brackets. 'consent' is the newsletter's consent text v2-2026-10 (src/lib/newsletter/consent-texts.json) with only the gate-specific phrases changed; 'privacy' is new. 'lawyerReview' lists, per language, every phrase that is new or changed for the gate. TR and AR are Claude's translations. The Privacy Notice and Explicit Consent Statement these link to are in src/lib/tool-gate/legal-content.ts.",
+  "current": "gate-v1-2026-10",
+  "versions": {
+    "gate-v1-2026-10": {
+      "documents": "Privacy Notice and Explicit Consent Statement for the tool gate, draft of 2026-10-19 (src/lib/tool-gate/legal-content.ts), pending legal review",
+      "privacy": {
+        "EN": "I have read the [[AMD NSRI Privacy Notice|/privacy]].",
+        "TR": "[[AMD NSRI Aydınlatma Metni|/privacy]]'ni okudum.",
+        "AR": "قرأتُ [[إشعار الخصوصية لدى AMD NSRI|/privacy]]."
+      },
+      "consent": {
+        "EN": "I want to receive the AMD NSRI newsletter by email, about new projects, journal articles and digital tool updates, and I accept that my email address is required to use the free tools. I have read and accept the [[Explicit Consent Statement|/consent]], and I can ask for my email address to be removed at any time by writing to contact@amdnsri.com.",
+        "TR": "AMD NSRI bültenini, yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında e-posta ile almak istiyorum ve ücretsiz araçları kullanmak için e-posta adresimin gerekli olduğunu kabul ediyorum. [[Açık Rıza Beyanı|/consent]]'nı okudum ve kabul ediyorum; e-posta adresimin silinmesini istediğim zaman contact@amdnsri.com adresine yazarak isteyebilirim.",
+        "AR": "أرغب في تلقّي النشرة البريدية لـ AMD NSRI عبر البريد الإلكتروني، حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية، وأقبل أن عنوان بريدي الإلكتروني مطلوب لاستخدام الأدوات المجانية. وقد قرأت [[بيان الموافقة الصريحة|/consent]] وأوافق عليه، ويمكنني في أي وقت طلب حذف عنوان بريدي الإلكتروني بمراسلة contact@amdnsri.com."
+      },
+      "lawyerReview": {
+        "EN": [
+          "privacy checkbox: the whole sentence is new (the newsletter had no separate Privacy Notice checkbox)",
+          "consent checkbox, added: \"and I accept that my email address is required to use the free tools\"",
+          "consent checkbox, changed: \"I can unsubscribe at any time\" → \"I can ask for my email address to be removed at any time by writing to contact@amdnsri.com\""
+        ],
+        "TR": [
+          "aydınlatma kutusu: cümlenin tamamı yenidir (bültende ayrı bir Aydınlatma Metni kutusu yoktu)",
+          "açık rıza kutusu, eklendi: \"ve ücretsiz araçları kullanmak için e-posta adresimin gerekli olduğunu kabul ediyorum\"",
+          "açık rıza kutusu, değiştirildi: \"aboneliğimden istediğim zaman çıkabilirim\" → \"e-posta adresimin silinmesini istediğim zaman contact@amdnsri.com adresine yazarak isteyebilirim\""
+        ],
+        "AR": [
+          "مربّع الخصوصية: الجملة كلّها جديدة (لم يكن في النشرة مربّع مستقل لإشعار الخصوصية)",
+          "مربّع الموافقة، أُضيف: \"وأقبل أن عنوان بريدي الإلكتروني مطلوب لاستخدام الأدوات المجانية\"",
+          "مربّع الموافقة، عُدِّل: \"ويمكنني إلغاء الاشتراك في أي وقت\" ← \"ويمكنني في أي وقت طلب حذف عنوان بريدي الإلكتروني بمراسلة contact@amdnsri.com\""
+        ]
+      }
+    }
+  }
+}

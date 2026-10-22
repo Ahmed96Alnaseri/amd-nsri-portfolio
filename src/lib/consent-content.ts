@@ -8,9 +8,8 @@ import type { LegalDoc } from '@/lib/privacy-content';
  */
 export const CONSENT: Record<Lang, LegalDoc> = {
   TR: {
-    draft: 'TASLAK: avukat incelemesini bekliyor, yürürlükte değil. [Köşeli parantez] içindeki ifadeler yayından önce teyit edilecektir.',
     title: 'AMD NSRI Bülten Açık Rıza Beyanı',
-    status: 'Ekim 2026\'da hazırlanan taslak; henüz yürürlükte değil. Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir [AVUKAT TEYİT EDECEK].',
+    status: 'Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir [AVUKAT TEYİT EDECEK].',
     intro: [
       '6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında, AMD NSRI olarak; yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderebilmek maksadıyla kişisel verilerinizi işleyebilmek için bu konuda açık rızanıza ihtiyaç duyuyoruz.',
     ],
@@ -40,9 +39,8 @@ export const CONSENT: Record<Lang, LegalDoc> = {
   },
 
   EN: {
-    draft: 'DRAFT: awaiting review by a lawyer, not in force. Text in [square brackets] is to be confirmed before publishing.',
     title: 'AMD NSRI Newsletter Explicit Consent Statement',
-    status: 'Draft prepared in October 2026; not yet in force. The Turkish text is the authoritative version; the English and Arabic texts are translations [LAWYER TO CONFIRM].',
+    status: 'The Turkish text is the authoritative version; the English and Arabic texts are translations [LAWYER TO CONFIRM].',
     intro: [
       'Under Personal Data Protection Law No. 6698, we at AMD NSRI need your explicit consent to process your personal data for the purpose of sending you a newsletter about new projects, journal articles and digital tool updates.',
     ],
@@ -72,9 +70,8 @@ export const CONSENT: Record<Lang, LegalDoc> = {
   },
 
   AR: {
-    draft: 'مسودة: بانتظار مراجعة محامٍ، وغير سارية. ما بين [معقوفين] يجب التحقق منه قبل النشر.',
     title: 'بيان الموافقة الصريحة على النشرة البريدية لدى AMD NSRI',
-    status: 'مسودة أُعدّت في أكتوبر 2026، وهي غير سارية بعد. النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان [يؤكّده المحامي].',
+    status: 'النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان [يؤكّده المحامي].',
     intro: [
       'في إطار قانون حماية البيانات الشخصية رقم 6698، نحتاج في AMD NSRI إلى موافقتك الصريحة لكي نتمكن من معالجة بياناتك الشخصية بغرض إرسال نشرة بريدية إليك حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية.',
     ],
