@@ -4,13 +4,15 @@ import { translations } from '@/lib/translations';
 import { toolGateConfig, toolGateEnabled } from './config';
 import consentTexts from './consent-texts.json';
 import { welcomeEmail } from './welcome';
+import { HASH, addressHash, removedList } from './removed';
 
 /*
  * The email gate's two API answers (src/app/api/tool-gate/*). Server only.
  * Nothing about a sign-up is kept: the address is put in one email to TOOL_GATE_TO and forgotten; after that, one
  * welcome email goes to the visitor (welcome.ts). The spam and rate limits live in this server instance's memory
  * only (hashed, with a salt made fresh on every start) and are gone when the instance stops. No log line contains
- * an address or the SMTP server's error text.
+ * an address or the SMTP server's error text. Addresses whose owners asked to stop emails are on the removed list
+ * (removed.ts): the tools stay closed to them.
  */
 
 /** The approval texts a sign-up agrees to (consent-texts.json): a new version whenever any of the wording changes. */
@@ -67,8 +69,10 @@ export function status() {
 
 /**
  * POST { email, privacy, consent, website (hidden), tool, lang, ms }. Both approvals are required. Always answers
- * quickly; the visitor's access never depends on the answer. Sends at most two emails per sign-up: the sign-up to
- * the mailbox, then (only if that worked) the welcome email to the visitor.
+ * quickly; the visitor's access never depends on the answer, except for an address on the removed list, which is
+ * refused (403, nothing sent). Sends at most two emails per sign-up: the sign-up to the mailbox, then (only if that
+ * worked) the welcome email to the visitor. Every accepted answer carries the address's hash (token), which the
+ * browser keeps instead of the address for the check on later visits.
  */
 export async function subscribe(req: Request) {
   if (!toolGateEnabled()) return notFound();
@@ -92,26 +96,36 @@ export async function subscribe(req: Request) {
   if (str(body.website, 200)) { console.warn('[tool-gate] dropped: hidden field filled'); return json({ ok: true }); }
   if (typeof body.ms === 'number' && body.ms < MIN_FORM_MS) { console.warn('[tool-gate] dropped: form sent too fast'); return json({ ok: true }); }
 
+  const removed = removedList();
+  const token = removed ? addressHash(email, removed.key) : undefined;
+  const ok = (extra: Record<string, unknown>) => json({ ok: true, ...extra, ...(token ? { token } : {}) });
+
   const now = Date.now();
   prune(now);
   const ip = (req.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || req.headers.get('x-real-ip') || 'unknown';
   const ipKey = hash('ip:' + ip);
   const ipHits = byIp.get(ipKey) ?? [];
-  if (ipHits.length >= PER_IP_MAX) { console.warn('[tool-gate] not sent: too many sign-ups from one address'); return json({ ok: true, sent: false }); }
+  if (ipHits.length >= PER_IP_MAX) { console.warn('[tool-gate] not sent: too many sign-ups from one address'); return ok({ sent: false }); }
   byIp.set(ipKey, [...ipHits, now]);
 
+  // after the per-visitor limit, so the form cannot be used to test many addresses against the list
+  if (removed && token && removed.hashes.has(token)) {
+    console.log('[tool-gate] refused: address on the removed list');
+    return json({ ok: false, blocked: true }, 403);
+  }
+
   const addressKey = hash('email:' + email);
-  if (recentAddresses.has(addressKey)) { console.log('[tool-gate] not sent: same address already sent this hour'); return json({ ok: true, sent: false }); }
+  if (recentAddresses.has(addressKey)) { console.log('[tool-gate] not sent: same address already sent this hour'); return ok({ sent: false }); }
 
   if (cfg.mode === 'preview') {
     recentAddresses.set(addressKey, now);
     console.log(`[tool-gate] dry run: two emails would be sent, sign-up and welcome (tool ${tool}, ${lang})`);
-    return json({ ok: true, sent: false, dryRun: true });
+    return ok({ sent: false, dryRun: true });
   }
 
   // the mailbox accepts 60 emails an hour; stay under it (TOOL_GATE_HOURLY_MAX, default 50). Every email counts:
   // the sign-up takes the first free place, the welcome email only a second one, so the sign-up always comes first
-  if (sentTimes.length >= cfg.hourlyMax) { console.warn('[tool-gate] not sent: hourly limit reached, sign-up lost'); return json({ ok: true, sent: false }); }
+  if (sentTimes.length >= cfg.hourlyMax) { console.warn('[tool-gate] not sent: hourly limit reached, sign-up lost'); return ok({ sent: false }); }
   sentTimes.push(now);
   recentAddresses.set(addressKey, now);
 
@@ -152,7 +166,7 @@ export async function subscribe(req: Request) {
     console.log(`[tool-gate] sent (tool ${tool}, ${lang})`);
   } catch (err) {
     console.error(`[tool-gate] not sent: ${smtpError(err)}, sign-up lost`);
-    return json({ ok: true, sent: false });
+    return ok({ sent: false });
   }
 
   // the welcome email: never changes the answer, the sign-up above has already worked
@@ -168,7 +182,38 @@ export async function subscribe(req: Request) {
       console.error(`[tool-gate] welcome not sent: ${smtpError(err)}`);
     }
   }
-  return json({ ok: true, sent: true });
+  return ok({ sent: true });
+}
+
+const CHECK_MAX = 60;           // removed-list checks per 10 minutes from one address (one per tool page visit)
+const checksByIp = new Map<string, number[]>();
+
+/**
+ * POST { token }: whether this hash is on the removed list. Answers only { blocked: true | false } and logs nothing
+ * about it. The tool pages call it on every visit (public/tools/gate/gate.js); any failure there opens the tool.
+ */
+export async function check(req: Request) {
+  if (!toolGateEnabled()) return notFound();
+  const raw = await req.text().catch(() => '');
+  if (raw.length > 256) return json({ error: 'too large' }, 413);
+  let body: Record<string, unknown> = {};
+  try { body = JSON.parse(raw); } catch { return json({ error: 'invalid request' }, 400); }
+  const token = typeof body.token === 'string' ? body.token : '';
+  if (!HASH.test(token)) return json({ error: 'invalid token' }, 400);
+
+  const now = Date.now();
+  for (const [k, ts] of Array.from(checksByIp)) {
+    const keep = ts.filter((t) => now - t < PER_IP_WINDOW);
+    if (keep.length) checksByIp.set(k, keep); else checksByIp.delete(k);
+  }
+  const ip = (req.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || req.headers.get('x-real-ip') || 'unknown';
+  const ipKey = hash('check:' + ip);
+  const hits = checksByIp.get(ipKey) ?? [];
+  if (hits.length >= CHECK_MAX) { console.warn('[tool-gate] check: too many from one address'); return json({ error: 'too many' }, 429); }
+  checksByIp.set(ipKey, [...hits, now]);
+
+  const removed = removedList();
+  return json({ blocked: !!removed && removed.hashes.has(token) });
 }
 
 /** The error code only: the SMTP server's message can quote the address. */

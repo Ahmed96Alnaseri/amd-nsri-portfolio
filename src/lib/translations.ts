@@ -396,6 +396,7 @@ export const translations = {
       emailPlaceholder: 'you@example.com',
       // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
       filesNote:        'Your files never leave your device: the tool runs in your browser.',
+      blocked:          'The tools are not available for this address because you asked to stop emails. To change this, write to contact@amdnsri.com.',
       submit:           'Continue to the tool',
       sending:          'One moment…',
       errEmail:         'Please enter a valid email address.',
@@ -792,6 +793,7 @@ export const translations = {
       emailPlaceholder: 'siz@ornek.com',
       // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
       filesNote:        'Dosyalarınız cihazınızdan çıkmaz: araç tarayıcınızda çalışır.',
+      blocked:          'Araçlar bu adres için kullanılamıyor, çünkü e-posta almayı durdurmak istediniz. Bunu değiştirmek için contact@amdnsri.com adresine yazın.',
       submit:           'Araca devam et',
       sending:          'Bir saniye…',
       errEmail:         'Lütfen geçerli bir e-posta adresi girin.',
@@ -1188,6 +1190,7 @@ export const translations = {
       emailPlaceholder: 'you@example.com',
       // the two approval checkboxes are versioned in src/lib/tool-gate/consent-texts.json
       filesNote:        'لا تغادر ملفاتك جهازك: تعمل الأداة داخل متصفحك.',
+      blocked:          'الأدوات غير متاحة لهذا العنوان لأنك طلبت إيقاف الرسائل. لتغيير ذلك، راسِل contact@amdnsri.com.',
       submit:           'المتابعة إلى الأداة',
       sending:          'لحظة من فضلك…',
       errEmail:         'يُرجى إدخال بريد إلكتروني صالح.',

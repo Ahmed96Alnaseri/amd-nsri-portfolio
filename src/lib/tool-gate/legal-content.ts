@@ -94,16 +94,16 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
       {
         heading: '6. Kişisel Verilerin Saklanma Süresi',
         blocks: [[
-          `Kaydınıza ilişkin hiçbir bilgi barındırma sağlayıcısının sunucularında saklanmaz.`,
+          `Aşağıda açıklanan silinen adresler listesi dışında, kaydınıza ilişkin hiçbir bilgi barındırma sağlayıcısının sunucularında saklanmaz.`,
           `Kaydınız, Türkiye'deki posta kutumuzda tek bir e-posta olarak, contact@amdnsri.com adresine yazarak silinmesini isteyene kadar saklanır.`,
-          `Silme talebinizde kaydınız silinir.`,
+          `Silme talebinizde kaydınız silinir. Durdurma talebinize uyulabilmesi için, adresinizin kendisi değil, özet değeri (hash) barındırma sağlayıcısının sunucularında silinen adresler listesinde saklanır; bu değer yalnızca ücretsiz araçları o adrese kapalı tutmak ve o adresle yeni bir kaydı reddetmek için kullanılır.`,
           `Kötüye kullanımı önlemeye yönelik sayaçlar yalnızca sunucu işleminin çalışma belleğinde tutulur ve bu işlem sona erdiğinde kaybolur.`,
         ]],
       },
       {
         heading: '7. Tarayıcınızda Saklanan Bilgiler',
         blocks: [
-          `Web sitemiz ve araç sayfalarımız çerez kullanmaz. Tarayıcınızın yerel depolama alanında yalnızca şunlar tutulur: web sitesinde seçtiğiniz dil ve değiştirdiyseniz açık/koyu tema tercihi; NESTRI, NESTRI PRO ve IPunch araç sayfalarında seçtiğiniz dil; NESTRI ve NESTRI PRO'da kaydedilen, üzerinde çalıştığınız proje; Expanded Mesh Generator'da açık bıraktığınız bölümler; ve araç sayfalarındaki e-posta formunu gönderdikten sonra, bu cihazın kayıt olduğunu gösteren bir işaret ile tarihi (e-posta adresiniz değil). Bu bilgiler yalnızca kendi cihazınızda kalır, bize gönderilmez ve tarayıcı ayarlarınızdan silinebilir.`,
+          `Web sitemiz ve araç sayfalarımız çerez kullanmaz. Tarayıcınızın yerel depolama alanında yalnızca şunlar tutulur: web sitesinde seçtiğiniz dil ve değiştirdiyseniz açık/koyu tema tercihi; NESTRI, NESTRI PRO ve IPunch araç sayfalarında seçtiğiniz dil; NESTRI ve NESTRI PRO'da kaydedilen, üzerinde çalıştığınız proje; Expanded Mesh Generator'da açık bıraktığınız bölümler; ve araç sayfalarındaki e-posta formunu gönderdikten sonra, bu cihazın kayıt olduğunu gösteren bir işaret, tarihi ve adresinizin özet değeri (hash) (adresin kendisi değil). Bir araç sayfasını açtığınızda, adresin silinen adresler listesinde olup olmadığını kontrol etmek için sunucumuza yalnızca bu özet değeri gönderilir; orada saklanmaz ve kaydedilmez. Diğer bilgiler yalnızca kendi cihazınızda kalır, bize gönderilmez ve tarayıcı ayarlarınızdan silinebilir.`,
           'Sayfa görüntülemeleri Vercel Web Analytics ile çerez kullanılmadan sayılır. Yazı tipleri Google Fonts\'tan yüklenir (bkz. 3. bölüm).',
         ],
       },
@@ -190,16 +190,16 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
       {
         heading: '6. How Long Personal Data Is Kept',
         blocks: [[
-          `Nothing about your sign-up is stored on the hosting provider's servers.`,
+          `Apart from the list of removed addresses described below, nothing about your sign-up is stored on the hosting provider's servers.`,
           `Your sign-up is kept as one email in our mailbox in Turkey until you ask for its removal by writing to contact@amdnsri.com.`,
-          `On a removal request your sign-up is deleted.`,
+          `On a removal request your sign-up is deleted. So that your request to stop is respected, a scrambled value (hash) of your address, not the address itself, is then kept on the hosting provider's servers in a list of removed addresses; it is used only to keep the free tools closed to that address and to refuse a new sign-up with it.`,
           `Counters used to prevent abuse are held only in the working memory of the server process and are gone when that process ends.`,
         ]],
       },
       {
         heading: '7. Information Stored in Your Browser',
         blocks: [
-          `Our website and tool pages do not use cookies. Only the following is kept in your browser's local storage: the language you choose on the website and, if you change it, the light/dark theme; the language you choose on the NESTRI, NESTRI PRO and IPunch tool pages; on NESTRI and NESTRI PRO, the project you are working on, when saved; the sections you leave open in the Expanded Mesh Generator; and, after you send the email form on a tool page, a note that this device has signed up, with its date (not your email address). This information stays on your own device, is not sent to us, and can be deleted in your browser settings.`,
+          `Our website and tool pages do not use cookies. Only the following is kept in your browser's local storage: the language you choose on the website and, if you change it, the light/dark theme; the language you choose on the NESTRI, NESTRI PRO and IPunch tool pages; on NESTRI and NESTRI PRO, the project you are working on, when saved; the sections you leave open in the Expanded Mesh Generator; and, after you send the email form on a tool page, a note that this device has signed up, with its date and a scrambled value (hash) of your address (not the address itself). When you open a tool page, only this scrambled value is sent to our server, to check whether the address is on the list of removed addresses; it is not stored or logged there. Everything else stays on your own device, is not sent to us, and can be deleted in your browser settings.`,
           'Page views are counted with Vercel Web Analytics without cookies. Typefaces are loaded from Google Fonts (see section 3).',
         ],
       },
@@ -286,16 +286,16 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
       {
         heading: '6. مدة الاحتفاظ بالبيانات الشخصية',
         blocks: [[
-          `لا يُخزَّن أي شيء يتعلق باشتراكك على خوادم مزوّد الاستضافة.`,
+          `باستثناء قائمة العناوين المحذوفة الموضّحة أدناه، لا يُخزَّن أي شيء يتعلق باشتراكك على خوادم مزوّد الاستضافة.`,
           `يُحتفَظ باشتراكك كرسالة واحدة في صندوق بريدنا في تركيا إلى أن تطلب حذفه بمراسلة contact@amdnsri.com.`,
-          `وعند طلبك الحذف يُحذف اشتراكك.`,
+          `وعند طلبك الحذف يُحذف اشتراكك. ولكي يُحترَم طلبك بالتوقف، تُحفَظ بعد ذلك قيمة تجزئة (hash) لعنوانك، لا العنوان نفسه، على خوادم مزوّد الاستضافة ضمن قائمة العناوين المحذوفة؛ ولا تُستخدم إلا لإبقاء الأدوات المجانية مغلقة أمام ذلك العنوان ورفض أي اشتراك جديد به.`,
           `لا تُحفَظ العدّادات المستخدمة لمنع إساءة الاستخدام إلا في ذاكرة عمل عملية الخادم، وتزول عند انتهاء تلك العملية.`,
         ]],
       },
       {
         heading: '7. المعلومات المحفوظة في متصفحك',
         blocks: [
-          `لا يستخدم موقعنا ولا صفحات أدواتنا ملفات تعريف الارتباط. ولا يُحفَظ في التخزين المحلي لمتصفحك إلا ما يلي: اللغة التي تختارها على الموقع، وتفضيل السمة الفاتحة أو الداكنة إن غيّرته؛ واللغة التي تختارها في صفحات أدوات NESTRI وNESTRI PRO وIPunch؛ وفي NESTRI وNESTRI PRO، المشروع الذي تعمل عليه عند حفظه؛ والأقسام التي تتركها مفتوحة في Expanded Mesh Generator؛ وبعد إرسال نموذج البريد الإلكتروني في صفحة أداة، علامة تفيد بأن هذا الجهاز قد اشترك مع تاريخها (لا عنوان بريدك الإلكتروني). تبقى هذه المعلومات على جهازك وحده، ولا تُرسَل إلينا، ويمكن حذفها من إعدادات المتصفح.`,
+          `لا يستخدم موقعنا ولا صفحات أدواتنا ملفات تعريف الارتباط. ولا يُحفَظ في التخزين المحلي لمتصفحك إلا ما يلي: اللغة التي تختارها على الموقع، وتفضيل السمة الفاتحة أو الداكنة إن غيّرته؛ واللغة التي تختارها في صفحات أدوات NESTRI وNESTRI PRO وIPunch؛ وفي NESTRI وNESTRI PRO، المشروع الذي تعمل عليه عند حفظه؛ والأقسام التي تتركها مفتوحة في Expanded Mesh Generator؛ وبعد إرسال نموذج البريد الإلكتروني في صفحة أداة، علامة تفيد بأن هذا الجهاز قد اشترك مع تاريخها وقيمة تجزئة (hash) لعنوانك (لا العنوان نفسه). وعند فتح صفحة أداة، تُرسَل قيمة التجزئة هذه وحدها إلى خادمنا للتحقق مما إذا كان العنوان ضمن قائمة العناوين المحذوفة، ولا تُحفَظ هناك ولا تُسجَّل. أما بقية المعلومات فتبقى على جهازك وحده، ولا تُرسَل إلينا، ويمكن حذفها من إعدادات المتصفح.`,
           'تُحصى مشاهدات الصفحات باستخدام Vercel Web Analytics دون ملفات تعريف الارتباط. وتُحمَّل الخطوط من Google Fonts (انظر القسم 3).',
         ],
       },
@@ -329,7 +329,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
       {
         heading: 'Bilgilendirme',
         blocks: [
-          `Açık rızamı dilediğim zaman, gerekçe göstermeksizin, contact@amdnsri.com adresine yazarak geri alabileceğim ve e-posta adresimin silinmesini isteyebileceğim; rızamı geri almamın, geri almadan önce yapılan işlemleri etkilemeyeceği konusunda bilgilendirildim.`,
+          `Açık rızamı dilediğim zaman, gerekçe göstermeksizin, contact@amdnsri.com adresine yazarak geri alabileceğim ve e-posta adresimin silinmesini isteyebileceğim; bu durumda ücretsiz araçların bu adres için çalışmayacağı; rızamı geri almamın, geri almadan önce yapılan işlemleri etkilemeyeceği konusunda bilgilendirildim.`,
         ],
       },
     ],
@@ -360,7 +360,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
       {
         heading: 'Information',
         blocks: [
-          `I have been informed that I can withdraw my explicit consent and ask for my email address to be removed at any time, without giving a reason, by writing to contact@amdnsri.com, and that withdrawing it does not affect processing carried out before.`,
+          `I have been informed that I can withdraw my explicit consent and ask for my email address to be removed at any time, without giving a reason, by writing to contact@amdnsri.com; that the free tools then stop working for this address; and that withdrawing it does not affect processing carried out before.`,
         ],
       },
     ],
@@ -391,7 +391,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
       {
         heading: 'الإعلام',
         blocks: [
-          `أُعلمت بأنني أستطيع سحب موافقتي الصريحة وطلب حذف عنوان بريدي الإلكتروني في أي وقت ودون إبداء أسباب، بمراسلة contact@amdnsri.com، وبأن سحبها لا يؤثر في المعالجة التي جرت قبل ذلك.`,
+          `أُعلمت بأنني أستطيع سحب موافقتي الصريحة وطلب حذف عنوان بريدي الإلكتروني في أي وقت ودون إبداء أسباب، بمراسلة contact@amdnsri.com، وبأن الأدوات المجانية تتوقف عندئذٍ عن العمل لهذا العنوان، وبأن سحبها لا يؤثر في المعالجة التي جرت قبل ذلك.`,
         ],
       },
     ],

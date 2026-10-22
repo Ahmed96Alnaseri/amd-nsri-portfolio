@@ -18,6 +18,8 @@
  *   SMTP_FROM            Sender address of the notification email, e.g. "AMD NSRI <signups@news.amdnsri.com>".
  *   TOOL_GATE_TO         The mailbox that receives each sign-up: signups@news.amdnsri.com
  *   TOOL_GATE_HOURLY_MAX Optional. Emails per hour (per server instance) before sending pauses; default 50, at most 60.
+ *   TOOL_GATE_BLOCK_KEY  Optional. Secret key for the removed list (removed.ts). Never change it: the list stops matching.
+ *   TOOL_GATE_BLOCKED    Optional. Comma-separated hashes of removed addresses (scripts/gate-block-hash.mjs).
  *   TOOL_GATE_LOCAL_TEST Local testing only: "1" lets preview run on a local production build (`next start`).
  *                        Ignored on Vercel's production deployment, where preview is always off.
  *

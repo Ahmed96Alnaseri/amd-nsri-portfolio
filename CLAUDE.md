@@ -359,7 +359,7 @@ Private notes (local paths, plans, account details) are kept outside the reposit
 
 ## SETTINGS (names only, never values)
 
-- Email gate (src/lib/tool-gate/config.ts): TOOL_GATE_MODE (off | preview | live; default off; preview is never active in production), SMTP_HOST, SMTP_PORT (465 or 587), SMTP_USER, SMTP_PASS, SMTP_FROM, TOOL_GATE_TO, TOOL_GATE_HOURLY_MAX (optional, default 50, max 60), TOOL_GATE_LOCAL_TEST (only for local `next start` testing).
+- Email gate (src/lib/tool-gate/config.ts): TOOL_GATE_MODE (off | preview | live; default off; preview is never active in production), SMTP_HOST, SMTP_PORT (465 or 587), SMTP_USER, SMTP_PASS, SMTP_FROM, TOOL_GATE_TO, TOOL_GATE_HOURLY_MAX (optional, default 50, max 60), TOOL_GATE_BLOCK_KEY and TOOL_GATE_BLOCKED (optional: the removed list, see src/lib/tool-gate/removed.ts and scripts/gate-block-hash.mjs), TOOL_GATE_LOCAL_TEST (only for local `next start` testing).
 - Contact form (Resend): RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL.
 - Old newsletter (off): NEWSLETTER_MODE, NEWSLETTER_SECRET, DATABASE_URL, SITE_URL, RESEND_API_KEY, CONTACT_FROM_EMAIL, NEWSLETTER_REPLY_TO, CRON_SECRET, NEWSLETTER_PREVIEW_CONFIRM_TTL_MINUTES.
 - Vercel cron: /api/newsletter/cleanup daily at 03:00 (does nothing without a database and CRON_SECRET).

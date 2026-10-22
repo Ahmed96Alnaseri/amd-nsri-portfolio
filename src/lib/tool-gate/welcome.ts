@@ -16,6 +16,7 @@ const TEXT: Record<Lang3, { subject: string; lines: string[] }> = {
       'AMD NSRI works on architecture, facade design and fabrication tools.',
       'From time to time we will send you news and updates about new projects, journal articles and tools.',
       'Reply STOP to this email to unsubscribe.',
+      'If you unsubscribe, the tools stop working for this address.',
     ],
   },
   TR: {
@@ -25,6 +26,7 @@ const TEXT: Record<Lang3, { subject: string; lines: string[] }> = {
       'AMD NSRI; mimarlık, cephe tasarımı ve imalat araçları üzerine çalışır.',
       'Zaman zaman size yeni projeler, günlük yazıları ve araçlar hakkında haberler ve güncellemeler göndereceğiz.',
       'Abonelikten çıkmak için bu e-postayı STOP yazarak yanıtlayın.',
+      'Abonelikten çıkarsanız araçlar bu adres için çalışmaz.',
     ],
   },
   AR: {
@@ -34,6 +36,7 @@ const TEXT: Record<Lang3, { subject: string; lines: string[] }> = {
       'تعمل AMD NSRI في مجالات العمارة وتصميم الواجهات وأدوات التصنيع.',
       'سنرسل إليك من حين لآخر أخباراً وتحديثات حول المشاريع الجديدة ومقالات المدونة والأدوات.',
       'لإلغاء الاشتراك، ردّ على هذه الرسالة بكلمة STOP.',
+      'إذا ألغيت الاشتراك، تتوقف الأدوات عن العمل لهذا العنوان.',
     ],
   },
 };
