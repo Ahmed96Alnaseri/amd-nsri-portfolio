@@ -42,7 +42,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `Web sitemizdeki araç sayfalarında, araçları kullanmadan önce gösterilen e-posta formu aracılığıyla sizlerden toplanan iletişim (e-posta adresiniz), pazarlama (bülten onay tercihiniz) ve işlem güvenliği (onay zamanı, onay metinlerinin sürümü ve gösterildiği dil, formun doldurulduğu araç sayfası) kategorilerindeki kişisel verileriniz aşağıda belirtilen amaç ve hukuki sebeplerle işlenmektedir.`,
           'Açık rızanızın bulunması (Kanun m. 5/1) sebebine dayanılarak; iletişim ve pazarlama kategorilerindeki verileriniz aşağıdaki amaçla işlenir:',
           [
-            `İletişim Faaliyetlerinin Yürütülmesi (yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderilmesi) ve ücretsiz araçlara erişimin sağlanması`,
+            `İletişim Faaliyetlerinin Yürütülmesi (kayıttan sonra bir hoş geldiniz e-postası ile yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderilmesi) ve ücretsiz araçlara erişimin sağlanması`,
           ],
           'Veri sorumlusunun hukuki yükümlülüğünü yerine getirebilmesi için zorunlu olması (Kanun m. 5/2-ç) sebebine dayanılarak; iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz aşağıdaki amaçlarla işlenir:',
           [
@@ -67,7 +67,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `Hizmet aldığımız Özel Hukuk Tüzel Kişilerine; iletişim, pazarlama ve işlem güvenliği kategorilerindeki verileriniz, web sitesinin, e-posta formunun ve bültenin teknik olarak çalıştırılması (Bilgi Güvenliği Süreçlerinin Yürütülmesi, İletişim Faaliyetlerinin Yürütülmesi, Saklama ve Arşiv Faaliyetlerinin Yürütülmesi) amacıyla aktarılır:`,
           [
             `Vercel (Amerika Birleşik Devletleri): web sitesinin ve e-posta formunun barındırılması; formu işleyen sunucu Frankfurt, Almanya'da çalışır; e-posta adresiniz bu sunucudan yalnızca geçer ve orada saklanmaz.`,
-            `E-posta hizmeti sağlayıcısı turhost (Çizgi Telekomünikasyon A.Ş.) (Türkiye): her kayıt, adresiniz ve onaylarınızla birlikte tek bir e-posta olarak newsletter@news.amdnsri.com posta kutusuna iletilir ve orada saklanır.`,
+            `E-posta hizmeti sağlayıcısı turhost (Çizgi Telekomünikasyon A.Ş.) (Türkiye): her kayıt, adresiniz ve onaylarınızla birlikte tek bir e-posta olarak signups@news.amdnsri.com posta kutusuna iletilir ve orada saklanır; adresinize gönderilen hoş geldiniz e-postası da bu sağlayıcı üzerinden gönderilir.`,
             `Google (Google Fonts): web sitesinin ve IPunch, NESTRI ve NESTRI PRO araç sayfalarının yazı tiplerinin yüklenmesi; bu sayfalardan biri açıldığında IP adresiniz Google'a iletilir.`,
             `jsDelivr: IPunch'ta ilk kez bir DWG dosyası açıldığında DWG okuyucu kod kitaplığının yüklenmesi; bu sırada IP adresiniz jsDelivr'e iletilir, dosyanız ise cihazınızdan çıkmaz.`,
           ],
@@ -87,7 +87,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           'Otomatik ya da kısmen otomatik yöntemlerle:',
           [
             `İletişim ve pazarlama kategorilerindeki kişisel verileriniz, araç sayfalarındaki e-posta formunu doldurduğunuzda doğrudan sizden toplanmaktadır.`,
-            `İşlem güvenliği kategorisindeki kişisel verileriniz, formu gönderdiğinizde kayıt e-postasına eklenmektedir; onay e-postası gönderilmez.`,
+            `İşlem güvenliği kategorisindeki kişisel verileriniz, formu gönderdiğinizde kayıt e-postasına eklenmektedir. Ardından adresinize bir hoş geldiniz e-postası gönderilir; bu e-posta sizden herhangi bir onay istemez.`,
           ],
           'Kişisel verileriniz üçüncü kişilerden toplanmamaktadır. Topladığımız kişisel verileriniz yasal yollardan elde edilmektedir.',
         ],
@@ -139,7 +139,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `Your personal data in the categories of contact (your email address), marketing (your newsletter consent preference) and transaction security (time of consent, version and language of the consent texts, and the tool page where you filled in the form), collected from you through the email form shown on the tool pages of our website before you use the tools, is processed for the purposes and on the legal grounds set out below.`,
           'On the ground of your explicit consent (Law, Art. 5/1), your data in the contact and marketing categories is processed for the following purpose:',
           [
-            `Carrying out communication activities (sending the newsletter about new projects, journal articles and digital tool updates) and giving access to the free tools`,
+            `Carrying out communication activities (sending one welcome email after sign-up, and the newsletter about new projects, journal articles and digital tool updates) and giving access to the free tools`,
           ],
           'On the ground that processing is necessary for the data controller to comply with a legal obligation (Law, Art. 5/2-ç), your data in the contact, marketing and transaction security categories is processed for the following purposes:',
           [
@@ -164,7 +164,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `To private-law legal entities that provide services to us, your data in the contact, marketing and transaction security categories is transferred for running the website, the email form and the newsletter technically (carrying out information security processes, communication activities, and storage and archiving activities):`,
           [
             `Vercel (United States): hosting of the website and the email form; the server that handles the form runs in Frankfurt, Germany; your email address only passes through it and is not stored there.`,
-            `Email service provider turhost (Çizgi Telekomünikasyon A.Ş.) (Turkey): each sign-up is sent, with your address and your approvals, as one email to the newsletter@news.amdnsri.com mailbox, where it is kept.`,
+            `Email service provider turhost (Çizgi Telekomünikasyon A.Ş.) (Turkey): each sign-up is sent, with your address and your approvals, as one email to the signups@news.amdnsri.com mailbox, where it is kept; the welcome email to your address is also sent through this provider.`,
             `Google (Google Fonts): loading the typefaces of the website and of the IPunch, NESTRI and NESTRI PRO tool pages; when one of these pages opens, your IP address is sent to Google.`,
             `jsDelivr: loading the DWG-reading code library the first time a DWG file is opened in IPunch; your IP address is sent to jsDelivr, while your file does not leave your device.`,
           ],
@@ -184,7 +184,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           'By automated or partly automated means:',
           [
             `Your personal data in the contact and marketing categories is collected directly from you when you fill in the email form on the tool pages.`,
-            `Your personal data in the transaction security category is added to the sign-up email when you send the form; no confirmation email is sent.`,
+            `Your personal data in the transaction security category is added to the sign-up email when you send the form. One welcome email is then sent to your address; it does not ask you to confirm anything.`,
           ],
           'Your personal data is not collected from third parties. The personal data we collect is obtained lawfully.',
         ],
@@ -236,7 +236,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `تُعالَج بياناتك الشخصية التي نجمعها منك عبر نموذج البريد الإلكتروني المعروض في صفحات الأدوات على موقعنا قبل استخدامها، ضمن فئات الاتصال (عنوان بريدك الإلكتروني)، والتسويق (تفضيل موافقتك على النشرة)، وأمن المعاملات (وقت الموافقة، وإصدار نصوص الموافقة ولغتها، وصفحة الأداة التي عبّأت فيها النموذج)، للأغراض وعلى الأسس القانونية المبيّنة أدناه.`,
           'استناداً إلى موافقتك الصريحة (المادة 5/1 من القانون)، تُعالَج بياناتك ضمن فئتي الاتصال والتسويق للغرض التالي:',
           [
-            `تنفيذ أنشطة التواصل (إرسال النشرة حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية) وإتاحة الوصول إلى الأدوات المجانية`,
+            `تنفيذ أنشطة التواصل (إرسال رسالة ترحيب واحدة بعد الاشتراك، والنشرة حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية) وإتاحة الوصول إلى الأدوات المجانية`,
           ],
           'استناداً إلى كون المعالجة ضرورية لوفاء المسؤول عن البيانات بالتزامه القانوني (المادة 5/2-ç من القانون)، تُعالَج بياناتك ضمن فئات الاتصال والتسويق وأمن المعاملات للأغراض التالية:',
           [
@@ -261,7 +261,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           `إلى أشخاص اعتباريين من القانون الخاص نتلقى منهم خدمات؛ تُنقَل بياناتك ضمن فئات الاتصال والتسويق وأمن المعاملات لتشغيل الموقع ونموذج البريد الإلكتروني والنشرة تقنياً (تنفيذ عمليات أمن المعلومات، وأنشطة التواصل، وأنشطة الحفظ والأرشفة):`,
           [
             `Vercel (الولايات المتحدة): استضافة الموقع ونموذج البريد الإلكتروني؛ ويعمل الخادم الذي يعالج النموذج في فرانكفورت، ألمانيا؛ ويمرّ عنوان بريدك الإلكتروني عبره فقط ولا يُخزَّن فيه.`,
-            `مزوّد خدمة البريد الإلكتروني turhost (Çizgi Telekomünikasyon A.Ş.) (تركيا): يُرسَل كل اشتراك، مع عنوانك وموافقاتك، كرسالة واحدة إلى صندوق البريد newsletter@news.amdnsri.com حيث يُحتفَظ به.`,
+            `مزوّد خدمة البريد الإلكتروني turhost (Çizgi Telekomünikasyon A.Ş.) (تركيا): يُرسَل كل اشتراك، مع عنوانك وموافقاتك، كرسالة واحدة إلى صندوق البريد signups@news.amdnsri.com حيث يُحتفَظ به؛ وتُرسَل رسالة الترحيب إلى عنوانك عبر هذا المزوّد أيضاً.`,
             `Google (Google Fonts): تحميل خطوط الموقع وصفحات أدوات IPunch وNESTRI وNESTRI PRO؛ وعند فتح إحدى هذه الصفحات يُرسَل عنوان IP الخاص بك إلى Google.`,
             `jsDelivr: تحميل مكتبة برمجية لقراءة ملفات DWG عند فتح أول ملف DWG في IPunch؛ ويُرسَل عنوان IP الخاص بك إلى jsDelivr، بينما لا يغادر ملفك جهازك.`,
           ],
@@ -281,7 +281,7 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
           'بوسائل آلية أو شبه آلية:',
           [
             `تُجمَع بياناتك الشخصية ضمن فئتي الاتصال والتسويق منك مباشرةً عند تعبئة نموذج البريد الإلكتروني في صفحات الأدوات.`,
-            `تُضاف بياناتك الشخصية ضمن فئة أمن المعاملات إلى رسالة الاشتراك عند إرسال النموذج؛ ولا تُرسَل أي رسالة تأكيد.`,
+            `تُضاف بياناتك الشخصية ضمن فئة أمن المعاملات إلى رسالة الاشتراك عند إرسال النموذج. ثم تُرسَل رسالة ترحيب واحدة إلى عنوانك، ولا تطلب منك تأكيد أي شيء.`,
           ],
           'لا تُجمَع بياناتك الشخصية من أطراف ثالثة، وتُحصَّل البيانات التي نجمعها بطرق مشروعة.',
         ],
@@ -334,7 +334,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
         blocks: [
           `Kişisel verilerimin [[AMD NSRI Aydınlatma Metni|/privacy]]'nde belirtilen yöntem, amaç ve hukuki sebeplerle sınırlı kalmak kaydıyla; 6698 sayılı Kanun ve diğer ilgili mevzuata uygun olarak veri sorumlusu tarafından yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderilmesi ve ücretsiz araçlara erişimimin sağlanması amacıyla kullanılmasına ve bu amaçla Aydınlatma Metni'nde belirtilen hizmet sağlayıcılara aktarılmasına açık bir şekilde rıza verdiğimi kabul ve beyan ediyorum.`,
           'Kişisel verilerimin üçüncü kişilerle onların kendi reklam veya pazarlama amaçları için paylaşılmayacağı konusunda bilgilendirildim.',
-          `Bu beyanı, araç sayfalarındaki e-posta formunda yer alan iki onay kutusunu işaretleyerek ve formu göndererek veriyorum; onay e-postası gönderilmez.`,
+          `Bu beyanı, araç sayfalarındaki e-posta formunda yer alan iki onay kutusunu işaretleyerek ve formu göndererek veriyorum; ardından adresime, benden herhangi bir onay istemeyen bir hoş geldiniz e-postası gönderilir.`,
         ],
       },
       {
@@ -366,7 +366,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
         blocks: [
           `I accept and declare that I explicitly consent to my personal data being used by the data controller, in accordance with Law No. 6698 and other relevant legislation and limited to the methods, purposes and legal grounds set out in the [[AMD NSRI Privacy Notice|/privacy]], to send me a newsletter about new projects, journal articles and digital tool updates and to give me access to the free tools, and to it being transferred for this purpose to the service providers named in the Privacy Notice.`,
           'I have been informed that my personal data will not be shared with third parties for their own advertising or marketing.',
-          `I give this statement by ticking the two approval boxes on the email form on the tool pages and sending the form; no confirmation email is sent.`,
+          `I give this statement by ticking the two approval boxes on the email form on the tool pages and sending the form; after that, one welcome email is sent to my address, which does not ask me to confirm anything.`,
         ],
       },
       {
@@ -398,7 +398,7 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
         blocks: [
           `أقرّ وأُعلن أنني أوافق صراحةً على أن يستخدم المسؤول عن البيانات بياناتي الشخصية، وفقاً للقانون رقم 6698 والتشريعات الأخرى ذات الصلة، وفي حدود الطرق والأغراض والأسس القانونية المبيّنة في [[إشعار الخصوصية لدى AMD NSRI|/privacy]]، لإرسال نشرة بريدية إليّ حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية ولإتاحة الوصول إلى الأدوات المجانية لي، وعلى نقلها لهذا الغرض إلى مزوّدي الخدمات المذكورين في إشعار الخصوصية.`,
           'وقد أُعلمت بأن بياناتي الشخصية لن تُشارَك مع أطراف ثالثة لأغراض الإعلان أو التسويق الخاصة بها.',
-          `وأقدّم هذا البيان بوضع علامة في مربّعَي الموافقة في نموذج البريد الإلكتروني بصفحات الأدوات، ثم بإرسال النموذج؛ ولا تُرسَل أي رسالة تأكيد.`,
+          `وأقدّم هذا البيان بوضع علامة في مربّعَي الموافقة في نموذج البريد الإلكتروني بصفحات الأدوات، ثم بإرسال النموذج؛ وبعد ذلك تُرسَل إلى عنواني رسالة ترحيب واحدة لا تطلب مني تأكيد أي شيء.`,
         ],
       },
       {

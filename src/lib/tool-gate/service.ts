@@ -3,12 +3,14 @@ import nodemailer from 'nodemailer';
 import { translations } from '@/lib/translations';
 import { toolGateConfig, toolGateEnabled } from './config';
 import consentTexts from './consent-texts.json';
+import { welcomeEmail } from './welcome';
 
 /*
  * The email gate's two API answers (src/app/api/tool-gate/*). Server only.
- * Nothing about a sign-up is kept: the address is put in one email to TOOL_GATE_TO and forgotten. The spam and
- * rate limits live in this server instance's memory only (hashed, with a salt made fresh on every start) and are
- * gone when the instance stops. No log line contains an address or the SMTP server's error text.
+ * Nothing about a sign-up is kept: the address is put in one email to TOOL_GATE_TO and forgotten; after that, one
+ * welcome email goes to the visitor (welcome.ts). The spam and rate limits live in this server instance's memory
+ * only (hashed, with a salt made fresh on every start) and are gone when the instance stops. No log line contains
+ * an address or the SMTP server's error text.
  */
 
 /** The approval texts a sign-up agrees to (consent-texts.json): a new version whenever any of the wording changes. */
@@ -65,7 +67,8 @@ export function status() {
 
 /**
  * POST { email, privacy, consent, website (hidden), tool, lang, ms }. Both approvals are required. Always answers
- * quickly; the visitor's access never depends on the answer. Sends at most one email per sign-up.
+ * quickly; the visitor's access never depends on the answer. Sends at most two emails per sign-up: the sign-up to
+ * the mailbox, then (only if that worked) the welcome email to the visitor.
  */
 export async function subscribe(req: Request) {
   if (!toolGateEnabled()) return notFound();
@@ -102,26 +105,28 @@ export async function subscribe(req: Request) {
 
   if (cfg.mode === 'preview') {
     recentAddresses.set(addressKey, now);
-    console.log(`[tool-gate] dry run: one email would be sent (tool ${tool}, ${lang})`);
+    console.log(`[tool-gate] dry run: two emails would be sent, sign-up and welcome (tool ${tool}, ${lang})`);
     return json({ ok: true, sent: false, dryRun: true });
   }
 
-  // the mailbox accepts 60 emails an hour; stay under it (TOOL_GATE_HOURLY_MAX, default 50)
+  // the mailbox accepts 60 emails an hour; stay under it (TOOL_GATE_HOURLY_MAX, default 50). Every email counts:
+  // the sign-up takes the first free place, the welcome email only a second one, so the sign-up always comes first
   if (sentTimes.length >= cfg.hourlyMax) { console.warn('[tool-gate] not sent: hourly limit reached, sign-up lost'); return json({ ok: true, sent: false }); }
   sentTimes.push(now);
   recentAddresses.set(addressKey, now);
 
+  // creating the transport only stores the settings; it connects when an email is sent
+  const transport = nodemailer.createTransport({
+    host: cfg.smtp.host,
+    port: cfg.smtp.port,
+    secure: cfg.smtp.secure,
+    requireTLS: !cfg.smtp.secure,
+    auth: { user: cfg.smtp.user, pass: cfg.smtp.pass },
+    connectionTimeout: 8000,
+    greetingTimeout: 8000,
+    socketTimeout: 10000,
+  });
   try {
-    const transport = nodemailer.createTransport({
-      host: cfg.smtp.host,
-      port: cfg.smtp.port,
-      secure: cfg.smtp.secure,
-      requireTLS: !cfg.smtp.secure,
-      auth: { user: cfg.smtp.user, pass: cfg.smtp.pass },
-      connectionTimeout: 8000,
-      greetingTimeout: 8000,
-      socketTimeout: 10000,
-    });
     await transport.sendMail({
       from: cfg.from,
       to: cfg.to,
@@ -145,11 +150,29 @@ export async function subscribe(req: Request) {
       ].join('\n'),
     });
     console.log(`[tool-gate] sent (tool ${tool}, ${lang})`);
-    return json({ ok: true, sent: true });
   } catch (err) {
-    // the error code only: the server's message can quote the address
-    const e = err as { code?: string; responseCode?: number };
-    console.error(`[tool-gate] not sent: SMTP ${e.code ?? 'error'}${e.responseCode ? ' ' + e.responseCode : ''}, sign-up lost`);
+    console.error(`[tool-gate] not sent: ${smtpError(err)}, sign-up lost`);
     return json({ ok: true, sent: false });
   }
+
+  // the welcome email: never changes the answer, the sign-up above has already worked
+  if (sentTimes.length >= cfg.hourlyMax) {
+    console.warn('[tool-gate] welcome not sent: hourly limit reached');
+  } else {
+    sentTimes.push(Date.now());
+    try {
+      const w = welcomeEmail(lang as Lang3);
+      await transport.sendMail({ from: cfg.from, to: email, replyTo: w.replyTo, subject: w.subject, text: w.text, html: w.html, headers: w.headers });
+      console.log(`[tool-gate] welcome sent (${lang})`);
+    } catch (err) {
+      console.error(`[tool-gate] welcome not sent: ${smtpError(err)}`);
+    }
+  }
+  return json({ ok: true, sent: true });
+}
+
+/** The error code only: the SMTP server's message can quote the address. */
+function smtpError(err: unknown) {
+  const e = err as { code?: string; responseCode?: number };
+  return `SMTP ${e.code ?? 'error'}${e.responseCode ? ' ' + e.responseCode : ''}`;
 }
