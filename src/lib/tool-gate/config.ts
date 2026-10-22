@@ -15,8 +15,8 @@
  *   SMTP_PORT            465 (TLS from the start) or 587 (STARTTLS, TLS required).
  *   SMTP_USER            SMTP login.
  *   SMTP_PASS            SMTP password.
- *   SMTP_FROM            Sender address of the notification email, e.g. "AMD NSRI <newsletter@news.amdnsri.com>".
- *   TOOL_GATE_TO         The mailbox that receives each sign-up: newsletter@news.amdnsri.com
+ *   SMTP_FROM            Sender address of the notification email, e.g. "AMD NSRI <signups@news.amdnsri.com>".
+ *   TOOL_GATE_TO         The mailbox that receives each sign-up: signups@news.amdnsri.com
  *   TOOL_GATE_HOURLY_MAX Optional. Emails per hour (per server instance) before sending pauses; default 50, at most 60.
  *   TOOL_GATE_LOCAL_TEST Local testing only: "1" lets preview run on a local production build (`next start`).
  *                        Ignored on Vercel's production deployment, where preview is always off.
