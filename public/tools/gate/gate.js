@@ -94,7 +94,6 @@
     '.amdg-arrow{display:inline-block}',
     '.amdg[dir=rtl] .amdg-arrow{transform:scaleX(-1)}',
     '.amdg-rule{height:1px;background:#2e2e2a;margin:26px 0 18px}',
-    '.amdg-notice{font-size:11.5px;line-height:1.65;color:#8a8880;margin:0 0 10px}',
     '.amdg-files{font-size:11.5px;color:#5a5854;margin:0}',
     '.amdg-test{margin:0 0 18px;padding:8px 12px;border:1px dashed rgba(184,149,106,.5);color:#b8956a;font-size:11px;letter-spacing:.06em}',
     // hidden in place (clipped to nothing), not moved off-screen: an offset would widen the panel in right-to-left
@@ -145,7 +144,6 @@
     // hidden from people; a bot that fills every field fills this one too
     var hp = el('input', { type: 'text', name: 'website', tabindex: '-1', autocomplete: 'off' });
     var hpWrap = el('div', { 'class': 'amdg-hp', 'aria-hidden': 'true' }, [hp]);
-    var notice = el('p', { 'class': 'amdg-notice', id: 'amdg-notice' });
     var files = el('p', { 'class': 'amdg-files' });
     var eyebrow = el('span', { 'class': 'amdg-eyebrow', text: 'AMD NSRI · Tools' });
     var langBtns = LANGS.map(function (L) {
@@ -156,9 +154,9 @@
     var form = el('form', { novalidate: '' }, [label, input, privacyCheck, consentCheck, newTabNote, err, hpWrap, btn]);
     var panel = el('div', { 'class': 'amdg-panel' }, [
       el('div', { 'class': 'amdg-top' }, [eyebrow, el('div', { 'class': 'amdg-langs' }, langBtns)]),
-      title, lead, test, form, el('div', { 'class': 'amdg-rule', 'aria-hidden': 'true' }), notice, files,
+      title, lead, test, form, el('div', { 'class': 'amdg-rule', 'aria-hidden': 'true' }), files,
     ]);
-    var root = el('div', { 'class': 'amdg', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'amdg-title', 'aria-describedby': 'amdg-lead amdg-notice' }, [panel]);
+    var root = el('div', { 'class': 'amdg', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'amdg-title', 'aria-describedby': 'amdg-lead' }, [panel]);
 
     // an approval text with its [[text|/path]] links: the page opens in a new tab, in the panel's language, so what
     // was typed here is kept
@@ -184,7 +182,6 @@
       fillApproval(consentText, s.approvals.consent[lang] || s.approvals.consent.EN);
       newTabNote.textContent = tx.newTab;
       btnText.textContent = btn.disabled ? tx.sending : tx.submit;
-      notice.textContent = tx.notice;
       files.textContent = tx.filesNote;
       if (err.getAttribute('data-key')) err.textContent = tx[err.getAttribute('data-key')];
       langBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.textContent === lang)); });
