@@ -7,7 +7,6 @@ import type { Lang } from '@/lib/translations';
  * to be confirmed. A block is a paragraph (string) or a bullet list (string[]); [[text|/path]] is a link.
  */
 export interface LegalDoc {
-  draft: string;
   title: string;
   status: string;
   intro: string[];
@@ -16,9 +15,8 @@ export interface LegalDoc {
 
 export const PRIVACY: Record<Lang, LegalDoc> = {
   TR: {
-    draft: 'TASLAK: avukat incelemesini bekliyor, yürürlükte değil. [Köşeli parantez] içindeki ifadeler yayından önce teyit edilecektir.',
     title: 'AMD NSRI Aydınlatma Metni',
-    status: 'Ekim 2026\'da hazırlanan taslak; henüz yürürlükte değil. Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir [AVUKAT TEYİT EDECEK].',
+    status: 'Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir [AVUKAT TEYİT EDECEK].',
     intro: [
       'AMD NSRI olarak kişisel verilerinizin güvenliğinin sağlanmasına önem veriyoruz. Bu amaçla, kişisel verilerin korunması için gerekli önlemleri alan ve azami hassasiyet gösteren AMD NSRI olarak, web sitemizdeki bülten aboneliği kapsamında kişisel verilerinizin işlenmesi hususunda sizleri 6698 sayılı Kişisel Verilerin Korunması Kanunu\'nun ("Kanun") 10. maddesi uyarınca bilgilendirmek isteriz.',
     ],
@@ -113,9 +111,8 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
   },
 
   EN: {
-    draft: 'DRAFT: awaiting review by a lawyer, not in force. Text in [square brackets] is to be confirmed before publishing.',
     title: 'AMD NSRI Privacy Notice',
-    status: 'Draft prepared in October 2026; not yet in force. The Turkish text is the authoritative version; the English and Arabic texts are translations [LAWYER TO CONFIRM].',
+    status: 'The Turkish text is the authoritative version; the English and Arabic texts are translations [LAWYER TO CONFIRM].',
     intro: [
       'At AMD NSRI we care about keeping your personal data secure. As AMD NSRI, taking the necessary measures and the utmost care to protect personal data, we would like to inform you, under Article 10 of Personal Data Protection Law No. 6698 (the "Law"), about how your personal data is processed in connection with the newsletter sign-up on our website.',
     ],
@@ -210,9 +207,8 @@ export const PRIVACY: Record<Lang, LegalDoc> = {
   },
 
   AR: {
-    draft: 'مسودة: بانتظار مراجعة محامٍ، وغير سارية. ما بين [معقوفين] يجب التحقق منه قبل النشر.',
     title: 'إشعار الخصوصية لدى AMD NSRI',
-    status: 'مسودة أُعدّت في أكتوبر 2026، وهي غير سارية بعد. النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان [يؤكّده المحامي].',
+    status: 'النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان [يؤكّده المحامي].',
     intro: [
       'نحرص في AMD NSRI على ضمان أمن بياناتك الشخصية. ولهذا الغرض، وبصفتنا AMD NSRI التي تتخذ التدابير اللازمة وتولي أقصى درجات العناية لحماية البيانات الشخصية، نودّ إعلامك، وفقاً للمادة 10 من قانون حماية البيانات الشخصية رقم 6698 ("القانون")، بكيفية معالجة بياناتك الشخصية في إطار الاشتراك في النشرة البريدية على موقعنا.',
     ],

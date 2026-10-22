@@ -2,29 +2,21 @@ import type { Lang } from '@/lib/translations';
 import type { LegalDoc } from '@/lib/privacy-content';
 
 /**
- * DRAFT Privacy Notice and Explicit Consent Statement for the email gate on the free tools, shown on /privacy and
+ * Privacy Notice and Explicit Consent Statement for the email gate on the free tools, shown on /privacy and
  * /consent while TOOL_GATE_MODE is on (src/app/privacy, src/app/consent).
  *
- * Both are copies of the newsletter drafts (src/lib/privacy-content.ts, src/lib/consent-content.ts, written on the
- * lawyer's structure), changed only where the gate works differently: one email form before the tools, no
- * confirmation email, nothing stored on the hosting server, the sign-up sent as one email to a mailbox in Turkey,
- * removal by writing to contact@amdnsri.com. Changed passages carried the marker below (in its language) for the
- * lawyer's review; after the lawyer's approval (2026-10-20) the markers were removed from the text and the marker is
- * only quoted in the draft banner. Turkish is the source text; EN and AR are Claude's translations.
+ * Both are copies of the newsletter texts (src/lib/privacy-content.ts, src/lib/consent-content.ts, written on the
+ * lawyer's structure), changed only where the gate works differently: one email form before the tools, one welcome
+ * email, nothing stored on the hosting server, the sign-up sent as one email to a mailbox in Turkey, removal by
+ * writing to contact@amdnsri.com. The lawyer approved this approach (2026-10-20); the review markers and the draft
+ * banner were removed afterwards. Turkish is the source text; EN and AR are Claude's translations.
  * [[text|/path]] is a link.
  */
-export const GATE_CHANGE: Record<Lang, string> = {
-  EN: '[CHANGED FOR THE TOOL GATE: LAWYER TO REVIEW]',
-  TR: '[E-POSTA GİRİŞİ İÇİN DEĞİŞTİRİLDİ: AVUKAT İNCELEYECEK]',
-  AR: '[عُدِّل لبوابة الأدوات: يراجعه المحامي]',
-};
-const C = GATE_CHANGE;
 
 export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
   TR: {
-    draft: `TASLAK: avukat incelemesini bekliyor, yürürlükte değil. [Köşeli parantez] içindeki ifadeler yayından önce teyit edilecektir; ${C.TR} işaretli bölümler bülten sürümünden farklıdır ve incelenmelidir.`,
     title: 'AMD NSRI Aydınlatma Metni',
-    status: `Ekim 2026'da hazırlanan taslak; henüz yürürlükte değil. Bu sürüm, ücretsiz araçlardan önce istenen e-posta girişini kapsar. Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir.`,
+    status: `Bu sürüm, ücretsiz araçlardan önce istenen e-posta girişini kapsar. Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir.`,
     intro: [
       `AMD NSRI olarak kişisel verilerinizin güvenliğinin sağlanmasına önem veriyoruz. Bu amaçla, kişisel verilerin korunması için gerekli önlemleri alan ve azami hassasiyet gösteren AMD NSRI olarak, web sitemizdeki ücretsiz araçları kullanmadan önce istenen e-posta girişi ve bülten kapsamında kişisel verilerinizin işlenmesi hususunda sizleri 6698 sayılı Kişisel Verilerin Korunması Kanunu'nun ("Kanun") 10. maddesi uyarınca bilgilendirmek isteriz.`,
     ],
@@ -119,9 +111,8 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
   },
 
   EN: {
-    draft: `DRAFT: awaiting review by a lawyer, not in force. Text in [square brackets] is to be confirmed before publishing; passages marked ${C.EN} differ from the newsletter version and need review.`,
     title: 'AMD NSRI Privacy Notice',
-    status: `Draft prepared in October 2026; not yet in force. This version covers the email sign-up asked for before the free tools. The Turkish text is the authoritative version; the English and Arabic texts are translations.`,
+    status: `This version covers the email sign-up asked for before the free tools. The Turkish text is the authoritative version; the English and Arabic texts are translations.`,
     intro: [
       `At AMD NSRI we care about keeping your personal data secure. As AMD NSRI, taking the necessary measures and the utmost care to protect personal data, we would like to inform you, under Article 10 of Personal Data Protection Law No. 6698 (the "Law"), about how your personal data is processed in connection with the email sign-up asked for before using the free tools on our website, and the newsletter.`,
     ],
@@ -216,9 +207,8 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
   },
 
   AR: {
-    draft: `مسودة: بانتظار مراجعة محامٍ، وغير سارية. ما بين [معقوفين] يجب التحقق منه قبل النشر؛ والمقاطع الموسومة بـ ${C.AR} تختلف عن نسخة النشرة البريدية وتحتاج إلى مراجعة.`,
     title: 'إشعار الخصوصية لدى AMD NSRI',
-    status: `مسودة أُعدّت في أكتوبر 2026، وهي غير سارية بعد. تشمل هذه النسخة إدخال البريد الإلكتروني المطلوب قبل استخدام الأدوات المجانية. النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان.`,
+    status: `تشمل هذه النسخة إدخال البريد الإلكتروني المطلوب قبل استخدام الأدوات المجانية. النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان.`,
     intro: [
       `نحرص في AMD NSRI على ضمان أمن بياناتك الشخصية. ولهذا الغرض، وبصفتنا AMD NSRI التي تتخذ التدابير اللازمة وتولي أقصى درجات العناية لحماية البيانات الشخصية، نودّ إعلامك، وفقاً للمادة 10 من قانون حماية البيانات الشخصية رقم 6698 ("القانون")، بكيفية معالجة بياناتك الشخصية في إطار إدخال البريد الإلكتروني المطلوب قبل استخدام الأدوات المجانية على موقعنا، وفي إطار النشرة البريدية.`,
     ],
@@ -315,9 +305,8 @@ export const GATE_PRIVACY: Record<Lang, LegalDoc> = {
 
 export const GATE_CONSENT: Record<Lang, LegalDoc> = {
   TR: {
-    draft: `TASLAK: avukat incelemesini bekliyor, yürürlükte değil. [Köşeli parantez] içindeki ifadeler yayından önce teyit edilecektir; ${C.TR} işaretli bölümler bülten sürümünden farklıdır ve incelenmelidir.`,
     title: 'AMD NSRI Bülten Açık Rıza Beyanı',
-    status: `Ekim 2026'da hazırlanan taslak; henüz yürürlükte değil. Bu sürüm, ücretsiz araçlardan önce istenen e-posta girişini kapsar. Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir.`,
+    status: `Bu sürüm, ücretsiz araçlardan önce istenen e-posta girişini kapsar. Esas metin Türkçe metindir; İngilizce ve Arapça metinler çeviridir.`,
     intro: [
       `6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında, AMD NSRI olarak; yeni projeler, günlük yazıları ve dijital araç güncellemeleri hakkında bülten gönderebilmek ve web sitemizdeki ücretsiz araçlara erişim sağlayabilmek maksadıyla kişisel verilerinizi işleyebilmek için bu konuda açık rızanıza ihtiyaç duyuyoruz.`,
     ],
@@ -347,9 +336,8 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
   },
 
   EN: {
-    draft: `DRAFT: awaiting review by a lawyer, not in force. Text in [square brackets] is to be confirmed before publishing; passages marked ${C.EN} differ from the newsletter version and need review.`,
     title: 'AMD NSRI Newsletter Explicit Consent Statement',
-    status: `Draft prepared in October 2026; not yet in force. This version covers the email sign-up asked for before the free tools. The Turkish text is the authoritative version; the English and Arabic texts are translations.`,
+    status: `This version covers the email sign-up asked for before the free tools. The Turkish text is the authoritative version; the English and Arabic texts are translations.`,
     intro: [
       `Under Personal Data Protection Law No. 6698, we at AMD NSRI need your explicit consent to process your personal data for the purpose of sending you a newsletter about new projects, journal articles and digital tool updates, and of giving you access to the free tools on our website.`,
     ],
@@ -379,9 +367,8 @@ export const GATE_CONSENT: Record<Lang, LegalDoc> = {
   },
 
   AR: {
-    draft: `مسودة: بانتظار مراجعة محامٍ، وغير سارية. ما بين [معقوفين] يجب التحقق منه قبل النشر؛ والمقاطع الموسومة بـ ${C.AR} تختلف عن نسخة النشرة البريدية وتحتاج إلى مراجعة.`,
     title: 'بيان الموافقة الصريحة على النشرة البريدية لدى AMD NSRI',
-    status: `مسودة أُعدّت في أكتوبر 2026، وهي غير سارية بعد. تشمل هذه النسخة إدخال البريد الإلكتروني المطلوب قبل استخدام الأدوات المجانية. النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان.`,
+    status: `تشمل هذه النسخة إدخال البريد الإلكتروني المطلوب قبل استخدام الأدوات المجانية. النص المعتمد هو النص التركي، أما النصّان الإنجليزي والعربي فترجمتان.`,
     intro: [
       `في إطار قانون حماية البيانات الشخصية رقم 6698، نحتاج في AMD NSRI إلى موافقتك الصريحة لكي نتمكن من معالجة بياناتك الشخصية بغرض إرسال نشرة بريدية إليك حول المشاريع الجديدة ومقالات المدونة وتحديثات الأدوات الرقمية، وإتاحة الوصول إلى الأدوات المجانية على موقعنا.`,
     ],
