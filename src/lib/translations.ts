@@ -1381,8 +1381,6 @@ const VALUES: Record<Lang, ValueMap> = {
     'Submission-based': 'Gönderim Esaslı',
     'Unfolding Service': 'Açınım Hizmeti',
     'Open Tool': 'Aracı Aç',
-    'Open NESTRI': "NESTRI'yi Aç",
-    'Open NESTRI PRO': "NESTRI PRO'yu Aç",
     'Paste your panel schedule and get an optimized nesting layout. Minimizes sheet waste and exports DXF for CNC cutting.':
       'Panel listenizi yapıştırın ve optimize bir yerleşim planı alın. Levha firesini en aza indirir ve CNC kesim için DXF dışa aktarır.',
     'Web Tool · Free': 'Web Aracı · Ücretsiz',
@@ -1933,8 +1931,6 @@ const VALUES: Record<Lang, ValueMap> = {
     'Submission-based': 'قائم على الإرسال',
     'Unfolding Service': 'خدمة الفرد',
     'Open Tool': 'افتح الأداة',
-    'Open NESTRI': 'افتح NESTRI',
-    'Open NESTRI PRO': 'افتح NESTRI PRO',
     'Paste your panel schedule and get an optimized nesting layout. Minimizes sheet waste and exports DXF for CNC cutting.':
       'الصق جدول ألواحك واحصل على مخطط ترصيص محسَّن. يقلّل هدر الصفائح ويصدّر DXF للقصّ على CNC.',
     'Web Tool · Free': 'أداة ويب · مجانية',
