@@ -34,10 +34,11 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_JSON_LD) }} />
       <IntroSection />
       <HeroSection />
+      {/* Selected Works comes right after the hero */}
+      <FeaturedWorksSection />
       <PlatformStatement />
       <EcosystemSection />
       <StatsSection />
-      <FeaturedWorksSection />
       <FabricationIntelligenceSection />
       <CallToActionSection />
       {/* renders nothing while the newsletter is off (NEWSLETTER_MODE) */}

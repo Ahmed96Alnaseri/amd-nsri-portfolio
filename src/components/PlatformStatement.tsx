@@ -69,7 +69,7 @@ export default function PlatformStatement() {
       </div>
 
       {/* ghost section number */}
-      <span className="ps2-bg-number" aria-hidden="true">02</span>
+      <span className="ps2-bg-number" aria-hidden="true">03</span>
 
       {/* header rule */}
       <div className="ps2-header" aria-hidden="true">
@@ -106,12 +106,11 @@ export default function PlatformStatement() {
             className="ps2-body-cols reveal-item"
             style={{ '--delay': '160ms' } as React.CSSProperties}
           >
-            <p className="ps2-body">
-              {t('platform.body1')}
-            </p>
-            <p className="ps2-body">
-              {t('platform.body2')}
-            </p>
+            {/* four short pieces, one per thought, instead of two dense paragraphs */}
+            <p className="ps2-body">{t('platform.body1')}</p>
+            <p className="ps2-body">{t('platform.body2')}</p>
+            <p className="ps2-body">{t('platform.body3')}</p>
+            <p className="ps2-body">{t('platform.body4')}</p>
           </div>
         </div>
 
