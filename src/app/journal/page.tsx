@@ -181,7 +181,8 @@ export default function JournalPage() {
         /* the site sets the body font on text elements directly: give them the stack with the Arabic fallback */
         .jr[dir="rtl"] :is(p, button, time, span:not(.jr-no):not(.jr-cover-no)) { font-family: var(--jr-mono); }
         .jr [hidden] { display: none !important; }
-        .jr-wrap { max-width: 1520px; margin-inline: auto; padding-inline: clamp(16px, 3vw, 40px); }
+        /* the same side padding as the header (Navigation.tsx), so the content lines up with it at every width */
+        .jr-wrap { padding-inline: clamp(24px, 6vw, 120px); }
         .jr-label { font-size: var(--jr-label); letter-spacing: var(--jr-track-label); text-transform: uppercase; line-height: 1.4; }
 
         /* ── hero ── */
