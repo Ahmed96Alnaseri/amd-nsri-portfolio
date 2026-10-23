@@ -160,7 +160,7 @@ const tools: Tool[] = [
     // card shows the two panels only; the hero's wordmark would repeat the card title
     cardImage: { src: '/tools/nestri/card.webp', width: 1040, height: 335 },
     price: 'Free',
-    cardBadge: 'FREE · LIVE',
+    cardBadge: 'Free · Live',
     ctaLabel: 'Open NESTRI',
     ctaLink: '/nestri.html',
     ctaExternal: true,
@@ -193,7 +193,8 @@ const tools: Tool[] = [
     heroImage: { src: '/tools/nestri-pro/hero.png', width: 1540, height: 480 },
     // card shows the two panels only; the hero's wordmark would repeat the card title
     cardImage: { src: '/tools/nestri-pro/card.webp', width: 1040, height: 313 },
-    price: null,
+    price: 'Free',
+    cardBadge: 'Free · Live',
     input: 'DXF part drawings',
     output: 'Nested sheets DXF · Excel report',
     ctaLabel: 'Open NESTRI PRO',
@@ -271,9 +272,6 @@ const tools: Tool[] = [
     detail:
       'Expanded Mesh Generator builds an expanded metal mesh panel from its catalogue dimensions: the long and short way of the diamond (LWD, SWD), strand width, thickness and bend radius. Set the panel size, turn the mesh 90°, slide the pattern, and add an optional U-channel or L-angle frame with mitred corners. The live 3D view and the dimensioned 2D elevation update as you type, with readouts for open area, eye count, mesh depth and frame length. Export 3D solids as STEP and the 2D front elevation as DWG, straight from the browser. No installation, no account.',
     features: [
-      'Mesh from catalogue dimensions: LWD, SWD, strand width, thickness and bend radius',
-      'Panel size, mesh direction (0° or ±90°) and pattern position',
-      'Optional U-channel or L-angle frame with 45° mitred corners; the mesh is cut to fit inside it',
       'Live 3D view and a dimensioned 2D elevation',
       'Readouts: panel area, mesh cut size, eye count, open area, mesh depth and frame length',
       'STEP export: closed 3D solids per strand row and frame piece, in millimetres (a centre detail for very dense meshes)',
@@ -290,7 +288,7 @@ const tools: Tool[] = [
     // the panel drawing only; the hero's wordmark would repeat the card title
     cardImage: { src: '/tools/expanded-mesh-generator/card.webp', width: 1040, height: 670 },
     price: 'Free',
-    cardBadge: 'FREE · LIVE',
+    cardBadge: 'Free · Live',
     input: 'Mesh LWD · SWD · W · T · R, panel size, optional U or L frame',
     output: 'STEP 3D solids · DWG 2D elevation',
     ctaLabel: 'Open Tool',

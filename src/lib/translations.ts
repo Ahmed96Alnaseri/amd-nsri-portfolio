@@ -1356,12 +1356,6 @@ const VALUES: Record<Lang, ValueMap> = {
       'Katalog ölçülerinden genişletilmiş metal ağ panelleri; isteğe bağlı U veya L çerçeveyle. STEP ve DWG olarak dışa aktarır.',
     'Expanded Mesh Generator builds an expanded metal mesh panel from its catalogue dimensions: the long and short way of the diamond (LWD, SWD), strand width, thickness and bend radius. Set the panel size, turn the mesh 90°, slide the pattern, and add an optional U-channel or L-angle frame with mitred corners. The live 3D view and the dimensioned 2D elevation update as you type, with readouts for open area, eye count, mesh depth and frame length. Export 3D solids as STEP and the 2D front elevation as DWG, straight from the browser. No installation, no account.':
       'Genişletilmiş Metal Ağ Üreteci, bir genişletilmiş metal ağ panelini katalog ölçülerinden oluşturur: uzun ve kısa göz çapı (LWD, SWD), şerit genişliği, kalınlık ve büküm yarıçapı. Panel ölçüsünü belirleyin, ağı 90° döndürün, deseni kaydırın ve isteğe bağlı olarak gönye köşeli bir U profil ya da L köşebent çerçeve ekleyin. Canlı 3B görünüm ve ölçülendirilmiş 2B görünüş siz yazdıkça güncellenir; açık alan, göz sayısı, ağ derinliği ve çerçeve uzunluğu da anında gösterilir. 3B katıları STEP, 2B ön görünüşü DWG olarak doğrudan tarayıcıdan dışa aktarın. Kurulum yok, hesap yok.',
-    'Mesh from catalogue dimensions: LWD, SWD, strand width, thickness and bend radius':
-      'Katalog ölçülerinden ağ: LWD, SWD, şerit genişliği, kalınlık ve büküm yarıçapı',
-    'Panel size, mesh direction (0° or ±90°) and pattern position':
-      'Panel ölçüsü, ağ yönü (0° veya ±90°) ve desen konumu',
-    'Optional U-channel or L-angle frame with 45° mitred corners; the mesh is cut to fit inside it':
-      'İsteğe bağlı, 45° gönye köşeli U profil veya L köşebent çerçeve; ağ, çerçevenin içine sığacak şekilde kesilir',
     'Live 3D view and a dimensioned 2D elevation':
       'Canlı 3B görünüm ve ölçülendirilmiş 2B görünüş',
     'Readouts: panel area, mesh cut size, eye count, open area, mesh depth and frame length':
@@ -1386,7 +1380,6 @@ const VALUES: Record<Lang, ValueMap> = {
     'Paste your panel schedule and get an optimized nesting layout. Minimizes sheet waste and exports DXF for CNC cutting.':
       'Panel listenizi yapıştırın ve optimize bir yerleşim planı alın. Levha firesini en aza indirir ve CNC kesim için DXF dışa aktarır.',
     'Web Tool · Free': 'Web Aracı · Ücretsiz',
-    'FREE · LIVE': 'ÜCRETSİZ · YAYINDA',
     'Panel schedule (pose · width · length · qty)': 'Panel listesi (poz · genişlik · uzunluk · adet)',
     'Nested layout DXF · utilization report': 'Yerleşim planı DXF · kullanım raporu',
     'Sheet nesting for fabrication. Paste your panel schedule — pose, width, length, quantity — and get an optimized nesting layout that minimizes material waste and maximizes sheet utilization. Export the nested sheets as DXF, ready for CNC cutting.':
@@ -1915,12 +1908,6 @@ const VALUES: Record<Lang, ValueMap> = {
       'ألواح من الشبك المعدني الممدّد بمقاسات الكتالوج، مع إطار اختياري على شكل U أو L. يُصدّر بصيغتي STEP وDWG.',
     'Expanded Mesh Generator builds an expanded metal mesh panel from its catalogue dimensions: the long and short way of the diamond (LWD, SWD), strand width, thickness and bend radius. Set the panel size, turn the mesh 90°, slide the pattern, and add an optional U-channel or L-angle frame with mitred corners. The live 3D view and the dimensioned 2D elevation update as you type, with readouts for open area, eye count, mesh depth and frame length. Export 3D solids as STEP and the 2D front elevation as DWG, straight from the browser. No installation, no account.':
       'ينشئ مولّد شبك المعدن الممدّد لوحاً من الشبك المعدني الممدّد انطلاقاً من مقاسات الكتالوج: القطر الطويل والقطر القصير للعين (LWD وSWD)، وعرض الشريط، والسماكة، ونصف قطر الثني. حدّد مقاس اللوح، وأدِر الشبك 90°، وأزِح النمط، وأضف إطاراً اختيارياً من مقطع U أو زاوية L بزوايا مشطوفة. ويتحدّث المنظر ثلاثي الأبعاد الحيّ والواجهة ثنائية الأبعاد المقيسة أثناء الكتابة، مع قراءات للمساحة المفتوحة وعدد العيون وعمق الشبك وطول الإطار. صدّر الأجسام ثلاثية الأبعاد بصيغة STEP والواجهة الأمامية ثنائية الأبعاد بصيغة DWG مباشرةً من المتصفح، دون تثبيت ودون حساب.',
-    'Mesh from catalogue dimensions: LWD, SWD, strand width, thickness and bend radius':
-      'شبك بمقاسات الكتالوج: LWD وSWD وعرض الشريط والسماكة ونصف قطر الثني',
-    'Panel size, mesh direction (0° or ±90°) and pattern position':
-      'مقاس اللوح واتجاه الشبك (0° أو ±90°) وموضع النمط',
-    'Optional U-channel or L-angle frame with 45° mitred corners; the mesh is cut to fit inside it':
-      'إطار اختياري من مقطع U أو زاوية L بزوايا مشطوفة 45°، ويُقصّ الشبك ليستقر داخله',
     'Live 3D view and a dimensioned 2D elevation':
       'منظر ثلاثي الأبعاد حيّ وواجهة ثنائية الأبعاد مقيسة',
     'Readouts: panel area, mesh cut size, eye count, open area, mesh depth and frame length':
@@ -1945,7 +1932,6 @@ const VALUES: Record<Lang, ValueMap> = {
     'Paste your panel schedule and get an optimized nesting layout. Minimizes sheet waste and exports DXF for CNC cutting.':
       'الصق جدول ألواحك واحصل على مخطط ترصيص محسَّن. يقلّل هدر الصفائح ويصدّر DXF للقصّ على CNC.',
     'Web Tool · Free': 'أداة ويب · مجانية',
-    'FREE · LIVE': 'مجاني · مباشر',
     'Panel schedule (pose · width · length · qty)': 'جدول الألواح (الوضع · العرض · الطول · الكمية)',
     'Nested layout DXF · utilization report': 'مخطط الترصيص DXF · تقرير الاستغلال',
     'Sheet nesting for fabrication. Paste your panel schedule — pose, width, length, quantity — and get an optimized nesting layout that minimizes material waste and maximizes sheet utilization. Export the nested sheets as DXF, ready for CNC cutting.':
