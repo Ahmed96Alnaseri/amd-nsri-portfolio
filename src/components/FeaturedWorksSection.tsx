@@ -50,7 +50,7 @@ export default function FeaturedWorksSection() {
   return (
     <section id="featured-works" className="works-section" aria-labelledby="works-heading">
 
-      <span className="works-bg-number" aria-hidden="true">04</span>
+      <span className="works-bg-number" aria-hidden="true">02</span>
 
       {/* Header rule */}
       <div className="works-top-rule" aria-hidden="true">

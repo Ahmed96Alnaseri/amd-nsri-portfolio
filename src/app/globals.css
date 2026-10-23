@@ -3213,11 +3213,12 @@ html[data-theme="white"] .nav-root.scrolled {
 }
 .ps2-period { color: var(--color-accent); }
 
+/* the statement's four short pieces, stacked in one readable column (about 60 characters a line) */
 .ps2-body-cols {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 3vw, 48px);
-  max-width: 760px;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  max-width: 540px;
 }
 .ps2-body {
   font-family: var(--font-body);

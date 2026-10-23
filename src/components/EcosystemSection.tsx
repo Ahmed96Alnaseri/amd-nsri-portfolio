@@ -83,7 +83,7 @@ export default function EcosystemSection() {
       className="ecosystem-section"
       aria-labelledby="ecosystem-heading"
     >
-      <span className="eco-bg-number" aria-hidden="true">03</span>
+      <span className="eco-bg-number" aria-hidden="true">04</span>
 
       <div className="eco-top-rule" aria-hidden="true">
         <span className="eco-section-label">{t('eco.label')}</span>
