@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, SITE_URL } from '@/lib/seo';
 import IntroSection from '@/components/IntroSection';
 import HeroSection from '@/components/HeroSection';
 import PlatformStatement from '@/components/PlatformStatement';
@@ -19,9 +19,19 @@ export const metadata: Metadata = pageMetadata({
     'AMD NSRI — computational design, facade engineering and fabrication intelligence. Based in Istanbul.',
 });
 
+// Tells search engines the site's name ("AMD NSRI"), which they show above the result; homepage only, as Google asks
+const WEBSITE_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'AMD NSRI',
+  alternateName: 'AMD NSRI',
+  url: SITE_URL,
+};
+
 export default function HomePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_JSON_LD) }} />
       <IntroSection />
       <HeroSection />
       <PlatformStatement />
